@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import iteMate.project.MainActivity;
 
@@ -19,23 +20,22 @@ public class Items extends AppCompatActivity {
         setContentView(R.layout.activity_items);
 
         // Initialize and assign variable
-        BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
+        NavigationBarView navigationBarView = findViewById(R.id.bottom_navigation);
 
         // Set Home selected
-        bottomNavigationView.setSelectedItemId(R.id.items);
+        navigationBarView.setSelectedItemId(R.id.items);
 
         // Perform item selected listener
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        navigationBarView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
                 switch(item.getItemId())
                 {
+                    case R.id.items:
+                        return true;
                     case R.id.home:
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0,0);
-                        return true;
-                    case R.id.items:
                         return true;
                     case R.id.track:
                         startActivity(new Intent(getApplicationContext(),Track.class));
