@@ -1,13 +1,16 @@
 package iteMate.project;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,32 +20,69 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize and assign variable
-        NavigationBarView navigationBarView = findViewById(R.id.bottom_navigation);
+        // Set up the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        // Set Home selected
+        // Set up the menu button
+        ImageButton menuButton = findViewById(R.id.menu_button);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupMenu(v);
+            }
+        });
+
+        // Bottom Navigation setup
+        NavigationBarView navigationBarView = findViewById(R.id.bottom_navigation);
         navigationBarView.setSelectedItemId(R.id.home);
 
         navigationBarView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId())
-                {
+                switch (item.getItemId()) {
                     case R.id.items:
-                        startActivity(new Intent(getApplicationContext(),Items.class));
-                        overridePendingTransition(0,0);
+                        startActivity(new Intent(getApplicationContext(), ItemsActivity.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.home:
                         return true;
                     case R.id.track:
-                        startActivity(new Intent(getApplicationContext(),Track.class));
-                        overridePendingTransition(0,0);
+                        startActivity(new Intent(getApplicationContext(), TrackActivity.class));
+                        overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;
             }
         });
+    }
 
+    private void showPopupMenu(View view) {
+        // Create a PopupMenu
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_drawer, popupMenu.getMenu());
 
+        /*// Set click listener for menu items
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_first:
+                        startActivity(new Intent(MainActivity.this, FirstActivity.class));
+                        return true;
+                    case R.id.nav_second:
+                        startActivity(new Intent(MainActivity.this, SecondActivity.class));
+                        return true;
+                    case R.id.nav_third:
+                        startActivity(new Intent(MainActivity.this, ThirdActivity.class));
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });*/
+
+        // Show the popup menu
+        popupMenu.show();
     }
 }

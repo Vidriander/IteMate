@@ -38,8 +38,11 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.material.v100)
+    implementation(libs.material.v120alpha05) // apparently for drawer navigation
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+
 
 }

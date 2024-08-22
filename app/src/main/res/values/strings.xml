@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">IteMate</string>
+
+    <!-- Navigation Drawer Strings -->
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="nav_first">First Activity</string>
+    <string name="nav_second">Second Activity</string>
+    <string name="nav_third">Third Activity</string>
+    <string name="categories">Categories</string>
+
+    <!-- Bottom Navigation Strings -->
+    <string name="home">Home</string>
+    <string name="items">Items</string>
+    <string name="track">Track</string>
+    <string name="menu">Menü</string>
 </resources>
