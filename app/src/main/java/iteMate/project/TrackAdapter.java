@@ -49,6 +49,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, TrackDetailActivity.class);
             intent.putExtra("track", track);  // Changed 'track' to 'track'
+            clickedTrack = track;
             context.startActivity(intent);
         });
     }
@@ -64,8 +65,8 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            contactName = itemView.findViewById(android.R.id.text1);
-            rendDate = itemView.findViewById(android.R.id.text2);
+            contactName = itemView.findViewById(R.id.trackcard_header_text);
+            rendDate = itemView.findViewById(R.id.trackcard_subheader_text);
         }
     }
 }
