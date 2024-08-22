@@ -9,13 +9,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Items extends AppCompatActivity {
+public class ItemsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
@@ -59,7 +58,7 @@ public class Items extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.track:
-                        startActivity(new Intent(getApplicationContext(), Track.class));
+                        startActivity(new Intent(getApplicationContext(), TrackActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                 }

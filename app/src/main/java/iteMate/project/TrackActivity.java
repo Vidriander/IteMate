@@ -7,14 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-import iteMate.project.MainActivity;
-import iteMate.project.Items; // Add this import
 
-
-public class Track extends AppCompatActivity {
+public class TrackActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +30,7 @@ public class Track extends AppCompatActivity {
                 switch(item.getItemId())
                 {
                     case R.id.items:
-                        startActivity(new Intent(getApplicationContext(),Items.class));
+                        startActivity(new Intent(getApplicationContext(), ItemsActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.home:
