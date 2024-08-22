@@ -1,17 +1,32 @@
 package iteMate.project;
 import java.io.Serializable;
 
+/**
+ * Item class to store the details of an item
+ */
 public class Item implements Serializable {
+    private int nfcTag;
     private String title;
     private String description;
+    private String image;
+    private boolean available;
+    private boolean container;
 
-    // Konstruktor
-    public Item(String title, String description) {
-        this.title = title;
-        this.description = description;
+    //Default Constructor
+    public Item() {
     }
 
-    // Getter-Methoden
+    // Constructor
+    public Item(int nfcTag, String title, String description, String image, boolean available, boolean container) {
+        this.nfcTag = nfcTag;
+        this.title = title;
+        this.description = description;
+        this.image = image;
+        this.available = available;
+        this.container = container;
+    }
+
+    // Getter
     public String getTitle() {
         return title;
     }
@@ -20,7 +35,23 @@ public class Item implements Serializable {
         return description;
     }
 
-    // Setter-Methoden
+    public String getImage() {
+        return image;
+    }
+
+    public int getNfcTag() {
+        return nfcTag;
+    }
+
+    public boolean getIsAvailable() {
+        return available;
+    }
+
+    public boolean isContainer() {
+        return container;
+    }
+
+    // Setter
     public void setTitle(String title) {
         this.title = title;
     }
