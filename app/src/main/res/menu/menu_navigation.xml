@@ -3,14 +3,16 @@
 
     <item
         android:id="@+id/home"
-        android:title="Home"/>
-        <!--android:icon="@drawable/home"-->
+        android:title="Home"
+        android:icon="@drawable/baseline_home_24"/>
     <item
         android:id="@+id/items"
-        android:title="Items"/>
+        android:title="Items"
+        android:icon="@drawable/baseline_inventory_24"/>
 
     <item
         android:id="@+id/track"
-        android:title="Track"/>
+        android:title="Track"
+        android:icon="@drawable/baseline_output_24"/>
 
 </menu>
