@@ -9,12 +9,24 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> {
     private List<Track> tracks;
     private Context context;
+
+    /**
+     * Stores the id of the clicked Track, if any.
+     */
+    private static Track clickedTrack;
+
+    /**
+     * Returns the id of the clicked Track in order to display the correct Track in the detail view.
+     * @return the id of the clicked Track
+     */
+    public static Track getClickedTrack() {
+        return clickedTrack;
+    }
 
     public TrackAdapter(List<Track> tracks, Context context) {
         this.tracks = tracks;
@@ -24,14 +36,15 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.track_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Track track = tracks.get(position);  // Changed 'item' to 'track'
-        holder.textView.setText(track.getGiveOutDate().toString());  // Changed 'item' to 'track'
+        holder.rendDate.setText(track.getGiveOutDate().toString());  // Changed 'item' to 'track'
+        holder.contactName.setText(track.getContact().getFirstName() + " " + track.getContact().getLastName());  // Changed 'item' to 'track'
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, TrackDetailActivity.class);
@@ -46,11 +59,13 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
+        public TextView contactName;
+        public TextView rendDate;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(android.R.id.text1);
+            contactName = itemView.findViewById(android.R.id.text1);
+            rendDate = itemView.findViewById(android.R.id.text2);
         }
     }
 }

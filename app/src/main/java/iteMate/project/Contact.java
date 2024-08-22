@@ -10,20 +10,20 @@ public class Contact implements Serializable {
     private String phone;
     private String email;
     private String address;
-    private String image;
+    private String city;
 
     // Default Constructor
     public Contact() {
     }
 
     // Constructor
-    public Contact(String firstName, String lastName, String phone, String email, String address, String image) {
+    public Contact(String firstName, String lastName, String phone, String email, String address, String city) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.email = email;
         this.address = address;
-        this.image = image;
+        this.city = city;
     }
 
     // Getter
@@ -47,8 +47,8 @@ public class Contact implements Serializable {
         return address;
     }
 
-    public String getImage() {
-        return image;
+    public String getCity() {
+        return city;
     }
 
     // Setter
@@ -72,7 +72,8 @@ public class Contact implements Serializable {
         this.address = address;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setCity(String city) {
+        this.city = city;
     }
+
 }
