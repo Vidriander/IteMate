@@ -24,10 +24,12 @@
             android:layout_gravity="end"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/menu"
+            android:paddingRight="20dp"
             android:src="@drawable/ic_menu" />
     </androidx.appcompat.widget.Toolbar>
 
     <!-- Main Content Layout -->
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

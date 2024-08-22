@@ -62,25 +62,25 @@ public class MainActivity extends AppCompatActivity {
         PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu_drawer, popupMenu.getMenu());
 
-        /*// Set click listener for menu items
+        // Set click listener for menu items
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.nav_first:
-                        startActivity(new Intent(MainActivity.this, FirstActivity.class));
+                    case R.id.nav_contacts:
+//                        startActivity(new Intent(MainActivity.this, FirstActivity.class)); // Replace FirstActivity with the activity you want to start
                         return true;
-                    case R.id.nav_second:
-                        startActivity(new Intent(MainActivity.this, SecondActivity.class));
+                    case R.id.nav_settings:
+//                        startActivity(new Intent(MainActivity.this, SecondActivity.class)); // Replace SecondActivity with the activity you want to start
                         return true;
-                    case R.id.nav_third:
-                        startActivity(new Intent(MainActivity.this, ThirdActivity.class));
+                    case R.id.nav_logout:
+//                        startActivity(new Intent(MainActivity.this, ThirdActivity.class)); // Replace ThirdActivity with the activity you want to start
                         return true;
                     default:
                         return false;
                 }
             }
-        });*/
+        });
 
         // Show the popup menu
         popupMenu.show();
