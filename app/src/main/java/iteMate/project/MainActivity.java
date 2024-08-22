@@ -13,12 +13,20 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity {
+public abstract class MainActivity extends AppCompatActivity {
+
+    protected int layoutResID;
+    protected static int bottomNavID;
+
+    abstract void setLayoutResID();
+    abstract void setBottomNavID();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setLayoutResID();
+        setBottomNavID();
+        setContentView(layoutResID);
 
         // Set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -35,19 +43,24 @@ public class MainActivity extends AppCompatActivity {
 
         // Bottom Navigation setup
         NavigationBarView navigationBarView = findViewById(R.id.bottom_navigation);
-        navigationBarView.setSelectedItemId(R.id.home);
+        navigationBarView.setSelectedItemId(bottomNavID);
 
         navigationBarView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.home:
+                        if (bottomNavID == R.id.home) return true;
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
                     case R.id.items:
+                        if (bottomNavID == R.id.items) return true;
                         startActivity(new Intent(getApplicationContext(), ItemsActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.home:
-                        return true;
                     case R.id.track:
+                        if (bottomNavID == R.id.track) return true;
                         startActivity(new Intent(getApplicationContext(), TrackActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
@@ -68,13 +81,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_contacts:
-//                        startActivity(new Intent(MainActivity.this, FirstActivity.class)); // Replace FirstActivity with the activity you want to start
+                        // startActivity(new Intent(MainActivity.this, FirstActivity.class)); // Replace FirstActivity with the activity you want to start
                         return true;
                     case R.id.nav_settings:
-//                        startActivity(new Intent(MainActivity.this, SecondActivity.class)); // Replace SecondActivity with the activity you want to start
+                        // startActivity(new Intent(MainActivity.this, SecondActivity.class)); // Replace SecondActivity with the activity you want to start
                         return true;
                     case R.id.nav_logout:
-//                        startActivity(new Intent(MainActivity.this, ThirdActivity.class)); // Replace ThirdActivity with the activity you want to start
+                        // startActivity(new Intent(MainActivity.this, ThirdActivity.class)); // Replace ThirdActivity with the activity you want to start
                         return true;
                     default:
                         return false;
