@@ -8,7 +8,7 @@ public class Item implements Serializable {
     private int nfcTag;
     private String title;
     private String description;
-    private String image;
+    private int imageID;
     private boolean available;
     private boolean container;
 
@@ -17,11 +17,11 @@ public class Item implements Serializable {
     }
 
     // Constructor
-    public Item(int nfcTag, String title, String description, String image, boolean available, boolean container) {
+    public Item(int nfcTag, String title, String description, int imageID, boolean available, boolean container) {
         this.nfcTag = nfcTag;
         this.title = title;
         this.description = description;
-        this.image = image;
+        this.imageID = imageID;
         this.available = available;
         this.container = container;
     }
@@ -35,8 +35,8 @@ public class Item implements Serializable {
         return description;
     }
 
-    public String getImage() {
-        return image;
+    public int getImage() {
+        return imageID;
     }
 
     public int getNfcTag() {

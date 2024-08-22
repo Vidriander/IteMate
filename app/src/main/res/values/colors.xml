@@ -2,5 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="button_primary">#77726C</color>
+    <color name="navigation_color">#9FD2EA</color>
+    <color name="item_card_background">#B5BDC1</color>
 </resources>
