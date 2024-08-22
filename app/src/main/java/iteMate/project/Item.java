@@ -1,10 +1,12 @@
 package iteMate.project;
-import java.io.Serializable;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Item class to store the details of an item
  */
-public class Item implements Serializable {
+public class Item implements Parcelable {
     private int nfcTag;
     private String title;
     private String description;
@@ -12,7 +14,7 @@ public class Item implements Serializable {
     private boolean available;
     private boolean container;
 
-    //Default Constructor
+    // Default Constructor
     public Item() {
     }
 
@@ -24,6 +26,43 @@ public class Item implements Serializable {
         this.imageID = imageID;
         this.available = available;
         this.container = container;
+    }
+
+    // Parcelable implementation
+    protected Item(Parcel in) {
+        nfcTag = in.readInt();
+        title = in.readString();
+        description = in.readString();
+        imageID = in.readInt();
+        available = in.readByte() != 0;
+        container = in.readByte() != 0;
+    }
+
+    public static final Creator<Item> CREATOR = new Creator<Item>() {
+        @Override
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(nfcTag);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeInt(imageID);
+        dest.writeByte((byte) (available ? 1 : 0));
+        dest.writeByte((byte) (container ? 1 : 0));
     }
 
     // Getter

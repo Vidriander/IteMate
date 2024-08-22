@@ -10,13 +10,25 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
-
     private List<Item> items;
     private Context context;
+
+    /**
+     * Stores the id of the clicked item, if any.
+     * NFC tag numbers are used as ids.
+     */
+    private static Item clickedItem;
+
+    /**
+     * Returns the id of the clicked item in order to display the correct item in the detail view.
+     * @return the id of the clicked item
+     */
+    public static Item getClickedItem() {
+        return clickedItem;
+    }
 
     public ItemAdapter(List<Item> items, Context context) {
         this.items = items;
@@ -40,6 +52,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ItemsDetailActivity.class);
             intent.putExtra("item", item);
+            clickedItem = item;
             context.startActivity(intent);
         });
     }
