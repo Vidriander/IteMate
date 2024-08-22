@@ -25,9 +25,9 @@ public class ItemsActivity extends MainActivity {
 
         // Initialize Item list
         itemList = new ArrayList<>();
-        itemList.add(new Item("Item 1", "Description 1"));
-        itemList.add(new Item("Item 2", "Description 2"));
-        itemList.add(new Item("Item 3", "Description 3"));
+        itemList.add(new Item(111111, "Item 1", "Description 1", "image1.jpg", true, false));
+        itemList.add(new Item(222222, "Item 2", "Description 2", "image2.jpg", true, false));
+        itemList.add(new Item(333333, "Item 3", "Description 3", "image3.jpg", true, false));
 
         // Initialize Adapter and set to RecyclerView
         itemAdapter = new ItemAdapter(itemList, this);
