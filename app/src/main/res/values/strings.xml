@@ -14,4 +14,8 @@
     <string name="items">Items</string>
     <string name="track">Track</string>
     <string name="menu">Menü</string>
+
+    <!-- Item Detail Card Strings -->
+    <string name="contained_items_header">Contained Items</string>
+    <string name="item_detailcard_description">Dieses Item enthält noch keine Beschreibung.</string>
 </resources>

@@ -10,13 +10,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import iteMate.project.models.Item;
 import iteMate.project.R;
+import iteMate.project.uiActivities.utils.ContainedItemAdapter;
+import iteMate.project.uiActivities.utils.ItemAdapter;
 
 public class ItemsDetailActivity extends AppCompatActivity {
 
     private Item itemToDisplay;
+    private RecyclerView horizontalRecyclerView;
+    private ContainedItemAdapter horizontalAdapter;
+    private List<Item> itemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +51,18 @@ public class ItemsDetailActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        // Initialize Item list
+        itemList = new ArrayList<>();
+        itemList.add(new Item(111111, "Rose Backroad", "Description 1", R.drawable.rose_bike, true, null));
+        itemList.add(new Item(222222, "Nukeproof Digger", "Description 2", R.drawable.bikepacking, true, null));
+        itemList.add(new Item(333333, "Cube Nuroad", "Description 3", R.drawable.rose2, true, null));
+
+        horizontalRecyclerView = findViewById(R.id.itemdetailview_containeditems_recyclerview);
+        horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        horizontalAdapter = new ContainedItemAdapter(itemList,this);
+        horizontalRecyclerView.setAdapter(horizontalAdapter);
     }
 
     private void setDetailViewContents() {
