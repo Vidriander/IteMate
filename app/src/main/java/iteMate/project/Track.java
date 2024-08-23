@@ -10,14 +10,14 @@ public class Track implements Serializable {
     private Date giveOutDate;
     private Date returnDate;
     private Contact contact;
-    private List LendList;
+    private List<Item> LendList;
 
     // Default Constructor
     public Track() {
     }
 
     // Constructor
-    public Track(Date giveOutDate, Date returnDate, Contact contact, List LendList) {
+    public Track(Date giveOutDate, Date returnDate, Contact contact, List<Item> LendList) {
         this.giveOutDate = giveOutDate;
         this.returnDate = returnDate;
         this.contact = contact;
@@ -37,7 +37,7 @@ public class Track implements Serializable {
         return contact;
     }
 
-    public List getLendList() {
+    public List<Item> getLendList() {
         return LendList;
     }
 
@@ -54,7 +54,7 @@ public class Track implements Serializable {
         this.contact = contact;
     }
 
-    public void setLendList(List LendList) {
+    public void setLendList(List<Item> LendList) {
         this.LendList = LendList;
     }
 
