@@ -22,40 +22,48 @@
             android:layout_height="100dp"
             android:backgroundTint="#00A65959">
 
-            <ImageView
-                android:id="@+id/itemcard_image"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="32dp"
-                android:background="#807676"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                app:cardCornerRadius="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/rose_bike" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/itemcard_image"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="0dp"
+                    android:background="#807676"
+                    app:srcCompat="@drawable/rose_bike" />
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/itemcard_header_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:text="TextView"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/itemcard_subheader_text"
-                app:layout_constraintStart_toEndOf="@+id/itemcard_image"
+                app:layout_constraintStart_toEndOf="@+id/cardView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/itemcard_subheader_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginBottom="16dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/itemcard_image"
+                app:layout_constraintStart_toEndOf="@+id/cardView"
                 app:layout_constraintTop_toBottomOf="@+id/itemcard_header_text" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
