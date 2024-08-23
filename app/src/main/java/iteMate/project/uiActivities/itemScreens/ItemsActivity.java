@@ -2,12 +2,9 @@ package iteMate.project.uiActivities.itemScreens;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import iteMate.project.models.Item;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ItemAdapter;

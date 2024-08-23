@@ -9,18 +9,23 @@ import java.util.List;
 import iteMate.project.models.Contact;
 import iteMate.project.uiActivities.utils.ContactAdapter;
 import iteMate.project.R;
+import iteMate.project.repositories.ContactRepository;
 
 
-public class ContactActivity extends AppCompatActivity {
+public class ContactActivity extends AppCompatActivity implements ContactRepository.OnContactsFetchedListener {
 
-    RecyclerView recyclerViewContact;
+    private RecyclerView recyclerViewContact;
     private ContactAdapter contactAdapter;
     private List<Contact> contactList;
+    private ContactRepository contactRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact);
+        setContentView(R.layout.activity_contact); // Ensure this line is present
+
+        // Initialize ContactRepository
+        contactRepository = new ContactRepository();
 
         // Initialize RecyclerView
         recyclerViewContact = findViewById(R.id.recyclerViewContacts);
@@ -28,12 +33,19 @@ public class ContactActivity extends AppCompatActivity {
 
         // Initialize Contact list
         contactList = new ArrayList<>();
-        contactList.add(new Contact("John", "Doe", "1234567890", "john@doe.com", "Jumpstreet 21", "Endor"));
-        contactList.add(new Contact("Jane", "Doe", "555123987", "jane@doe.com", "Jumpstreet 42", "Endor"));
-        contactList.add(new Contact("Steve", "Sali", "0000000000", "steve@sali.com", "Jumpstreet 13", "Endor"));
 
         // Initialize ContactAdapter
         contactAdapter = new ContactAdapter(contactList, this);
         recyclerViewContact.setAdapter(contactAdapter);
+
+        // Fetch contacts from Firestore
+        contactRepository.getAllContactsFromFirestore(this);
+    }
+
+    @Override
+    public void onContactsFetched(List<Contact> contacts) {
+        contactList.clear();
+        contactList.addAll(contacts);
+        contactAdapter.notifyDataSetChanged();
     }
 }
