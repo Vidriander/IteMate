@@ -16,6 +16,8 @@ import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
+import com.bumptech.glide.Glide;
+
 public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdapter.ViewHolder> {
     private List<Item> items;
     private Context context;
@@ -50,7 +52,11 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item item = items.get(position);
         holder.itemName.setText(item.getTitle());
-        holder.itemImage.setImageResource(item.getImage());
+
+        // Load image using Glide
+        Glide.with(context)
+                .load(item.getImagePath())
+                .into(holder.itemImage);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ItemsDetailActivity.class);

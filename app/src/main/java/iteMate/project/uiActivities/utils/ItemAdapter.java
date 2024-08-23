@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.util.List;
 
 import iteMate.project.R;
@@ -22,14 +26,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     private Context context;
 
     /**
-     * Stores the id of the clicked item, if any.
-     * NFC tag numbers are used as ids.
+     * Stores the clicked item.
      */
     private static Item clickedItem;
 
     /**
-     * Returns the id of the clicked item in order to display the correct item in the detail view.
-     * @return the id of the clicked item
+     * Returns the clicked item in order to display the correct item in the detail view.
+     *
+     * @return the clicked item
      */
     public static Item getClickedItem() {
         return clickedItem;
@@ -52,7 +56,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         Item item = items.get(position);
         holder.itemName.setText(item.getTitle());
         holder.tagNumber.setText(String.valueOf(item.getNfcTag()));
-        holder.itemImage.setImageResource(item.getImage());
+
+        // Load image using Glide
+        Glide.with(context)
+                .load(item.getImagePath())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                //.placeholder(R.drawable.placeholder_image)  // Replace with your placeholder image resource
+                //.error(R.drawable.error_image)              // Replace with your error image resource
+                .into(holder.itemImage);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ItemsDetailActivity.class);

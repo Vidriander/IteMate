@@ -24,7 +24,7 @@ public class Item implements Parcelable {
     /**
      * Image ID of the item. Will point to a resource in the database in the future
      */
-    private int imageID;
+    private String imagePath;
     /**
      * Availability of the item. True if available to lend, false if not
      */
@@ -45,7 +45,7 @@ public class Item implements Parcelable {
         nfcTag = 0;
         title = "Random Blob";
         description = "This is a blob of antimatter. Please handle with care.";
-        imageID = 0;
+        imagePath = "";
         available = true;
     }
 
@@ -54,16 +54,16 @@ public class Item implements Parcelable {
      * @param nfcTag NFC Tag of the item
      * @param title Title of the item
      * @param description Description of the item
-     * @param imageID Image ID of the item
+     * @param imagePath Image path of the item
      * @param available Availability of the item
      * @param containedItems List of items contained in this item
      * @param associatedItems List of items associated with this item, not necessary to list any
      */
-    public Item(int nfcTag, String title, String description, int imageID, boolean available, ArrayList<Item> containedItems, Item... associatedItems) {
+    public Item(int nfcTag, String title, String description, String imagePath, boolean available, ArrayList<Item> containedItems, Item... associatedItems) {
         this.nfcTag = nfcTag;
         this.title = title;
         this.description = description;
-        this.imageID = imageID;
+        this.imagePath = imagePath;
         this.available = available;
         if (containedItems != null && !containedItems.isEmpty()) {
             this.containedItems.addAll(containedItems);
@@ -78,7 +78,7 @@ public class Item implements Parcelable {
         nfcTag = in.readInt();
         title = in.readString();
         description = in.readString();
-        imageID = in.readInt();
+        imagePath = in.readString();
         available = in.readByte() != 0;
         containedItems = in.createTypedArrayList(Item.CREATOR);
     }
@@ -114,7 +114,7 @@ public class Item implements Parcelable {
         dest.writeInt(nfcTag);
         dest.writeString(title);
         dest.writeString(description);
-        dest.writeInt(imageID);
+        dest.writeString(imagePath);
         dest.writeByte((byte) (available ? 1 : 0));
         dest.writeTypedList(containedItems);
     }
@@ -131,8 +131,8 @@ public class Item implements Parcelable {
      * Returns the NFC Tag of the item
      * @return NFC Tag of the item
      */
-    public int getImage() {
-        return imageID;
+    public String getImagePath() {
+        return imagePath;
     }
 
     /**
