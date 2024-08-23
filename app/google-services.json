@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "639641265492",
+    "project_id": "itematedb-f0396",
+    "storage_bucket": "itematedb-f0396.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639641265492:android:9b3816675138a5e39e14c1",
+        "android_client_info": {
+          "package_name": "iteMate.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAtA5mOR_AePwRuwyZTp1CDc5-7NgTaO4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

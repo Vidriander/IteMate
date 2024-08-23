@@ -4,24 +4,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.models.Item;
+import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ItemAdapter;
 import iteMate.project.R;
 import iteMate.project.uiActivities.MainActivity;
 
-public class ItemsActivity extends MainActivity {
+public class ItemsActivity extends MainActivity implements ItemRepository.OnItemsFetchedListener {
 
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
     private List<Item> itemList;
+    private ItemRepository itemRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize ItemRepository
+        itemRepository = new ItemRepository();
 
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.recyclerViewItems);
@@ -29,13 +35,13 @@ public class ItemsActivity extends MainActivity {
 
         // Initialize Item list
         itemList = new ArrayList<>();
-        itemList.add(new Item(111111, "Rose Backroad", "Description 1", R.drawable.rose_bike, true, null));
-        itemList.add(new Item(222222, "Nukeproof Digger", "Description 2", R.drawable.bikepacking, true, null));
-        itemList.add(new Item(333333, "Cube Nuroad", "Description 3", R.drawable.rose2, true, null));
 
         // Initialize Adapter and set to RecyclerView
         itemAdapter = new ItemAdapter(itemList, this);
         recyclerView.setAdapter(itemAdapter);
+
+        // Fetch items from Firestore
+        itemRepository.getAllItemsFromFirestore(this);
     }
 
     @Override
@@ -46,5 +52,12 @@ public class ItemsActivity extends MainActivity {
     @Override
     public void setBottomNavID() {
         bottomNavID = R.id.items;
+    }
+
+    @Override
+    public void onItemsFetched(List<Item> items) {
+        itemList.clear();
+        itemList.addAll(items);
+        itemAdapter.notifyDataSetChanged();
     }
 }
