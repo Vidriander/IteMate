@@ -3,41 +3,89 @@ package iteMate.project.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Item class to store the details of an item
  */
 public class Item implements Parcelable {
+    /**
+     * NFC Tag of the item
+     */
     private int nfcTag;
+    /**
+     * Title of the item
+     */
     private String title;
+    /**
+     * Description of the item
+     */
     private String description;
+    /**
+     * Image ID of the item. Will point to a resource in the database in the future
+     */
     private int imageID;
+    /**
+     * Availability of the item. True if available to lend, false if not
+     */
     private boolean available;
-    private boolean container;
+    /**
+     * List of items contained in this item
+     */
+    private ArrayList<Item> containedItems = new ArrayList<Item>();
+    /**
+     * List of items associated with this item
+     */
+    private ArrayList<Item> associatedItems = new ArrayList<Item>();
 
-    // Default Constructor
+    /**
+     * Default constructor for an item
+     */
     public Item() {
+        nfcTag = 0;
+        title = "Random Blob";
+        description = "This is a blob of antimatter. Please handle with care.";
+        imageID = 0;
+        available = true;
     }
 
-    // Constructor
-    public Item(int nfcTag, String title, String description, int imageID, boolean available, boolean container) {
+    /**
+     * Constructor for an item
+     * @param nfcTag NFC Tag of the item
+     * @param title Title of the item
+     * @param description Description of the item
+     * @param imageID Image ID of the item
+     * @param available Availability of the item
+     * @param containedItems List of items contained in this item
+     * @param associatedItems List of items associated with this item, not necessary to list any
+     */
+    public Item(int nfcTag, String title, String description, int imageID, boolean available, ArrayList<Item> containedItems, Item... associatedItems) {
         this.nfcTag = nfcTag;
         this.title = title;
         this.description = description;
         this.imageID = imageID;
         this.available = available;
-        this.container = container;
+        if (containedItems != null && !containedItems.isEmpty()) {
+            this.containedItems.addAll(containedItems);
+        }
     }
 
-    // Parcelable implementation
+    /**
+     * Constructor for an item from a parcel
+     * @param in Parcel to read from
+     */
     protected Item(Parcel in) {
         nfcTag = in.readInt();
         title = in.readString();
         description = in.readString();
         imageID = in.readInt();
         available = in.readByte() != 0;
-        container = in.readByte() != 0;
+        containedItems = in.createTypedArrayList(Item.CREATOR);
     }
 
+    /**
+     * Creator for an item
+     */
     public static final Creator<Item> CREATOR = new Creator<Item>() {
         @Override
         public Item createFromParcel(Parcel in) {
@@ -55,6 +103,12 @@ public class Item implements Parcelable {
         return 0;
     }
 
+    /**
+     * Writes the item to a parcel
+     * @param dest The Parcel in which the object should be written.
+     * @param flags Additional flags about how the object should be written.
+     * May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
+     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(nfcTag);
@@ -62,19 +116,38 @@ public class Item implements Parcelable {
         dest.writeString(description);
         dest.writeInt(imageID);
         dest.writeByte((byte) (available ? 1 : 0));
-        dest.writeByte((byte) (container ? 1 : 0));
+        dest.writeTypedList(containedItems);
     }
 
-    // Getter
+    /**
+     * Returns the title of the item
+     * @return Title of the item
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Returns the NFC Tag of the item
+     * @return NFC Tag of the item
+     */
     public int getImage() {
         return imageID;
     }
 
+    /**
+     * Returns the NFC Tag of the item
+     * @return NFC Tag of the item
+     */
     public int getNfcTag() {
         return nfcTag;
+    }
+
+    /**
+     * Tells if the item is a container
+     * @return True if the item has subitems in it (containedItems is not empty), false otherwise
+     */
+    public boolean isContainer() {
+        return !containedItems.isEmpty();
     }
 }

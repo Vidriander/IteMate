@@ -28,9 +28,9 @@ public class TrackActivity extends MainActivity {
 
         // Initialize Item list
         List<Item> itemList = new ArrayList<>();
-        itemList.add(new Item(111111, "Rose Backroad", "Description 1", R.drawable.rose_bike, true, false));
-        itemList.add(new Item(222222, "Nukeproof Digger", "Description 2", R.drawable.bikepacking, true, false));
-        itemList.add(new Item(333333, "Cube Nuroad", "Description 3", R.drawable.rose2, true, false));
+        itemList.add(new Item(111111, "Rose Backroad", "Description 1", R.drawable.rose_bike, true, null));
+        itemList.add(new Item(222222, "Nukeproof Digger", "Description 2", R.drawable.bikepacking, true, null));
+        itemList.add(new Item(333333, "Cube Nuroad", "Description 3", R.drawable.rose2, true, null));
 
         //Initialize Contact
         Contact JohnDoe = new Contact("John", "Doe", "1234567890", "john@doe.com", "Jumpstreet 21", "Endor");
