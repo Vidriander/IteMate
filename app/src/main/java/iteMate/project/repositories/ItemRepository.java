@@ -9,6 +9,9 @@ import java.util.List;
 
 import iteMate.project.models.Item;
 
+/**
+ * Repository class for items
+ */
 public class ItemRepository {
     private FirebaseFirestore db;
 
@@ -17,6 +20,10 @@ public class ItemRepository {
         db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * Adds an item to Firestore
+     * @param item the item to be added
+     */
     public void addItemToFirestore(Item item) {
         db.collection("items").add(item)
                 .addOnSuccessListener(documentReference -> {
@@ -27,6 +34,10 @@ public class ItemRepository {
                 });
     }
 
+    /**
+     * Fetches all items from Firestore
+     * @param listener the listener to be called when the items are fetched
+     */
     public void getAllItemsFromFirestore(OnItemsFetchedListener listener) {
         db.collection("items")
                 .get()
@@ -40,6 +51,10 @@ public class ItemRepository {
                 });
     }
 
+    /**
+     * Updates an item in Firestore
+     * @param itemId the id of the item to be updated
+     */
     public void updateItemInFirestore(String itemId) {
         db.collection("items").whereEqualTo("itemId", itemId)
                 .get()
@@ -57,6 +72,9 @@ public class ItemRepository {
                 });
     }
 
+    /**
+     * Listener interface for fetching items
+     */
     public interface OnItemsFetchedListener {
         void onItemsFetched(List<Item> items);
     }
