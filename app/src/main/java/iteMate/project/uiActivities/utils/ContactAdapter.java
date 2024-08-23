@@ -13,6 +13,7 @@ import java.util.List;
 
 import iteMate.project.R;
 import iteMate.project.models.Contact;
+import iteMate.project.uiActivities.contactScreens.ContactDetailActivity;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
@@ -52,7 +53,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         holder.contactName.setText(contact.getFirstName() + " " + contact.getLastName());
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, TrackDetailActivity.class);
+            Intent intent = new Intent(context, ContactDetailActivity.class);
             intent.putExtra("contact", contact);
             clickedContact = contact;
             context.startActivity(intent);
