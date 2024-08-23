@@ -81,7 +81,7 @@ public abstract class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_contacts:
-                        // startActivity(new Intent(MainActivity.this, FirstActivity.class)); // Replace FirstActivity with the activity you want to start
+                        startActivity(new Intent(MainActivity.this, ContactActivity.class));
                         return true;
                     case R.id.nav_settings:
                         // startActivity(new Intent(MainActivity.this, SecondActivity.class)); // Replace SecondActivity with the activity you want to start
