@@ -20,7 +20,7 @@ public class ContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recyclerView);
+//        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize Contact list

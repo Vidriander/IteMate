@@ -13,8 +13,8 @@ import java.util.List;
 
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> {
 
-    private List<Track> tracks;
-    private Context context;
+    private final List<Track> tracks;
+    private final Context context;
 
     /**
      * Stores the id of the clicked Track, if any.
@@ -23,6 +23,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
 
     /**
      * Returns the id of the clicked Track in order to display the correct Track in the detail view.
+     * Not used currently. Setting up the intent with an extra does the same thing.
      * @return the id of the clicked Track
      */
     public static Track getClickedTrack() {
@@ -45,7 +46,8 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Track track = tracks.get(position);  // Changed 'item' to 'track'
         holder.rendDate.setText(track.getGiveOutDate().toString());  // Changed 'item' to 'track'
-        holder.contactName.setText(track.getContact().getFirstName() + " " + track.getContact().getLastName());  // Changed 'item' to 'track'
+        String displayName = track.getContact().getFirstName() + " " + track.getContact().getLastName();
+        holder.contactName.setText(displayName);  // Changed 'item' to 'track'
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, TrackDetailActivity.class);

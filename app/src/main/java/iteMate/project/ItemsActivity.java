@@ -19,7 +19,7 @@ public class ItemsActivity extends MainActivity {
         super.onCreate(savedInstanceState);
 
         // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerViewItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize Item list

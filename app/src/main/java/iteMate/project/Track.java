@@ -2,9 +2,6 @@ package iteMate.project;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
-
-import java.io.Serializable;
 import java.util.List;
 import java.util.Date;
 
@@ -64,11 +61,11 @@ public class Track implements Parcelable {
         this.LendList = LendList;
     }
 
-    public void addLendList(Item item) {
+    public void addToLendList(Item item) {
         LendList.add(item);
     }
 
-    public void removeLendList(Item item) {
+    public void removeFromLendList(Item item) {
         LendList.remove(item);
     }
 

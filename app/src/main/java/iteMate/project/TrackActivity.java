@@ -11,16 +11,12 @@ import java.util.List;
 
 public class TrackActivity extends MainActivity {
 
-    private RecyclerView recyclerView;
-    private TrackAdapter trackAdapter;
-    private List<Track> trackList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewTrack);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize Item list
@@ -33,13 +29,13 @@ public class TrackActivity extends MainActivity {
         Contact JohnDoe = new Contact("John", "Doe", "1234567890", "john@doe.com", "Jumpstreet 21", "Endor");
 
         // Initialize Track list
-        trackList = new ArrayList<>();
+        List<Track> trackList = new ArrayList<>();
         trackList.add(new Track(new Date(), new Date(), JohnDoe, itemList));
         trackList.add(new Track(new Date(), new Date(), JohnDoe, itemList));
         trackList.add(new Track(new Date(), new Date(), JohnDoe, itemList));
 
         // Initialize Adapter and set to RecyclerView
-        trackAdapter = new TrackAdapter(trackList, this);
+        TrackAdapter trackAdapter = new TrackAdapter(trackList, this);
         recyclerView.setAdapter(trackAdapter);
     }
 
