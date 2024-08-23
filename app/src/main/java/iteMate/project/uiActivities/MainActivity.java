@@ -24,8 +24,8 @@ public abstract class MainActivity extends AppCompatActivity {
     protected int layoutResID;
     protected static int bottomNavID;
 
-    abstract void setLayoutResID();
-    abstract void setBottomNavID();
+    public abstract void setLayoutResID();
+    public abstract void setBottomNavID();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

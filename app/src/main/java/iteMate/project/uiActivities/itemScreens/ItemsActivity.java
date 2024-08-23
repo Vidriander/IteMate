@@ -39,12 +39,12 @@ public class ItemsActivity extends MainActivity {
     }
 
     @Override
-    void setLayoutResID() {
+    public void setLayoutResID() {
         layoutResID = R.layout.activity_items;
     }
 
     @Override
-    void setBottomNavID() {
+    public void setBottomNavID() {
         bottomNavID = R.id.items;
     }
 }

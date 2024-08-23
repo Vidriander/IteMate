@@ -15,12 +15,12 @@ public class HomeActivity extends MainActivity {
     }
 
     @Override
-    void setLayoutResID() {
+    public void setLayoutResID() {
         layoutResID = R.layout.activity_main;
     }
 
     @Override
-    void setBottomNavID() {
+    public void setBottomNavID() {
         bottomNavID = R.id.home;
     }
 

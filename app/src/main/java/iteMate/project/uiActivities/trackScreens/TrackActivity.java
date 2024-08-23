@@ -47,12 +47,12 @@ public class TrackActivity extends MainActivity {
     }
 
     @Override
-    void setLayoutResID() {
+    public void setLayoutResID() {
         layoutResID = R.layout.activity_track;
     }
 
     @Override
-    void setBottomNavID() {
+    public void setBottomNavID() {
         bottomNavID = R.id.track;
     }
 }
