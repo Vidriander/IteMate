@@ -5,6 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactActivity">
+    tools:context=".uiActivities.contactScreens.ContactActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

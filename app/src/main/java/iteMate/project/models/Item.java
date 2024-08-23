@@ -1,4 +1,4 @@
-package iteMate.project;
+package iteMate.project.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -70,32 +70,11 @@ public class Item implements Parcelable {
         return title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public int getImage() {
         return imageID;
     }
 
     public int getNfcTag() {
         return nfcTag;
-    }
-
-    public boolean getIsAvailable() {
-        return available;
-    }
-
-    public boolean isContainer() {
-        return container;
-    }
-
-    // Setter
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

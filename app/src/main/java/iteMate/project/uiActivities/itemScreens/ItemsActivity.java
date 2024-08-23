@@ -1,4 +1,4 @@
-package iteMate.project;
+package iteMate.project.uiActivities.itemScreens;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,6 +7,11 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import iteMate.project.models.Item;
+import iteMate.project.uiActivities.utils.ItemAdapter;
+import iteMate.project.R;
+import iteMate.project.uiActivities.MainActivity;
 
 public class ItemsActivity extends MainActivity {
 

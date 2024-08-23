@@ -1,4 +1,4 @@
-package iteMate.project;
+package iteMate.project.uiActivities.utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+
+import iteMate.project.R;
+import iteMate.project.models.Item;
+import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     private List<Item> items;

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".uiActivities.MainActivity">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
@@ -32,7 +32,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".TrackActivity">
+        tools:context=".uiActivities.trackScreens.TrackActivity">
 
         <TextView
             android:id="@+id/titleTextView"

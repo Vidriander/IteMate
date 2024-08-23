@@ -1,8 +1,11 @@
-package iteMate.project;
+package iteMate.project.uiActivities.homeScreen;
 
 import android.os.Bundle;
 
-public class HomeActivity extends MainActivity{
+import iteMate.project.R;
+import iteMate.project.uiActivities.MainActivity;
+
+public class HomeActivity extends MainActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

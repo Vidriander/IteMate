@@ -1,4 +1,4 @@
-package iteMate.project;
+package iteMate.project.uiActivities.contactScreens;
 
 import android.os.Bundle;
 
@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import iteMate.project.models.Contact;
+import iteMate.project.uiActivities.utils.ContactAdapter;
 
 public class ContactActivity extends AppCompatActivity {
 

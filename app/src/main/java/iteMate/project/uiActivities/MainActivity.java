@@ -1,4 +1,4 @@
-package iteMate.project;
+package iteMate.project.uiActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationBarView;
+
+import iteMate.project.R;
+import iteMate.project.uiActivities.contactScreens.ContactActivity;
+import iteMate.project.uiActivities.homeScreen.HomeActivity;
+import iteMate.project.uiActivities.itemScreens.ItemsActivity;
+import iteMate.project.uiActivities.trackScreens.TrackActivity;
 
 public abstract class MainActivity extends AppCompatActivity {
 

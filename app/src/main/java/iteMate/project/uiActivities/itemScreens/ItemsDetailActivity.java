@@ -1,4 +1,4 @@
-package iteMate.project;
+package iteMate.project.uiActivities.itemScreens;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import iteMate.project.models.Item;
+import iteMate.project.R;
 
 public class ItemsDetailActivity extends AppCompatActivity {
 

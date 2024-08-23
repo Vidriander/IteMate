@@ -1,4 +1,4 @@
-package iteMate.project;
+package iteMate.project.uiActivities.utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+
+import iteMate.project.R;
+import iteMate.project.models.Contact;
+import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
 

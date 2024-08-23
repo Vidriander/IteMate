@@ -1,4 +1,4 @@
-package iteMate.project;
+package iteMate.project.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -32,41 +32,8 @@ public class Track implements Parcelable {
         return giveOutDate;
     }
 
-    public Date getReturnDate() {
-        return returnDate;
-    }
-
     public Contact getContact() {
         return contact;
-    }
-
-    public List<Item> getLendList() {
-        return LendList;
-    }
-
-    // Setter
-    public void setGiveOutDate(Date giveOutDate) {
-        this.giveOutDate = giveOutDate;
-    }
-
-    public void setReturnDate(Date returnDate) {
-        this.returnDate = returnDate;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
-
-    public void setLendList(List<Item> LendList) {
-        this.LendList = LendList;
-    }
-
-    public void addToLendList(Item item) {
-        LendList.add(item);
-    }
-
-    public void removeFromLendList(Item item) {
-        LendList.remove(item);
     }
 
     public static final Creator<Track> CREATOR = new Creator<Track>() {
@@ -102,5 +69,4 @@ public class Track implements Parcelable {
         contact = in.readParcelable(Contact.class.getClassLoader());
         LendList = in.createTypedArrayList(Item.CREATOR);
     }
-
 }

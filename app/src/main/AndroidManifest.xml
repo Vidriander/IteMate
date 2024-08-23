@@ -11,37 +11,37 @@
         android:theme="@style/Theme.IteMate"
         tools:targetApi="31">
         <activity
-            android:name=".ContactEditActivity"
+            android:name=".uiActivities.contactScreens.ContactEditActivity"
             android:exported="false" />
         <activity
-            android:name=".ContactDetailActivity"
+            android:name=".uiActivities.contactScreens.ContactDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ContactActivity"
+            android:name=".uiActivities.contactScreens.ContactActivity"
             android:exported="false" />
         <activity
-            android:name=".ItemsActivity"
+            android:name=".uiActivities.itemScreens.ItemsActivity"
             android:exported="false" />
         <activity
-            android:name=".TrackEditActivity"
+            android:name=".uiActivities.trackScreens.TrackEditActivity"
             android:exported="false" />
         <activity
-            android:name=".TrackDetailActivity"
+            android:name=".uiActivities.trackScreens.TrackDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ItemsDetailActivity"
+            android:name=".uiActivities.itemScreens.ItemsDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ItemsEditActivity"
+            android:name=".uiActivities.itemScreens.ItemsEditActivity"
             android:exported="false" />
         <activity
-            android:name=".TrackActivity"
+            android:name=".uiActivities.trackScreens.TrackActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".uiActivities.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".uiActivities.homeScreen.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

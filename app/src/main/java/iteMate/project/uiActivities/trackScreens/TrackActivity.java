@@ -1,4 +1,4 @@
-package iteMate.project;
+package iteMate.project.uiActivities.trackScreens;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +8,13 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import iteMate.project.models.Contact;
+import iteMate.project.models.Item;
+import iteMate.project.R;
+import iteMate.project.models.Track;
+import iteMate.project.uiActivities.utils.TrackAdapter;
+import iteMate.project.uiActivities.MainActivity;
 
 public class TrackActivity extends MainActivity {
 
