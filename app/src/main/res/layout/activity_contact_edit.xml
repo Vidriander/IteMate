@@ -7,4 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".uiActivities.contactScreens.ContactEditActivity">
 
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

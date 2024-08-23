@@ -8,23 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 import iteMate.project.models.Contact;
 import iteMate.project.uiActivities.utils.ContactAdapter;
-import iteMate.project.R; // Add this import statement
+import iteMate.project.R;
 
 
 public class ContactActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+    RecyclerView recyclerViewContact;
     private ContactAdapter contactAdapter;
     private List<Contact> contactList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact); // Set the correct layout
+        setContentView(R.layout.activity_contact);
 
         // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recyclerViewContacts); // Correct ID reference
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewContact = findViewById(R.id.recyclerViewContacts);
+        recyclerViewContact.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize Contact list
         contactList = new ArrayList<>();
@@ -34,6 +34,6 @@ public class ContactActivity extends AppCompatActivity {
 
         // Initialize ContactAdapter
         contactAdapter = new ContactAdapter(contactList, this);
-        recyclerView.setAdapter(contactAdapter);
+        recyclerViewContact.setAdapter(contactAdapter);
     }
 }
