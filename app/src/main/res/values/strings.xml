@@ -16,6 +16,7 @@
     <string name="menu">Menü</string>
 
     <!-- Item Detail Card Strings -->
-    <string name="contained_items_header">Contained Items</string>
+    <string name="contained_items_header">Contained Items:</string>
     <string name="item_detailcard_description">Dieses Item enthält noch keine Beschreibung.</string>
+    <string name="associated_items_header">Associated Items:</string>
 </resources>

@@ -107,7 +107,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="24dp"
-                    android:orientation="horizontal" />
+                    android:orientation="horizontal" >
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/associateditems_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/associated_items_header" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/itemdetailview_associateditems_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="24dp"
+                    android:orientation="horizontal" >
+
+                </androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
         </ScrollView>

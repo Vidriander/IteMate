@@ -29,6 +29,8 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
     private Item itemToDisplay;
     private RecyclerView horizontalRecyclerView;
     private ContainedItemAdapter horizontalAdapter;
+    private RecyclerView associatedItemsRecyclerView;
+    private ContainedItemAdapter horizontalAdapterAssociatedItems;
     private List<Item> itemList;
 
     @Override
@@ -71,8 +73,15 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
 
         horizontalRecyclerView = findViewById(R.id.itemdetailview_containeditems_recyclerview);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        List<Item> emptyItemList = new ArrayList<>();
         horizontalAdapter = new ContainedItemAdapter(itemList, this);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
+
+        associatedItemsRecyclerView = findViewById(R.id.itemdetailview_associateditems_recyclerview);
+        associatedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
+        horizontalAdapterAssociatedItems = new ContainedItemAdapter(itemList,this);
+        associatedItemsRecyclerView.setAdapter(horizontalAdapterAssociatedItems);
+
     }
 
     private void setDetailViewContents() {
