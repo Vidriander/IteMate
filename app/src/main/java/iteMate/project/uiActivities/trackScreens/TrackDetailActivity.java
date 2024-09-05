@@ -1,5 +1,6 @@
 package iteMate.project.uiActivities.trackScreens;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -64,8 +65,15 @@ public class TrackDetailActivity extends AppCompatActivity {
         horizontalAdapter = new ContainedItemAdapter(itemList, this);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
-
+        // on click listener for back button
         findViewById(R.id.detailtrack_back_button).setOnClickListener(v -> onBackPressed());
+
+        // on click listener for edit button
+        findViewById(R.id.detailtrack_edit_button).setOnClickListener(v -> {
+             Intent intent = new Intent(TrackDetailActivity.this, TrackEditActivity.class);
+             intent.putExtra("track", trackToDisplay);
+             startActivity(intent);
+        });
     }
 
     @Override

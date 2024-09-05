@@ -9,8 +9,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import iteMate.project.R;
+import iteMate.project.models.Track;
 
 public class TrackEditActivity extends AppCompatActivity {
+
+    private Track trackToDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

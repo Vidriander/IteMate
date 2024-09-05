@@ -1,5 +1,6 @@
 package iteMate.project.uiActivities.itemScreens;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -81,8 +82,14 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
         horizontalAdapterAssociatedItems = new ContainedItemAdapter(itemList,this);
         associatedItemsRecyclerView.setAdapter(horizontalAdapterAssociatedItems);
 
-
+        // on click listener for back button
         findViewById(R.id.detailitem_back_button).setOnClickListener(v -> onBackPressed());
+        // on click listener for edit button
+        findViewById(R.id.detailitem_edit_button).setOnClickListener(v -> {
+            Intent intent = new Intent(ItemsDetailActivity.this, ItemsEditActivity.class);
+            intent.putExtra("item", itemToDisplay);
+            startActivity(intent);
+        });
     }
 
     @Override
