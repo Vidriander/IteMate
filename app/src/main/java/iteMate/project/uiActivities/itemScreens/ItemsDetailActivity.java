@@ -67,7 +67,7 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
 
         //  Glide is configured to load images from the given paths
         Glide.with(this)
-                .load(itemToDisplay.getImagePath())
+                .load(itemToDisplay.getImage())
                 .into((ImageView) findViewById(R.id.item_detailcard_image));
 
 
@@ -101,7 +101,7 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
         if (itemToDisplay != null) {
             // Load image using Glide
             Glide.with(this)
-                    .load(itemToDisplay.getImagePath())
+                    .load(itemToDisplay.getImage())
                     .into((ImageView) findViewById(R.id.item_detailcard_image));
             ((TextView) findViewById(R.id.item_detailcard_title)).setText(itemToDisplay.getTitle());
             ((TextView) findViewById(R.id.item_detailcard_sideheader)).setText(String.valueOf(itemToDisplay.getNfcTag()));

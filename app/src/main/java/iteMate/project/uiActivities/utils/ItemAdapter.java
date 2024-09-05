@@ -2,6 +2,7 @@ package iteMate.project.uiActivities.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,11 +60,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         // Load image using Glide
         Glide.with(context)
-                .load(item.getImagePath())
+                .load(item.getImage())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                //.placeholder(R.drawable.placeholder_image)  // Replace with your placeholder image resource
-                //.error(R.drawable.error_image)              // Replace with your error image resource
+                .placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.error_image)
                 .into(holder.itemImage);
+        Log.d("ItemAdapter", "Image URL: " + item.getImage());
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ItemsDetailActivity.class);
