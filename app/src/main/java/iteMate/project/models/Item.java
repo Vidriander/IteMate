@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+import iteMate.project.R;
+
 /**
  * Item class to store the details of an item
  */
@@ -38,12 +40,14 @@ public class Item implements Parcelable {
      */
     private ArrayList<Item> associatedItems = new ArrayList<Item>();
 
+    private int defaultImage = R.drawable.gradient_background;
+
     /**
      * Default constructor for an item
      */
     public Item() {
         nfcTag = 0;
-        title = "Random Blob";
+        title = "Add Item";
         description = "This is a blob of antimatter. Please handle with care.";
         imagePath = "";
         available = true;
@@ -149,5 +153,9 @@ public class Item implements Parcelable {
      */
     public boolean isContainer() {
         return !containedItems.isEmpty();
+    }
+
+    public int getDefaultImage() {
+        return defaultImage;
     }
 }

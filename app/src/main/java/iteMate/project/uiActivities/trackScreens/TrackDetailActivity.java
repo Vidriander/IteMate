@@ -62,7 +62,7 @@ public class TrackDetailActivity extends AppCompatActivity {
         horizontalRecyclerView = findViewById(R.id.trackdetailview_lentitems_recyclerview);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         List<Item> emptyItemList = new ArrayList<>();
-        horizontalAdapter = new ContainedItemAdapter(itemList, this);
+        horizontalAdapter = new ContainedItemAdapter(itemList, this,false);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
         // on click listener for back button

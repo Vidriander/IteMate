@@ -74,12 +74,12 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
         horizontalRecyclerView = findViewById(R.id.itemdetailview_containeditems_recyclerview);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         List<Item> emptyItemList = new ArrayList<>();
-        horizontalAdapter = new ContainedItemAdapter(itemList, this);
+        horizontalAdapter = new ContainedItemAdapter(itemList, this,false );
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
         associatedItemsRecyclerView = findViewById(R.id.itemdetailview_associateditems_recyclerview);
         associatedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
-        horizontalAdapterAssociatedItems = new ContainedItemAdapter(itemList,this);
+        horizontalAdapterAssociatedItems = new ContainedItemAdapter(itemList,this,false);
         associatedItemsRecyclerView.setAdapter(horizontalAdapterAssociatedItems);
 
         // on click listener for back button

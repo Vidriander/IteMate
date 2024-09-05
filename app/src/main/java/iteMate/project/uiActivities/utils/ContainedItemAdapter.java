@@ -29,6 +29,11 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
     private static Item clickedItem;
 
     /**
+     * True if the adapter is used in the edit screen, false otherwise.
+     */
+    private boolean inEditScreen;
+
+    /**
      * Returns the id of the clicked item in order to display the correct item in the detail view.
      * @return the id of the clicked item
      */
@@ -36,9 +41,10 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
         return clickedItem;
     }
 
-    public ContainedItemAdapter(List<Item> items, Context context) {
+    public ContainedItemAdapter(List<Item> items, Context context, boolean inEditScreen) {
         this.items = items;
         this.context = context;
+        this.inEditScreen = inEditScreen;
     }
 
     @NonNull
@@ -53,17 +59,25 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
         Item item = items.get(position);
         holder.itemName.setText(item.getTitle());
 
-        // Load image using Glide
-        Glide.with(context)
-                .load(item.getImagePath())
-                .into(holder.itemImage);
+        if (this.inEditScreen && position == 0) {
+            holder.itemName.setText("Add new item");
+            holder.itemImage.setImageResource(item.getDefaultImage());
 
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ItemsDetailActivity.class);
-            intent.putExtra("item", item);
-            clickedItem = item;
-            context.startActivity(intent);
-        });
+            // adding on click listener to the add new item card
+
+        } else {
+            // Load image using Glide
+            Glide.with(context)
+                    .load(item.getImagePath())
+                    .into(holder.itemImage);
+
+            holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, ItemsDetailActivity.class);
+                intent.putExtra("item", item);
+                clickedItem = item;
+                context.startActivity(intent);
+            });
+        }
     }
 
     @Override

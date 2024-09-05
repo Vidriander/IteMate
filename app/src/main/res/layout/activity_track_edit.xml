@@ -46,15 +46,13 @@
                         android:layout_height="match_parent">
 
                         <EditText
-                            android:id="@+id/editTextText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/trackedit_title"
+                            android:layout_width="145dp"
+                            android:layout_height="46dp"
                             android:layout_marginStart="24dp"
-                            android:layout_marginEnd="8dp"
                             android:ems="10"
                             android:inputType="text"
                             android:text="Chris Trefzer"
-                            app:layout_constraintEnd_toStartOf="@+id/track_detailcard_sideheader"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,12 +60,13 @@
                             android:id="@+id/track_detailcard_sideheader"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
                             android:layout_weight="1"
                             android:text="12 Items"
                             android:textSize="16sp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:layout_editor_absoluteX="181dp" />
+                            app:layout_constraintStart_toEndOf="@+id/trackedit_title"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/lent_text"
@@ -225,7 +224,7 @@
                     android:text="@string/lent_items_header" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/trackdetailview_lentitems_recyclerview"
+                    android:id="@+id/trackedit_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="24dp"
