@@ -22,7 +22,6 @@ import iteMate.project.models.Item;
 import iteMate.project.R;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ContainedItemAdapter;
-import iteMate.project.uiActivities.utils.ItemAdapter;
 
 public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepository.OnItemsFetchedListener {
 
@@ -82,6 +81,13 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
         horizontalAdapterAssociatedItems = new ContainedItemAdapter(itemList,this);
         associatedItemsRecyclerView.setAdapter(horizontalAdapterAssociatedItems);
 
+
+        findViewById(R.id.detailitem_back_button).setOnClickListener(v -> onBackPressed());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private void setDetailViewContents() {
