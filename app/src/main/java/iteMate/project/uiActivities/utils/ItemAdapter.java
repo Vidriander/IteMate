@@ -21,6 +21,10 @@ import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
+/**
+ * Adapter for the RecyclerView in the ItemsActivity.
+ * This adapter is responsible for displaying the items in the RecyclerView.
+ */
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private List<Item> items;
@@ -62,8 +66,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         Glide.with(context)
                 .load(item.getImage())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.placeholder_image)
-                .error(R.drawable.error_image)
+                .placeholder(R.drawable.placeholder_image)  // image in drawables
+                .error(R.drawable.error_image)  // image in drawables
                 .into(holder.itemImage);
         Log.d("ItemAdapter", "Image URL: " + item.getImage());
 
