@@ -61,12 +61,14 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
         Item item = items.get(position);
         holder.itemName.setText(item.getTitle());
 
-
         if (this.inEditScreen && position == 0) {
             holder.itemName.setText("Add new item");
             holder.itemImage.setImageResource(item.getDefaultImage());
 
             // adding on click listener to the add new item card
+            holder.itemView.setOnClickListener(v -> {
+                // Handle add new item click
+            });
 
         } else {
             // Get the StorageReference of the image
