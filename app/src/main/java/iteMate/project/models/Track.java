@@ -14,6 +14,7 @@ public class Track implements Parcelable {
     private Date returnDate;
     private Contact contact;
     private List<Item> LendList;
+    private String ownerID;  // #TODO setter for ownerID
 
     // Default Constructor
     public Track() {

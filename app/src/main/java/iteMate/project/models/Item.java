@@ -11,34 +11,15 @@ import iteMate.project.R;
  * Item class to store the details of an item
  */
 public class Item implements Parcelable {
-    /**
-     * NFC Tag of the item
-     */
     private int nfcTag;
-    /**
-     * Title of the item
-     */
     private String title;
-    /**
-     * Description of the item
-     */
     private String description;
-    /**
-     * Image ID of the item. Will point to a resource in the database in the future
-     */
     private String image;  // needs to have the same name as field in database!
-    /**
-     * Availability of the item. True if available to lend, false if not
-     */
     private boolean available;
-    /**
-     * List of items contained in this item
-     */
     private ArrayList<Item> containedItems = new ArrayList<Item>();
-    /**
-     * List of items associated with this item
-     */
     private ArrayList<Item> associatedItems = new ArrayList<Item>();
+    private String ownerID;  // #TODO set ownerID = userID
+
 
     private int defaultImage = R.drawable.gradient_background;
 

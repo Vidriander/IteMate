@@ -3,6 +3,7 @@ package iteMate.project.uiActivities.trackScreens;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +25,7 @@ import iteMate.project.repositories.ItemRepository;
 import iteMate.project.repositories.TrackRepository;
 import iteMate.project.uiActivities.utils.ContainedItemAdapter;
 
-public class TrackDetailActivity extends AppCompatActivity implements TrackRepository.OnTracksFetchedListener {
+public class TrackDetailActivity extends AppCompatActivity implements TrackRepository.OnTracksFetchedListener, ItemRepository.OnItemsFetchedListener {
 
     private Track trackToDisplay;
     private RecyclerView horizontalRecyclerView;
@@ -53,14 +56,14 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
             return insets;
         });
 
-        // Initialize TrackRepository
-        trackRepository  = new TrackRepository();
+        // Initialize ItemRepository
+        ItemRepository itemRepository = new ItemRepository();
 
         // Initialize Item list
-      itemList = new ArrayList<>();
+        itemList = new ArrayList<>();
 
-      // Fetch tracks from Firestore
-        trackRepository.getAllTracksFromFirestore(this);
+         // Fetch tracks from Firestore
+        itemRepository.getAllItemsFromFirestore(this);
 
         // Initialize RecyclerView  for horizontal list of items
         horizontalRecyclerView = findViewById(R.id.trackdetailview_lentitems_recyclerview);
@@ -96,11 +99,11 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
         }
     }
 
-    @Override
     /**
      * Called when the tracks are fetched from Firestore
      * @param tracks the list of tracks fetched
      */
+    @Override
     public void onTracksFetched(List<Track> tracks) {
         Log.d("TrackDetailActivity", "onTracksFetched called with " + tracks.size() + " tracks");
         itemList.clear();
@@ -111,6 +114,14 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
                 Log.d("TrackDetailActivity", "Added " + lendList.size() + " items to itemList");
             }
         }
+        horizontalAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemsFetched(List<Item> items) {
+        Log.d("TrackDetailActivity", "Fetched " + items.size() + " items");
+        itemList.clear();
+        itemList.addAll(items);
         horizontalAdapter.notifyDataSetChanged();
     }
 }

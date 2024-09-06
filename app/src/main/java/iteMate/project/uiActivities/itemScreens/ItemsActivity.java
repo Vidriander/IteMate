@@ -3,6 +3,8 @@ package iteMate.project.uiActivities.itemScreens;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import iteMate.project.models.Item;
@@ -36,7 +38,12 @@ public class ItemsActivity extends MainActivity implements ItemRepository.OnItem
         itemAdapter = new ItemAdapter(itemList, this);
         recyclerView.setAdapter(itemAdapter);
 
-        // Fetch items from Firestore
+        fetchItems();
+    }
+
+    // Fetch items from Firestore
+    private void fetchItems() {
+        Log.d("ItemsActivity", "Fetching items from Firestore");
         itemRepository.getAllItemsFromFirestore(this);
     }
 

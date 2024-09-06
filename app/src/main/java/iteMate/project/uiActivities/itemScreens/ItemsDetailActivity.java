@@ -15,7 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +28,7 @@ import iteMate.project.R;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ContainedItemAdapter;
 
-public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepository.OnItemsFetchedListener {
+public class ItemsDetailActivity extends AppCompatActivity implements ItemRepository.OnItemsFetchedListener {
 
     private Item itemToDisplay;
     private RecyclerView horizontalRecyclerView;
@@ -56,7 +60,7 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
             return insets;
         });
 
-        // Initilize ItemRepository
+        // Initialize ItemRepository
         ItemRepository itemRepository = new ItemRepository();
 
         // Initialize Item list
@@ -65,20 +69,15 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
         // Fetch items from Firestore
         itemRepository.getAllItemsFromFirestore(this);
 
-        //  Glide is configured to load images from the given paths
-        Glide.with(this)
-                .load(itemToDisplay.getImage())
-                .into((ImageView) findViewById(R.id.item_detailcard_image));
-
         // Initialize RecyclerViews and Adapters
         horizontalRecyclerView = findViewById(R.id.itemdetailview_containeditems_recyclerview);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        horizontalAdapter = new ContainedItemAdapter(itemList, this,false );
+        horizontalAdapter = new ContainedItemAdapter(itemList, this, false);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
         associatedItemsRecyclerView = findViewById(R.id.itemdetailview_associateditems_recyclerview);
-        associatedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
-        horizontalAdapterAssociatedItems = new ContainedItemAdapter(itemList,this,false);
+        associatedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        horizontalAdapterAssociatedItems = new ContainedItemAdapter(itemList, this, false);
         associatedItemsRecyclerView.setAdapter(horizontalAdapterAssociatedItems);
 
         // on click listener for back button
@@ -98,10 +97,45 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
 
     private void setDetailViewContents() {
         if (itemToDisplay != null) {
-            // Load image using Glide
-            Glide.with(this)
-                    .load(itemToDisplay.getImage())
-                    .into((ImageView) findViewById(R.id.item_detailcard_image));
+            // Get the StorageReference of the image
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference imageRef = storage.getReference().child(itemToDisplay.getImage());
+
+            // Check if image exists in the local cache
+            File localFile = new File(getCacheDir(), "images/" + itemToDisplay.getImage());
+            File localDir = localFile.getParentFile();
+            if (localDir != null && !localDir.exists()) {
+                localDir.mkdirs();  // Create the directory if it doesn't exist
+            }
+
+            if (localFile.exists()) {
+                // Load the image from the local file
+                Glide.with(this)
+                        .load(localFile)
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .placeholder(R.drawable.placeholder_image)  // image in drawables
+                        .error(R.drawable.error_image)  // image in drawables
+                        .into((ImageView) findViewById(R.id.item_detailcard_image));
+            } else {
+                // Download the image from Firebase Storage and save it locally
+                imageRef.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                    // Once downloaded, load the image from the local file
+                    Glide.with(this)
+                            .load(localFile)
+                            .diskCacheStrategy(DiskCacheStrategy.DATA)
+                            .placeholder(R.drawable.placeholder_image)
+                            .error(R.drawable.error_image)
+                            .into((ImageView) findViewById(R.id.item_detailcard_image));
+                    Log.d("ItemsDetailActivity", "Image downloaded and cached: " + localFile.getPath());
+                }).addOnFailureListener(exception -> {
+                    // Handle the error gracefully, e.g., show a placeholder image
+                    Glide.with(this)
+                            .load(R.drawable.error_image)
+                            .into((ImageView) findViewById(R.id.item_detailcard_image));
+                    Log.e("ItemsDetailActivity", "Error getting download URL", exception);
+                });
+            }
+
             ((TextView) findViewById(R.id.item_detailcard_title)).setText(itemToDisplay.getTitle());
             ((TextView) findViewById(R.id.item_detailcard_sideheader)).setText(String.valueOf(itemToDisplay.getNfcTag()));
         } else {

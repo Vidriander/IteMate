@@ -30,13 +30,14 @@ import java.util.List;
 import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
+import iteMate.project.repositories.ItemRepository;
 import iteMate.project.repositories.TrackRepository;
 import iteMate.project.uiActivities.MainActivity;
 import iteMate.project.uiActivities.utils.ButtonController;
 import iteMate.project.uiActivities.utils.ContainedItemAdapter;
 import iteMate.project.uiActivities.utils.TrackAdapter;
 
-public class TrackEditActivity extends AppCompatActivity{
+public class TrackEditActivity extends AppCompatActivity implements TrackRepository.OnTracksFetchedListener, ItemRepository.OnItemsFetchedListener {
 
     private Track trackToDisplay;
     private RecyclerView horizontalRecyclerView;
@@ -49,19 +50,15 @@ public class TrackEditActivity extends AppCompatActivity{
     private View.OnClickListener datePicker = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // on below line we are getting
-            // the instance of our calendar.
+            // get instance of calendar
             final Calendar c = Calendar.getInstance();
-
-            // on below line we are getting
-            // our day, month and year.
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
 
-            // on below line we are creating a variable for date picker dialog.
+            // Variable for date picker dialog
             DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    // on below line we are passing context.
+
                     TrackEditActivity.this,
                     new DatePickerDialog.OnDateSetListener() {
                         @Override
@@ -72,11 +69,9 @@ public class TrackEditActivity extends AppCompatActivity{
 
                         }
                     },
-                    // on below line we are passing year,
-                    // month and day for selected date in our date picker.
+                    // Passing year, month and day for selected date in date picker
                     year, month, day);
-            // at last we are calling show to
-            // display our date picker dialog.
+            // Calling show to display date picker dialog
             datePickerDialog.show();
         }
     };
@@ -94,20 +89,31 @@ public class TrackEditActivity extends AppCompatActivity{
         // Get the Track object from the intent
         trackToDisplay = getIntent().getParcelableExtra("track");
 
+        if (trackToDisplay == null) {
+            Log.e("TrackEditActivity", "trackToDisplay is null");
+            finish(); // Close the activity if trackToDisplay is null
+        }
+        setDetailViewContents();
+
+        // Initialize ItemRepository
+        ItemRepository itemRepository = new ItemRepository();
 
         // Initialize Item list
         itemList = new ArrayList<>();
-        itemList.add(new Item());
-        itemList.add(new Item(111111, "Rose Backroad", "Description 1", "https://firebasestorage.googleapis.com/v0/b/itematedb-f0396.appspot.com/o/itemImages%2Fbikepacking.jpg?alt=media&token=824e1bc4-84cc-4f91-8a48-32358d47f91a", true, null));
-        itemList.add(new Item(222222, "Nukeproof Digger", "Description 2", "https://firebasestorage.googleapis.com/v0/b/itematedb-f0396.appspot.com/o/itemImages%2Frose_bike.jpg?alt=media&token=860ef9d4-a586-470f-9e10-166efe1ba067", true, null));
-        itemList.add(new Item(333333, "Cube Nuroad", "Description 3", "https://firebasestorage.googleapis.com/v0/b/itematedb-f0396.appspot.com/o/itemImages%2Fbikepacking.jpg?alt=media&token=824e1bc4-84cc-4f91-8a48-32358d47f91a", true, null));
 
+        // Fetch all items from Firestore
+        itemRepository.getAllItemsFromFirestore(this);
+
+        // Initialize RecyclerView for horizontal list of items
         horizontalRecyclerView = findViewById(R.id.trackedit_recycler);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         horizontalAdapter = new ContainedItemAdapter(itemList, this, true);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
-        // on below line we are adding click listeners for our pick date buttons
+        // on click listener for back button
+
+
+        // Adding click listeners for our pick date buttons
         TextView lendDate = findViewById(R.id.lentOnDateEdit);
         lendDate.setOnClickListener(datePicker);
         lendDate.setPaintFlags(lendDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -133,5 +139,17 @@ public class TrackEditActivity extends AppCompatActivity{
         } else {
             Log.e("ItemsDetailActivity", "itemToDisplay is null in setDetailViewContents");
         }
+    }
+
+    @Override
+    public void onItemsFetched(List<Item> items) {
+        itemList.clear();
+        itemList.addAll(items);
+        horizontalAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onTracksFetched(List<Track> tracks) {
+
     }
 }

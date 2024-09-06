@@ -28,6 +28,10 @@ public class ContactRepository {
                 });
     }
 
+    /**
+     * Fetches all contacts from Firestore
+     * @param listener the listener to be called when the contacts are fetched
+     */
     public void getAllContactsFromFirestore(OnContactsFetchedListener listener) {
         db.collection("contacts")
                 .get()
@@ -41,6 +45,28 @@ public class ContactRepository {
                 });
     }
 
+    /**
+     * Fetches a contact from Firestore
+     * @param contactId the id of the contact to be fetched
+     * @param listener the listener to be called when the contact is fetched
+     */
+    public void getContactFromFirestore(String contactId, OnContactsFetchedListener listener) {
+        db.collection("contacts").whereEqualTo("contactId", contactId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Contact> contactList = task.getResult().toObjects(Contact.class);
+                        listener.onContactsFetched(contactList);
+                    } else {
+                        Log.w("Firestore", "Error getting documents.", task.getException());
+                    }
+                });
+    }
+
+    /**
+     * Updates a contact in Firestore
+     * @param contactId the id of the contact to be updated
+     */
     public void updateContactInFirestore(String contactId) {
         db.collection("contacts").whereEqualTo("contactId", contactId)
                 .get()
@@ -54,6 +80,31 @@ public class ContactRepository {
                                     })
                                     .addOnFailureListener(e -> {
                                         Log.w("Firestore", "Error updating contact", e);
+                                    });
+                        }
+                    } else {
+                        Log.w("Firestore", "Error getting documents.", task.getException());
+                    }
+                });
+    }
+
+    /**
+     * Deletes a contact from Firestore
+     * @param contactId the id of the contact to be deleted
+     */
+    public void deleteContactFromFirestore(String contactId) {
+        db.collection("contacts").whereEqualTo("contactId", contactId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            db.collection("contacts").document(document.getId())
+                                    .delete()
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("Firestore", "Contact deleted with ID: " + document.getId());
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.w("Firestore", "Error deleting contact", e);
                                     });
                         }
                     } else {
