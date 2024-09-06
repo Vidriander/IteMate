@@ -14,6 +14,7 @@ public class Contact implements Parcelable {
     private String email;
     private String address;
     private String city;
+    private String ownerID;  // #TODO setter for ownerID
 
     // Default Constructor
     public Contact() {
