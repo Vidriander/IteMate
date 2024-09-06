@@ -32,6 +32,7 @@ import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.TrackRepository;
 import iteMate.project.uiActivities.MainActivity;
+import iteMate.project.uiActivities.utils.ButtonController;
 import iteMate.project.uiActivities.utils.ContainedItemAdapter;
 import iteMate.project.uiActivities.utils.TrackAdapter;
 
@@ -42,6 +43,9 @@ public class TrackEditActivity extends AppCompatActivity{
     private ContainedItemAdapter horizontalAdapter;
     private List<Item> itemList;
 
+    /**
+     * Date picker dialog for selecting date
+     */
     private View.OnClickListener datePicker = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -110,6 +114,17 @@ public class TrackEditActivity extends AppCompatActivity{
         TextView returnDate = findViewById(R.id.returnDateEdit);
         returnDate.setOnClickListener(datePicker);
         returnDate.setPaintFlags(returnDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        // Setting on click for cancel button
+        Button cancelButton = findViewById(R.id.trackedit_cancel);
+        cancelButton.setOnClickListener(click -> {
+            ButtonController.exitActivityWithoutSaving(this);
+        });
+        // setting on click for save button
+        Button saveButton = findViewById(R.id.track_edit_save);
+        saveButton.setOnClickListener(click -> {
+            ButtonController.exitActivityWithSaving(this);
+        });
     }
 
     private void setDetailViewContents() {
