@@ -12,7 +12,7 @@ import iteMate.project.models.Item;
 /**
  * Repository class for items
  * This class is responsible for handling all interactions with Firestore
- * It contains methods for adding, fetching and updating items
+ * It contains methods for adding, fetching, deleting and updating items
  */
 public class ItemRepository {
     private FirebaseFirestore db;
@@ -20,6 +20,16 @@ public class ItemRepository {
     public ItemRepository() {
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
+    }
+
+    // Constructor to allow injecting Firestore instance for testing
+    public ItemRepository(FirebaseFirestore firestore) {
+        this.db = firestore;
+    }
+
+    // Setter that accepts a Firestore instance for testing
+    public void setDb(FirebaseFirestore firestore) {
+        this.db = firestore;
     }
 
     /**
@@ -54,6 +64,24 @@ public class ItemRepository {
     }
 
     /**
+     * Fetches an item from Firestore
+     * @param itemId the id of the item to be fetched
+     * @param listener the listener to be called when the item is fetched
+     */
+    public void getItemFromFirestore(String itemId, OnItemsFetchedListener listener) {
+        db.collection("items").whereEqualTo("itemId", itemId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Item> itemList = task.getResult().toObjects(Item.class);
+                        listener.onItemsFetched(itemList);
+                    } else {
+                        Log.w("Firestore", "Error getting documents.", task.getException());
+                    }
+                });
+    }
+
+    /**
      * Updates an item in Firestore
      * @param itemId the id of the item to be updated
      */
@@ -67,6 +95,27 @@ public class ItemRepository {
                                     .update("status", "lent out")
                                     .addOnSuccessListener(aVoid -> Log.d("Firestore", "Item updated successfully!"))
                                     .addOnFailureListener(e -> Log.w("Firestore", "Error updating item", e));
+                        }
+                    } else {
+                        Log.w("Firestore", "Error getting documents.", task.getException());
+                    }
+                });
+    }
+
+    /**
+     * Deletes an item from Firestore
+     * @param itemId the id of the item to be deleted
+     */
+    public void deleteItemFromFirestore(String itemId) {
+        db.collection("items").whereEqualTo("itemId", itemId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            db.collection("items").document(document.getId())
+                                    .delete()
+                                    .addOnSuccessListener(aVoid -> Log.d("Firestore", "Item deleted successfully!"))
+                                    .addOnFailureListener(e -> Log.w("Firestore", "Error deleting item", e));
                         }
                     } else {
                         Log.w("Firestore", "Error getting documents.", task.getException());

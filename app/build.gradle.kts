@@ -40,9 +40,10 @@ dependencies {
     implementation(libs.material.v100)
     implementation(libs.material.v120alpha05)
 
-    // Importiere die Firebase BoM
+    // Import Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
-    // Firebase-Abhängigkeiten ohne Versionsangaben
+
+    // Firebase-Dependencies for Android
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
     implementation("com.google.firebase:firebase-analytics")
@@ -55,4 +56,18 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    // Test dependencies for Firestore and Mockito
+    testImplementation("com.google.firebase:firebase-firestore:24.0.0")
+    testImplementation("org.mockito:mockito-core:3.11.2")
+    testImplementation("org.mockito:mockito-inline:3.11.2")
+    testImplementation("junit:junit:4.13.2")
+
+    // Test dependencies for Robolectric
+    dependencies {
+        testImplementation("org.robolectric:robolectric:4.9")
+        testImplementation("androidx.test:core:1.4.0")
+        testImplementation("androidx.test.ext:junit:1.1.3")
+        testImplementation("androidx.test:runner:1.4.0")
+        testImplementation("androidx.test:rules:1.4.0")
+    }
 }

@@ -91,7 +91,7 @@ public class TrackEditActivity extends AppCompatActivity{
         trackToDisplay = getIntent().getParcelableExtra("track");
 
 
-        // Initialize Item list
+        // Initialize lend Item list
         itemList = new ArrayList<>();
         itemList.add(new Item());
         itemList.add(new Item(111111, "Rose Backroad", "Description 1", "https://firebasestorage.googleapis.com/v0/b/itematedb-f0396.appspot.com/o/itemImages%2Fbikepacking.jpg?alt=media&token=824e1bc4-84cc-4f91-8a48-32358d47f91a", true, null));
