@@ -68,7 +68,7 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
         } else {
             // Load image using Glide
             Glide.with(context)
-                    .load(item.getImagePath())
+                    .load(item.getImage())
                     .into(holder.itemImage);
 
             holder.itemView.setOnClickListener(v -> {

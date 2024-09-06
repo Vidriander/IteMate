@@ -61,19 +61,18 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
 
         // Initialize Item list
         itemList = new ArrayList<>();
-        itemList.add(new Item(111111, "Rose Backroad", "Description 1", "https://firebasestorage.googleapis.com/v0/b/itematedb-f0396.appspot.com/o/itemImages%2Fbikepacking.jpg?alt=media&token=824e1bc4-84cc-4f91-8a48-32358d47f91a", true, null));
-        itemList.add(new Item(222222, "Nukeproof Digger", "Description 2", "https://firebasestorage.googleapis.com/v0/b/itematedb-f0396.appspot.com/o/itemImages%2Frose_bike.jpg?alt=media&token=860ef9d4-a586-470f-9e10-166efe1ba067", true, null));
-        itemList.add(new Item(333333, "Cube Nuroad", "Description 3", "https://firebasestorage.googleapis.com/v0/b/itematedb-f0396.appspot.com/o/itemImages%2Fbikepacking.jpg?alt=media&token=824e1bc4-84cc-4f91-8a48-32358d47f91a", true, null));
+
+        // Fetch items from Firestore
+        itemRepository.getAllItemsFromFirestore(this);
 
         //  Glide is configured to load images from the given paths
         Glide.with(this)
-                .load(itemToDisplay.getImagePath())
+                .load(itemToDisplay.getImage())
                 .into((ImageView) findViewById(R.id.item_detailcard_image));
 
-
+        // Initialize RecyclerViews and Adapters
         horizontalRecyclerView = findViewById(R.id.itemdetailview_containeditems_recyclerview);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        List<Item> emptyItemList = new ArrayList<>();
         horizontalAdapter = new ContainedItemAdapter(itemList, this,false );
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
@@ -101,7 +100,7 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
         if (itemToDisplay != null) {
             // Load image using Glide
             Glide.with(this)
-                    .load(itemToDisplay.getImagePath())
+                    .load(itemToDisplay.getImage())
                     .into((ImageView) findViewById(R.id.item_detailcard_image));
             ((TextView) findViewById(R.id.item_detailcard_title)).setText(itemToDisplay.getTitle());
             ((TextView) findViewById(R.id.item_detailcard_sideheader)).setText(String.valueOf(itemToDisplay.getNfcTag()));

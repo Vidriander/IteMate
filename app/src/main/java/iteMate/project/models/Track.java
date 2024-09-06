@@ -36,6 +36,10 @@ public class Track implements Parcelable {
         return contact;
     }
 
+    public List<Item> getLendList() {
+        return LendList;
+    }
+
     public static final Creator<Track> CREATOR = new Creator<Track>() {
         @Override
         public Track createFromParcel(Parcel in) {

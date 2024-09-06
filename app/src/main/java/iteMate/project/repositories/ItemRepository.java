@@ -11,6 +11,8 @@ import iteMate.project.models.Item;
 
 /**
  * Repository class for items
+ * This class is responsible for handling all interactions with Firestore
+ * It contains methods for adding, fetching and updating items
  */
 public class ItemRepository {
     private FirebaseFirestore db;
