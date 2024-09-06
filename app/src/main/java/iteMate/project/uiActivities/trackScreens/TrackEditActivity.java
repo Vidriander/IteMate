@@ -1,5 +1,16 @@
 package iteMate.project.uiActivities.trackScreens;
+//package com.gtappdevelopers.kotlingfgproject;
 
+import android.app.DatePickerDialog;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import java.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -20,6 +31,7 @@ import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.TrackRepository;
+import iteMate.project.uiActivities.MainActivity;
 import iteMate.project.uiActivities.utils.ContainedItemAdapter;
 import iteMate.project.uiActivities.utils.TrackAdapter;
 
@@ -30,6 +42,40 @@ public class TrackEditActivity extends AppCompatActivity{
     private ContainedItemAdapter horizontalAdapter;
     private List<Item> itemList;
 
+    private View.OnClickListener datePicker = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // on below line we are getting
+            // the instance of our calendar.
+            final Calendar c = Calendar.getInstance();
+
+            // on below line we are getting
+            // our day, month and year.
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // on below line we are creating a variable for date picker dialog.
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    // on below line we are passing context.
+                    TrackEditActivity.this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year,
+                                              int monthOfYear, int dayOfMonth) {
+                            // on below line we are setting date to our text view.
+                            ((TextView)v).setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+                        }
+                    },
+                    // on below line we are passing year,
+                    // month and day for selected date in our date picker.
+                    year, month, day);
+            // at last we are calling show to
+            // display our date picker dialog.
+            datePickerDialog.show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +102,14 @@ public class TrackEditActivity extends AppCompatActivity{
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         horizontalAdapter = new ContainedItemAdapter(itemList, this, true);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
+
+        // on below line we are adding click listeners for our pick date buttons
+        TextView lendDate = findViewById(R.id.lentOnDateEdit);
+        lendDate.setOnClickListener(datePicker);
+        lendDate.setPaintFlags(lendDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        TextView returnDate = findViewById(R.id.returnDateEdit);
+        returnDate.setOnClickListener(datePicker);
+        returnDate.setPaintFlags(returnDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
     private void setDetailViewContents() {

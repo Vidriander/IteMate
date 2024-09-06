@@ -146,20 +146,17 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <EditText
-                            android:id="@+id/editTextDate"
+                        <TextView
+                            android:id="@+id/lentOnDateEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginBottom="4dp"
-                            android:ems="10"
-                            android:inputType="date"
-                            android:text="05.08.2024"
-                            android:textSize="14sp"
+                            android:text="01.09.2024"
+                            android:textColor="#0000FF"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/lend_date_header"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
@@ -187,15 +184,15 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <EditText
-                            android:id="@+id/editTextDate2"
+                        <TextView
+                            android:id="@+id/returnDateEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:ems="10"
-                            android:inputType="date"
-                            android:text="01.10.2024"
-                            android:textSize="14sp"
+                            android:layout_marginBottom="10dp"
+                            android:text="05.10.2024"
+                            android:textColor="#0000FF"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/returndate_header"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
