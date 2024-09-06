@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -62,14 +64,22 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.itemName.setText(item.getTitle());
         holder.tagNumber.setText(String.valueOf(item.getNfcTag()));
 
-        // Load image using Glide
-        Glide.with(context)
-                .load(item.getImage())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.placeholder_image)  // image in drawables
-                .error(R.drawable.error_image)  // image in drawables
-                .into(holder.itemImage);
-        Log.d("ItemAdapter", "Image URL: " + item.getImage());
+        // Get the StorageReference
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference imageRef = storage.getReference().child(item.getImage());
+
+        // Fetch the download URL and load the image using Glide
+        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            Glide.with(context)
+                    .load(uri)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.placeholder_image)  // image in drawables
+                    .error(R.drawable.error_image)  // image in drawables
+                    .into(holder.itemImage);
+            Log.d("ItemAdapter", "Image URL: " + uri.toString());
+        }).addOnFailureListener(exception -> {
+            Log.w("ItemAdapter", "Error getting download URL", exception);
+        });
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ItemsDetailActivity.class);

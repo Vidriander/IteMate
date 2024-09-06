@@ -1,9 +1,13 @@
 package iteMate.project.repositories;
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.List;
 
@@ -128,5 +132,47 @@ public class ItemRepository {
      */
     public interface OnItemsFetchedListener {
         void onItemsFetched(List<Item> items);
+    }
+
+    /**
+     * Uploads an image to Firebase Storage and updates the item in Firestore with the image URL
+     * @param fileUri the URI of the image file
+     * @param itemId the id of the item to be updated
+     */
+    public void uploadImageAndUpdateItem(Uri fileUri, String itemId) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference imageRef = storageRef.child("itemImages/" + fileUri.getLastPathSegment());
+        UploadTask uploadTask = imageRef.putFile(fileUri);
+
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                updateItemImageInFirestore(itemId, uri.toString());
+            });
+        }).addOnFailureListener(exception -> {
+            Log.w("Storage", "Error uploading image", exception);
+        });
+    }
+
+    /**
+     * Updates the image of an item in Firestore
+     * @param itemId the id of the item to be updated
+     * @param imageUrl the URL of the image
+     */
+    public void updateItemImageInFirestore(String itemId, String imageUrl) {
+        db.collection("items").whereEqualTo("itemId", itemId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            db.collection("items").document(document.getId())
+                                    .update("image", imageUrl)
+                                    .addOnSuccessListener(aVoid -> Log.d("Firestore", "Item image updated successfully!"))
+                                    .addOnFailureListener(e -> Log.w("Firestore", "Error updating item image", e));
+                        }
+                    } else {
+                        Log.w("Firestore", "Error getting documents.", task.getException());
+                    }
+                });
     }
 }

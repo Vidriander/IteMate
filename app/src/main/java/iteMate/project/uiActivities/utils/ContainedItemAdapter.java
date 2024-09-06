@@ -17,6 +17,8 @@ import iteMate.project.models.Item;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdapter.ViewHolder> {
     private List<Item> items;
@@ -59,6 +61,7 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
         Item item = items.get(position);
         holder.itemName.setText(item.getTitle());
 
+
         if (this.inEditScreen && position == 0) {
             holder.itemName.setText("Add new item");
             holder.itemImage.setImageResource(item.getDefaultImage());
@@ -66,10 +69,19 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
             // adding on click listener to the add new item card
 
         } else {
-            // Load image using Glide
-            Glide.with(context)
-                    .load(item.getImage())
-                    .into(holder.itemImage);
+            // Get the StorageReference of the image
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference imageRef = storage.getReference().child(item.getImage());
+
+            // Fetch the image and load it
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                Glide.with(context)
+                        .load(uri)
+                        .into(holder.itemImage);
+            }).addOnFailureListener(exception -> {
+                // If the image cannot be fetched, load the default image
+                holder.itemImage.setImageResource(item.getDefaultImage());
+            });
 
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, ItemsDetailActivity.class);

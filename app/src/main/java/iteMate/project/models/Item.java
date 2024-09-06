@@ -24,7 +24,7 @@ public class Item implements Parcelable {
      */
     private String description;
     /**
-     * Image ID of the item. Will point to a resource in the database in the future
+     * URL of the image of the item
      */
     private String image;  // needs to have the same name as field in database!
     /**

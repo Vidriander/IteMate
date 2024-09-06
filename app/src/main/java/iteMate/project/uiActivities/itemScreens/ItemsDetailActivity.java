@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,10 +100,20 @@ public class ItemsDetailActivity extends AppCompatActivity  implements ItemRepos
 
     private void setDetailViewContents() {
         if (itemToDisplay != null) {
-            // Load image using Glide
-            Glide.with(this)
-                    .load(itemToDisplay.getImage())
-                    .into((ImageView) findViewById(R.id.item_detailcard_image));
+
+            // Get the StorageReference of the image
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference imageRef = storage.getReference().child(itemToDisplay.getImage());
+
+            // Fetch the image and load it
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                Glide.with(this)
+                        .load(uri)
+                        .into((ImageView) findViewById(R.id.item_detailcard_image));
+            }).addOnFailureListener(exception -> {
+                Log.e("ItemsDetailActivity", "Error getting download URL", exception);
+            });
+
             ((TextView) findViewById(R.id.item_detailcard_title)).setText(itemToDisplay.getTitle());
             ((TextView) findViewById(R.id.item_detailcard_sideheader)).setText(String.valueOf(itemToDisplay.getNfcTag()));
         } else {
