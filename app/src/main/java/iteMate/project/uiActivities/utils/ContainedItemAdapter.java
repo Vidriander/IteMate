@@ -2,6 +2,7 @@ package iteMate.project.uiActivities.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.File;
 import java.util.List;
 
 import iteMate.project.R;
@@ -17,6 +20,7 @@ import iteMate.project.models.Item;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -56,6 +60,7 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
         return new ViewHolder(view);
     }
 
+    // #TODO umschreiben - methode sehr lang!
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item item = items.get(position);
@@ -75,15 +80,40 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference imageRef = storage.getReference().child(item.getImage());
 
-            // Fetch the image and load it
-            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            // Check if image exists in the local cache
+            File localFile = new File(context.getCacheDir(), "images/" + item.getImage());
+            File localDir = localFile.getParentFile();
+            if (localDir != null && !localDir.exists()) {
+                localDir.mkdirs();  // Create the directory if it doesn't exist
+            }
+
+            if (localFile.exists()) {
+                // Load the image from the local file
                 Glide.with(context)
-                        .load(uri)
+                        .load(localFile)
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .placeholder(R.drawable.placeholder_image)  // image in drawables
+                        .error(R.drawable.error_image)  // image in drawables
                         .into(holder.itemImage);
-            }).addOnFailureListener(exception -> {
-                // If the image cannot be fetched, load the default image
-                holder.itemImage.setImageResource(item.getDefaultImage());
-            });
+            } else {
+                // Download the image from Firebase Storage and save it locally
+                imageRef.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                    // Once downloaded, load the image from the local file
+                    Glide.with(context)
+                            .load(localFile)
+                            .diskCacheStrategy(DiskCacheStrategy.DATA)
+                            .placeholder(R.drawable.placeholder_image)
+                            .error(R.drawable.error_image)
+                            .into(holder.itemImage);
+                    Log.d("ContainedItemAdapter", "Image downloaded and cached: " + localFile.getPath());
+                }).addOnFailureListener(exception -> {
+                    // Handle the error gracefully, e.g., show a placeholder image
+                    Glide.with(context)
+                            .load(R.drawable.error_image)
+                            .into(holder.itemImage);
+                    Log.w("ContainedItemAdapter", "Error getting download URL", exception);
+                });
+            }
 
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, ItemsDetailActivity.class);
@@ -93,6 +123,7 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
             });
         }
     }
+
 
     @Override
     public int getItemCount() {
