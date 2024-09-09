@@ -30,12 +30,12 @@ public class ItemRepository {
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
         // Enable offline persistence
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setLocalCacheSettings(
-                        PersistentCacheSettings.newBuilder().build()  // Enables persistent disk storage
-                )
-                .build();
-        db.setFirestoreSettings(settings);
+//        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+//                .setLocalCacheSettings(
+//                        PersistentCacheSettings.newBuilder().build()  // Enables persistent disk storage
+//                )
+//                .build();
+//        db.setFirestoreSettings(settings);
 
     }
 

@@ -2,6 +2,8 @@ package iteMate.project.uiActivities.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,14 +50,27 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Track track = tracks.get(position);  // Changed 'item' to 'track'
-        holder.rendDate.setText(track.getGiveOutDate().toString());  // Changed 'item' to 'track'
+        Track track = tracks.get(position);
+
+        // setting the name of the contact
         String displayName = track.getContact().getFirstName() + " " + track.getContact().getLastName();
-        holder.contactName.setText(displayName);  // Changed 'item' to 'track'
+        holder.contactName.setText(displayName);
+
+        //  setting the number of items
+        holder.numberOfItems.setText(String.valueOf(track.getNumberOfItems()));
+
+        // setting the days left
+        int daysLeftInt = track.getDaysLeft();
+        String daysLeftString = daysLeftInt >= 0 ? "+": "";
+        if (daysLeftInt < 0) {
+            holder.daysLeft.setTextColor(Color.RED);
+        }
+        daysLeftString += daysLeftInt + "d";
+        holder.daysLeft.setText(daysLeftString);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, TrackDetailActivity.class);
-            intent.putExtra("track", track);  // Changed 'track' to 'track'
+            intent.putExtra("track", track);
             clickedTrack = track;
             context.startActivity(intent);
         });
@@ -68,12 +83,14 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView contactName;
-        public TextView rendDate;
+        public TextView numberOfItems;
+        public TextView daysLeft;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            contactName = itemView.findViewById(R.id.trackcard_header_text);
-            rendDate = itemView.findViewById(R.id.trackcard_subheader_text);
+            contactName = itemView.findViewById(R.id.trackcard_contactname);
+            numberOfItems = itemView.findViewById(R.id.trackcard_numberofitems);
+            daysLeft = itemView.findViewById(R.id.trackcard_daycounter);
         }
     }
 }

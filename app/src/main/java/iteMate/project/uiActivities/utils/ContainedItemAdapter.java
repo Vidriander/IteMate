@@ -17,6 +17,7 @@ import java.util.List;
 
 import iteMate.project.R;
 import iteMate.project.models.Item;
+import iteMate.project.uiActivities.ScanActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
 import com.bumptech.glide.Glide;
@@ -67,12 +68,15 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
         holder.itemName.setText(item.getTitle());
 
         if (this.inEditScreen && position == 0) {
-            holder.itemName.setText("Add new item");
-            holder.itemImage.setImageResource(item.getDefaultImage());
+            holder.itemName.setText("Add New Item");
+            holder.itemImage.setImageResource(R.drawable.baseline_add_24);
 
             // adding on click listener to the add new item card
             holder.itemView.setOnClickListener(v -> {
                 // Handle add new item click
+                Intent intent = new Intent(context, ScanActivity.class);
+                intent.putExtra("IntentOrigin", IntentOrigins.TRACK_EDIT_ACTIVITY);
+                context.startActivity(intent);
             });
 
         } else {

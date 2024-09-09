@@ -43,22 +43,22 @@ public class TrackActivity extends MainActivity implements TrackRepository.OnTra
         //Track track2 = new Track(new Date(), new Date(), janeDoe, itemList);
         //Track track3 = new Track(new Date(), new Date(), luke, itemList);
 
+        // Initialize Track list
+        trackList = new ArrayList<>();
+
         // Initialize TrackRepository
         trackRepository = new TrackRepository();
+
+        // Fetch tracks from Firestore
+        trackRepository.getAllTracksFromFirestore(this);
 
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.recyclerViewTrack);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize Track list
-        trackList = new ArrayList<>();
-
         // Initialize Adapter and set to RecyclerView
         trackAdapter = new TrackAdapter(trackList, this);
         recyclerView.setAdapter(trackAdapter);
-
-        // Fetch tracks from Firestore
-        trackRepository.getAllTracksFromFirestore(this);
     }
 
     @Override

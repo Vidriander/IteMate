@@ -2,6 +2,9 @@ package iteMate.project.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
 
@@ -16,11 +19,11 @@ public class Track implements Parcelable {
     private List<Item> LendList;
     private String ownerID;  // #TODO setter for ownerID
 
-    // Default Constructor
     public Track() {
+        this.LendList = Arrays.asList(new Item(), new Item());
+        this.returnDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 7);
     }
 
-    // Constructor
     public Track(Date giveOutDate, Date returnDate, Contact contact, List<Item> LendList) {
         this.giveOutDate = giveOutDate;
         this.returnDate = returnDate;
@@ -28,7 +31,6 @@ public class Track implements Parcelable {
         this.LendList = LendList;
     }
 
-    // Getter
     public Date getGiveOutDate() {
         return giveOutDate;
     }
@@ -39,6 +41,24 @@ public class Track implements Parcelable {
 
     public List<Item> getLendList() {
         return LendList;
+    }
+
+    /**
+     * Method to get the number of items in the list
+     * @return the number of items
+     */
+    public int getNumberOfItems() {
+        return LendList != null? LendList.size() : 0;
+    }
+
+    /**
+     * Method to get the number of days left for the item to be returned
+     * @return the number of days left
+     */
+    public int getDaysLeft() {
+//        return 0;
+        // TODO: returnDate seems to be a NullPointer (Data not loaded fully or correctly from firestore?)
+        return (int) ((returnDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
     }
 
     public static final Creator<Track> CREATOR = new Creator<Track>() {

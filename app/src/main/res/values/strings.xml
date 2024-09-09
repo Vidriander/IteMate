@@ -21,4 +21,7 @@
     <string name="associated_items_header">Associated Items:</string>
     <string name="track_detailcard_description">Die Ausleihe wurde bereits digital bezahlt.\nHier kann noch einiger weiterer Unsinn stehen! Das ist doch klar.</string>
     <string name="lent_items_header">Lent Items</string>
+
+    <!-- NFC Scan Strings -->
+    <string name="scan_nfc_tag_promt">Please bring NFC-Tag close to device.</string>
 </resources>

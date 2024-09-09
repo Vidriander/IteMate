@@ -15,6 +15,7 @@ import iteMate.project.models.Track;
  * Repository class for tracks
  */
 public class TrackRepository {
+
     private FirebaseFirestore db;
 
     public TrackRepository() {
