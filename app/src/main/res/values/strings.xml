@@ -24,4 +24,5 @@
 
     <!-- NFC Scan Strings -->
     <string name="scan_nfc_tag_promt">Please bring NFC-Tag close to device.</string>
+    <string name="search">Search</string>
 </resources>

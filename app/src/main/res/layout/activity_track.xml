@@ -8,13 +8,24 @@
     android:orientation="vertical"
     tools:context=".uiActivities.MainActivity">
 
-    <!-- Toolbar -->
+    <!-- Main Content Layout -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/navigation_color"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <!-- Centered TextView -->
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Track"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <!-- Menu Button on the Right -->
         <ImageButton
@@ -26,6 +37,19 @@
             android:contentDescription="@string/menu"
             android:paddingRight="20dp"
             android:src="@drawable/ic_menu" />
+
+        <!-- SearchView -->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:iconifiedByDefault="false"
+            android:paddingRight="0dp"
+            android:queryHint="@string/search"
+            app:searchIcon="@drawable/baseline_search_24" />
+
     </androidx.appcompat.widget.Toolbar>
 
     <!-- Main Content Layout -->

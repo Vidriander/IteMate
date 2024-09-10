@@ -9,12 +9,25 @@
     tools:context=".uiActivities.MainActivity">
 
     <!-- Toolbar -->
+
+    <!-- Main Content Layout -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/navigation_color"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <!-- Centered TextView -->
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Items"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <!-- Menu Button on the Right -->
         <ImageButton
@@ -26,33 +39,40 @@
             android:contentDescription="@string/menu"
             android:paddingRight="20dp"
             android:src="@drawable/ic_menu" />
+
+        <!-- SearchView -->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:iconifiedByDefault="false"
+            android:paddingRight="0dp"
+            android:queryHint="@string/search"
+            app:searchIcon="@drawable/baseline_search_24" />
+
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- Main Content Layout -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".uiActivities.itemScreens.ItemsActivity">
 
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Items"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:layout_alignParentTop="true"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewItems"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_below="@id/titleTextView"
-            android:layout_above="@id/bottom_navigation"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewItems"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
@@ -65,4 +85,5 @@
             app:menu="@menu/menu_navigation" />
 
     </RelativeLayout>
+
 </LinearLayout>

@@ -1,6 +1,10 @@
 package iteMate.project.uiActivities.homeScreen;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.appcompat.widget.SearchView;
 
 import iteMate.project.R;
 import iteMate.project.uiActivities.MainActivity;
@@ -12,6 +16,8 @@ public class HomeActivity extends MainActivity {
         super.onCreate(savedInstanceState);
 
         // content of main-screen follows here
+
+
     }
 
     @Override

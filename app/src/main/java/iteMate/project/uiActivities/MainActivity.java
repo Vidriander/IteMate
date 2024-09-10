@@ -37,6 +37,9 @@ public abstract class MainActivity extends AppCompatActivity {
         // Set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("");
+        }
 
         // Set up the menu button
         ImageButton menuButton = findViewById(R.id.menu_button);
