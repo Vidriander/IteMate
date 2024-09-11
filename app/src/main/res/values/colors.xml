@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="navigation_color">#B5BDC1</color>
     <color name="item_card_background">#B5BDC1</color>
+    <color name="scan_button">#E89D2E</color>
+    <color name="scan_button_icon">#FFFFFF</color>
 </resources>
