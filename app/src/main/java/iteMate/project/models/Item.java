@@ -11,15 +11,42 @@ import iteMate.project.R;
  * Item class to store the details of an item
  */
 public class Item implements Parcelable {
+    /**
+     * Fields of an item
+     */
     private int nfcTag;
+    /**
+     * Title of the item
+     */
     private String title;
+    /**
+     * Description of the item
+     */
     private String description;
+    /**
+     * Image path of the item
+     */
     private String image;  // needs to have the same name as field in database!
+    /**
+     * Availability of the item
+     */
     private boolean available;
+    /**
+     * List of items contained in this item
+     */
     private ArrayList<Item> containedItems = new ArrayList<Item>();
+    /**
+     * List of items associated with this item, not necessary to list any
+     */
     private ArrayList<Item> associatedItems = new ArrayList<Item>();
+    /**
+     * ID of the user who owns the item
+     */
     private String ownerID;  // #TODO set ownerID = userID
-
+    /**
+     * ID of the track the item is in
+     */
+    private int trackID = -1;
 
     private int defaultImage = R.drawable.gradient_background;
 
@@ -146,5 +173,13 @@ public class Item implements Parcelable {
 
     public int getDefaultImage() {
         return defaultImage;
+    }
+
+    /**
+     * setter for the ID of the track the item is in
+     * @param trackID ID of the track the item is in
+     */
+    public void setTrackID(int trackID) {
+        this.trackID = trackID;
     }
 }
