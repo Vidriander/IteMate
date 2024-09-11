@@ -2,9 +2,11 @@ package iteMate.project.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 import iteMate.project.R;
 
@@ -37,9 +39,17 @@ public class Item implements Parcelable {
      */
     private ArrayList<Item> containedItems = new ArrayList<Item>();
     /**
+     * List of IDs of items contained in this item
+     */
+    private ArrayList<String> containedItemIDs = new ArrayList<String>();
+    /**
      * List of items associated with this item, not necessary to list any
      */
     private ArrayList<Item> associatedItems = new ArrayList<Item>();
+    /**
+     * List of IDs of items associated with this item
+     */
+    private ArrayList<String> associatedItemIDs = new ArrayList<String>();
     /**
      * ID of the user who owns the item
      */
@@ -72,7 +82,7 @@ public class Item implements Parcelable {
      * @param containedItems List of items contained in this item
      * @param associatedItems List of items associated with this item, not necessary to list any
      */
-    public Item(int nfcTag, String title, String description, String image, boolean available, ArrayList<Item> containedItems, Item... associatedItems) {
+    public Item(int nfcTag, String title, String description, String image, boolean available, ArrayList<Item> containedItems, ArrayList<Item> associatedItems) {
         this.nfcTag = nfcTag;
         this.title = title;
         this.description = description;
@@ -80,6 +90,9 @@ public class Item implements Parcelable {
         this.available = available;
         if (containedItems != null && !containedItems.isEmpty()) {
             this.containedItems.addAll(containedItems);
+        }
+        if (associatedItems != null && !associatedItems.isEmpty()) {
+            this.associatedItems.addAll(associatedItems);
         }
     }
 
@@ -164,14 +177,6 @@ public class Item implements Parcelable {
         return description;
     }
 
-    /**
-     * Tells if the item is a container
-     * @return True if the item has subitems in it (containedItems is not empty), false otherwise
-     */
-    public boolean isContainer() {
-        return !containedItems.isEmpty();
-    }
-
     public int getDefaultImage() {
         return defaultImage;
     }
@@ -198,5 +203,39 @@ public class Item implements Parcelable {
      */
     public void setTrackID(int trackID) {
         this.trackID = trackID;
+    }
+
+    /**
+     * Setter for the Items contained in this item
+     * @param containedItems List of items contained in this item
+     */
+    public void setContainedItems(ArrayList<Item> containedItems) {
+        this.containedItems = containedItems;
+        Log.d("Item", "setContainedItems size: " + containedItems.size());
+    }
+
+    /**
+     * Setter for the items associated with this item
+     * @param associatedItems List of items associated with this item
+     */
+    public void setAssociatedItems(ArrayList<Item> associatedItems) {
+        this.associatedItems = associatedItems;
+        Log.d("Item", "setAssociatedItems size: " + associatedItems.size());
+    }
+
+    /**
+     * Getter for the contained item IDs
+     * @return List of IDs of items contained in this item
+     */
+    public List<String> getContainedItemIDs() {
+        return containedItemIDs;
+    }
+
+    /**
+     * Getter for the associated item IDs
+     * @return List of IDs of items associated with this item
+     */
+    public List<String> getAssociatedItemIDs() {
+        return associatedItemIDs;
     }
 }

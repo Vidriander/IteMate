@@ -3,6 +3,7 @@ package iteMate.project.repositories;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.MemoryCacheSettings;
@@ -13,6 +14,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.models.Item;
@@ -69,10 +71,23 @@ public class ItemRepository {
      */
     public void getAllItemsFromFirestore(OnItemsFetchedListener listener) {
         db.collection("items")
-                .get(Source.CACHE)  // Use local cache first
+                .get(Source.SERVER) // TODO: add condition to use Cache in certain cases
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         List<Item> itemList = task.getResult().toObjects(Item.class);
+                        // Fetch contained and associated items for each item
+                        for (Item item : itemList) {
+                            // Fetch contained items
+                            if (item.getContainedItemIDs() != null && !item.getContainedItemIDs().isEmpty()) {
+                                item.setContainedItems(getItemslistFromListOfIDs(item.getContainedItemIDs()));
+                                Log.w("Debugging", "Fetching contained items" + item.getContainedItems());
+                            }
+                            // Fetch associated items
+                            if (item.getAssociatedItemIDs() != null && !item.getAssociatedItemIDs().isEmpty()) {
+                                item.setAssociatedItems(getItemslistFromListOfIDs(item.getAssociatedItemIDs()));
+                                Log.w("Debugging", "Fetching associated items" + item.getAssociatedItems());
+                            }
+                        }
                         listener.onItemsFetched(itemList);
                     } else {
                         // Fallback to server if cache is empty or failed
@@ -81,6 +96,7 @@ public class ItemRepository {
                                 .addOnCompleteListener(serverTask -> {
                                     if (serverTask.isSuccessful()) {
                                         List<Item> itemList = serverTask.getResult().toObjects(Item.class);
+
                                         listener.onItemsFetched(itemList);
                                     } else {
                                         Log.w("Firestore", "Error getting documents.", serverTask.getException());
@@ -91,6 +107,30 @@ public class ItemRepository {
                 .addOnFailureListener(e -> {
                     Log.w("Firestore", "Failed to fetch items from cache", e);
                 });
+    }
+
+    /**
+     * Method to get items from Firestore based on a list of item IDs.
+     * May be used to set the containedItems or associatedItems of an item.
+     * @param itemIDs List of item IDs to fetch
+     * @return List of items fetched from Firestore
+     */
+    private ArrayList<Item> getItemslistFromListOfIDs(List<String> itemIDs) {
+        ArrayList<Item> items = new ArrayList<>();
+        for (String itemID : itemIDs) {
+            db.collection("items").whereEqualTo(FieldPath.documentId(), itemID)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<Item> itemList = task.getResult().toObjects(Item.class);
+                            items.add(itemList.get(0));
+                        } else {
+                            Log.w("Firestore", "Error getting documents.", task.getException());
+                        }
+                    });
+        }
+        Log.d("Debugging", "Returning items list " + items.size());
+        return items;
     }
 
     /**
