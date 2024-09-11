@@ -107,6 +107,7 @@ public class Item implements Parcelable {
         image = in.readString();
         available = in.readByte() != 0;
         containedItems = in.createTypedArrayList(Item.CREATOR);
+        associatedItems = in.createTypedArrayList(Item.CREATOR);
     }
 
     /**
@@ -143,6 +144,7 @@ public class Item implements Parcelable {
         dest.writeString(image);
         dest.writeByte((byte) (available ? 1 : 0));
         dest.writeTypedList(containedItems);
+        dest.writeTypedList(associatedItems);
     }
 
     /**
@@ -186,6 +188,7 @@ public class Item implements Parcelable {
      * @return List of items contained in this item
      */
     public List<Item> getContainedItems() {
+        Log.w("Debugging", "getContainedItems Aufruf: " + containedItems);
         return containedItems;
     }
 
@@ -194,6 +197,7 @@ public class Item implements Parcelable {
      * @return List of items associated with this item
      */
     public List<Item> getAssociatedItems() {
+        Log.w("Debugging", "getAssociatedItems Aufruf: " + associatedItems);
         return associatedItems;
     }
 

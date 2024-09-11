@@ -96,7 +96,19 @@ public class ItemRepository {
                                 .addOnCompleteListener(serverTask -> {
                                     if (serverTask.isSuccessful()) {
                                         List<Item> itemList = serverTask.getResult().toObjects(Item.class);
-
+                                        // Fetch contained and associated items for each item
+                                        for (Item item : itemList) {
+                                            // Fetch contained items
+                                            if (item.getContainedItemIDs() != null && !item.getContainedItemIDs().isEmpty()) {
+                                                item.setContainedItems(getItemslistFromListOfIDs(item.getContainedItemIDs()));
+                                                Log.w("Debugging", "Fetching contained items" + item.getContainedItems());
+                                            }
+                                            // Fetch associated items
+                                            if (item.getAssociatedItemIDs() != null && !item.getAssociatedItemIDs().isEmpty()) {
+                                                item.setAssociatedItems(getItemslistFromListOfIDs(item.getAssociatedItemIDs()));
+                                                Log.w("Debugging", "Fetching associated items" + item.getAssociatedItems());
+                                            }
+                                        }
                                         listener.onItemsFetched(itemList);
                                     } else {
                                         Log.w("Firestore", "Error getting documents.", serverTask.getException());

@@ -63,11 +63,13 @@ public class ItemsDetailActivity extends AppCompatActivity{
         // Initialize RecyclerViews and Adapters
         horizontalRecyclerView = findViewById(R.id.itemdetailview_containeditems_recyclerview);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        Log.w("Debugging", "itemToDisplay.getContainedItems(): " + itemToDisplay.getContainedItems());
         horizontalAdapter = new ContainedItemAdapter(itemToDisplay.getContainedItems(), this, false);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
         associatedItemsRecyclerView = findViewById(R.id.itemdetailview_associateditems_recyclerview);
         associatedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        Log.w("Debugging", "itemToDisplay.getAssociatedItems(): " + itemToDisplay.getAssociatedItems());
         horizontalAdapterAssociatedItems = new ContainedItemAdapter(itemToDisplay.getAssociatedItems(), this, false);
         associatedItemsRecyclerView.setAdapter(horizontalAdapterAssociatedItems);
 
