@@ -107,7 +107,12 @@ public class Item implements Parcelable {
         image = in.readString();
         available = in.readByte() != 0;
         containedItems = in.createTypedArrayList(Item.CREATOR);
+        containedItemIDs = in.createStringArrayList();
         associatedItems = in.createTypedArrayList(Item.CREATOR);
+        associatedItemIDs = in.createStringArrayList();
+        ownerID = in.readString();
+        trackID = in.readInt();
+        defaultImage = in.readInt();
     }
 
     /**
@@ -144,7 +149,12 @@ public class Item implements Parcelable {
         dest.writeString(image);
         dest.writeByte((byte) (available ? 1 : 0));
         dest.writeTypedList(containedItems);
+        dest.writeStringList(containedItemIDs);
         dest.writeTypedList(associatedItems);
+        dest.writeStringList(associatedItemIDs);
+        dest.writeString(ownerID);
+        dest.writeInt(trackID);
+        dest.writeInt(defaultImage);
     }
 
     /**
