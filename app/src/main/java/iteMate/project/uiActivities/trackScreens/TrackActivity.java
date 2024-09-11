@@ -1,5 +1,6 @@
 package iteMate.project.uiActivities.trackScreens;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import iteMate.project.SearchUtils;
 import iteMate.project.models.Contact;
 import iteMate.project.models.Item;
 import iteMate.project.R;
@@ -22,29 +24,16 @@ public class TrackActivity extends MainActivity implements TrackRepository.OnTra
     private RecyclerView recyclerView;
     private TrackAdapter trackAdapter;
     private List<Track> trackList;
+    private List<Track> searchList;
     private TrackRepository trackRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Test
-        //Contact johnDoe = new Contact("John", "Doe", "12345", "john@doe.com", "Jumpstreet 21", "Endor");
-        //Contact janeDoe = new Contact("Jane", "Doe", "54321", "jane@doe.com", "Jumpstreet 42", "Endor");
-        //Contact luke = new Contact("Luke", "Skywalker", "12345", "luke@skywalker.com", "Jumpstreet 21", "Tatooine");
-        //Item item1 = new Item(111111, "Rose Backroad", "Description 1", R.drawable.rose_bike, true, null);
-        //Item item2 = new Item(222222, "Nukeproof Digger", "Description 2", R.drawable.bikepacking, true, null);
-        //Item item3 = new Item(333333, "Cube Nuroad", "Description 3", R.drawable.rose2, true, null);
-        //List<Item> itemList = new ArrayList<>();
-        //itemList.add(item1);
-        //itemList.add(item2);
-        //itemList.add(item3);
-        //Track track1 = new Track(new Date(), new Date(), johnDoe, itemList);
-        //Track track2 = new Track(new Date(), new Date(), janeDoe, itemList);
-        //Track track3 = new Track(new Date(), new Date(), luke, itemList);
-
         // Initialize Track list
         trackList = new ArrayList<>();
+        searchList = new ArrayList<>(trackList);
 
         // Initialize TrackRepository
         trackRepository = new TrackRepository();
@@ -57,8 +46,42 @@ public class TrackActivity extends MainActivity implements TrackRepository.OnTra
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize Adapter and set to RecyclerView
-        trackAdapter = new TrackAdapter(trackList, this);
+        trackAdapter = new TrackAdapter(searchList, this);
         recyclerView.setAdapter(trackAdapter);
+
+        // Configure the SearchView
+        SearchView searchView = findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                performSearch(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                performSearch(query);
+                return true;
+            }
+        });
+    }
+
+    /**
+     * Perform the search and update the itemList
+     * @param query The search query
+     */
+    private void performSearch(String query) {
+        // reset the searchList to the itemList
+        searchList.clear();
+        searchList.addAll(trackList);
+
+        // Perform the search and update the itemList
+        List<Track> filteredList = SearchUtils.searchTracks(searchList, query);
+        searchList.clear();
+        searchList.addAll(filteredList);
+        trackAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -75,6 +98,10 @@ public class TrackActivity extends MainActivity implements TrackRepository.OnTra
     public void onTracksFetched(List<Track> tracks) {
         trackList.clear();
         trackList.addAll(tracks);
+
+        searchList.clear();
+        searchList.addAll(tracks);
+
         trackAdapter.notifyDataSetChanged();
     }
 }

@@ -39,6 +39,14 @@ public class Contact implements Parcelable {
         return lastName;
     }
 
+    public String getName() {
+        return firstName + " " + lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phone;
+    }
+
     public String getEmail() {
         return email;
     }

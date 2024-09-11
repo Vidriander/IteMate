@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import iteMate.project.SearchUtils;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ItemAdapter;
@@ -20,6 +22,13 @@ public class ItemsActivity extends MainActivity implements ItemRepository.OnItem
 
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
+    /**
+     * List of Items that will change dynamically based on search
+     */
+    private List<Item> searchList;
+    /**
+     * List of Items that will be used to reset to after a search
+     */
     private List<Item> itemList;
     private ItemRepository itemRepository;
 
@@ -36,9 +45,10 @@ public class ItemsActivity extends MainActivity implements ItemRepository.OnItem
 
         // Initialize Item list
         itemList = new ArrayList<>();
+        searchList = new ArrayList<>(itemList);
 
         // Initialize Adapter and set to RecyclerView
-        itemAdapter = new ItemAdapter(itemList, this);
+        itemAdapter = new ItemAdapter(searchList, this);
         recyclerView.setAdapter(itemAdapter);
 
         // Configure the SearchView
@@ -46,17 +56,36 @@ public class ItemsActivity extends MainActivity implements ItemRepository.OnItem
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Perform the final search
-                return false;
+
+                performSearch(query);
+                return true;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                // Filter the list as the user types
-                return false;
+            public boolean onQueryTextChange(String query) {
+
+                performSearch(query);
+                return true;
             }
         });
+
         fetchItems();
+    }
+
+    /**
+     * Perform the search and update the itemList
+     * @param query The search query
+     */
+    private void performSearch(String query) {
+        // reset the searchList to the itemList
+        searchList.clear();
+        searchList.addAll(itemList);
+
+        // Perform the search and update the itemList
+        List<Item> filteredList = SearchUtils.searchItems(searchList, query);
+        searchList.clear();
+        searchList.addAll(filteredList);
+        itemAdapter.notifyDataSetChanged();
     }
 
     // Fetch items from Firestore
@@ -79,6 +108,10 @@ public class ItemsActivity extends MainActivity implements ItemRepository.OnItem
     public void onItemsFetched(List<Item> items) {
         itemList.clear();
         itemList.addAll(items);
+
+        searchList.clear();
+        searchList.addAll(itemList);
+
         itemAdapter.notifyDataSetChanged();
     }
 }

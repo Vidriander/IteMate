@@ -129,6 +129,14 @@ public class Item implements Parcelable {
     }
 
     /**
+     * Returns the description of the item
+     * @return Description of the item
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
      * Tells if the item is a container
      * @return True if the item has subitems in it (containedItems is not empty), false otherwise
      */
