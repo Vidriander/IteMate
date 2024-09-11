@@ -28,7 +28,7 @@ import iteMate.project.R;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ContainedItemAdapter;
 
-public class ItemsDetailActivity extends AppCompatActivity implements ItemRepository.OnItemsFetchedListener {
+public class ItemsDetailActivity extends AppCompatActivity{
 
     private Item itemToDisplay;
     private RecyclerView horizontalRecyclerView;
@@ -60,24 +60,15 @@ public class ItemsDetailActivity extends AppCompatActivity implements ItemReposi
             return insets;
         });
 
-        // Initialize ItemRepository
-        ItemRepository itemRepository = new ItemRepository();
-
-        // Initialize Item list
-        itemList = new ArrayList<>();
-
-        // Fetch items from Firestore
-        itemRepository.getAllItemsFromFirestore(this);
-
         // Initialize RecyclerViews and Adapters
         horizontalRecyclerView = findViewById(R.id.itemdetailview_containeditems_recyclerview);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        horizontalAdapter = new ContainedItemAdapter(itemList, this, false);
+        horizontalAdapter = new ContainedItemAdapter(itemToDisplay.getContainedItems(), this, false);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
         associatedItemsRecyclerView = findViewById(R.id.itemdetailview_associateditems_recyclerview);
         associatedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        horizontalAdapterAssociatedItems = new ContainedItemAdapter(itemList, this, false);
+        horizontalAdapterAssociatedItems = new ContainedItemAdapter(itemToDisplay.getAssociatedItems(), this, false);
         associatedItemsRecyclerView.setAdapter(horizontalAdapterAssociatedItems);
 
         // on click listener for back button
@@ -138,15 +129,10 @@ public class ItemsDetailActivity extends AppCompatActivity implements ItemReposi
 
             ((TextView) findViewById(R.id.item_detailcard_title)).setText(itemToDisplay.getTitle());
             ((TextView) findViewById(R.id.item_detailcard_sideheader)).setText(String.valueOf(itemToDisplay.getNfcTag()));
+            ((TextView) findViewById(R.id.itemdetailcard_itemdescription)).setText(String.valueOf(itemToDisplay.getDescription()));
+
         } else {
             Log.e("ItemsDetailActivity", "itemToDisplay is null in setDetailViewContents");
         }
-    }
-
-    @Override
-    public void onItemsFetched(List<Item> items) {
-        itemList.clear();
-        itemList.addAll(items);
-        horizontalAdapter.notifyDataSetChanged();
     }
 }

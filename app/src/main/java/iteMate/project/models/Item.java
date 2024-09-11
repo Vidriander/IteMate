@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import iteMate.project.R;
 
@@ -173,6 +174,22 @@ public class Item implements Parcelable {
 
     public int getDefaultImage() {
         return defaultImage;
+    }
+
+    /**
+     * Returns the list of items contained in this item
+     * @return List of items contained in this item
+     */
+    public List<Item> getContainedItems() {
+        return containedItems;
+    }
+
+    /**
+     * Returns the list of items associated with this item
+     * @return List of items associated with this item
+     */
+    public List<Item> getAssociatedItems() {
+        return associatedItems;
     }
 
     /**

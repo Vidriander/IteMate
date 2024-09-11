@@ -33,20 +33,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     private List<Item> items;
     private Context context;
 
-    /**
-     * Stores the clicked item.
-     */
-    private static Item clickedItem;
-
-    /**
-     * Returns the clicked item in order to display the correct item in the detail view.
-     *
-     * @return the clicked item
-     */
-    public static Item getClickedItem() {
-        return clickedItem;
-    }
-
     public ItemAdapter(List<Item> items, Context context) {
         this.items = items;
         this.context = context;
@@ -113,7 +99,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ItemsDetailActivity.class);
             intent.putExtra("item", item);
-            clickedItem = item;
             context.startActivity(intent);
         });
     }
