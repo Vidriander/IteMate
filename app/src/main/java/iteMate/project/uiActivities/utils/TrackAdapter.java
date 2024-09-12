@@ -52,9 +52,14 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Track track = tracks.get(position);
 
-        // setting the name of the contact
-        String displayName = track.getContact().getFirstName() + " " + track.getContact().getLastName();
-        holder.contactName.setText(displayName);
+        // Check if contact is not null before accessing its methods
+        if (track.getContact() != null) {
+            // setting the name of the contact
+            String displayName = track.getContact().getFirstName() + " " + track.getContact().getLastName();
+            holder.contactName.setText(displayName);
+        } else {
+            holder.contactName.setText("Unknown Contact");
+        }
 
         //  setting the number of items
         holder.numberOfItems.setText(String.valueOf(track.getNumberOfItems()));

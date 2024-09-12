@@ -17,6 +17,7 @@ public class Track implements Parcelable {
     private Date returnDate;
     private Contact contact;
     private List<Item> LendList;
+    private List<String> lentItemIDs = new ArrayList<>();;
     private String ownerID;  // #TODO setter for ownerID
 
     public Track() {
@@ -93,5 +94,6 @@ public class Track implements Parcelable {
         returnDate = returnDateLong != -1 ? new Date(returnDateLong) : null;
         contact = in.readParcelable(Contact.class.getClassLoader());
         LendList = in.createTypedArrayList(Item.CREATOR);
+        lentItemIDs = in.createStringArrayList();
     }
 }

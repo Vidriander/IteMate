@@ -33,7 +33,7 @@ public class Item implements Parcelable {
     /**
      * Availability of the item
      */
-    private boolean available;
+    private boolean available;  //  unnecessary as this is indicated by having a trackID - should be removed
     /**
      * List of items contained in this item
      */
