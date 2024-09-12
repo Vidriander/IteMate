@@ -69,7 +69,7 @@ public class TrackRepository {
                     if (task.isSuccessful() && task.getResult() != null) {
                         Contact contact = task.getResult().toObject(Contact.class);
                         track.setContact(contact);
-                        listener.onTrackFetched(track);
+                        //listener.onTrackFetched(track);
                     } else {
                         Log.w("Firestore", "Error getting contact.", task.getException());
                     }
