@@ -8,6 +8,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import iteMate.project.models.Contact;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 
@@ -46,9 +47,31 @@ public class TrackRepository {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         List<Track> trackList = task.getResult().toObjects(Track.class);
+                        for (Track track : trackList) {
+                            fetchContactForTrack(track, listener);
+                        }
                         listener.onTracksFetched(trackList);
                     } else {
                         Log.w("Firestore", "Error getting documents.", task.getException());
+                    }
+                });
+    }
+
+    /**
+     * Fetches all tracks from Firestore for a specific contact
+     * @param track the track to be serched
+     * @param listener the listener to be called when the tracks are fetched
+     */
+    private void fetchContactForTrack(Track track, OnTracksFetchedListener listener) {
+        db.collection("contacts").document(track.getContactID())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        Contact contact = task.getResult().toObject(Contact.class);
+                        track.setContact(contact);
+                        listener.onTrackFetched(track);
+                    } else {
+                        Log.w("Firestore", "Error getting contact.", task.getException());
                     }
                 });
     }
@@ -122,5 +145,6 @@ public class TrackRepository {
      */
     public interface OnTracksFetchedListener {
         void onTracksFetched(List<Track> tracks);
+        void onTrackFetched(Track track); // New method to handle a single Track
     }
 }

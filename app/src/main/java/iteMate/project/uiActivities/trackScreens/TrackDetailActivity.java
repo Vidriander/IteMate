@@ -43,12 +43,12 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
         // Get the track to display from the intent:
         trackToDisplay = getIntent().getParcelableExtra("track");
 
-        if (trackToDisplay == null) {
-            Log.e("TrackDetailActivity", "trackToDisplay is null");
-            finish(); // Close the activity if trackToDisplay is null
-            return;
+        if (trackToDisplay != null) {
+            setDetailViewContents();
+        } else {
+            finish();
+            Log.e("TrackDetailActivity", "Track is null");
         }
-        setDetailViewContents();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -117,11 +117,21 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
         horizontalAdapter.notifyDataSetChanged();
     }
 
+
+
     @Override
     public void onItemsFetched(List<Item> items) {
         Log.d("TrackDetailActivity", "Fetched " + items.size() + " items");
         itemList.clear();
         itemList.addAll(items);
         horizontalAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onTrackFetched(Track track) {
+        // Handle the fetched track here
+        // For example, you can update the UI with the track details
+        trackToDisplay = track;
+        setDetailViewContents();
     }
 }

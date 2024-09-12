@@ -16,6 +16,7 @@ public class Track implements Parcelable {
     private Date giveOutDate;
     private Date returnDate;
     private Contact contact;
+    private String contactID;
     private List<Item> LendList;
     private List<String> lentItemIDs = new ArrayList<>();;
     private String ownerID;  // #TODO setter for ownerID
@@ -23,6 +24,16 @@ public class Track implements Parcelable {
     public Track() {
         this.LendList = Arrays.asList(new Item(), new Item());
         this.returnDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 7);
+    }
+
+    public Track(Date giveOutDate, Date returnDate, Contact contact, String contactID, List<Item> lendList, List<String> lentItemIDs, String ownerID) {
+        this.giveOutDate = giveOutDate;
+        this.returnDate = returnDate;
+        this.contact = contact;
+        this.contactID = contactID;
+        LendList = lendList;
+        this.lentItemIDs = lentItemIDs;
+        this.ownerID = ownerID;
     }
 
     public Track(Date giveOutDate, Date returnDate, Contact contact, List<Item> LendList) {
@@ -38,6 +49,10 @@ public class Track implements Parcelable {
 
     public Contact getContact() {
         return contact;
+    }
+
+    public String getContactID() {
+        return contactID;
     }
 
     public List<Item> getLendList() {
@@ -62,6 +77,10 @@ public class Track implements Parcelable {
         return (int) ((returnDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
     }
 
+    public void setContact(Contact contact) {
+        this.contact = contact;
+    }
+
     public static final Creator<Track> CREATOR = new Creator<Track>() {
         @Override
         public Track createFromParcel(Parcel in) {
@@ -84,9 +103,14 @@ public class Track implements Parcelable {
         dest.writeLong(giveOutDate != null ? giveOutDate.getTime() : -1);
         dest.writeLong(returnDate != null ? returnDate.getTime() : -1);
         dest.writeParcelable(contact, flags);
-        dest.writeTypedList(LendList);
+        dest.writeStringList(lentItemIDs);
+        dest.writeString(ownerID);
     }
 
+    /**
+     * Constructor for a track from a parcel
+     * @param in Parcel to read from
+     */
     protected Track(Parcel in) {
         long giveOutDateLong = in.readLong();
         giveOutDate = giveOutDateLong != -1 ? new Date(giveOutDateLong) : null;
@@ -95,5 +119,6 @@ public class Track implements Parcelable {
         contact = in.readParcelable(Contact.class.getClassLoader());
         LendList = in.createTypedArrayList(Item.CREATOR);
         lentItemIDs = in.createStringArrayList();
+        ownerID = in.readString();
     }
 }
