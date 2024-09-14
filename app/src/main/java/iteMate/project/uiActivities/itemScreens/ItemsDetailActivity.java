@@ -35,7 +35,6 @@ public class ItemsDetailActivity extends AppCompatActivity{
     private ContainedItemAdapter horizontalAdapter;
     private RecyclerView associatedItemsRecyclerView;
     private ContainedItemAdapter horizontalAdapterAssociatedItems;
-    private List<Item> itemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -17,6 +17,7 @@ import java.util.List;
 
 import iteMate.project.R;
 import iteMate.project.models.Item;
+import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.ScanActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
@@ -30,28 +31,20 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
     private Context context;
 
     /**
-     * Stores the id of the clicked item, if any.
-     * NFC tag numbers are used as ids.
-     */
-    private static Item clickedItem;
-
-    /**
      * True if the adapter is used in the edit screen, false otherwise.
      */
     private boolean inEditScreen;
-
-    /**
-     * Returns the id of the clicked item in order to display the correct item in the detail view.
-     * @return the id of the clicked item
-     */
-    public static Item getClickedItem() {
-        return clickedItem;
-    }
 
     public ContainedItemAdapter(List<Item> items, Context context, boolean inEditScreen) {
         this.items = items;
         this.context = context;
         this.inEditScreen = inEditScreen;
+
+        // Set the contained and associated items for each of the contained and associated items.
+        // This ensures that the contained and associated items are already loaded when the user clicks on one.
+        for (Item item : items) {
+            ItemRepository.setContainedAndAssociatedItems(item);
+        }
     }
 
     @NonNull
@@ -122,7 +115,6 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, ItemsDetailActivity.class);
                 intent.putExtra("item", item);
-                clickedItem = item;
                 context.startActivity(intent);
             });
         }

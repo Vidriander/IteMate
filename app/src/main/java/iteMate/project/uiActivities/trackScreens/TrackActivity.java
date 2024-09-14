@@ -107,8 +107,8 @@ public class TrackActivity extends MainActivity implements TrackRepository.OnTra
 
     @Override
     public void onTrackFetched(Track track) {
-        trackList.add(track);
-        searchList.add(track);
+//        trackList.add(track);
+//        searchList.add(track);
         trackAdapter.notifyDataSetChanged();
     }
 }

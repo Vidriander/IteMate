@@ -47,6 +47,8 @@ public class ItemsActivity extends MainActivity implements ItemRepository.OnItem
         itemList = new ArrayList<>();
         searchList = new ArrayList<>(itemList);
 
+        fetchItems();
+
         // Initialize Adapter and set to RecyclerView
         itemAdapter = new ItemAdapter(searchList, this);
         recyclerView.setAdapter(itemAdapter);
@@ -68,8 +70,6 @@ public class ItemsActivity extends MainActivity implements ItemRepository.OnItem
                 return true;
             }
         });
-
-        fetchItems();
     }
 
     /**

@@ -5,9 +5,6 @@ import android.util.Log;
 
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.MemoryCacheSettings;
-import com.google.firebase.firestore.PersistentCacheSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.Source;
 import com.google.firebase.storage.FirebaseStorage;
@@ -25,7 +22,7 @@ import iteMate.project.models.Item;
  * It contains methods for adding, fetching, deleting and updating items
  */
 public class ItemRepository {
-    private FirebaseFirestore db;
+    private static FirebaseFirestore db;
 
     // Default constructor
     public ItemRepository() {
@@ -80,12 +77,12 @@ public class ItemRepository {
                             // Fetch contained items
                             if (item.getContainedItemIDs() != null && !item.getContainedItemIDs().isEmpty()) {
                                 item.setContainedItems(getItemslistFromListOfIDs(item.getContainedItemIDs()));
-                                Log.w("Debugging", "Fetching contained items" + item.getContainedItems());
+//                                Log.w("Debugging", "Fetching contained items" + item.getContainedItems());
                             }
                             // Fetch associated items
                             if (item.getAssociatedItemIDs() != null && !item.getAssociatedItemIDs().isEmpty()) {
                                 item.setAssociatedItems(getItemslistFromListOfIDs(item.getAssociatedItemIDs()));
-                                Log.w("Debugging", "Fetching associated items" + item.getAssociatedItems());
+//                                Log.w("Debugging", "Fetching associated items" + item.getAssociatedItems());
                             }
                         }
                         listener.onItemsFetched(itemList);
@@ -98,16 +95,7 @@ public class ItemRepository {
                                         List<Item> itemList = serverTask.getResult().toObjects(Item.class);
                                         // Fetch contained and associated items for each item
                                         for (Item item : itemList) {
-                                            // Fetch contained items
-                                            if (item.getContainedItemIDs() != null && !item.getContainedItemIDs().isEmpty()) {
-                                                item.setContainedItems(getItemslistFromListOfIDs(item.getContainedItemIDs()));
-                                                Log.w("Debugging", "Fetching contained items" + item.getContainedItems());
-                                            }
-                                            // Fetch associated items
-                                            if (item.getAssociatedItemIDs() != null && !item.getAssociatedItemIDs().isEmpty()) {
-                                                item.setAssociatedItems(getItemslistFromListOfIDs(item.getAssociatedItemIDs()));
-                                                Log.w("Debugging", "Fetching associated items" + item.getAssociatedItems());
-                                            }
+                                            setContainedAndAssociatedItems(item);
                                         }
                                         listener.onItemsFetched(itemList);
                                     } else {
@@ -127,7 +115,7 @@ public class ItemRepository {
      * @param itemIDs List of item IDs to fetch
      * @return List of items fetched from Firestore
      */
-    private ArrayList<Item> getItemslistFromListOfIDs(List<String> itemIDs) {
+    private static ArrayList<Item> getItemslistFromListOfIDs(List<String> itemIDs) {
         ArrayList<Item> items = new ArrayList<>();
         for (String itemID : itemIDs) {
             db.collection("items").whereEqualTo(FieldPath.documentId(), itemID)
@@ -141,8 +129,23 @@ public class ItemRepository {
                         }
                     });
         }
-        Log.d("Debugging", "Returning items list " + items.size());
+//        Log.d("Debugging", "Returning items list " + items.size());
         return items;
+    }
+
+    /**
+     * Method to set the contained and associated items of an item.
+     * @param item the item whose contained and associated items are to be set
+     */
+    public static void setContainedAndAssociatedItems(Item item) {
+        // Fetch contained items
+        if (item.getContainedItemIDs() != null && !item.getContainedItemIDs().isEmpty()) {
+            item.setContainedItems(getItemslistFromListOfIDs(item.getContainedItemIDs()));
+        }
+        // Fetch associated items
+        if (item.getAssociatedItemIDs() != null && !item.getAssociatedItemIDs().isEmpty()) {
+            item.setAssociatedItems(getItemslistFromListOfIDs(item.getAssociatedItemIDs()));
+        }
     }
 
     /**
