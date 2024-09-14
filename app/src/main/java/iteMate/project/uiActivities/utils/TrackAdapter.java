@@ -22,20 +22,6 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
     private final List<Track> tracks;
     private final Context context;
 
-    /**
-     * Stores the id of the clicked Track, if any.
-     */
-    private static Track clickedTrack;
-
-    /**
-     * Returns the id of the clicked Track in order to display the correct Track in the detail view.
-     * Not used currently. Setting up the intent with an extra does the same thing.
-     * @return the id of the clicked Track
-     */
-    public static Track getClickedTrack() {
-        return clickedTrack;
-    }
-
     public TrackAdapter(List<Track> tracks, Context context) {
         this.tracks = tracks;
         this.context = context;
@@ -76,7 +62,6 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, TrackDetailActivity.class);
             intent.putExtra("track", track);
-            clickedTrack = track;
             context.startActivity(intent);
         });
     }
