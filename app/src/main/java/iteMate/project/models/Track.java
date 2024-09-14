@@ -2,9 +2,9 @@ package iteMate.project.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.lang.reflect.Array;
+import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
 
@@ -13,37 +13,57 @@ import java.util.Date;
  */
 public class Track implements Parcelable {
 
-    private Date giveOutDate;
-    private Date returnDate;
+    /**
+     * Date on which the item was given out
+     */
+    private Timestamp giveOutDate;
+    /**
+     * Date on which the item is to be returned
+     */
+    private Timestamp returnDate;
+    /**
+     * Contact to whom the item is given
+     */
     private Contact contact;
+    /**
+     * ID of the contact to whom the item is given
+     */
     private String contactID;
-    private List<Item> LendList;
+    /**
+     * List of items lent out
+     */
+    private List<Item> lentItemsList;
+    /**
+     * List of item IDs lent out
+     */
     private List<String> lentItemIDs = new ArrayList<>();;
+    /**
+     * ID of the owner of the item
+     */
     private String ownerID;  // #TODO setter for ownerID
 
     public Track() {
-        this.LendList = Arrays.asList(new Item(), new Item());
-        this.returnDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 7);
+//        this.LendList = Arrays.asList(new Item(), new Item());
     }
 
-    public Track(Date giveOutDate, Date returnDate, Contact contact, String contactID, List<Item> lendList, List<String> lentItemIDs, String ownerID) {
+    public Track(Timestamp giveOutDate, Timestamp returnDate, Contact contact, String contactID, List<Item> lentItemsList, List<String> lentItemIDs, String ownerID) {
         this.giveOutDate = giveOutDate;
         this.returnDate = returnDate;
         this.contact = contact;
         this.contactID = contactID;
-        LendList = lendList;
+        this.lentItemsList = lentItemsList;
         this.lentItemIDs = lentItemIDs;
         this.ownerID = ownerID;
     }
 
-    public Track(Date giveOutDate, Date returnDate, Contact contact, List<Item> LendList) {
+    public Track(Timestamp giveOutDate, Timestamp returnDate, Contact contact, List<Item> lentItemsList) {
         this.giveOutDate = giveOutDate;
         this.returnDate = returnDate;
         this.contact = contact;
-        this.LendList = LendList;
+        this.lentItemsList = lentItemsList;
     }
 
-    public Date getGiveOutDate() {
+    public Timestamp getGiveOutDate() {
         return giveOutDate;
     }
 
@@ -55,8 +75,20 @@ public class Track implements Parcelable {
         return contactID;
     }
 
-    public List<Item> getLendList() {
-        return LendList;
+    public List<Item> getLentItemsList() {
+        return lentItemsList;
+    }
+
+    public List<String> getLentItemIDs() {
+        return lentItemIDs;
+    }
+
+    public void setLentItemIDs(List<String> lentItemIDs) {
+        this.lentItemIDs = lentItemIDs;
+    }
+
+    public void setLentItemsList(List<Item> itemList) {
+        this.lentItemsList = itemList;
     }
 
     /**
@@ -64,7 +96,7 @@ public class Track implements Parcelable {
      * @return the number of items
      */
     public int getNumberOfItems() {
-        return LendList != null? LendList.size() : 0;
+        return lentItemIDs.size();
     }
 
     /**
@@ -72,9 +104,11 @@ public class Track implements Parcelable {
      * @return the number of days left
      */
     public int getDaysLeft() {
-//        return 0;
-        // TODO: returnDate seems to be a NullPointer (Data not loaded fully or correctly from firestore?)
-        return (int) ((returnDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+        if (returnDate == null) {
+            return 0; // or handle the null case appropriately
+        }
+        long millisecondsLeft = returnDate.toDate().getTime() - new Date().getTime();
+        return (int) (millisecondsLeft / (1000 * 60 * 60 * 24));
     }
 
     public void setContact(Contact contact) {
@@ -100,8 +134,8 @@ public class Track implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(giveOutDate != null ? giveOutDate.getTime() : -1);
-        dest.writeLong(returnDate != null ? returnDate.getTime() : -1);
+        dest.writeLong(giveOutDate != null ? giveOutDate.toDate().getTime() : -1);
+        dest.writeLong(returnDate != null ? returnDate.toDate().getTime() : -1);
         dest.writeParcelable(contact, flags);
         dest.writeStringList(lentItemIDs);
         dest.writeString(ownerID);
@@ -113,11 +147,11 @@ public class Track implements Parcelable {
      */
     protected Track(Parcel in) {
         long giveOutDateLong = in.readLong();
-        giveOutDate = giveOutDateLong != -1 ? new Date(giveOutDateLong) : null;
+        giveOutDate = giveOutDateLong != -1 ? new Timestamp(new Date(giveOutDateLong)) : null;
         long returnDateLong = in.readLong();
-        returnDate = returnDateLong != -1 ? new Date(returnDateLong) : null;
+        returnDate = returnDateLong != -1 ? new Timestamp(new Date(returnDateLong)) : null;
         contact = in.readParcelable(Contact.class.getClassLoader());
-        LendList = in.createTypedArrayList(Item.CREATOR);
+        lentItemsList = in.createTypedArrayList(Item.CREATOR);
         lentItemIDs = in.createStringArrayList();
         ownerID = in.readString();
     }

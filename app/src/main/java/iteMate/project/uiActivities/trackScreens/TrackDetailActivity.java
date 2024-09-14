@@ -3,7 +3,6 @@ package iteMate.project.uiActivities.trackScreens;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +11,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +105,7 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
         Log.d("TrackDetailActivity", "onTracksFetched called with " + tracks.size() + " tracks");
         itemList.clear();
         for (Track track : tracks) {
-            List<Item> lendList = track.getLendList();
+            List<Item> lendList = track.getLentItemsList();
             if (lendList != null) {   // Check if lendList is not null
                 itemList.addAll(lendList);
                 Log.d("TrackDetailActivity", "Added " + lendList.size() + " items to itemList");

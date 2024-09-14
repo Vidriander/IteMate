@@ -155,7 +155,6 @@ public class TrackEditActivity extends AppCompatActivity implements TrackReposit
 
     @Override
     public void onTrackFetched(Track track) {
-        trackToDisplay = track;
-        setDetailViewContents();
+
     }
 }

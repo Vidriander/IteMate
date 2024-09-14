@@ -22,7 +22,7 @@ import iteMate.project.models.Item;
  * It contains methods for adding, fetching, deleting and updating items
  */
 public class ItemRepository {
-    private static FirebaseFirestore db;
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     // Default constructor
     public ItemRepository() {
@@ -115,7 +115,7 @@ public class ItemRepository {
      * @param itemIDs List of item IDs to fetch
      * @return List of items fetched from Firestore
      */
-    private static ArrayList<Item> getItemslistFromListOfIDs(List<String> itemIDs) {
+    public static ArrayList<Item> getItemslistFromListOfIDs(List<String> itemIDs) {
         ArrayList<Item> items = new ArrayList<>();
         for (String itemID : itemIDs) {
             db.collection("items").whereEqualTo(FieldPath.documentId(), itemID)

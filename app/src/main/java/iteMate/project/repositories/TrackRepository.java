@@ -48,7 +48,7 @@ public class TrackRepository {
                     if (task.isSuccessful()) {
                         List<Track> trackList = task.getResult().toObjects(Track.class);
                         for (Track track : trackList) {
-                            fetchContactForTrack(track, listener);
+                            fetchAttributesForTrack(track, listener);
                         }
                         listener.onTracksFetched(trackList);
                     } else {
@@ -60,21 +60,32 @@ public class TrackRepository {
     /**
      * Fetches all tracks from Firestore for a specific contact
      * @param track the track to be serched
-     * @param listener the listener to be called when the tracks are fetched
      */
-    private void fetchContactForTrack(Track track, OnTracksFetchedListener listener) {
+    private void fetchAttributesForTrack(Track track, OnTracksFetchedListener listener) {
         db.collection("contacts").document(track.getContactID())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         Contact contact = task.getResult().toObject(Contact.class);
                         track.setContact(contact);
-                        //listener.onTrackFetched(track);
+                        listener.onTrackFetched(track);
                     } else {
                         Log.w("Firestore", "Error getting contact.", task.getException());
                     }
                 });
+        db.collection("items").whereIn("itemID", track.getLentItemIDs())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Item> itemList = task.getResult().toObjects(Item.class);
+                        track.setLentItemsList(itemList);
+                        listener.onTrackFetched(track);
+                    } else {
+                        Log.w("Firestore", "Error getting items.", task.getException());
+                    }
+                });
     }
+
 
     /**
      * Fetches a track from Firestore
@@ -145,6 +156,6 @@ public class TrackRepository {
      */
     public interface OnTracksFetchedListener {
         void onTracksFetched(List<Track> tracks);
-        void onTrackFetched(Track track); // New method to handle a single Track
+        void onTrackFetched(Track track);
     }
 }

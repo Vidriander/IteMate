@@ -28,7 +28,7 @@ import iteMate.project.R;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ContainedItemAdapter;
 
-public class ItemsDetailActivity extends AppCompatActivity{
+public class ItemsDetailActivity extends AppCompatActivity {
 
     private Item itemToDisplay;
     private RecyclerView horizontalRecyclerView;
