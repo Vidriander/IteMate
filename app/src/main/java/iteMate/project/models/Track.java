@@ -105,7 +105,7 @@ public class Track implements Parcelable {
      */
     public int getDaysLeft() {
         if (returnDate == null) {
-            return 0; // or handle the null case appropriately
+            return 4; // or handle the null case appropriately
         }
         long millisecondsLeft = returnDate.toDate().getTime() - new Date().getTime();
         return (int) (millisecondsLeft / (1000 * 60 * 60 * 24));

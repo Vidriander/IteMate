@@ -22,7 +22,7 @@ import iteMate.project.repositories.ItemRepository;
 import iteMate.project.repositories.TrackRepository;
 import iteMate.project.uiActivities.utils.ContainedItemAdapter;
 
-public class TrackDetailActivity extends AppCompatActivity implements TrackRepository.OnTracksFetchedListener, ItemRepository.OnItemsFetchedListener {
+public class TrackDetailActivity extends AppCompatActivity implements TrackRepository.OnTracksFetchedListener{
 
     private Track trackToDisplay;
     private RecyclerView horizontalRecyclerView;
@@ -58,9 +58,6 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
 
         // Initialize Item list
         itemList = new ArrayList<>();
-
-         // Fetch tracks from Firestore
-        itemRepository.getAllItemsFromFirestore(this);
 
         // Initialize RecyclerView  for horizontal list of items
         horizontalRecyclerView = findViewById(R.id.trackdetailview_lentitems_recyclerview);
@@ -111,16 +108,6 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
                 Log.d("TrackDetailActivity", "Added " + lendList.size() + " items to itemList");
             }
         }
-        horizontalAdapter.notifyDataSetChanged();
-    }
-
-
-
-    @Override
-    public void onItemsFetched(List<Item> items) {
-        Log.d("TrackDetailActivity", "Fetched " + items.size() + " items");
-        itemList.clear();
-        itemList.addAll(items);
         horizontalAdapter.notifyDataSetChanged();
     }
 
