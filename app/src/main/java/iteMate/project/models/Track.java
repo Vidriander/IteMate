@@ -36,14 +36,14 @@ public class Track implements Parcelable {
     /**
      * List of item IDs lent out
      */
-    private List<String> lentItemIDs = new ArrayList<>();;
+    private List<String> lentItemIDs = new ArrayList<>();
     /**
      * ID of the owner of the item
      */
-    private String ownerID;  // #TODO setter for ownerID
+    private String ownerID;
 
     public Track() {
-//        this.LendList = Arrays.asList(new Item(), new Item());
+        // Default constructor
     }
 
     public Track(Timestamp giveOutDate, Timestamp returnDate, Contact contact, String contactID, List<Item> lentItemsList, List<String> lentItemIDs, String ownerID) {
@@ -65,6 +65,10 @@ public class Track implements Parcelable {
 
     public Timestamp getGiveOutDate() {
         return giveOutDate;
+    }
+
+    public Timestamp getReturnDate() {
+        return returnDate;
     }
 
     public Contact getContact() {
@@ -91,6 +95,14 @@ public class Track implements Parcelable {
         this.lentItemsList = itemList;
     }
 
+    public String getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(String ownerID) {
+        this.ownerID = ownerID;
+    }
+
     /**
      * Method to get the number of items in the list
      * @return the number of items
@@ -105,7 +117,7 @@ public class Track implements Parcelable {
      */
     public int getDaysLeft() {
         if (returnDate == null) {
-            return 4; // or handle the null case appropriately
+            return 0; // Adjust handling of null returnDate
         }
         long millisecondsLeft = returnDate.toDate().getTime() - new Date().getTime();
         return (int) (millisecondsLeft / (1000 * 60 * 60 * 24));
@@ -134,15 +146,17 @@ public class Track implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        // Writing each field to the Parcel
         dest.writeLong(giveOutDate != null ? giveOutDate.toDate().getTime() : -1);
         dest.writeLong(returnDate != null ? returnDate.toDate().getTime() : -1);
         dest.writeParcelable(contact, flags);
         dest.writeStringList(lentItemIDs);
+        dest.writeTypedList(lentItemsList);
         dest.writeString(ownerID);
     }
 
     /**
-     * Constructor for a track from a parcel
+     * Constructor for creating a Track from a Parcel
      * @param in Parcel to read from
      */
     protected Track(Parcel in) {
@@ -151,8 +165,8 @@ public class Track implements Parcelable {
         long returnDateLong = in.readLong();
         returnDate = returnDateLong != -1 ? new Timestamp(new Date(returnDateLong)) : null;
         contact = in.readParcelable(Contact.class.getClassLoader());
-        lentItemsList = in.createTypedArrayList(Item.CREATOR);
         lentItemIDs = in.createStringArrayList();
+        lentItemsList = in.createTypedArrayList(Item.CREATOR);
         ownerID = in.readString();
     }
 }

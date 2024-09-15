@@ -2,6 +2,7 @@ package iteMate.project.repositories;
 
 import android.util.Log;
 
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -58,8 +59,8 @@ public class TrackRepository {
     }
 
     /**
-     * Fetches all tracks from Firestore for a specific contact
-     * @param track the track to be serched
+     * Fetches the attributes for a track from Firestore
+     * @param track the track for which the attributes are to be fetched
      */
     private void fetchAttributesForTrack(Track track, OnTracksFetchedListener listener) {
         db.collection("contacts").document(track.getContactID())
@@ -73,7 +74,7 @@ public class TrackRepository {
                         Log.w("Firestore", "Error getting contact.", task.getException());
                     }
                 });
-        db.collection("items").whereIn("itemID", track.getLentItemIDs())
+        db.collection("items").whereIn(FieldPath.documentId(), track.getLentItemIDs())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -84,6 +85,20 @@ public class TrackRepository {
                         Log.w("Firestore", "Error getting items.", task.getException());
                     }
                 });
+    }
+
+    public List<Item> getContainedItemsOfTrack(Track track) {
+        List<Item> itemList = new ArrayList<>();
+        db.collection("items").whereIn(FieldPath.documentId(), track.getLentItemIDs())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        itemList.addAll(task.getResult().toObjects(Item.class));
+                    } else {
+                        Log.w("Firestore", "Error getting items.", task.getException());
+                    }
+                });
+        return itemList;
     }
 
 

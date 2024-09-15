@@ -28,7 +28,6 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
     private RecyclerView horizontalRecyclerView;
     private ContainedItemAdapter horizontalAdapter;
     private List<Item> itemList;
-    private TrackRepository trackRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +38,9 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
 
         // Get the track to display from the intent:
         trackToDisplay = getIntent().getParcelableExtra("track");
+
+        TrackRepository trackRepository = new TrackRepository();
+//        itemList = trackRepository.getContainedItemsOfTrack(trackToDisplay);
 
         if (trackToDisplay != null) {
             setDetailViewContents();
@@ -52,12 +54,6 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Initialize ItemRepository
-        ItemRepository itemRepository = new ItemRepository();
-
-        // Initialize Item list
-        itemList = new ArrayList<>();
 
         // Initialize RecyclerView  for horizontal list of items
         horizontalRecyclerView = findViewById(R.id.trackdetailview_lentitems_recyclerview);
@@ -86,7 +82,6 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
      */
     private void setDetailViewContents() {
         if (trackToDisplay != null) {
-//            ((TextView)findViewById(R.id.track_detailcard_sideheader)).setText(trackToDisplay.getGiveOutDate().toString());
             ((TextView)findViewById(R.id.track_detailcard_title)).setText(trackToDisplay.getContact().getFirstName() + " " + trackToDisplay.getContact().getLastName());
         } else {
             Log.e("TrackDetailActivity", "trackToDisplay is null in setDetailViewContents");
@@ -103,6 +98,7 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
         itemList.clear();
         for (Track track : tracks) {
             List<Item> lendList = track.getLentItemsList();
+            Log.w("TrackDetailActivity", "LentItemList: " + lendList);
             if (lendList != null) {   // Check if lendList is not null
                 itemList.addAll(lendList);
                 Log.d("TrackDetailActivity", "Added " + lendList.size() + " items to itemList");
@@ -113,9 +109,9 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
 
     @Override
     public void onTrackFetched(Track track) {
-        // Handle the fetched track here
-        // For example, you can update the UI with the track details
         trackToDisplay = track;
-        setDetailViewContents();
+        itemList = track.getLentItemsList();
+        Log.w("TrackDetailActivity", "LentItemList: " + itemList);
+        horizontalAdapter.notifyDataSetChanged();
     }
 }
