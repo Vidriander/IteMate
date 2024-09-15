@@ -41,6 +41,10 @@ public class Track implements Parcelable {
      * ID of the owner of the item
      */
     private String ownerID;
+    /**
+     * Additional information about the track
+     */
+    private String additionalInfo;
     // endregion
 
     // region Constructors
@@ -48,14 +52,15 @@ public class Track implements Parcelable {
         // Default constructor
     }
 
-    public Track(Timestamp giveOutDate, Timestamp returnDate, Contact contact, String contactID, List<Item> lentItemsList, List<String> lentItemIDs, String ownerID) {
+    public Track(Timestamp giveOutDate, Timestamp returnDate, Contact contact, String contactID, List<Item> lentItemsList, List<String> lentItemIDs, String ownerID, String additionalInfo) {
         this.giveOutDate = giveOutDate;
         this.returnDate = returnDate;
-        this.contact = contact;
+        setContact(contact);
         this.contactID = contactID;
-        this.lentItemsList = lentItemsList;
-        this.lentItemIDs = lentItemIDs;
-        this.ownerID = ownerID;
+        setLentItemsList(lentItemsList);
+        setLentItemIDs(lentItemIDs);
+        setOwnerID(ownerID);
+        setAdditionalInfo(additionalInfo);
     }
     // endregion
 
@@ -136,6 +141,14 @@ public class Track implements Parcelable {
         long millisecondsLeft = returnDate.toDate().getTime() - new Date().getTime();
         return (int) (millisecondsLeft / (1000 * 60 * 60 * 24));
     }
+
+    /**
+     * Getter for the additional information about the track
+     * @return the additionalInfo
+     */
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
     // endregion
 
     // region Setters
@@ -191,6 +204,17 @@ public class Track implements Parcelable {
         this.lentItemsList = itemList;
     }
 
+    /**
+     * Setter for the additional information about the track
+     * @param additionalInfo the additionalInfo to set
+     * @throws NullPointerException if additionalInfo is null
+     */
+    private void setAdditionalInfo(String additionalInfo) throws NullPointerException {
+        if (additionalInfo == null) {
+            throw new NullPointerException("AdditionalInfo cannot be null");
+        }
+        this.additionalInfo = additionalInfo;
+    }
     // endregion
 
     //region Parcelable implementation
@@ -221,6 +245,7 @@ public class Track implements Parcelable {
         dest.writeTypedList(lentItemsList);
         dest.writeString(ownerID);
         dest.writeString(contactID);
+        dest.writeString(additionalInfo);
     }
 
     /**
@@ -237,6 +262,7 @@ public class Track implements Parcelable {
         lentItemsList = in.createTypedArrayList(Item.CREATOR);
         ownerID = in.readString();
         contactID = in.readString();
+        additionalInfo = in.readString();
     }
     // endregion
 }

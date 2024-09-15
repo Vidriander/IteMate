@@ -25,7 +25,7 @@ public class TrackTests {
 
         List<Item> items = new ArrayList<>(Arrays.asList(new Item(), new Item()));
         List<String> lentItemIDs = new ArrayList<>(Arrays.asList("1", "2"));
-        Track track = new Track(new Timestamp(new Date()), new Timestamp(new Date()), new Contact(), "contactID", items, lentItemIDs, "ownerID");
+        Track track = new Track(new Timestamp(new Date()), new Timestamp(new Date()), new Contact(), "contactID", items, lentItemIDs, "ownerID", "additionalInfo");
         Parcel parcel = Parcel.obtain();
         track.writeToParcel(parcel, track.describeContents());
         parcel.setDataPosition(0);

@@ -96,7 +96,8 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
             ((TextView)findViewById(R.id.lentOnDate_text)).setText(LocalDateTime.ofInstant(trackToDisplay.getGiveOutDate().toDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
             // Setting the return date
             ((TextView)findViewById(R.id.returnDate_Text)).setText(LocalDateTime.ofInstant(trackToDisplay.getReturnDate().toDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
-
+            // Setting the additional info
+            ((TextView)findViewById(R.id.trackdetailcard_itemdescription)).setText(trackToDisplay.getAdditionalInfo());
 
         } else {
             Log.e("TrackDetailActivity", "trackToDisplay is null in setDetailViewContents");
