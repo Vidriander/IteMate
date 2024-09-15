@@ -39,8 +39,7 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
         // Get the track to display from the intent:
         trackToDisplay = getIntent().getParcelableExtra("track");
 
-        TrackRepository trackRepository = new TrackRepository();
-//        itemList = trackRepository.getContainedItemsOfTrack(trackToDisplay);
+        itemList = trackToDisplay.getLentItemsList();
 
         if (trackToDisplay != null) {
             setDetailViewContents();

@@ -153,6 +153,7 @@ public class Track implements Parcelable {
         dest.writeStringList(lentItemIDs);
         dest.writeTypedList(lentItemsList);
         dest.writeString(ownerID);
+        dest.writeString(contactID);
     }
 
     /**
@@ -168,5 +169,6 @@ public class Track implements Parcelable {
         lentItemIDs = in.createStringArrayList();
         lentItemsList = in.createTypedArrayList(Item.CREATOR);
         ownerID = in.readString();
+        contactID = in.readString();
     }
 }

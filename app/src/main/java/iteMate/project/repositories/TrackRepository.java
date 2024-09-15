@@ -62,7 +62,7 @@ public class TrackRepository {
      * Fetches the attributes for a track from Firestore
      * @param track the track for which the attributes are to be fetched
      */
-    private void fetchAttributesForTrack(Track track, OnTracksFetchedListener listener) {
+    public void fetchAttributesForTrack(Track track, OnTracksFetchedListener listener) {
         db.collection("contacts").document(track.getContactID())
                 .get()
                 .addOnCompleteListener(task -> {
