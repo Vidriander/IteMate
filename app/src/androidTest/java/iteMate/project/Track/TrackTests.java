@@ -34,8 +34,8 @@ public class TrackTests {
         assertEquals(createdFromParcel.getGiveOutDate(), track.getGiveOutDate());
         assertEquals(createdFromParcel.getReturnDate(), track.getReturnDate());
 //        assertEquals(createdFromParcel.getContact(), track.getContact());               // fails
-//        assertEquals(createdFromParcel.getContactID(), track.getContactID());           // fails
-//        assertArrayEquals(createdFromParcel.getLentItemsList().toArray(), track.getLentItemsList().toArray());  // fails: Items are probably reconstructed with a new memory address. Test content instead
+        assertEquals(createdFromParcel.getContactID(), track.getContactID());
+        //        assertArrayEquals(createdFromParcel.getLentItemsList().toArray(), track.getLentItemsList().toArray());  // fails: Items are probably reconstructed with a new memory address. Test content instead
         assertEquals(createdFromParcel.getLentItemIDs(), track.getLentItemIDs());
         assertEquals(createdFromParcel.getOwnerID(), track.getOwnerID());
 

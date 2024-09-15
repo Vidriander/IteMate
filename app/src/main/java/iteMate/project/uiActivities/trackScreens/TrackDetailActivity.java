@@ -12,6 +12,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +84,20 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
      */
     private void setDetailViewContents() {
         if (trackToDisplay != null) {
-            ((TextView)findViewById(R.id.track_detailcard_title)).setText(trackToDisplay.getContact().getFirstName() + " " + trackToDisplay.getContact().getLastName());
+            // Setting the title of the detail card
+            String titleText = trackToDisplay.getContact().getFirstName() + " " + trackToDisplay.getContact().getLastName();
+            ((TextView)findViewById(R.id.track_detailcard_title)).setText(titleText);
+            // Setting the itemcount of the detail card
+            String itemCountText = trackToDisplay.getNumberOfItems() + " Items";
+            ((TextView)findViewById(R.id.track_detailcard_sideheader)).setText(itemCountText);
+            // Setting the person to whom the item is given
+            ((TextView)findViewById(R.id.lentToName_Text)).setText(titleText);
+            // Setting the give out date
+            ((TextView)findViewById(R.id.lentOnDate_text)).setText(LocalDateTime.ofInstant(trackToDisplay.getGiveOutDate().toDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
+            // Setting the return date
+            ((TextView)findViewById(R.id.returnDate_Text)).setText(LocalDateTime.ofInstant(trackToDisplay.getReturnDate().toDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
+
+
         } else {
             Log.e("TrackDetailActivity", "trackToDisplay is null in setDetailViewContents");
         }

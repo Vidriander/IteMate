@@ -12,7 +12,7 @@ import java.util.Date;
  * Track class to store detail of a lend out item.
  */
 public class Track implements Parcelable {
-
+    // region Attributes
     /**
      * Date on which the item was given out
      */
@@ -41,7 +41,9 @@ public class Track implements Parcelable {
      * ID of the owner of the item
      */
     private String ownerID;
+    // endregion
 
+    // region Constructors
     public Track() {
         // Default constructor
     }
@@ -55,52 +57,64 @@ public class Track implements Parcelable {
         this.lentItemIDs = lentItemIDs;
         this.ownerID = ownerID;
     }
+    // endregion
 
-    public Track(Timestamp giveOutDate, Timestamp returnDate, Contact contact, List<Item> lentItemsList) {
-        this.giveOutDate = giveOutDate;
-        this.returnDate = returnDate;
-        this.contact = contact;
-        this.lentItemsList = lentItemsList;
-    }
+    //region Getters
 
+    /**
+     * Getter for the date the item was given out
+     * @return the giveOutDate
+     */
     public Timestamp getGiveOutDate() {
         return giveOutDate;
     }
 
+    /**
+     * Getter for the date the item is to be returned
+     * @return the returnDate
+     */
     public Timestamp getReturnDate() {
         return returnDate;
     }
 
+    /**
+     * Getter for the contact to whom the item is given
+     * @return the contact
+     */
     public Contact getContact() {
         return contact;
     }
 
+    /**
+     * Getter for the ID of the contact to whom the item is given
+     * @return the contactID
+     */
     public String getContactID() {
         return contactID;
     }
 
+    /**
+     * Getter for the list of items lent out
+     * @return the lentItemsList
+     */
     public List<Item> getLentItemsList() {
         return lentItemsList;
     }
 
+    /**
+     * Getter for the list of IDs of items lent out
+     * @return the lentItemIDs
+     */
     public List<String> getLentItemIDs() {
         return lentItemIDs;
     }
 
-    public void setLentItemIDs(List<String> lentItemIDs) {
-        this.lentItemIDs = lentItemIDs;
-    }
-
-    public void setLentItemsList(List<Item> itemList) {
-        this.lentItemsList = itemList;
-    }
-
+    /**
+     * Getter for the ID of the owner of the item
+     * @return the ownerID
+     */
     public String getOwnerID() {
         return ownerID;
-    }
-
-    public void setOwnerID(String ownerID) {
-        this.ownerID = ownerID;
     }
 
     /**
@@ -117,16 +131,69 @@ public class Track implements Parcelable {
      */
     public int getDaysLeft() {
         if (returnDate == null) {
-            return 0; // Adjust handling of null returnDate
+            return 0;
         }
         long millisecondsLeft = returnDate.toDate().getTime() - new Date().getTime();
         return (int) (millisecondsLeft / (1000 * 60 * 60 * 24));
     }
+    // endregion
 
-    public void setContact(Contact contact) {
+    // region Setters
+    /**
+     * Method to set the Contact
+     * @param contact the contact to set
+     * @throws NullPointerException if contact is null
+     */
+    public void setContact(Contact contact) throws NullPointerException {
+        if (contact == null) {
+            throw new NullPointerException("Contact cannot be null");
+        }
         this.contact = contact;
     }
 
+    /**
+     * Setter for the ownerID
+     * @param ownerID the ownerID to set
+     * @throws NullPointerException if ownerID is null
+     * @throws IllegalArgumentException if ownerID is empty
+     */
+    public void setOwnerID(String ownerID) throws NullPointerException, IllegalArgumentException {
+        if (ownerID == null) {
+            throw new NullPointerException("OwnerID cannot be null");
+        }
+        if (ownerID.isEmpty()) {
+            throw new IllegalArgumentException("OwnerID cannot be empty");
+        }
+        this.ownerID = ownerID;
+    }
+
+    /**
+     * Setter for the list of lentItemIDs
+     * @param lentItemIDs the lentItemIDs to set
+     * @throws NullPointerException if lentItemIDs is null
+     */
+    public void setLentItemIDs(List<String> lentItemIDs) throws NullPointerException {
+        if (lentItemIDs == null) {
+            throw new NullPointerException("LentItemIDs cannot be null");
+        }
+        this.lentItemIDs = lentItemIDs;
+    }
+
+    /**
+     * Setter for the list of items lent out
+     * @param itemList the list of items to set
+     * @throws NullPointerException if itemList is null
+     */
+    public void setLentItemsList(List<Item> itemList) throws NullPointerException {
+        if (itemList == null) {
+            throw new NullPointerException("LentItemsList cannot be null");
+        }
+        this.lentItemsList = itemList;
+    }
+
+    // endregion
+
+    //region Parcelable implementation
     public static final Creator<Track> CREATOR = new Creator<Track>() {
         @Override
         public Track createFromParcel(Parcel in) {
@@ -171,4 +238,5 @@ public class Track implements Parcelable {
         ownerID = in.readString();
         contactID = in.readString();
     }
+    // endregion
 }
