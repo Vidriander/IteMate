@@ -60,7 +60,8 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
         Item item = items.get(position);
         holder.itemName.setText(item.getTitle());
 
-        if (this.inEditScreen && position == 0) {
+        boolean deprecated = true;
+        if (this.inEditScreen && position == 0 && !deprecated) {
             holder.itemName.setText("Add New Item");
             holder.itemImage.setImageResource(R.drawable.baseline_add_24);
 

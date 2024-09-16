@@ -10,6 +10,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
@@ -98,20 +102,11 @@ public class TrackEditActivity extends AppCompatActivity implements TrackReposit
         // Initialize ItemRepository
         ItemRepository itemRepository = new ItemRepository();
 
-        // Initialize Item list
-        itemList = new ArrayList<>();
-
-        // Fetch all items from Firestore
-        itemRepository.getAllItemsFromFirestore(this);
-
         // Initialize RecyclerView for horizontal list of items
         horizontalRecyclerView = findViewById(R.id.trackedit_recycler);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        horizontalAdapter = new ContainedItemAdapter(itemList, this, true);
+        horizontalAdapter = new ContainedItemAdapter(trackToDisplay.getLentItemsList(), this, true);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
-
-        // on click listener for back button
-
 
         // Adding click listeners for our pick date buttons
         TextView lendDate = findViewById(R.id.lentOnDateEdit);
@@ -135,7 +130,20 @@ public class TrackEditActivity extends AppCompatActivity implements TrackReposit
 
     private void setDetailViewContents() {
         if (trackToDisplay != null) {
-            ((TextView) findViewById(R.id.trackedit_title)).setText(trackToDisplay.getContact().getFirstName() + trackToDisplay.getContact().getLastName());
+            String displayableName = trackToDisplay.getContact().getFirstName() + " " + trackToDisplay.getContact().getLastName();
+            // setting title
+            ((TextView) findViewById(R.id.trackedit_title)).setText(displayableName);
+            // setting "lent to" field & underline
+            TextView contact = findViewById(R.id.trackEditLentToText);
+            contact.setText(displayableName);
+            contact.setPaintFlags(contact.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            // setting lent on date
+            ((TextView) findViewById(R.id.lentOnDateEdit)).setText(LocalDateTime.ofInstant(trackToDisplay.getGiveOutDate().toDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
+            // setting return date
+            ((TextView) findViewById(R.id.returnDateEdit)).setText(LocalDateTime.ofInstant(trackToDisplay.getReturnDate().toDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
+            // setting additional info field
+            ((EditText) findViewById(R.id.trackEditAdditionalInfo)).setText(trackToDisplay.getAdditionalInfo());
+
         } else {
             Log.e("ItemsDetailActivity", "itemToDisplay is null in setDetailViewContents");
         }
