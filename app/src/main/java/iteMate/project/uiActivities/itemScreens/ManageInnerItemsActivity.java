@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import iteMate.project.R;
 import iteMate.project.models.Item;
@@ -40,12 +41,27 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements ItemR
         recyclerView = findViewById(R.id.manage_inner_items_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Fetch all items from Firestore
         ItemRepository itemRepository = new ItemRepository();
         itemRepository.getAllItemsFromFirestore(this);
 
+        // Setting up the adapter
         List<Item> itemsToDisplay = isContainedItems ? itemToDisplay.getContainedItems() : itemToDisplay.getAssociatedItems();
         adapter = new ManageInnerItemsAdapter(itemsToDisplay, allItems, this);
         recyclerView.setAdapter(adapter);
+
+        // Setting on click listener for save button
+        findViewById(R.id.manageInnerItemsSavebutton).setOnClickListener(click -> {
+            List<Item> newCheckedItems = adapter.getNewCheckedItems();
+            if (isContainedItems) {
+                itemToDisplay.setContainedItems((ArrayList<Item>) newCheckedItems);
+                itemToDisplay.setContainedItemIDs((ArrayList<String>) newCheckedItems.stream().map(Item::getId).collect(Collectors.toList()));
+            } else {
+                itemToDisplay.setAssociatedItems((ArrayList<Item>) newCheckedItems);
+            }
+            itemRepository.updateItemInFirestore(itemToDisplay);
+            finish();
+        });
 
     }
 

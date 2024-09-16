@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import iteMate.project.R;
 import iteMate.project.models.Item;
@@ -27,12 +29,20 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
     private List<Item> itemList;
     private Context context;
 
+    // A set to hold checked item tags
+    private Set<Integer> checkedItemTags = new HashSet<>();
+
     public ManageInnerItemsAdapter(List<Item> checkedItems, List<Item> allItems, Context context) {
         this.checkedItems = checkedItems;
         this.allItems = allItems;
         this.context = context;
 
         setUpLists();
+
+        // Initialize the set with the NFC tags of checked items
+        for (Item item : checkedItems) {
+            checkedItemTags.add(item.getNfcTag());
+        }
     }
 
     private void setUpLists() {
@@ -43,6 +53,17 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
                 itemList.add(item);
             }
         }
+    }
+
+    // This method returns all items whose checkbox is checked
+    public List<Item> getNewCheckedItems() {
+        List<Item> newCheckedItems = new ArrayList<>();
+        for (Item item : itemList) {
+            if (checkedItemTags.contains(item.getNfcTag())) {
+                newCheckedItems.add(item);
+            }
+        }
+        return newCheckedItems;
     }
 
     public void notifyItemsAvailable(List<Item> items) {
@@ -75,7 +96,16 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         // Setting the image:
         GenericRepository.setImageForView(context, item.getImage(), holder.itemImage);
         // Setting the checkbox:
-        holder.checkBox.setChecked(checkedItems.stream().map(Item::getNfcTag).anyMatch(tag -> tag.equals(item.getNfcTag())));
+        holder.checkBox.setChecked(checkedItemTags.contains(item.getNfcTag()));
+
+        // Handle checkbox state change
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                checkedItemTags.add(item.getNfcTag()); // Add tag to the checked set
+            } else {
+                checkedItemTags.remove(item.getNfcTag()); // Remove tag from the checked set
+            }
+        });
 
         // Items currently not clickable. Is that desired?
 //        holder.itemView.setOnClickListener(v -> {

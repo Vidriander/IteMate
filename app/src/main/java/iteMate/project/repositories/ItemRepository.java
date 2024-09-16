@@ -71,20 +71,23 @@ public class ItemRepository {
                 .get(Source.SERVER) // TODO: add condition to use Cache in certain cases
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        List<Item> itemList = task.getResult().toObjects(Item.class);
-                        // Fetch contained and associated items for each item
-                        for (Item item : itemList) {
+                        List<Item> itemList = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Item item = document.toObject(Item.class);
+                            item.setId(document.getId()); // Set the Firestore document ID
+
                             // Fetch contained items
                             if (item.getContainedItemIDs() != null && !item.getContainedItemIDs().isEmpty()) {
                                 item.setContainedItems(getItemslistFromListOfIDs(item.getContainedItemIDs()));
-//                                Log.w("Debugging", "Fetching contained items" + item.getContainedItems());
                             }
                             // Fetch associated items
                             if (item.getAssociatedItemIDs() != null && !item.getAssociatedItemIDs().isEmpty()) {
                                 item.setAssociatedItems(getItemslistFromListOfIDs(item.getAssociatedItemIDs()));
-//                                Log.w("Debugging", "Fetching associated items" + item.getAssociatedItems());
                             }
+
+                            itemList.add(item); // Add item to the list
                         }
+
                         listener.onItemsFetched(itemList);
                     } else {
                         // Fallback to server if cache is empty or failed
@@ -92,10 +95,14 @@ public class ItemRepository {
                                 .get(Source.SERVER)
                                 .addOnCompleteListener(serverTask -> {
                                     if (serverTask.isSuccessful()) {
-                                        List<Item> itemList = serverTask.getResult().toObjects(Item.class);
-                                        // Fetch contained and associated items for each item
-                                        for (Item item : itemList) {
+                                        List<Item> itemList = new ArrayList<>();
+                                        for (QueryDocumentSnapshot document : serverTask.getResult()) {
+                                            Item item = document.toObject(Item.class);
+                                            item.setId(document.getId()); // Set the Firestore document ID
+
                                             setContainedAndAssociatedItems(item);
+
+                                            itemList.add(item); // Add item to the list
                                         }
                                         listener.onItemsFetched(itemList);
                                     } else {
@@ -109,27 +116,23 @@ public class ItemRepository {
                 });
     }
 
-    /**
-     * Method to get items from Firestore based on a list of item IDs.
-     * May be used to set the containedItems or associatedItems of an item.
-     * @param itemIDs List of item IDs to fetch
-     * @return List of items fetched from Firestore
-     */
     public static ArrayList<Item> getItemslistFromListOfIDs(List<String> itemIDs) {
         ArrayList<Item> items = new ArrayList<>();
         for (String itemID : itemIDs) {
-            db.collection("items").whereEqualTo(FieldPath.documentId(), itemID)
+            db.collection("items").document(itemID)
                     .get()
                     .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            List<Item> itemList = task.getResult().toObjects(Item.class);
-                            items.add(itemList.get(0));
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            Item item = task.getResult().toObject(Item.class);
+                            if (item != null) {
+                                item.setId(task.getResult().getId()); // Set the Firestore document ID
+                                items.add(item);
+                            }
                         } else {
-                            Log.w("Firestore", "Error getting documents.", task.getException());
+                            Log.w("Firestore", "Error getting document: " + itemID, task.getException());
                         }
                     });
         }
-//        Log.d("Debugging", "Returning items list " + items.size());
         return items;
     }
 
@@ -149,64 +152,33 @@ public class ItemRepository {
     }
 
     /**
-     * Fetches an item from Firestore
-     * @param itemId the id of the item to be fetched
-     * @param listener the listener to be called when the item is fetched
-     */
-    public void getItemFromFirestore(String itemId, OnItemsFetchedListener listener) {
-        db.collection("items").whereEqualTo("itemId", itemId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        List<Item> itemList = task.getResult().toObjects(Item.class);
-                        listener.onItemsFetched(itemList);
-                    } else {
-                        Log.w("Firestore", "Error getting documents.", task.getException());
-                    }
-                });
-    }
-
-    /**
      * Updates an item in Firestore
-     * @param itemId the id of the item to be updated
+     * @param item the item to be updated
      */
-    public void updateItemInFirestore(String itemId) {
-        db.collection("items").whereEqualTo("itemId", itemId)
+    public void updateItemInFirestore(Item item) {
+        db.collection("items").whereEqualTo("nfcTag", item.getNfcTag())
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             db.collection("items").document(document.getId())
-                                    .update("status", "lent out")
+                                    .update(
+                                            "title", item.getTitle(),
+                                            "nfcTag", item.getNfcTag(),
+                                            "description", item.getDescription(),
+                                            "image", item.getImage(),
+                                            "containedItemIDs", item.getContainedItemIDs(),
+                                            "associatedItemIDs", item.getAssociatedItemIDs()
+                                    )
                                     .addOnSuccessListener(aVoid -> Log.d("Firestore", "Item updated successfully!"))
                                     .addOnFailureListener(e -> Log.w("Firestore", "Error updating item", e));
                         }
                     } else {
-                        Log.w("Firestore", "Error getting documents.", task.getException());
+                        Log.w("Firestore", "No matching document found.");
                     }
                 });
     }
 
-    /**
-     * Deletes an item from Firestore
-     * @param itemId the id of the item to be deleted
-     */
-    public void deleteItemFromFirestore(String itemId) {
-        db.collection("items").whereEqualTo("itemId", itemId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            db.collection("items").document(document.getId())
-                                    .delete()
-                                    .addOnSuccessListener(aVoid -> Log.d("Firestore", "Item deleted successfully!"))
-                                    .addOnFailureListener(e -> Log.w("Firestore", "Error deleting item", e));
-                        }
-                    } else {
-                        Log.w("Firestore", "Error getting documents.", task.getException());
-                    }
-                });
-    }
 
     /**
      * Listener interface for fetching items

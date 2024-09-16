@@ -73,21 +73,4 @@ public class ItemRepositoryTest {
         itemRepository.getAllItemsFromFirestore(mockListener);
         verify(mockListener).onItemsFetched(itemList);  // Verify that the listener received the itemList
     }
-
-    @Test
-    public void testUpdateItemInFirestore() {
-        String itemId = "testItemId";
-        String documentId = "documentId";
-
-        // Simulate query snapshot and document retrieval
-        when(mockCollection.whereEqualTo("itemId", itemId)).thenReturn(mockCollection);
-        when(mockQuerySnapshot.getDocuments()).thenReturn(List.of(mockQueryDocumentSnapshot));
-        when(mockQueryDocumentSnapshot.getId()).thenReturn(documentId);
-
-        // Simulate successful update
-        itemRepository.updateItemInFirestore(itemId);
-
-        // Verify the correct document reference was updated
-        verify(mockCollection.document(documentId)).update("status", "lent out");
-    }
 }
