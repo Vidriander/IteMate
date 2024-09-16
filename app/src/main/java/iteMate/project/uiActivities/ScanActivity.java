@@ -1,6 +1,5 @@
 package iteMate.project.uiActivities;
 
-import android.content.Intent;
 import android.nfc.FormatException;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
@@ -10,6 +9,7 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,8 +22,7 @@ import iteMate.project.R;
 /**
  * Activity for scanning NFC tags
  * This activity is used to scan NFC tags in NDEF or MIFARE Classic format.
- * It uses the modern Reader Mode API to handle NFC tags.
- *
+ * It uses Reader Mode API to handle NFC tags.
  */
 public class ScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
@@ -51,13 +50,13 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     protected void onResume() {
         super.onResume();
         if (nfcAdapter != null) {
-            // Enable Reader Mode (modern method for handling NFC tags)
+            // Enable Reader Mode when activity is resumed
             nfcAdapter.enableReaderMode(this,
                     this,  // This activity implements NfcAdapter.ReaderCallback
                     NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_NFC_B |
                             NfcAdapter.FLAG_READER_NFC_F | NfcAdapter.FLAG_READER_NFC_V |
                             NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,  // Skip NDEF check if desired
-                    null);  // No extras needed
+                    null); // Optional Bundle with additional options
         }
     }
 
@@ -75,6 +74,14 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         // This method will be called whenever a tag is discovered
         Log.d("ScanActivity", "NFC Tag discovered!");
 
+        // For testing
+        // Extract the tag ID and update the TextView
+        String tagIdString = extractTagId(tag);
+        runOnUiThread(() -> {
+            TextView tagIdTextView = findViewById(R.id.showNfcTagID);
+            tagIdTextView.setText(tagIdString);
+        });
+
         // Check if the tag is NDEF format
         Ndef ndef = Ndef.get(tag);
         if (ndef != null) {
@@ -91,10 +98,35 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     }
 
     /**
+     * Extract the tag ID from the tag
+     * @param tag NFC tag
+     * @return Tag ID as a HEX coded string
+     */
+    private String extractTagId(Tag tag) {
+        // Get the tag ID
+        byte[] tagId = tag.getId();
+        return bytesToHex(tagId);
+    }
+
+    /**
+     * Converts a byte array to a HEX coded string
+     * @param bytes Byte array
+     * @return HEX coded string
+     */
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02X", b));
+        }
+        return sb.toString();
+    }
+
+    /**
      * Handle MIFARE Classic tag using 3 default keys
      * @param  mifareClassic MIFARE Classic tag
      */
     private void handleMifareClassicTag(MifareClassic mifareClassic) {
+        // Try to authenticate with the default keys
         try {
             mifareClassic.connect();
             boolean auth = false;
@@ -104,6 +136,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                     MifareClassic.KEY_NFC_FORUM
             };
 
+            // Try to authenticate with each key
             for (byte[] key : keys) {
                 auth = mifareClassic.authenticateSectorWithKeyA(0, key);
                 if (auth) {
@@ -111,11 +144,13 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                 }
             }
 
+            // If authentication is successful, read the block
             if (auth) {
                 // Read block 0 from sector 0
                 byte[] data = mifareClassic.readBlock(0);
                 String rfidData = new String(data, StandardCharsets.UTF_8);
                 Log.d("ScanActivity", "MIFARE Classic Data: " + rfidData);
+                // Show the data in a Toast
                 runOnUiThread(() -> Toast.makeText(this, "MIFARE Classic Data: " + rfidData, Toast.LENGTH_SHORT).show());
             } else {
                 Log.d("ScanActivity", "MIFARE Classic authentication failed.");
@@ -137,18 +172,20 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
      * @param ndef NDEF tag
      */
     private void handleNdefTag(Ndef ndef) {
+        // Read the NDEF message
         try {
             ndef.connect();
             NdefMessage ndefMessage = ndef.getNdefMessage();
             if (ndefMessage != null) {
+                // Iterate over all NDEF records
                 for (NdefRecord ndefRecord : ndefMessage.getRecords()) {
+                    // handles only text type
                     if (Arrays.equals(ndefRecord.getType(), NdefRecord.RTD_TEXT)) {
                         byte[] payload = ndefRecord.getPayload();
                         String text = new String(payload, StandardCharsets.UTF_8);
                         Log.d("ScanActivity", "NDEF Text: " + text);
                         runOnUiThread(() -> Toast.makeText(this, "NDEF Text: " + text, Toast.LENGTH_SHORT).show());
                     }
-                    // we could also handle other NDEF types here (RTD_URI, etc.)
                 }
             } else {
                 Log.d("ScanActivity", "NDEF message is null.");
