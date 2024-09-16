@@ -26,7 +26,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdapter.ViewHolder> {
+public class InnerItemsAdapter extends RecyclerView.Adapter<InnerItemsAdapter.ViewHolder> {
     private List<Item> items;
     private Context context;
 
@@ -35,7 +35,7 @@ public class ContainedItemAdapter extends RecyclerView.Adapter<ContainedItemAdap
      */
     private boolean inEditScreen;
 
-    public ContainedItemAdapter(List<Item> items, Context context, boolean inEditScreen) {
+    public InnerItemsAdapter(List<Item> items, Context context, boolean inEditScreen) {
         this.items = items;
         this.context = context;
         this.inEditScreen = inEditScreen;

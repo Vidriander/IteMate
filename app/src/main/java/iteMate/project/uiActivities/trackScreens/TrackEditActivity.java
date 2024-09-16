@@ -15,20 +15,16 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import android.os.Bundle;
+
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.R;
@@ -36,16 +32,14 @@ import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.repositories.TrackRepository;
-import iteMate.project.uiActivities.MainActivity;
 import iteMate.project.uiActivities.utils.ButtonController;
-import iteMate.project.uiActivities.utils.ContainedItemAdapter;
-import iteMate.project.uiActivities.utils.TrackAdapter;
+import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 
 public class TrackEditActivity extends AppCompatActivity implements TrackRepository.OnTracksFetchedListener, ItemRepository.OnItemsFetchedListener {
 
     private Track trackToDisplay;
     private RecyclerView horizontalRecyclerView;
-    private ContainedItemAdapter horizontalAdapter;
+    private InnerItemsAdapter horizontalAdapter;
     private List<Item> itemList;
 
     /**
@@ -105,7 +99,7 @@ public class TrackEditActivity extends AppCompatActivity implements TrackReposit
         // Initialize RecyclerView for horizontal list of items
         horizontalRecyclerView = findViewById(R.id.trackedit_recycler);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        horizontalAdapter = new ContainedItemAdapter(trackToDisplay.getLentItemsList(), this, true);
+        horizontalAdapter = new InnerItemsAdapter(trackToDisplay.getLentItemsList(), this, true);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
         // Adding click listeners for our pick date buttons

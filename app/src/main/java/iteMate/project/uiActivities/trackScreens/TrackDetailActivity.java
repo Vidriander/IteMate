@@ -15,21 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
-import iteMate.project.repositories.ItemRepository;
 import iteMate.project.repositories.TrackRepository;
-import iteMate.project.uiActivities.utils.ContainedItemAdapter;
+import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 
 public class TrackDetailActivity extends AppCompatActivity implements TrackRepository.OnTracksFetchedListener{
 
     private Track trackToDisplay;
     private RecyclerView horizontalRecyclerView;
-    private ContainedItemAdapter horizontalAdapter;
+    private InnerItemsAdapter horizontalAdapter;
     private List<Item> itemList;
 
     @Override
@@ -60,7 +58,7 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
         // Initialize RecyclerView  for horizontal list of items
         horizontalRecyclerView = findViewById(R.id.trackdetailview_lentitems_recyclerview);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        horizontalAdapter = new ContainedItemAdapter(itemList, this,false);
+        horizontalAdapter = new InnerItemsAdapter(itemList, this,false);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
         // on click listener for back button
