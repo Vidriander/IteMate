@@ -15,6 +15,10 @@ import iteMate.project.R;
  */
 public class Item implements Parcelable {
     /**
+     * database ID of the item
+     */
+    private String id;
+    /**
      * Fields of an item
      */
     private int nfcTag;
@@ -82,7 +86,8 @@ public class Item implements Parcelable {
      * @param containedItems List of items contained in this item
      * @param associatedItems List of items associated with this item, not necessary to list any
      */
-    public Item(int nfcTag, String title, String description, String image, boolean available, ArrayList<Item> containedItems, ArrayList<Item> associatedItems) {
+    public Item(String id, int nfcTag, String title, String description, String image, boolean available, ArrayList<Item> containedItems, ArrayList<Item> associatedItems) {
+        this.id = id;
         this.nfcTag = nfcTag;
         this.title = title;
         this.description = description;
@@ -101,6 +106,7 @@ public class Item implements Parcelable {
      * @param in Parcel to read from
      */
     protected Item(Parcel in) {
+        id = in.readString();
         nfcTag = in.readInt();
         title = in.readString();
         description = in.readString();
@@ -143,6 +149,7 @@ public class Item implements Parcelable {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeInt(nfcTag);
         dest.writeString(title);
         dest.writeString(description);
@@ -157,6 +164,13 @@ public class Item implements Parcelable {
         dest.writeInt(defaultImage);
     }
 
+    /**
+     * Returns the ID of the item
+     * @return ID of the item
+     */
+    public String getId() {
+        return id;
+    }
     /**
      * Returns the title of the item
      * @return Title of the item
@@ -212,6 +226,14 @@ public class Item implements Parcelable {
     }
 
     /**
+     * Setter for the ID of the item
+     * @param id ID of the item
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
      * setter for the ID of the track the item is in
      * @param trackID ID of the track the item is in
      */
@@ -228,6 +250,10 @@ public class Item implements Parcelable {
         Log.d("Item", "setContainedItems size: " + containedItems.size());
     }
 
+    public void setContainedItemIDs(ArrayList<String> containedItemIDs) {
+        this.containedItemIDs = containedItemIDs;
+    }
+
     /**
      * Setter for the items associated with this item
      * @param associatedItems List of items associated with this item
@@ -235,6 +261,10 @@ public class Item implements Parcelable {
     public void setAssociatedItems(ArrayList<Item> associatedItems) {
         this.associatedItems = associatedItems;
         Log.d("Item", "setAssociatedItems size: " + associatedItems.size());
+    }
+
+    public void setAssociatedItemIDs(ArrayList<String> associatedItemIDs) {
+        this.associatedItemIDs = associatedItemIDs;
     }
 
     /**

@@ -82,4 +82,12 @@ public class ItemsEditActivity extends AppCompatActivity {
         // Setting the description
         ((TextView) findViewById(R.id.itemeditcard_itemdescription)).setText(String.valueOf(itemToDisplay.getDescription()));
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setEditViewContents();
+        containedItemsAdapter.notifyDataSetChanged();
+        associatedItemsAdapter.notifyDataSetChanged();
+    }
 }
