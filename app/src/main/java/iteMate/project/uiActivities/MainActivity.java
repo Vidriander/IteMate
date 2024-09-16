@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 
 import iteMate.project.R;
@@ -53,7 +54,7 @@ public abstract class MainActivity extends AppCompatActivity {
         });
 
         // Set up the scan button
-        Button scanButton = findViewById(R.id.scan_button);
+        FloatingActionButton scanButton = findViewById(R.id.scan_button);
         if (scanButton != null) {
             scanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
