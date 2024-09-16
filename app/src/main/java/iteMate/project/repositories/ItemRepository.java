@@ -228,4 +228,32 @@ public class ItemRepository {
                     }
                 });
     }
+
+    // ItemRepository.java
+    public void getItemByNfcTag(int nfcTag, OnItemFetchedListener listener) {
+        db.collection("items")
+                .whereEqualTo("nfcTag", nfcTag)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        Item item = null;
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            item = document.toObject(Item.class);
+                            item.setId(document.getId());
+                            break; // Assuming NFC tag is unique, so we take the first result
+                        }
+                        listener.onItemFetched(item);
+                    } else {
+                        listener.onItemFetched(null);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore", "Error fetching item by NFC tag", e);
+                    listener.onItemFetched(null);
+                });
+    }
+
+    public interface OnItemFetchedListener {
+        void onItemFetched(Item item);
+    }
 }

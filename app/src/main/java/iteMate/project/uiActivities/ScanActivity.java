@@ -14,10 +14,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import iteMate.project.R;
+import iteMate.project.repositories.ItemRepository;
 
 /**
  * Activity for scanning NFC tags
@@ -27,6 +29,7 @@ import iteMate.project.R;
 public class ScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
     private NfcAdapter nfcAdapter;
+    private ItemRepository itemRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,9 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             finish();
             return;
         }
+
+        // Initialize ItemRepository
+        itemRepository = new ItemRepository();
 
         // Set functionality of close button
         findViewById(R.id.close_nfcscan).setOnClickListener(v -> finish());
@@ -74,12 +80,22 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         // This method will be called whenever a tag is discovered
         Log.d("ScanActivity", "NFC Tag discovered!");
 
-        // For testing
+        // For testing - can be removed later
         // Extract the tag ID and update the TextView
-        String tagIdString = extractTagId(tag);
+        long tagId = extractTagId(tag);
         runOnUiThread(() -> {
             TextView tagIdTextView = findViewById(R.id.showNfcTagID);
-            tagIdTextView.setText(tagIdString);
+            tagIdTextView.setText(String.valueOf(tagId));
+        });
+
+        // Fetch item by NFC tag ID
+        itemRepository.getItemByNfcTag((int) tagId, item -> {
+            if (item != null) {
+                // for testing - shows item name in toast #TODO add logic for items and show item card
+                runOnUiThread(() -> Toast.makeText(this, "Item found: " + item.getTitle(), Toast.LENGTH_SHORT).show());
+            } else {
+                runOnUiThread(() -> Toast.makeText(this, "Item not found", Toast.LENGTH_SHORT).show());
+            }
         });
 
         // Check if the tag is NDEF format
@@ -97,28 +113,26 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
+    // #TODO Implement the item card
     /**
      * Extract the tag ID from the tag
      * @param tag NFC tag
-     * @return Tag ID as a HEX coded string
+     * @return Tag ID as a long
      */
-    private String extractTagId(Tag tag) {
-        // Get the tag ID
+    private long extractTagId(Tag tag) {
         byte[] tagId = tag.getId();
-        return bytesToHex(tagId);
-    }
-
-    /**
-     * Converts a byte array to a HEX coded string
-     * @param bytes Byte array
-     * @return HEX coded string
-     */
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02X", b));
+        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+        if (tagId.length < Long.BYTES) {
+            // Pad with leading zeros if the tag ID is shorter than 8 bytes
+            byte[] paddedTagId = new byte[Long.BYTES];
+            System.arraycopy(tagId, 0, paddedTagId, Long.BYTES - tagId.length, tagId.length);
+            buffer.put(paddedTagId);
+        } else {
+            // Truncate to the first 8 bytes if the tag ID is longer than 8 bytes
+            buffer.put(tagId, 0, Long.BYTES);
         }
-        return sb.toString();
+        buffer.flip();
+        return buffer.getLong();
     }
 
     /**
