@@ -52,10 +52,11 @@
             android:backgroundTint="@color/scan_button"
             android:elevation="8dp"
             app:elevation="8dp"
-            app:fabSize="normal"
+            app:fabCustomSize="80dp"
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/baseline_sensors_24"
+            app:maxImageSize="40dp"
+            app:srcCompat="@drawable/baseline_sensors_40"
             app:tint="@color/scan_button_icon" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
