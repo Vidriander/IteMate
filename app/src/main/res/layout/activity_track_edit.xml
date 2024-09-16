@@ -45,39 +45,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <EditText
+                        <TextView
                             android:id="@+id/trackedit_title"
-                            android:layout_width="145dp"
-                            android:layout_height="46dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="24dp"
                             android:ems="10"
                             android:inputType="text"
                             android:text="Chris Trefzer"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/track_detailcard_sideheader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:text="12 Items"
-                            android:textSize="16sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/trackedit_title"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/lent_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
-                            android:text="lend ongoing"
-                            android:textColor="#FB8435"
-                            android:textSize="16sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -106,7 +85,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <EditText
+                        <TextView
                             android:id="@+id/editTextText2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -116,6 +95,7 @@
                             android:ems="10"
                             android:inputType="text"
                             android:text="Chris Trefzer"
+                            android:textColor="#0000FF"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/textView5"
