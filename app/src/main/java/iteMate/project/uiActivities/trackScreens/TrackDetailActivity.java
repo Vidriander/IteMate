@@ -88,7 +88,8 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
             String titleText = trackToDisplay.getContact().getFirstName() + " " + trackToDisplay.getContact().getLastName();
             ((TextView)findViewById(R.id.track_detailcard_title)).setText(titleText);
             // Setting the itemcount of the detail card
-            String itemCountText = trackToDisplay.getNumberOfItems() + " Items";
+            String itemCountText = String.valueOf(trackToDisplay.getNumberOfItems());
+            itemCountText += (trackToDisplay.getNumberOfItems() == 1) ? " item" : " items";
             ((TextView)findViewById(R.id.track_detailcard_sideheader)).setText(itemCountText);
             // Setting the person to whom the item is given
             ((TextView)findViewById(R.id.lentToName_Text)).setText(titleText);
