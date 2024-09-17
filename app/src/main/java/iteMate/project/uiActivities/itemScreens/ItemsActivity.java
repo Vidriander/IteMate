@@ -114,4 +114,12 @@ public class ItemsActivity extends MainActivity implements ItemRepository.OnItem
 
         itemAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ItemsEditActivity.resetItemToDisplay();
+        ManageInnerItemsActivity.resetUpdatedItem();
+        fetchItems();
+    }
 }

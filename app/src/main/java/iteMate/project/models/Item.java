@@ -233,6 +233,30 @@ public class Item implements Parcelable {
     }
 
     /**
+     * Setter for the NFC Tag of the item
+     * @param description NFC Tag of the item
+     * @throws NullPointerException if description is null
+     */
+    public void setDescription(String description) throws NullPointerException {
+        if (description == null) {
+            throw new NullPointerException("Description must not be null");
+        }
+        this.description = description;
+    }
+
+    /**
+     * Setter for the title of the item
+     * @param title title of the item
+     * @throws NullPointerException if title is null
+     */
+    public void setTitle(String title) throws NullPointerException {
+        if (title == null) {
+            throw new NullPointerException("Title must not be null");
+        }
+        this.title = title;
+    }
+
+    /**
      * setter for the ID of the track the item is in
      * @param trackID ID of the track the item is in
      */

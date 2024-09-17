@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
+import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 
 public class ItemsEditActivity extends AppCompatActivity {
@@ -22,11 +23,30 @@ public class ItemsEditActivity extends AppCompatActivity {
     /**
      * The item to display in the activity.
      */
-    private Item itemToDisplay;
+    private static Item itemToDisplay;
     private RecyclerView containedItemsRecyclerView;
     private InnerItemsAdapter containedItemsAdapter;
     private RecyclerView associatedItemsRecyclerView;
     private InnerItemsAdapter associatedItemsAdapter;
+
+    private TextView title;
+    private TextView nfcTag;
+    private TextView description;
+
+    /**
+     * Get the item possibly updated in the activity.
+     * @return updated item, null if activity not initialized.
+     */
+    public static Item getItemToDisplay() {
+        return itemToDisplay;
+    }
+
+    /**
+     * Reset the stored item to null.
+     */
+    public static void resetItemToDisplay() {
+        itemToDisplay = null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +65,12 @@ public class ItemsEditActivity extends AppCompatActivity {
         // Setting the contents of the edit view:
         setEditViewContents();
 
-        // Initialize RecyclerViews and Adapters
+        // Setting up the recycler views
         containedItemsRecyclerView = findViewById(R.id.itemdetailview_containeditems_recyclerview);
         containedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        containedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getContainedItems(), this, false);
-        containedItemsRecyclerView.setAdapter(containedItemsAdapter);
-
         associatedItemsRecyclerView = findViewById(R.id.itemdetailview_associateditems_recyclerview);
         associatedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        associatedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getAssociatedItems(), this, false);
-        associatedItemsRecyclerView.setAdapter(associatedItemsAdapter);
+        setUpRecyclerAdapters();
 
         // Settting on click listener for managing contained items
         findViewById(R.id.manageContainedItemsButton).setOnClickListener(click -> {
@@ -70,24 +86,51 @@ public class ItemsEditActivity extends AppCompatActivity {
             intent.putExtra("isContainedItems", false);
             startActivity(intent);
         });
+        // Settting on click listener for save button
+        findViewById(R.id.item_edit_save).setOnClickListener(click -> {
+            saveChangesToItem();
+            ItemRepository.updateItemInFirestore(itemToDisplay);
+            finish();
+        });
     }
 
+    /**
+     * Set up the recycler adapters for the contained and associated items.
+     */
+    private void setUpRecyclerAdapters() {
+        containedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getContainedItems(), this, false);
+        containedItemsRecyclerView.setAdapter(containedItemsAdapter);
+
+        associatedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getAssociatedItems(), this, false);
+        associatedItemsRecyclerView.setAdapter(associatedItemsAdapter);
+    }
+
+    /**
+     * Set the contents of the edit view but the recycler views.
+     */
     private void setEditViewContents() {
         // Setting the image:
         GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
         // Setting the name
-        ((TextView) findViewById(R.id.itemEditItemname)).setText(itemToDisplay.getTitle());
+        title = findViewById(R.id.itemEditItemname);
+        title.setText(itemToDisplay.getTitle());
         // Setting the NfcTag
-        ((TextView) findViewById(R.id.item_edit_sideheader)).setText(String.valueOf(itemToDisplay.getNfcTag()));
+        nfcTag = findViewById(R.id.item_edit_sideheader);
+        nfcTag.setText(String.valueOf(itemToDisplay.getNfcTag()));
         // Setting the description
-        ((TextView) findViewById(R.id.itemeditcard_itemdescription)).setText(String.valueOf(itemToDisplay.getDescription()));
+        description = findViewById(R.id.itemeditcard_itemdescription);
+        description.setText(String.valueOf(itemToDisplay.getDescription()));
+    }
+
+    private void saveChangesToItem() {
+        itemToDisplay.setTitle(title.getText().toString());
+        itemToDisplay.setDescription(description.getText().toString());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setEditViewContents();
-        containedItemsAdapter.notifyDataSetChanged();
-        associatedItemsAdapter.notifyDataSetChanged();
+        itemToDisplay = ManageInnerItemsActivity.getUpdatedItem() != null ? ManageInnerItemsActivity.getUpdatedItem(): itemToDisplay;
+        setUpRecyclerAdapters();
     }
 }

@@ -155,7 +155,7 @@ public class ItemRepository {
      * Updates an item in Firestore
      * @param item the item to be updated
      */
-    public void updateItemInFirestore(Item item) {
+    public static void updateItemInFirestore(Item item) {
         db.collection("items").whereEqualTo("nfcTag", item.getNfcTag())
                 .get()
                 .addOnCompleteListener(task -> {

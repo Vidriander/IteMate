@@ -19,10 +19,21 @@ import iteMate.project.uiActivities.utils.ManageInnerItemsAdapter;
 
 public class ManageInnerItemsActivity extends AppCompatActivity implements ItemRepository.OnItemsFetchedListener {
 
-    private Item itemToDisplay;
+    private static Item itemToDisplay;
 
     private RecyclerView recyclerView;
     private ManageInnerItemsAdapter adapter;
+
+    /**
+     * Get the updated item.
+     * @return The updated item, null if not initialized.
+     */
+    public static Item getUpdatedItem() {
+        return itemToDisplay;
+    }
+    public static void resetUpdatedItem() {
+        itemToDisplay = null;
+    }
 
     private boolean isContainedItems;
 
@@ -59,10 +70,8 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements ItemR
             } else {
                 itemToDisplay.setAssociatedItems((ArrayList<Item>) newCheckedItems);
             }
-            itemRepository.updateItemInFirestore(itemToDisplay);
             finish();
         });
-
     }
 
     @Override

@@ -33,32 +33,23 @@ public class ItemsDetailActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_items_detail);
 
-        // Get the item to display from the intent:
-        itemToDisplay = getIntent().getParcelableExtra("item");
-
-        if (itemToDisplay == null) {
-            Log.e("ItemsDetailActivity", "itemToDisplay is null");
-            finish(); // Close the activity if itemToDisplay is null
-            return;
-        }
-        setDetailViewContents();
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        // Get the item to display from the intent:
+        itemToDisplay = getIntent().getParcelableExtra("item");
+
+        setDetailViewContents();
+
         // Initialize RecyclerViews and Adapters
         containedItemsRecyclerView = findViewById(R.id.itemdetailview_containeditems_recyclerview);
         containedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        containedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getContainedItems(), this, false);
-        containedItemsRecyclerView.setAdapter(containedItemsAdapter);
-
         associatedItemsRecyclerView = findViewById(R.id.itemdetailview_associateditems_recyclerview);
         associatedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        associatedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getAssociatedItems(), this, false);
-        associatedItemsRecyclerView.setAdapter(associatedItemsAdapter);
+        setUpRecyclerAdapters();
 
         // on click listener for back button
         findViewById(R.id.detailitem_back_button).setOnClickListener(v -> onBackPressed());
@@ -71,6 +62,16 @@ public class ItemsDetailActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Set up the recycler adapters for the contained and associated items
+     */
+    private void setUpRecyclerAdapters() {
+        containedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getContainedItems(), this, false);
+        containedItemsRecyclerView.setAdapter(containedItemsAdapter);
+        associatedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getAssociatedItems(), this, false);
+        associatedItemsRecyclerView.setAdapter(associatedItemsAdapter);
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -79,13 +80,19 @@ public class ItemsDetailActivity extends AppCompatActivity {
     private void setDetailViewContents() {
         if (itemToDisplay != null) {
             GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.item_detailcard_image));
-
             ((TextView) findViewById(R.id.item_detailcard_title)).setText(itemToDisplay.getTitle());
             ((TextView) findViewById(R.id.item_detailcard_sideheader)).setText(String.valueOf(itemToDisplay.getNfcTag()));
             ((TextView) findViewById(R.id.itemdetailcard_itemdescription)).setText(String.valueOf(itemToDisplay.getDescription()));
-
         } else {
             Log.e("ItemsDetailActivity", "itemToDisplay is null in setDetailViewContents");
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        itemToDisplay = ItemsEditActivity.getItemToDisplay() != null ? ItemsEditActivity.getItemToDisplay() : itemToDisplay;
+        setDetailViewContents();
+        setUpRecyclerAdapters();
     }
 }
