@@ -6,7 +6,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 
 import iteMate.project.R;
 
@@ -21,7 +20,7 @@ public class Item implements Parcelable {
     /**
      * Fields of an item
      */
-    private int nfcTag;
+    private double nfcTag;
     /**
      * Title of the item
      */
@@ -107,7 +106,7 @@ public class Item implements Parcelable {
      */
     protected Item(Parcel in) {
         id = in.readString();
-        nfcTag = in.readInt();
+        nfcTag = in.readDouble();
         title = in.readString();
         description = in.readString();
         image = in.readString();
@@ -150,7 +149,7 @@ public class Item implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeInt(nfcTag);
+        dest.writeDouble(nfcTag);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(image);
@@ -191,7 +190,7 @@ public class Item implements Parcelable {
      * Returns the NFC Tag of the item
      * @return NFC Tag of the item
      */
-    public int getNfcTag() {
+    public double getNfcTag() {
         return nfcTag;
     }
 

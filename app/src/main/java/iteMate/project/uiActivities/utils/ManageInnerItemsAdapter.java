@@ -1,7 +1,6 @@
 package iteMate.project.uiActivities.utils;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,7 +19,6 @@ import java.util.Set;
 import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
 public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerItemsAdapter.ViewHolder> {
     private List<Item> checkedItems;
@@ -30,7 +27,7 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
     private Context context;
 
     // A set to hold checked item tags
-    private Set<Integer> checkedItemTags = new HashSet<>();
+    private Set<Double> checkedItemTags = new HashSet<Double>();
 
     public ManageInnerItemsAdapter(List<Item> checkedItems, List<Item> allItems, Context context) {
         this.checkedItems = checkedItems;
