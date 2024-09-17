@@ -69,6 +69,7 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements ItemR
                 itemToDisplay.setContainedItemIDs((ArrayList<String>) newCheckedItems.stream().map(Item::getId).collect(Collectors.toList()));
             } else {
                 itemToDisplay.setAssociatedItems((ArrayList<Item>) newCheckedItems);
+                itemToDisplay.setAssociatedItemIDs((ArrayList<String>) newCheckedItems.stream().map(Item::getId).collect(Collectors.toList()));
             }
             finish();
         });
