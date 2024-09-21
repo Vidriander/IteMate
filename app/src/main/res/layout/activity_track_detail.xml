@@ -108,7 +108,7 @@
                             android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="24dp"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_weight="1"
                             android:text="Lent To"
                             android:textStyle="bold"
@@ -121,7 +121,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_weight="1"
                             android:text="Chris Trefzer"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -145,7 +145,7 @@
                             android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="24dp"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_weight="1"
                             android:text="Lent On"
                             android:textStyle="bold"
@@ -158,7 +158,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_weight="1"
                             android:text="05.09.2024"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -183,7 +183,7 @@
                             android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="24dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_weight="1"
                             android:text="Return Date"
                             android:textStyle="bold"
@@ -196,13 +196,25 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_weight="1"
                             android:text="03.10.2024"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/returndate_header"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:text="Notes"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/trackdetailcard_itemdescription"
@@ -220,7 +232,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="24dp"
-                    android:text="@string/lent_items_header" />
+                    android:text="@string/lent_items_header"
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/trackdetailview_lentitems_recyclerview"

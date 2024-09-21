@@ -85,7 +85,7 @@
                             android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="24dp"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_weight="1"
                             android:text="Lent To"
                             android:textStyle="bold"
@@ -98,7 +98,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginBottom="8dp"
                             android:ems="10"
                             android:inputType="text"
                             android:text="Chris Trefzer"
@@ -117,15 +117,14 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_height="match_parent">
 
                         <TextView
                             android:id="@+id/lend_date_header"
                             android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="24dp"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_weight="1"
                             android:text="Lent On"
                             android:textStyle="bold"
@@ -138,7 +137,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:layout_marginBottom="4dp"
+                            android:layout_marginBottom="8dp"
                             android:text="01.09.2024"
                             android:textColor="#0000FF"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -155,15 +154,14 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
+                        android:layout_height="match_parent">
 
                         <TextView
                             android:id="@+id/returndate_header"
                             android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="24dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginBottom="8dp"
                             android:layout_weight="1"
                             android:text="Return Date"
                             android:textStyle="bold"
@@ -176,7 +174,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginBottom="8dp"
                             android:text="05.10.2024"
                             android:textColor="#0000FF"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -185,6 +183,15 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Notes"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/trackEditAdditionalInfo"
@@ -205,7 +212,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="24dp"
-                    android:text="@string/lent_items_header" />
+                    android:text="@string/lent_items_header"
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/trackedit_recycler"
