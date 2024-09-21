@@ -92,15 +92,22 @@ public class ItemsEditActivity extends AppCompatActivity {
             ItemRepository.updateItemInFirestore(itemToDisplay);
             finish();
         });
+        // Setting on click listener for cancel button
+        findViewById(R.id.item_edit_cancel).setOnClickListener(click -> {
+            resetItemToDisplay();
+            ManageInnerItemsActivity.resetUpdatedItem();
+            finish();
+        });
     }
 
     /**
      * Set up the recycler adapters for the contained and associated items.
      */
     private void setUpRecyclerAdapters() {
+        // contained Items
         containedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getContainedItems(), this, false);
         containedItemsRecyclerView.setAdapter(containedItemsAdapter);
-
+        // associated Items
         associatedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getAssociatedItems(), this, false);
         associatedItemsRecyclerView.setAdapter(associatedItemsAdapter);
     }

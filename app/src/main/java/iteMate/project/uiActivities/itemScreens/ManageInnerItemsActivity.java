@@ -73,6 +73,12 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements ItemR
             }
             finish();
         });
+
+        // Setting on click listener for cancel button
+        findViewById(R.id.manageInnerItemsCancelbutton).setOnClickListener(click -> {
+            resetUpdatedItem();
+            finish();
+        });
     }
 
     @Override
