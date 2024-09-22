@@ -3,6 +3,7 @@ package iteMate.project.uiActivities.itemScreens;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import iteMate.project.R;
+import iteMate.project.SearchUtils;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.InnerItemsAdapter;
@@ -23,6 +25,10 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements ItemR
 
     private RecyclerView recyclerView;
     private ManageInnerItemsAdapter adapter;
+    /**
+     * List of Items that will change dynamically based on search
+     */
+    private List<Item> searchList;
 
     /**
      * Get the updated item.
@@ -47,6 +53,9 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements ItemR
         // Get the item to display from the intent:
         itemToDisplay = getIntent().getParcelableExtra("item");
         isContainedItems = getIntent().getBooleanExtra("isContainedItems", true);
+
+        // Initialize searchList
+        searchList = new ArrayList<>(isContainedItems ? itemToDisplay.getContainedItems() : itemToDisplay.getAssociatedItems());
 
         // Initialize RecyclerView and Adapter
         recyclerView = findViewById(R.id.manage_inner_items_recyclerview);
@@ -79,6 +88,41 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements ItemR
             resetUpdatedItem();
             finish();
         });
+        // Configure the SearchView
+        SearchView searchView = findViewById(R.id.manageInnerItemsSearchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                performSearch(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                performSearch(query);
+                return true;
+            }
+        });
+    }
+
+    /**
+     * Perform the search and update the itemList
+     * @param query The search query
+     */
+    private void performSearch(String query) {
+        // reset the searchList to the itemList
+        searchList.clear();
+        searchList.addAll(isContainedItems ? itemToDisplay.getContainedItems() : itemToDisplay.getAssociatedItems());
+
+        // Perform the search and update the itemList
+        List<Item> filteredList = SearchUtils.searchItems(searchList, query);
+        searchList.clear();
+        searchList.addAll(filteredList);
+        adapter.setSearchList(searchList);
+
+        //TODO: Implement search functionality, erratic behavior observed
     }
 
     @Override

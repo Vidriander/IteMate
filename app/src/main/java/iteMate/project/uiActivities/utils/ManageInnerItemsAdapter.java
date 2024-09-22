@@ -34,19 +34,24 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         this.allItems = allItems;
         this.context = context;
 
-        setUpLists();
-
         // Initialize the set with the NFC tags of checked items
         for (Item item : checkedItems) {
             checkedItemTags.add(item.getNfcTag());
         }
+
+        setUpLists();
     }
 
     private void setUpLists() {
         itemList = new ArrayList<>();
-        itemList.addAll(this.checkedItems);
+
         for (Item item : this.allItems) {
-            if (checkedItems.stream().map(Item::getNfcTag).noneMatch(tag -> tag.equals(item.getNfcTag()))) {
+            if (checkedItemTags.contains(item.getNfcTag())) {
+                itemList.add(item);
+            }
+        }
+        for (Item item : this.allItems) {
+            if (!checkedItemTags.contains(item.getNfcTag())) {
                 itemList.add(item);
             }
         }
@@ -63,6 +68,12 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         return newCheckedItems;
     }
 
+    public void setSearchList(List<Item> searchList) {
+        this.allItems = searchList;
+        setUpLists();
+        notifyDataSetChanged();
+    }
+
     public void notifyItemsAvailable(List<Item> items) {
         allItems = items;
         itemList = new ArrayList<>();
@@ -74,6 +85,8 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         }
         notifyDataSetChanged();
     }
+
+
 
     @NonNull
     @Override
@@ -92,8 +105,6 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         holder.tagNumber.setText(String.valueOf(item.getNfcTag()));
         // Setting the image:
         GenericRepository.setImageForView(context, item.getImage(), holder.itemImage);
-        // Setting the checkbox:
-        holder.checkBox.setChecked(checkedItemTags.contains(item.getNfcTag()));
 
         // Handle checkbox state change
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -103,6 +114,11 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
                 checkedItemTags.remove(item.getNfcTag()); // Remove tag from the checked set
             }
         });
+
+        // Setting the checkbox:
+        holder.checkBox.setChecked(checkedItemTags.contains(item.getNfcTag()));
+
+
 
         // Items currently not clickable. Is that desired?
 //        holder.itemView.setOnClickListener(v -> {
