@@ -83,14 +83,9 @@ public class ContactActivity extends AppCompatActivity implements ContactReposit
      * @param query The search query
      */
     private void performSearch(String query) {
-        // reset the searchList to the contactList
-        searchList.clear();
-        searchList.addAll(contactList);
-
-        // Perform the search and update the contactList
-        List<Contact> filteredList = SearchUtils.searchContact(searchList, query);
-        searchList.clear();
-        searchList.addAll(filteredList);
+        List<Contact> filteredList = SearchUtils.searchContact(contactList, query);
+        contactList.clear();
+        contactList.addAll(filteredList);
         contactAdapter.notifyDataSetChanged();
     }
 
@@ -100,7 +95,7 @@ public class ContactActivity extends AppCompatActivity implements ContactReposit
         contactList.addAll(contacts);
 
         searchList.clear();
-        searchList.addAll(contactList);
+        searchList.addAll(contacts);
 
         contactAdapter.notifyDataSetChanged();
     }
