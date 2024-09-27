@@ -88,6 +88,19 @@ public class ContactRepository {
                 });
     }
 
+    public void updateContactInFirestore(Contact contact) {
+        db.collection("contacts").document(contact.getId())
+                .set(contact)
+                .addOnSuccessListener(aVoid -> {
+                    // Handle success
+                    Log.d("ContactRepository", "Contact successfully updated!");
+                })
+                .addOnFailureListener(e -> {
+                    // Handle failure
+                    Log.w("ContactRepository", "Error updating contact", e);
+                });
+    }
+
     /**
      * Deletes a contact from Firestore
      * @param contactId the id of the contact to be deleted

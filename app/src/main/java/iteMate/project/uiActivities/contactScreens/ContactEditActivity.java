@@ -13,10 +13,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import iteMate.project.R;
 import iteMate.project.models.Contact;
+import iteMate.project.repositories.ContactRepository;
+
 
 public class ContactEditActivity extends AppCompatActivity {
 
-    private Contact contactToDisplay;
+    private static Contact contactToDisplay;
+    private ContactRepository contactRepository;
+
 
     private EditText firstName;
     private EditText lastName;
@@ -32,6 +36,9 @@ public class ContactEditActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
 
         setContentView(R.layout.activity_contact_edit);
+
+        // Initialize ContactRepository
+        contactRepository = new ContactRepository();
 
         // Get the contact to edit from the intent
         contactToDisplay = getIntent().getParcelableExtra("contact");
@@ -66,7 +73,8 @@ public class ContactEditActivity extends AppCompatActivity {
         // on click listener for save button
         findViewById(R.id.contact_edit_save_btn).setOnClickListener(v -> {
             saveChangesToContact();
-            // contactRepository.addContactToFirestore(contactToDisplay);
+            Log.d("ContactEditActivity", "Saving changes to contact: " + contactToDisplay.toString());
+            contactRepository.updateContactInFirestore(contactToDisplay);
             finish();
         });
     }

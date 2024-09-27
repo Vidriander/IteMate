@@ -51,6 +51,9 @@ public class ContactActivity extends AppCompatActivity implements ContactReposit
         // Fetch contacts from Firestore DB
         fetchContacts();
 
+        // Set up onClickListener for back button
+        findViewById(R.id.contact_back_button).setOnClickListener(v -> onBackPressed());
+
         // Configure the SearchView
         SearchView searchView = findViewById(R.id.search_view_contacts);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

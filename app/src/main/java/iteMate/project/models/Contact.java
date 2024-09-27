@@ -8,6 +8,11 @@ import android.os.Parcelable;
  */
 public class Contact implements Parcelable {
 
+    /**
+     * database ID of the contact
+     */
+    private String id;
+
     private String firstName;
     private String lastName;
     private String phone;
@@ -33,6 +38,10 @@ public class Contact implements Parcelable {
     }
 
     // Getter
+    public String getId() {
+        return id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -98,12 +107,9 @@ public class Contact implements Parcelable {
         this.zip = zip;
     }
 
-    public void setOwnerID(String ownerID) {
-        this.ownerID = ownerID;
-    }
-
-    // Parcelable implementation
+    // Parcelable implementation for the Intent
     protected Contact(Parcel in) {
+        id = in.readString();
         firstName = in.readString();
         lastName = in.readString();
         phone = in.readString();
@@ -111,6 +117,7 @@ public class Contact implements Parcelable {
         street = in.readString();
         city = in.readString();
         zip = in.readInt();
+        ownerID = in.readString();
     }
 
     public static final Creator<Contact> CREATOR = new Creator<Contact>() {
@@ -132,6 +139,7 @@ public class Contact implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeString(phone);
@@ -139,5 +147,6 @@ public class Contact implements Parcelable {
         dest.writeString(street);
         dest.writeString(city);
         dest.writeInt(zip);
+        dest.writeString(ownerID);
     }
 }
