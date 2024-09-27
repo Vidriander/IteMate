@@ -46,10 +46,10 @@ public class ContactDetailActivity extends AppCompatActivity implements ContactR
         });
 
         // on click listener for back button
-        findViewById(R.id.detailtrack_back_button).setOnClickListener(v -> onBackPressed());
+        findViewById(R.id.detailcontact_back_button).setOnClickListener(v -> onBackPressed());
 
         // on click listener for edit button
-        findViewById(R.id.detailtrack_edit_button).setOnClickListener(v -> {
+        findViewById(R.id.detailcontact_edit_button).setOnClickListener(v -> {
             Intent intent = new Intent(ContactDetailActivity.this, ContactEditActivity.class);
             intent.putExtra("contact", contactToDisplay);
             startActivity(intent);

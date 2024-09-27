@@ -1,6 +1,8 @@
 package iteMate.project.uiActivities.contactScreens;
 
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,7 +12,6 @@ import java.util.List;
 
 import iteMate.project.SearchUtils;
 import iteMate.project.models.Contact;
-import iteMate.project.models.Item;
 import iteMate.project.uiActivities.utils.ContactAdapter;
 import iteMate.project.R;
 import iteMate.project.repositories.ContactRepository;
@@ -39,7 +40,7 @@ public class ContactActivity extends AppCompatActivity implements ContactReposit
         recyclerViewContact = findViewById(R.id.recyclerViewContacts);
         recyclerViewContact.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize Contact list
+        // Initialize Contact list and search list
         contactList = new ArrayList<>();
         searchList = new ArrayList<>(contactList);
 
@@ -47,11 +48,11 @@ public class ContactActivity extends AppCompatActivity implements ContactReposit
         contactAdapter = new ContactAdapter(contactList, this);
         recyclerViewContact.setAdapter(contactAdapter);
 
-        // Fetch contacts from Firestore
-        contactRepository.getAllContactsFromFirestore(this);
+        // Fetch contacts from Firestore DB
+        fetchContacts();
 
         // Configure the SearchView
-        SearchView searchView = findViewById(R.id.search_view);
+        SearchView searchView = findViewById(R.id.search_view_contacts);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -69,8 +70,13 @@ public class ContactActivity extends AppCompatActivity implements ContactReposit
         });
     }
 
+    private void fetchContacts() {
+        Log.d("ContactActivity", "Fetching contacts from Firestore");
+        contactRepository.getAllContactsFromFirestore(this);
+    }
+
     /**
-     * Perform the search and update the itemList
+     * Perform the search and update the contactList
      * @param query The search query
      */
     private void performSearch(String query) {
@@ -89,6 +95,16 @@ public class ContactActivity extends AppCompatActivity implements ContactReposit
     public void onContactsFetched(List<Contact> contacts) {
         contactList.clear();
         contactList.addAll(contacts);
+
+        searchList.clear();
+        searchList.addAll(contactList);
+
         contactAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchContacts();
     }
 }

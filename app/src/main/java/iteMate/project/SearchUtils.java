@@ -53,7 +53,7 @@ public class SearchUtils {
     public static List<Contact> searchContact(List<Contact> contactList, String query) {
         List<Contact> filteredList = new ArrayList<>();
         for (Contact contact : contactList) {
-            String content = contact.getName() + " " + contact.getPhoneNumber() + " " + contact.getEmail();
+            String content = contact.getLastName() + " " + contact.getFirstName() + " " + contact.getPhoneNumber() + " " + contact.getEmail();
             if (content.toLowerCase().contains(query.toLowerCase())) {
                 filteredList.add(contact);
             }
