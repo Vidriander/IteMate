@@ -12,8 +12,9 @@ public class Contact implements Parcelable {
     private String lastName;
     private String phone;
     private String email;
-    private String address;
+    private String street;
     private String city;
+    private int zip;
     private String ownerID;  // #TODO setter for ownerID
 
     // Default Constructor
@@ -21,13 +22,14 @@ public class Contact implements Parcelable {
     }
 
     // Constructor
-    public Contact(String firstName, String lastName, String phone, String email, String address, String city) {
+    public Contact(String firstName, String lastName, String phone, String email, String street, String city, int zip ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.email = email;
-        this.address = address;
+        this.street = street;
         this.city = city;
+        this.zip = zip;
     }
 
     // Getter
@@ -51,14 +53,31 @@ public class Contact implements Parcelable {
         return email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public int getZip() {
+        return zip;
+    }
+
     // Parcelable implementation
     protected Contact(Parcel in) {
         firstName = in.readString();
         lastName = in.readString();
         phone = in.readString();
         email = in.readString();
-        address = in.readString();
+        street = in.readString();
         city = in.readString();
+        zip = in.readInt();
     }
 
     public static final Creator<Contact> CREATOR = new Creator<Contact>() {
@@ -84,7 +103,8 @@ public class Contact implements Parcelable {
         dest.writeString(lastName);
         dest.writeString(phone);
         dest.writeString(email);
-        dest.writeString(address);
+        dest.writeString(street);
         dest.writeString(city);
+        dest.writeInt(zip);
     }
 }

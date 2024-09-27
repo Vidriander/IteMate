@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import iteMate.project.R;
+import iteMate.project.repositories.ContactRepository;
 
 public class ContactEditActivity extends AppCompatActivity {
 

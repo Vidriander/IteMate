@@ -51,12 +51,12 @@ public class ContactRepository {
      * @param listener the listener to be called when the contact is fetched
      */
     public void getContactFromFirestore(String contactId, OnContactsFetchedListener listener) {
-        db.collection("contacts").whereEqualTo("contactId", contactId)
+        db.collection("contacts").document(contactId)
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        List<Contact> contactList = task.getResult().toObjects(Contact.class);
-                        listener.onContactsFetched(contactList);
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        Contact contact = task.getResult().toObject(Contact.class);
+                        // listener.onContactFetched(contact);
                     } else {
                         Log.w("Firestore", "Error getting documents.", task.getException());
                     }
@@ -118,5 +118,6 @@ public class ContactRepository {
      */
     public interface OnContactsFetchedListener {
         void onContactsFetched(List<Contact> contacts);
+        // void onContactFetched(Contact contact);
     }
 }
