@@ -39,7 +39,8 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         // Initialize NFC adapter
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
-            Toast.makeText(this, "NFC is not available on this device.", Toast.LENGTH_SHORT).show();
+            Log.d("ScanActivity", "NFC is not available on this device.");
+            // Toast.makeText(this, "NFC is not available on this device.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -77,33 +78,49 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
     @Override
     public void onTagDiscovered(Tag tag) {
-        // This method will be called whenever a tag is discovered
         Log.d("ScanActivity", "NFC Tag discovered!");
 
-        // For testing - can be removed later
-        // Extract the tag ID and update the TextView
         long tagId = extractTagId(tag);
+        updateTagIdTextView(tagId); // For testing purposes - delete later
+        fetchItemByNfcTagId(tagId);
+        handleTagType(tag);
+    }
+
+    /**
+     * Update the tag ID TextView with the tag ID
+     * for testing purposes - TODO delete later
+     * @param tagId Tag ID as a long
+     */
+    private void updateTagIdTextView(long tagId) {
         runOnUiThread(() -> {
             TextView tagIdTextView = findViewById(R.id.showNfcTagID);
             tagIdTextView.setText(String.valueOf(tagId));
         });
+    }
 
-        // Fetch item by NFC tag ID
+    /**
+     * Fetch item by NFC tag ID
+     * @param tagId Tag ID as a long
+     */
+    private void fetchItemByNfcTagId(long tagId) {
         itemRepository.getItemByNfcTag((int) tagId, item -> {
             if (item != null) {
-                // for testing - shows item name in toast #TODO add logic for items and show item card
-                runOnUiThread(() -> Toast.makeText(this, "Item found: " + item.getTitle(), Toast.LENGTH_SHORT).show());
+                Log.d("ScanActivity", "Item found: " + item.getTitle());
             } else {
-                runOnUiThread(() -> Toast.makeText(this, "Item not found", Toast.LENGTH_SHORT).show());
+                Log.d("ScanActivity", "Item not found");
             }
         });
+    }
 
-        // Check if the tag is NDEF format
+    /**
+     * Handle the tag based on its type
+     * @param tag NFC tag
+     */
+    private void handleTagType(Tag tag) {
         Ndef ndef = Ndef.get(tag);
         if (ndef != null) {
             handleNdefTag(ndef);
         } else {
-            // Check if the tag is MIFARE Classic and read it
             MifareClassic mifareClassic = MifareClassic.get(tag);
             if (mifareClassic != null) {
                 handleMifareClassicTag(mifareClassic);
@@ -112,8 +129,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             }
         }
     }
-
-    // #TODO Implement the item card
+    
     /**
      * Extract the tag ID from the tag
      * @param tag NFC tag
@@ -164,11 +180,10 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                 byte[] data = mifareClassic.readBlock(0);
                 String rfidData = new String(data, StandardCharsets.UTF_8);
                 Log.d("ScanActivity", "MIFARE Classic Data: " + rfidData);
-                // Show the data in a Toast
-                runOnUiThread(() -> Toast.makeText(this, "MIFARE Classic Data: " + rfidData, Toast.LENGTH_SHORT).show());
+                // runOnUiThread(() -> Toast.makeText(this, "MIFARE Classic Data: " + rfidData, Toast.LENGTH_SHORT).show());
             } else {
                 Log.d("ScanActivity", "MIFARE Classic authentication failed.");
-                runOnUiThread(() -> Toast.makeText(this, "MIFARE Classic authentication failed.", Toast.LENGTH_SHORT).show());
+                // runOnUiThread(() -> Toast.makeText(this, "MIFARE Classic authentication failed.", Toast.LENGTH_SHORT).show());
             }
         } catch (IOException e) {
             Log.e("ScanActivity", "Error reading MIFARE Classic tag", e);
@@ -198,7 +213,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                         byte[] payload = ndefRecord.getPayload();
                         String text = new String(payload, StandardCharsets.UTF_8);
                         Log.d("ScanActivity", "NDEF Text: " + text);
-                        runOnUiThread(() -> Toast.makeText(this, "NDEF Text: " + text, Toast.LENGTH_SHORT).show());
+                        // runOnUiThread(() -> Toast.makeText(this, "NDEF Text: " + text, Toast.LENGTH_SHORT).show());
                     }
                 }
             } else {

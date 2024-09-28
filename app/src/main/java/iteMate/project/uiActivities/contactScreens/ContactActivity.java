@@ -1,5 +1,6 @@
 package iteMate.project.uiActivities.contactScreens;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -53,6 +54,13 @@ public class ContactActivity extends AppCompatActivity implements ContactReposit
 
         // Set up onClickListener for back button
         findViewById(R.id.contact_back_button).setOnClickListener(v -> onBackPressed());
+
+        // Set up onClickListener for the add contact button
+        findViewById(R.id.contact_add_button).setOnClickListener(v -> {
+            Intent intent = new Intent(ContactActivity.this, ContactEditActivity.class);
+            intent.putExtra("contact", new Contact());
+            startActivity(intent);
+        });
 
         // Configure the SearchView
         SearchView searchView = findViewById(R.id.search_view_contacts);

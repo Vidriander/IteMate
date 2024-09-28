@@ -74,7 +74,14 @@ public class ContactEditActivity extends AppCompatActivity {
         findViewById(R.id.contact_edit_save_btn).setOnClickListener(v -> {
             saveChangesToContact();
             Log.d("ContactEditActivity", "Saving changes to contact: " + contactToDisplay.toString());
-            contactRepository.updateContactInFirestore(contactToDisplay);
+
+            // Add or update the contact in Firestore
+            if (contactToDisplay.getId() == null || contactToDisplay.getId().isEmpty()) {
+                contactRepository.addContactToFirestore(contactToDisplay);
+            } else {
+                contactRepository.updateContactInFirestore(contactToDisplay);
+            }
+            // contactRepository.updateContactInFirestore(contactToDisplay);
             finish();
         });
     }
