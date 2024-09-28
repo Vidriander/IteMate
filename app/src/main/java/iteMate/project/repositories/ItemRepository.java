@@ -180,12 +180,7 @@ public class ItemRepository {
     }
 
 
-    /**
-     * Listener interface for fetching items
-     */
-    public interface OnItemsFetchedListener {
-        void onItemsFetched(List<Item> items);
-    }
+
 
     /**
      * Uploads an image to Firebase Storage and updates the item in Firestore with the image URL
@@ -230,7 +225,7 @@ public class ItemRepository {
     }
 
     // ItemRepository.java
-    public void getItemByNfcTag(int nfcTag, OnItemFetchedListener listener) {
+    public void getItemByNfcTag(long nfcTag, OnItemFetchedListener listener) {
         db.collection("items")
                 .whereEqualTo("nfcTag", nfcTag)
                 .get()
@@ -253,7 +248,18 @@ public class ItemRepository {
                 });
     }
 
+
+    /**
+     * Listener interface for fetching an single item
+     */
     public interface OnItemFetchedListener {
         void onItemFetched(Item item);
+    }
+
+    /**
+     * Listener interface for fetching multiple items
+     */
+    public interface OnItemsFetchedListener {
+        void onItemsFetched(List<Item> items);
     }
 }
