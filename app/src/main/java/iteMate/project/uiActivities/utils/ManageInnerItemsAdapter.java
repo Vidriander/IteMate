@@ -102,7 +102,7 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         // Setting the item name:
         holder.itemName.setText(item.getTitle());
         // Setting the NFC tag number:
-        holder.tagNumber.setText(String.valueOf(item.getNfcTag()));
+        holder.itemDescription.setText(String.valueOf(item.getDescription()));
         // Setting the image:
         GenericRepository.setImageForView(context, item.getImage(), holder.itemImage);
 
@@ -138,14 +138,14 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView itemName;
-        public TextView tagNumber;
+        public TextView itemDescription;
         public ImageView itemImage;
         public CheckBox checkBox;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.manageInnerItems_title);
-            tagNumber = itemView.findViewById(R.id.manageInnerItems_subheader);
+            itemDescription = itemView.findViewById(R.id.manageInnerItems_subheader);
             itemImage = itemView.findViewById(R.id.manageInnerItems_image);
             checkBox = itemView.findViewById(R.id.manageInnerItems_checkbox);
         }

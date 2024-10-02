@@ -50,7 +50,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item item = items.get(position);
         holder.itemName.setText(item.getTitle());
-        holder.tagNumber.setText(String.valueOf(item.getNfcTag()));
+        holder.tagNumber.setText(String.valueOf(item.getDescription()));
 
         GenericRepository.setImageForView(context, item.getImage(), holder.itemImage);
 
