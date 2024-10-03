@@ -20,7 +20,7 @@ public class Item implements Parcelable {
     /**
      * Fields of an item
      */
-    private double nfcTag;
+    private String nfcTag;
     /**
      * Title of the item
      */
@@ -68,7 +68,7 @@ public class Item implements Parcelable {
      * Default constructor for an item
      */
     public Item() {
-        nfcTag = 0;
+        nfcTag = "0";
         title = "Add Item";
         description = "This is a blob of antimatter. Please handle with care.";
         image = "";
@@ -85,7 +85,7 @@ public class Item implements Parcelable {
      * @param containedItems List of items contained in this item
      * @param associatedItems List of items associated with this item, not necessary to list any
      */
-    public Item(String id, int nfcTag, String title, String description, String image, boolean available, ArrayList<Item> containedItems, ArrayList<Item> associatedItems) {
+    public Item(String id, String nfcTag, String title, String description, String image, boolean available, ArrayList<Item> containedItems, ArrayList<Item> associatedItems) {
         this.id = id;
         this.nfcTag = nfcTag;
         this.title = title;
@@ -106,7 +106,7 @@ public class Item implements Parcelable {
      */
     protected Item(Parcel in) {
         id = in.readString();
-        nfcTag = in.readDouble();
+        nfcTag = in.readString();
         title = in.readString();
         description = in.readString();
         image = in.readString();
@@ -149,7 +149,7 @@ public class Item implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeDouble(nfcTag);
+        dest.writeString(nfcTag);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(image);
@@ -190,7 +190,7 @@ public class Item implements Parcelable {
      * Returns the NFC Tag of the item
      * @return NFC Tag of the item
      */
-    public double getNfcTag() {
+    public String getNfcTag() {
         return nfcTag;
     }
 

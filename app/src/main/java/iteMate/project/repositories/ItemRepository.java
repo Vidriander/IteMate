@@ -225,7 +225,7 @@ public class ItemRepository {
     }
 
     // ItemRepository.java
-    public void getItemByNfcTag(long nfcTag, OnItemFetchedListener listener) {
+    public void getItemByNfcTag(String nfcTag, OnItemFetchedListener listener) {
         db.collection("items")
                 .whereEqualTo("nfcTag", nfcTag)
                 .get()

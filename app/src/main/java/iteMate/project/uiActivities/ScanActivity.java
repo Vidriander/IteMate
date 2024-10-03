@@ -73,7 +73,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         public void onTagDiscovered(Tag tag) {
             Log.d("ScanActivity", "NFC Tag discovered!");
 
-            long tagId = extractTagId(tag);
+            String tagId = extractTagId(tag);
             updateTagIdTextView(tagId); // Display tag ID for testing
             fetchItemByNfcTagId(tagId); // Fetch item by tag ID
         }
@@ -83,19 +83,19 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
          * for testing purposes
          * @param tagId Tag ID as a long
          */
-        private void updateTagIdTextView(long tagId) {
+        private void updateTagIdTextView(String tagId) {
             runOnUiThread(() -> {
                 TextView tagIdTextView = findViewById(R.id.showNfcTagID);
-                tagIdTextView.setText(String.valueOf(tagId));
+                tagIdTextView.setText(tagId);
             });
         }
 
         /**
          * Fetch item by NFC tag ID
-         * @param tagId Tag ID as a long
+         * @param tagId Tag ID as a Hex String
          */
-        private void fetchItemByNfcTagId(long tagId) {
-            itemRepository.getItemByNfcTag((int) tagId, item -> {
+        private void fetchItemByNfcTagId(String tagId) {
+            itemRepository.getItemByNfcTag(tagId, item -> {
                 if (item != null) {
                     Log.d("ScanActivity", "Item found: " + item.getTitle());
                 } else {
@@ -105,24 +105,17 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
 
         /**
-         * Extract the tag ID from the tag and return it as a long
-         * @param tag NFC tag
+         * Extract tag ID from the tag
+         * @param tag Tag object
          * @return Tag ID as a long
          */
-        private long extractTagId(Tag tag) {
+        private String extractTagId(Tag tag) {
             byte[] tagId = tag.getId();
-            ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-            if (tagId.length < Long.BYTES) {
-                // Pad with leading zeros if the tag ID is shorter than 8 bytes
-                byte[] paddedTagId = new byte[Long.BYTES];
-                System.arraycopy(tagId, 0, paddedTagId, Long.BYTES - tagId.length, tagId.length);
-                buffer.put(paddedTagId);
-            } else {
-                // Truncate to the first 8 bytes if the tag ID is longer than 8 bytes
-                buffer.put(tagId, 0, Long.BYTES);
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : tagId) {
+                hexString.append(String.format("%02X", b));
             }
-            buffer.flip();
-            return buffer.getLong();
+            return hexString.toString();
         }
     }
 
