@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.nfc.NfcAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public abstract class MainActivity extends AppCompatActivity {
 
     protected int layoutResID;
     protected static int bottomNavID;
+    private NfcAdapter nfcAdapter;
 
     public abstract void setLayoutResID();
     public abstract void setBottomNavID();
@@ -36,6 +38,12 @@ public abstract class MainActivity extends AppCompatActivity {
         setLayoutResID();
         setBottomNavID();
         setContentView(layoutResID);
+
+        // Initialize NFC adapter
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter != null) {
+            disableNfcReader();
+        }
 
         // Set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -121,5 +129,13 @@ public abstract class MainActivity extends AppCompatActivity {
 
         // Show the popup menu
         popupMenu.show();
+    }
+
+    /**
+     * Disable NFC Reader Mode
+     */
+    private void disableNfcReader() {
+        nfcAdapter.disableReaderMode(this);
+        Log.d("MainActivity", "NFC Reader Mode disabled.");
     }
 }

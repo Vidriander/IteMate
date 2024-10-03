@@ -8,11 +8,8 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import iteMate.project.R;
 import iteMate.project.repositories.ItemRepository;
@@ -45,6 +42,15 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
             // Set functionality of close button
             findViewById(R.id.close_nfcscan).setOnClickListener(v -> finish());
+
+            // Add Fragments to the fragment container
+            if (savedInstanceState == null) {
+                ScanItemFragment scanItemFragment = new ScanItemFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, scanItemFragment);
+                fragmentTransaction.commit();
+            }
         }
 
         @Override
@@ -75,12 +81,12 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
             String tagId = extractTagId(tag);
             updateTagIdTextView(tagId); // Display tag ID for testing
-            fetchItemByNfcTagId(tagId); // Fetch item by tag ID
+            fetchItemByNfcTagId(tagId);
         }
 
         /**
          * Update the tag ID TextView with the tag ID
-         * for testing purposes
+         * for testing purposes TODO: Remove this method
          * @param tagId Tag ID as a long
          */
         private void updateTagIdTextView(String tagId) {
@@ -107,13 +113,13 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         /**
          * Extract tag ID from the tag
          * @param tag Tag object
-         * @return Tag ID as a long
+         * @return Tag ID as a HEX String
          */
         private String extractTagId(Tag tag) {
-            byte[] tagId = tag.getId();
+            byte[] tagId = tag.getId(); // convert tag ID to byte array
             StringBuilder hexString = new StringBuilder();
             for (byte b : tagId) {
-                hexString.append(String.format("%02X", b));
+                hexString.append(String.format("%02X", b)); // convert byte to HEX
             }
             return hexString.toString();
         }
