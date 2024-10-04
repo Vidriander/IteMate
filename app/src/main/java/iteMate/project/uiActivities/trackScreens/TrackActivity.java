@@ -108,10 +108,8 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
     public void onDocumentsFetched(List<Track> documents) {
         trackList.clear();
         trackList.addAll(documents);
-
         searchList.clear();
         searchList.addAll(documents);
-
         trackAdapter.notifyDataSetChanged();
     }
 
