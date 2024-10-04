@@ -41,7 +41,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         // Check if contact is not null before accessing its methods
         if (track.getContact() != null) {
             // setting the name of the contact
-            String displayName = track.getContact().getFirstName() + " " + track.getContact().getLastName();
+            String displayName = track.getContact().getName();
             holder.contactName.setText(displayName);
         } else {
             holder.contactName.setText("Unknown Contact");

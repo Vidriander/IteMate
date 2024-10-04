@@ -155,6 +155,15 @@ public class Track implements Parcelable, DocumentEquivalent {
     public String getAdditionalInfo() {
         return additionalInfo;
     }
+
+    /**
+     * Method to get the path of the collection
+     * @return the ID of the document
+     */
+    @Override
+    public String getCollectionPath() {
+        return collectionPath;
+    }
     // endregion
 
     // region Setters
@@ -271,9 +280,4 @@ public class Track implements Parcelable, DocumentEquivalent {
         additionalInfo = in.readString();
     }
     // endregion
-
-    @Override
-    public String getCollectionPath() {
-        return collectionPath;
-    }
 }

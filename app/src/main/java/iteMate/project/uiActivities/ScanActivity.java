@@ -129,6 +129,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
     private void fetchTrackByItemTrackID(String trackID) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
         trackRepository.getDocumentFromFirestore(trackID, this);
+        // trackRepository.fetchTrackByID(trackID, this);
     }
 
 

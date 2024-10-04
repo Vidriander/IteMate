@@ -55,14 +55,12 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 performSearch(query);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
-
                 performSearch(query);
                 return true;
             }
@@ -71,6 +69,7 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
 
     /**
      * Perform the search and update the itemList
+     *
      * @param query The search query
      */
     private void performSearch(String query) {
@@ -97,7 +96,12 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
 
     @Override
     public void onDocumentFetched(Track document) {
-        // pass
+        // Find the index of the updated track
+        int index = trackList.indexOf(document);
+        if (index != -1) {
+            // Update the specific item in the adapter
+            trackAdapter.notifyItemChanged(index);
+        }
     }
 
     @Override
@@ -110,6 +114,8 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
 
         trackAdapter.notifyDataSetChanged();
     }
+
+
 }
 
 
