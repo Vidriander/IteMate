@@ -30,12 +30,13 @@ import java.util.List;
 import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
+import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.repositories.TrackRepository;
 import iteMate.project.uiActivities.utils.ButtonController;
 import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 
-public class TrackEditActivity extends AppCompatActivity implements TrackRepository.OnTracksFetchedListener, ItemRepository.OnItemsFetchedListener {
+public class TrackEditActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
 
     private Track trackToDisplay;
     private RecyclerView horizontalRecyclerView;
@@ -144,19 +145,14 @@ public class TrackEditActivity extends AppCompatActivity implements TrackReposit
     }
 
     @Override
-    public void onItemsFetched(List<Item> items) {
+    public void onDocumentFetched(Item document) {
+
+    }
+
+    @Override
+    public void onDocumentsFetched(List<Item> documents) {
         itemList.clear();
-        itemList.addAll(items);
+        itemList.addAll(documents);
         horizontalAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onTracksFetched(List<Track> tracks) {
-
-    }
-
-    @Override
-    public void onTrackFetched(Track track) {
-
     }
 }

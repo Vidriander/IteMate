@@ -40,9 +40,10 @@ public class GenericRepository<T extends DocumentEquivalent> {
 
     /**
      * Adds a document to Firestore
+     *
      * @param element the document to be added
      */
-    public void addDocumentToFirestore(T element){
+    public void addDocumentToFirestore(T element) {
         db.collection(element.getCollectionPath()).add(element)
                 .addOnSuccessListener(documentReference -> {
                     Log.d("Firestore", "Element added with ID: " + documentReference.getId());
@@ -54,20 +55,21 @@ public class GenericRepository<T extends DocumentEquivalent> {
 
     /**
      * Fetches a document from Firestore by its ID
+     *
      * @param documentId the ID of the document to be fetched
-     * @param listener the listener to be called when the document is fetched
-     * @throws NoSuchMethodException if the constructor of the class does not exist
+     * @param listener   the listener to be called when the document is fetched
+     * @throws NoSuchMethodException     if the constructor of the class does not exist
      * @throws InvocationTargetException if the constructor of the class cannot be invoked
-     * @throws IllegalAccessException if the class or its nullary constructor is not accessible
-     * @throws InstantiationException if the class that declares the underlying constructor represents an abstract class
+     * @throws IllegalAccessException    if the class or its nullary constructor is not accessible
+     * @throws InstantiationException    if the class that declares the underlying constructor represents an abstract class
      */
-    public void getDocumentFromFirestore(String documentId, OnDocumentFetchedListener<T> listener) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    public void getDocumentFromFirestore(String documentId, OnDocumentsFetchedListener<T> listener) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(documentId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         T document = task.getResult().toObject(tClass);
-                        document = manipulateResult(document);
+                        document = manipulateResult(document, listener);
                         listener.onDocumentFetched(document);
                     } else {
                         Log.w("Firestore", "Error getting document.", task.getException());
@@ -78,20 +80,22 @@ public class GenericRepository<T extends DocumentEquivalent> {
 
     /**
      * Allows to subclass to manipulate the result of the fetch before returning it by overriding this method
+     *
      * @param document the document to be manipulated
      * @return the manipulated document
      */
-    protected T manipulateResult(T document) {
+    protected T manipulateResult(T document, OnDocumentsFetchedListener<T> listener) {
         return document;
     }
 
     /**
      * Fetches all documents from Firestore of the type of the class
+     *
      * @param listener the listener to be called when the documents are fetched
-     * @throws NoSuchMethodException if the constructor of the class does not exist
+     * @throws NoSuchMethodException     if the constructor of the class does not exist
      * @throws InvocationTargetException if the constructor of the class cannot be invoked
-     * @throws IllegalAccessException if the class or its nullary constructor is not accessible
-     * @throws InstantiationException if the class that declares the underlying constructor represents an abstract class
+     * @throws IllegalAccessException    if the class or its nullary constructor is not accessible
+     * @throws InstantiationException    if the class that declares the underlying constructor represents an abstract class
      */
     public void getAllDocumentsFromFirestore(OnDocumentsFetchedListener<T> listener) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath())
@@ -99,7 +103,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         List<T> documentList = task.getResult().toObjects(tClass);
-                        documentList = manipulateResults(documentList);
+                        documentList = manipulateResults(documentList, listener);
                         listener.onDocumentsFetched(documentList);
                     } else {
                         Log.w("Firestore", "Error getting documents.", task.getException());
@@ -109,21 +113,23 @@ public class GenericRepository<T extends DocumentEquivalent> {
 
     /**
      * Allows to subclass to manipulate the results of the fetch before returning them by overriding this method
+     *
      * @param documents the documents to be manipulated
      * @return the manipulated documents
      */
-    protected List<T> manipulateResults(List<T> documents) {
+    protected List<T> manipulateResults(List<T> documents, OnDocumentsFetchedListener<T> listener) {
         List<T> manipulatedDocuments = new ArrayList<T>(documents.size()) {
         };
         for (T document : documents) {
-            manipulatedDocuments.add(manipulateResult(document));
+            manipulatedDocuments.add(manipulateResult(document, null)); // TODO
         }
         return manipulatedDocuments;
     }
 
     /**
      * Sets an image for an ImageView from Firebase Storage
-     * @param context the context of the activity that calls this method
+     *
+     * @param context   the context of the activity that calls this method
      * @param imagePath the path to the image in Firebase Storage
      * @param imageView the ImageView to set the image for
      */
@@ -171,14 +177,9 @@ public class GenericRepository<T extends DocumentEquivalent> {
     /**
      * Listener interface for fetching an single item
      */
-    public interface OnDocumentFetchedListener<T> {
-        void onDocumentFetched(T document);
-    }
-
-    /**
-     * Listener interface for fetching multiple items
-     */
     public interface OnDocumentsFetchedListener<T> {
+        void onDocumentFetched(T document);
+
         void onDocumentsFetched(List<T> documents);
     }
 }

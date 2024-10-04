@@ -20,10 +20,11 @@ import java.util.List;
 import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
+import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.TrackRepository;
 import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 
-public class TrackDetailActivity extends AppCompatActivity implements TrackRepository.OnTracksFetchedListener{
+public class TrackDetailActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Track> {
 
     private Track trackToDisplay;
     private RecyclerView horizontalRecyclerView;
@@ -103,15 +104,19 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
         }
     }
 
-    /**
-     * Called when the tracks are fetched from Firestore
-     * @param tracks the list of tracks fetched
-     */
     @Override
-    public void onTracksFetched(List<Track> tracks) {
-        Log.d("TrackDetailActivity", "onTracksFetched called with " + tracks.size() + " tracks");
+    public void onDocumentFetched(Track document) {
+        trackToDisplay = document;
+        itemList = document.getLentItemsList();
+        Log.w("TrackDetailActivity", "LentItemList: " + itemList);
+        horizontalAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDocumentsFetched(List<Track> documents) {
+        Log.d("TrackDetailActivity", "onTracksFetched called with " + documents.size() + " tracks");
         itemList.clear();
-        for (Track track : tracks) {
+        for (Track track : documents) {
             List<Item> lendList = track.getLentItemsList();
             Log.w("TrackDetailActivity", "LentItemList: " + lendList);
             if (lendList != null) {   // Check if lendList is not null
@@ -119,14 +124,6 @@ public class TrackDetailActivity extends AppCompatActivity implements TrackRepos
                 Log.d("TrackDetailActivity", "Added " + lendList.size() + " items to itemList");
             }
         }
-        horizontalAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onTrackFetched(Track track) {
-        trackToDisplay = track;
-        itemList = track.getLentItemsList();
-        Log.w("TrackDetailActivity", "LentItemList: " + itemList);
         horizontalAdapter.notifyDataSetChanged();
     }
 }

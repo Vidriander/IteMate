@@ -22,11 +22,17 @@ public class TrackRepository extends GenericRepository<Track> {
         super(Track.class);
     }
 
+    @Override
+    protected Track manipulateResult(Track track, OnDocumentsFetchedListener<Track> listener) {
+        fetchAttributesForTrack(track, listener);
+        return track;
+    }
+
     /**
      * Fetches all tracks from Firestore
      * @param listener the listener to be called when the tracks are fetched
      */
-    public void getAllTracksFromFirestore(OnTracksFetchedListener listener) {
+    public void getAllTracksFromFirestore(OnDocumentsFetchedListener listener) {
         db.collection("tracks")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -35,7 +41,7 @@ public class TrackRepository extends GenericRepository<Track> {
                         for (Track track : trackList) {
                             fetchAttributesForTrack(track, listener);
                         }
-                        listener.onTracksFetched(trackList);
+                        listener.onDocumentsFetched(trackList);
                     } else {
                         Log.w("Firestore", "Error getting documents.", task.getException());
                     }
@@ -46,14 +52,14 @@ public class TrackRepository extends GenericRepository<Track> {
      * Fetches the attributes for a track from Firestore
      * @param track the track for which the attributes are to be fetched
      */
-    public void fetchAttributesForTrack(Track track, OnTracksFetchedListener listener) {
+    public void fetchAttributesForTrack(Track track, OnDocumentsFetchedListener<Track> listener) {
         db.collection("contacts").document(track.getContactID())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         Contact contact = task.getResult().toObject(Contact.class);
                         track.setContact(contact);
-                        listener.onTrackFetched(track);
+                        listener.onDocumentFetched(track);
                     } else {
                         Log.w("Firestore", "Error getting contact.", task.getException());
                     }
@@ -64,21 +70,21 @@ public class TrackRepository extends GenericRepository<Track> {
                     if (task.isSuccessful()) {
                         List<Item> itemList = task.getResult().toObjects(Item.class);
                         track.setLentItemsList(itemList);
-                        listener.onTrackFetched(track);
+                        listener.onDocumentFetched(track);
                     } else {
                         Log.w("Firestore", "Error getting items.", task.getException());
                     }
                 });
     }
 
-    public void fetchTrackByID(String trackID, OnTracksFetchedListener listener) {
+    public void fetchTrackByID(String trackID, OnDocumentsFetchedListener<Track> listener) {
         db.collection("tracks").whereEqualTo("trackID", trackID)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Track track = task.getResult().toObjects(Track.class).get(0);
                         fetchAttributesForTrack(track, listener);
-                        listener.onTrackFetched(track);
+                        listener.onDocumentFetched(track);
                     } else {
                         Log.w("Firestore", "Error getting documents.", task.getException());
                     }
@@ -139,13 +145,5 @@ public class TrackRepository extends GenericRepository<Track> {
                         Log.w("Firestore", "Error getting documents.", task.getException());
                     }
                 });
-    }
-
-    /**
-     * Listener interface for fetching tracks
-     */
-    public interface OnTracksFetchedListener {
-        void onTracksFetched(List<Track> tracks);
-        void onTrackFetched(Track track);
     }
 }

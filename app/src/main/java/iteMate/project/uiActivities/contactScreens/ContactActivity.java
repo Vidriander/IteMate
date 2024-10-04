@@ -118,6 +118,11 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
     }
 
     @Override
+    public void onDocumentFetched(Contact document) {
+        // pass
+    }
+
+    @Override
     public void onDocumentsFetched(List<Contact> documents) {
         contactList.clear();
         contactList.addAll(documents);

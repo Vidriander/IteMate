@@ -15,11 +15,12 @@ import iteMate.project.models.Contact;
 import iteMate.project.models.Item;
 import iteMate.project.R;
 import iteMate.project.models.Track;
+import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.TrackRepository;
 import iteMate.project.uiActivities.utils.TrackAdapter;
 import iteMate.project.uiActivities.MainActivity;
 
-public class TrackActivity extends MainActivity implements TrackRepository.OnTracksFetchedListener {
+public class TrackActivity extends MainActivity implements GenericRepository.OnDocumentsFetchedListener<Track> {
 
     private RecyclerView recyclerView;
     private TrackAdapter trackAdapter;
@@ -95,18 +96,18 @@ public class TrackActivity extends MainActivity implements TrackRepository.OnTra
     }
 
     @Override
-    public void onTracksFetched(List<Track> tracks) {
-        trackList.clear();
-        trackList.addAll(tracks);
-
-        searchList.clear();
-        searchList.addAll(tracks);
-
-        trackAdapter.notifyDataSetChanged();
+    public void onDocumentFetched(Track document) {
+        // pass
     }
 
     @Override
-    public void onTrackFetched(Track track) {
+    public void onDocumentsFetched(List<Track> documents) {
+        trackList.clear();
+        trackList.addAll(documents);
+
+        searchList.clear();
+        searchList.addAll(documents);
+
         trackAdapter.notifyDataSetChanged();
     }
 }
