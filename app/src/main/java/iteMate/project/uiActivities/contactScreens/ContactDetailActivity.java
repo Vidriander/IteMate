@@ -18,7 +18,7 @@ import iteMate.project.repositories.ContactRepository;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 import iteMate.project.uiActivities.trackScreens.TrackEditActivity;
 
-public class ContactDetailActivity extends AppCompatActivity implements ContactRepository.OnContactsFetchedListener {
+public class ContactDetailActivity extends AppCompatActivity {
 
     private Contact contactToDisplay;
 
@@ -70,15 +70,6 @@ public class ContactDetailActivity extends AppCompatActivity implements ContactR
         } else {
             Log.e("ContactDetailActivity", "contactToDisplay is null in setDetailViewContents");
         }
-    }
-
-    /**
-     * Called when the contacts are fetched from Firestore
-     * @param contacts the list of contacts fetched
-     */
-    @Override
-    public void onContactsFetched(List<Contact> contacts) {
-        Log.d("ContactDetailActivity", "onContactsFetched called with " + contacts.size() + " contacts");
     }
 
 }

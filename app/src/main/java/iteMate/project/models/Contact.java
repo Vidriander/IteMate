@@ -6,7 +6,12 @@ import android.os.Parcelable;
 /**
  * Contact class to store the details of a contact
  */
-public class Contact implements Parcelable {
+public class Contact implements Parcelable, DocumentEquivalent {
+
+    /**
+     * Collection name in Firestore
+     */
+    private static final String collectionPath = "contacts";
 
     /**
      * database ID of the contact
@@ -148,5 +153,10 @@ public class Contact implements Parcelable {
         dest.writeString(city);
         dest.writeInt(zip);
         dest.writeString(ownerID);
+    }
+
+    @Override
+    public String getCollectionPath() {
+        return collectionPath;
     }
 }

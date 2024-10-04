@@ -2,7 +2,6 @@ package iteMate.project.repositories;
 
 import android.util.Log;
 
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -17,32 +16,14 @@ import iteMate.project.models.Track;
 /**
  * Repository class for tracks
  */
-public class TrackRepository {
-
-    private FirebaseFirestore db;
+public class TrackRepository extends GenericRepository<Track> {
 
     public TrackRepository() {
-        db = FirebaseFirestore.getInstance();
-    }
-
-    /**
-     * Adds a track to Firestore
-     *
-     * @param track the track to be added
-     */
-    public void addTrackToFirestore(Track track) {
-        db.collection("tracks").add(track)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d("Firestore", "Track added with ID: " + documentReference.getId());
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("Firestore", "Error adding track", e);
-                });
+        super(Track.class);
     }
 
     /**
      * Fetches all tracks from Firestore
-     *
      * @param listener the listener to be called when the tracks are fetched
      */
     public void getAllTracksFromFirestore(OnTracksFetchedListener listener) {
@@ -63,7 +44,6 @@ public class TrackRepository {
 
     /**
      * Fetches the attributes for a track from Firestore
-     *
      * @param track the track for which the attributes are to be fetched
      */
     public void fetchAttributesForTrack(Track track, OnTracksFetchedListener listener) {
@@ -119,30 +99,8 @@ public class TrackRepository {
         return itemList;
     }
 
-
-    /**
-     * Fetches a track from Firestore
-     *
-     * @param trackId  the id of the track to be fetched
-     * @param listener the listener to be called when the track is fetched
-     */
-    public void getTrackFromFirestore(String trackId, OnTrackFetchedListener listener) {
-        db.collection("tracks").whereEqualTo("trackId", trackId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        DocumentSnapshot document = task.getResult().getDocuments().get(0);
-                        Track track = document.toObject(Track.class);
-                        listener.onTrackFetched(track);
-                    } else {
-                        Log.w("Firestore", "Error getting documents or no documents found.", task.getException());
-                    }
-                });
-    }
-
     /**
      * Updates a track in Firestore
-     *
      * @param trackId the id of the track to be updated
      */
     public void updateTrackInFirestore(String trackId) {
@@ -164,7 +122,6 @@ public class TrackRepository {
 
     /**
      * Deletes a track from Firestore
-     *
      * @param trackId the id of the track to be deleted
      */
     public void deleteTrackFromFirestore(String trackId) {
@@ -189,11 +146,6 @@ public class TrackRepository {
      */
     public interface OnTracksFetchedListener {
         void onTracksFetched(List<Track> tracks);
-
-        void onTrackFetched(Track track);
-    }
-
-    public interface OnTrackFetchedListener {
         void onTrackFetched(Track track);
     }
 }

@@ -11,6 +11,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,45 +22,11 @@ import iteMate.project.models.Item;
  * This class is responsible for handling all interactions with Firestore
  * It contains methods for adding, fetching, deleting and updating items
  */
-public class ItemRepository {
-    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+public class ItemRepository extends GenericRepository<Item> {
 
     // Default constructor
     public ItemRepository() {
-        // Initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        // Enable offline persistence
-//        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-//                .setLocalCacheSettings(
-//                        PersistentCacheSettings.newBuilder().build()  // Enables persistent disk storage
-//                )
-//                .build();
-//        db.setFirestoreSettings(settings);
-
-    }
-
-    // Constructor to allow injecting Firestore instance for testing
-    public ItemRepository(FirebaseFirestore firestore) {
-        this.db = firestore;
-    }
-
-    // Setter that accepts a Firestore instance for testing
-    public void setDb(FirebaseFirestore firestore) {
-        this.db = firestore;
-    }
-
-    /**
-     * Adds an item to Firestore
-     * @param item the item to be added
-     */
-    public void addItemToFirestore(Item item) {
-        db.collection("items").add(item)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d("Firestore", "Item added with ID: " + documentReference.getId());
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("Firestore", "Error adding item", e);
-                });
+        super(Item.class);
     }
 
     /**
@@ -237,14 +204,19 @@ public class ItemRepository {
                             item.setId(document.getId());
                             break; // Assuming NFC tag is unique, so we take the first result
                         }
-                        listener.onItemFetched(item);
+                        try {
+                            listener.onItemFetched(item);
+                        } catch (InvocationTargetException | NoSuchMethodException |
+                                 IllegalAccessException | InstantiationException e) {
+                            Log.w("Firestore", "Error fetching item by NFC tag", e);
+                        }
                     } else {
-                        listener.onItemFetched(null);
+//                        listener.onItemFetched(null);
                     }
                 })
                 .addOnFailureListener(e -> {
                     Log.w("Firestore", "Error fetching item by NFC tag", e);
-                    listener.onItemFetched(null);
+//                    listener.onItemFetched(null);
                 });
     }
 
@@ -253,7 +225,7 @@ public class ItemRepository {
      * Listener interface for fetching an single item
      */
     public interface OnItemFetchedListener {
-        void onItemFetched(Item item);
+        void onItemFetched(Item item) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException;
     }
 
     /**

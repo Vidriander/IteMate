@@ -77,7 +77,7 @@ public class ContactEditActivity extends AppCompatActivity {
 
             // Add or update the contact in Firestore
             if (contactToDisplay.getId() == null || contactToDisplay.getId().isEmpty()) {
-                contactRepository.addContactToFirestore(contactToDisplay);
+                contactRepository.addDocumentToFirestore(contactToDisplay);
             } else {
                 contactRepository.updateContactInFirestore(contactToDisplay);
             }

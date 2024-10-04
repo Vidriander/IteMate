@@ -6,7 +6,12 @@ import android.os.Parcelable;
 /**
  * User class to store the details of a user
  */
-public class User implements Parcelable {
+public class User implements Parcelable, DocumentEquivalent {
+
+    /**
+     * Collection name in Firestore
+     */
+    private static final String collectionPath = "users";
 
     private String email;
     private String password;
@@ -57,5 +62,10 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(email);
         dest.writeString(password);
+    }
+
+    @Override
+    public String getCollectionPath() {
+        return collectionPath;
     }
 }

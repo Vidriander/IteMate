@@ -12,7 +12,13 @@ import iteMate.project.R;
 /**
  * Item class to store the details of an item
  */
-public class Item implements Parcelable {
+public class Item implements Parcelable, DocumentEquivalent {
+
+    /**
+     * Collection name in Firestore
+     */
+    private static final String collectionPath = "items";
+
     /**
      * database ID of the item
      */
@@ -308,5 +314,10 @@ public class Item implements Parcelable {
      */
     public List<String> getAssociatedItemIDs() {
         return associatedItemIDs;
+    }
+
+    @Override
+    public String getCollectionPath() {
+        return collectionPath;
     }
 }

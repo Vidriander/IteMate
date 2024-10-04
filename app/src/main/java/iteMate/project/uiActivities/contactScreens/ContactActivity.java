@@ -8,17 +8,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.SearchUtils;
 import iteMate.project.models.Contact;
+import iteMate.project.repositories.GenericRepository;
 import iteMate.project.uiActivities.utils.ContactAdapter;
 import iteMate.project.R;
 import iteMate.project.repositories.ContactRepository;
 
 
-public class ContactActivity extends AppCompatActivity implements ContactRepository.OnContactsFetchedListener {
+public class ContactActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Contact> {
 
     private RecyclerView recyclerViewContact;
     private ContactAdapter contactAdapter;
@@ -50,7 +53,12 @@ public class ContactActivity extends AppCompatActivity implements ContactReposit
         recyclerViewContact.setAdapter(contactAdapter);
 
         // Fetch contacts from Firestore DB
-        fetchContacts();
+        try {
+            fetchContacts();
+        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
+                 InstantiationException e) {
+            Log.e("ContactActivity", "Error fetching contacts from Firestore", e);
+        }
 
         // Set up onClickListener for back button
         findViewById(R.id.contact_back_button).setOnClickListener(v -> onBackPressed());
@@ -81,9 +89,9 @@ public class ContactActivity extends AppCompatActivity implements ContactReposit
         });
     }
 
-    private void fetchContacts() {
+    private void fetchContacts() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
         Log.d("ContactActivity", "Fetching contacts from Firestore");
-        contactRepository.getAllContactsFromFirestore(this);
+        contactRepository.getAllDocumentsFromFirestore(this);
     }
 
     /**
@@ -98,19 +106,25 @@ public class ContactActivity extends AppCompatActivity implements ContactReposit
     }
 
     @Override
-    public void onContactsFetched(List<Contact> contacts) {
-        contactList.clear();
-        contactList.addAll(contacts);
+    public void onResume() {
+        super.onResume();
+        try {
+            fetchContacts();
+        } catch (InvocationTargetException | NoSuchMethodException |
+                 IllegalAccessException | InstantiationException e) {
+            Log.e("ContactActivity", "Error fetching contacts from Firestore", e);
+        }
 
-        searchList.clear();
-        searchList.addAll(contacts);
-
-        contactAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        fetchContacts();
+    public void onDocumentsFetched(List<Contact> documents) {
+        contactList.clear();
+        contactList.addAll(documents);
+
+        searchList.clear();
+        searchList.addAll(documents);
+
+        contactAdapter.notifyDataSetChanged();
     }
 }

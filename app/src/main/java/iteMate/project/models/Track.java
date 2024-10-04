@@ -11,8 +11,14 @@ import java.util.Date;
 /**
  * Track class to store detail of a lend out item.
  */
-public class Track implements Parcelable {
+public class Track implements Parcelable, DocumentEquivalent {
     // region Attributes
+
+    /**
+     * Collection name in Firestore
+     */
+    private static final String collectionPath = "tracks";
+
     /**
      * Date on which the item was given out
      */
@@ -265,4 +271,9 @@ public class Track implements Parcelable {
         additionalInfo = in.readString();
     }
     // endregion
+
+    @Override
+    public String getCollectionPath() {
+        return collectionPath;
+    }
 }

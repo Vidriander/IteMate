@@ -14,36 +14,10 @@ import iteMate.project.models.User;
  * This class is responsible for handling all interactions with Firestore
  * It contains methods for adding, fetching, deleting and updating users
  */
-public class UserRepository {
-    private FirebaseFirestore db;
+public class UserRepository extends GenericRepository<User> {
 
     public UserRepository() {
-        // Initialize Firestore
-        db = FirebaseFirestore.getInstance();
-    }
-
-    // Constructor to allow injecting Firestore instance for testing
-    public UserRepository(FirebaseFirestore firestore) {
-        this.db = firestore;
-    }
-
-    // Setter that accepts a Firestore instance for testing
-    public void setDb(FirebaseFirestore firestore) {
-        this.db = firestore;
-    }
-
-    /**
-     * Adds a user to Firestore
-     * @param user the user to be added
-     */
-    public void addUserToFirestore(User user) {
-        db.collection("users").add(user)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d("Firestore", "User added with ID: " + documentReference.getId());
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("Firestore", "Error adding user", e);
-                });
+        super(User.class);
     }
 
     /**

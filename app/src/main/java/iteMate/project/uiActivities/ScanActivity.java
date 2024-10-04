@@ -12,6 +12,8 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.lang.reflect.InvocationTargetException;
+
 import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
@@ -86,7 +88,12 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             String tagId = extractTagId(tag);
             updateTagIdTextView(tagId); // Display tag ID for testing
             fetchItemByNfcTagId(tagId);
-            fetchTrackByItemTrackID(tagId);
+            try {
+                fetchTrackByItemTrackID(tagId);
+            } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
+                     InstantiationException e) {
+                Log.e("ScanActivity", "Error fetching track from Firestore", e);
+            }
         }
 
         /**
@@ -117,8 +124,8 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                });
           }
 
-          private void fetchTrackByItemTrackID(String trackID) {
-               trackRepository.getTrackFromFirestore(trackID, track -> {
+          private void fetchTrackByItemTrackID(String trackID) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
+               trackRepository.getDocumentFromFirestore(trackID, track -> {
                    if (track != null) {
                         Log.d("ScanActivity", "Track found! ");
                         updateTrackCardView(track);
