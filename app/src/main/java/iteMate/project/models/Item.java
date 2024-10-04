@@ -60,7 +60,7 @@ public class Item implements Parcelable {
     /**
      * ID of the track the item is in
      */
-    private int trackID = -1;
+    private String activeTrackID;
 
     private int defaultImage = R.drawable.gradient_background;
 
@@ -116,7 +116,7 @@ public class Item implements Parcelable {
         associatedItems = in.createTypedArrayList(Item.CREATOR);
         associatedItemIDs = in.createStringArrayList();
         ownerID = in.readString();
-        trackID = in.readInt();
+        activeTrackID = in.readString();
         defaultImage = in.readInt();
     }
 
@@ -159,7 +159,7 @@ public class Item implements Parcelable {
         dest.writeTypedList(associatedItems);
         dest.writeStringList(associatedItemIDs);
         dest.writeString(ownerID);
-        dest.writeInt(trackID);
+        dest.writeString(activeTrackID);
         dest.writeInt(defaultImage);
     }
 
@@ -224,6 +224,10 @@ public class Item implements Parcelable {
         return associatedItems;
     }
 
+    public String getActiveTrackID() {
+        return activeTrackID;
+    }
+
     /**
      * Setter for the ID of the item
      * @param id ID of the item
@@ -258,10 +262,10 @@ public class Item implements Parcelable {
 
     /**
      * setter for the ID of the track the item is in
-     * @param trackID ID of the track the item is in
+     * @param activeTrackID ID of the track the item is in
      */
-    public void setTrackID(int trackID) {
-        this.trackID = trackID;
+    public void setActiveTrackID(String activeTrackID) {
+        this.activeTrackID = activeTrackID;
     }
 
     /**

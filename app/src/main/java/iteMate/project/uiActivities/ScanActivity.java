@@ -1,13 +1,12 @@
 package iteMate.project.uiActivities;
 
-import android.nfc.FormatException;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
@@ -15,7 +14,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import iteMate.project.R;
 import iteMate.project.models.Item;
+import iteMate.project.models.Track;
+import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
+import iteMate.project.repositories.TrackRepository;
 
 /**
  * Activity for scanning NFC tags
@@ -24,6 +26,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
         private NfcAdapter nfcAdapter;
         private ItemRepository itemRepository;
+        private TrackRepository trackRepository;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +41,9 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                 return;
             }
 
-            // Initialize ItemRepository
+            // Initialize Repositories
             itemRepository = new ItemRepository();
+            trackRepository = new TrackRepository();
 
             // Set functionality of close button
             findViewById(R.id.close_nfcscan).setOnClickListener(v -> finish());
@@ -82,6 +86,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             String tagId = extractTagId(tag);
             updateTagIdTextView(tagId); // Display tag ID for testing
             fetchItemByNfcTagId(tagId);
+            fetchTrackByItemTrackID(tagId);
         }
 
         /**
@@ -97,20 +102,32 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
 
         /**
-         * Fetch item by NFC tag ID
+         * Fetch item by NFC tag ID and update the item card view
          * @param tagId Tag ID as a Hex String
          */
           private void fetchItemByNfcTagId(String tagId) {
                itemRepository.getItemByNfcTag(tagId, item -> {
                    if (item != null) {
-                        Toast.makeText(this, "Item found: " + item.getTitle(), Toast.LENGTH_SHORT).show();
                         Log.d("ScanActivity", "Item found: " + item.getTitle());
                         updateItemCardView(item);
+                        fetchTrackByItemTrackID(item.getActiveTrackID());
                    } else {
                        Log.d("ScanActivity", "Item not found");
                    }
                });
           }
+
+          private void fetchTrackByItemTrackID(String trackID) {
+               trackRepository.getTrackFromFirestore(trackID, track -> {
+                   if (track != null) {
+                        Log.d("ScanActivity", "Track found! ");
+                        updateTrackCardView(track);
+                   } else {
+                       Log.d("ScanActivity", "Track not found");
+                   }
+               });
+          }
+
 
         /**
          * Update the item card view with the item details
@@ -120,15 +137,38 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             runOnUiThread(() -> {
                 ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
                 if (fragment != null && fragment.getView() != null) {
-                    CardView itemCardView = fragment.getView().findViewById(R.id.item_card);
+                    CardView itemCardView = fragment.getView().findViewById(R.id.item_card_view_scan);
                     if (itemCardView != null) {
                         itemCardView.setVisibility(View.VISIBLE);
-                        TextView cardContent = itemCardView.findViewById(R.id.card_content);
-                        cardContent.setText(item.getTitle()); // Update with item details
-                    }
+                        // Update item card content
+                        TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
+                        cardContent.setText(item.getTitle());
+                        TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
+                        cardSubContent.setText(item.getDescription());
+                        GenericRepository.setImageForView(this, item.getImage(), itemCardView.findViewById(R.id.itemcard_image_scan));                    }
                 }
             });
         }
+
+        private void updateTrackCardView(Track track) {
+            runOnUiThread(() -> {
+                ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if (fragment != null && fragment.getView() != null) {
+                    CardView trackCardView = fragment.getView().findViewById(R.id.track_card_view_scan);
+                    if (trackCardView != null) {
+                        trackCardView.setVisibility(View.VISIBLE);
+                        // Update track card content
+                        TextView cardContent = trackCardView.findViewById(R.id.trackcard_contactname_scan);
+                        cardContent.setText(track.getContact().getName());
+                        TextView cardSubContent = trackCardView.findViewById(R.id.trackcard_daycounter_scan);
+                        cardSubContent.setText(track.getDaysLeft());
+                    }
+
+                }
+            });
+        }
+
+
 
         /**
          * Extract tag ID from the tag
