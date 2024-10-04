@@ -69,8 +69,8 @@ public class GenericRepository<T extends DocumentEquivalent> {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         T document = task.getResult().toObject(tClass);
-                        document = manipulateResult(document, listener);
-                        listener.onDocumentFetched(document);
+                        manipulateResult(document, listener);
+//                        listener.onDocumentFetched(document);
                     } else {
                         Log.w("Firestore", "Error getting document.", task.getException());
                     }
@@ -84,8 +84,8 @@ public class GenericRepository<T extends DocumentEquivalent> {
      * @param document the document to be manipulated
      * @return the manipulated document
      */
-    protected T manipulateResult(T document, OnDocumentsFetchedListener<T> listener) {
-        return document;
+    protected void manipulateResult(T document, OnDocumentsFetchedListener<T> listener) {
+        listener.onDocumentFetched(document);
     }
 
     /**
@@ -103,8 +103,8 @@ public class GenericRepository<T extends DocumentEquivalent> {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         List<T> documentList = task.getResult().toObjects(tClass);
-                        documentList = manipulateResults(documentList, listener);
-                        listener.onDocumentsFetched(documentList);
+                        manipulateResults(documentList, listener);
+//                        listener.onDocumentsFetched(documentList);
                     } else {
                         Log.w("Firestore", "Error getting documents.", task.getException());
                     }
@@ -117,13 +117,9 @@ public class GenericRepository<T extends DocumentEquivalent> {
      * @param documents the documents to be manipulated
      * @return the manipulated documents
      */
-    protected List<T> manipulateResults(List<T> documents, OnDocumentsFetchedListener<T> listener) {
-        List<T> manipulatedDocuments = new ArrayList<T>(documents.size()) {
-        };
-        for (T document : documents) {
-            manipulatedDocuments.add(manipulateResult(document, null)); // TODO
-        }
-        return manipulatedDocuments;
+    protected void manipulateResults(List<T> documents, OnDocumentsFetchedListener<T> listener) {
+        // do smt
+        listener.onDocumentsFetched(documents);
     }
 
     /**
