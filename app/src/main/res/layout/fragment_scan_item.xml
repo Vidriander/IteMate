@@ -5,46 +5,64 @@
     android:layout_height="match_parent"
     tools:context=".uiActivities.ScanItemFragment">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scan Item Fragment"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingBottom="16dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/item_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp">
+
+                <!-- Add your card content here -->
+                <TextView
+                    android:id="@+id/card_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Card Content"
+                    android:textSize="16sp" />
+
+            </androidx.cardview.widget.CardView>
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
 
-            <TextView
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/lend_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Scan Item Fragment"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:paddingBottom="16dp" />
+                android:layout_weight="1"
+                android:text="lend" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/return_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp">
-
-                <Button
-                    android:id="@+id/lend_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="lend" />
-
-                <Button
-                    android:id="@+id/return_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="return" />
-
-            </LinearLayout>
+                android:layout_weight="1"
+                android:text="return" />
 
         </LinearLayout>
-    </ScrollView>
+
+    </LinearLayout>
 </FrameLayout>

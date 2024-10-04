@@ -5,19 +5,20 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import iteMate.project.R;
+import iteMate.project.models.Item;
 import iteMate.project.repositories.ItemRepository;
 
 /**
  * Activity for scanning NFC tags
- * This activity is used to scan NFC tags in NDEF or MIFARE Classic format.
- * It uses Reader Mode API to handle NFC tags.
  */
 public class ScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
@@ -78,7 +79,6 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         @Override
         public void onTagDiscovered(Tag tag) {
             Log.d("ScanActivity", "NFC Tag discovered!");
-
             String tagId = extractTagId(tag);
             updateTagIdTextView(tagId); // Display tag ID for testing
             fetchItemByNfcTagId(tagId);
@@ -100,12 +100,32 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
          * Fetch item by NFC tag ID
          * @param tagId Tag ID as a Hex String
          */
-        private void fetchItemByNfcTagId(String tagId) {
-            itemRepository.getItemByNfcTag(tagId, item -> {
-                if (item != null) {
-                    Log.d("ScanActivity", "Item found: " + item.getTitle());
-                } else {
-                    Log.d("ScanActivity", "Item not found");
+          private void fetchItemByNfcTagId(String tagId) {
+               itemRepository.getItemByNfcTag(tagId, item -> {
+                   if (item != null) {
+                        Toast.makeText(this, "Item found: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                        Log.d("ScanActivity", "Item found: " + item.getTitle());
+                        updateItemCardView(item);
+                   } else {
+                       Log.d("ScanActivity", "Item not found");
+                   }
+               });
+          }
+
+        /**
+         * Update the item card view with the item details
+         * @param item Item object
+         */
+        private void updateItemCardView(Item item) {
+            runOnUiThread(() -> {
+                ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if (fragment != null && fragment.getView() != null) {
+                    CardView itemCardView = fragment.getView().findViewById(R.id.item_card);
+                    if (itemCardView != null) {
+                        itemCardView.setVisibility(View.VISIBLE);
+                        TextView cardContent = itemCardView.findViewById(R.id.card_content);
+                        cardContent.setText(item.getTitle()); // Update with item details
+                    }
                 }
             });
         }
