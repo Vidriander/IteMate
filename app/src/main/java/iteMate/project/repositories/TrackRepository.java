@@ -87,7 +87,7 @@ public class TrackRepository extends GenericRepository<Track> {
 
 
     public void fetchTrackByID(String trackID, OnDocumentsFetchedListener<Track> listener) {
-        db.collection("tracks").whereEqualTo("trackID", trackID)
+        db.collection("tracks").whereEqualTo("_id", trackID)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.nfc.NfcAdapter;
@@ -21,6 +20,7 @@ import iteMate.project.R;
 import iteMate.project.uiActivities.contactScreens.ContactActivity;
 import iteMate.project.uiActivities.homeScreen.HomeActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsActivity;
+import iteMate.project.uiActivities.scanScreen.ScanActivity;
 import iteMate.project.uiActivities.trackScreens.TrackActivity;
 
 public abstract class MainActivity extends AppCompatActivity {

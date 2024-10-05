@@ -18,7 +18,7 @@ import java.util.List;
 import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.ItemRepository;
-import iteMate.project.uiActivities.ScanActivity;
+import iteMate.project.uiActivities.scanScreen.ScanActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
 import com.bumptech.glide.Glide;

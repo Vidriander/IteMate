@@ -1,4 +1,4 @@
-package iteMate.project.uiActivities;
+package iteMate.project.uiActivities.scanScreen;
 
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;

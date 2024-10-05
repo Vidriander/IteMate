@@ -1,4 +1,4 @@
-package iteMate.project.uiActivities;
+package iteMate.project.uiActivities.scanScreen;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import iteMate.project.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ScanItemFragment#newInstance} factory method to
+ * Use the {@link ScanTrackFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ScanItemFragment extends Fragment {
+public class ScanTrackFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class ScanItemFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ScanItemFragment() {
+    public ScanTrackFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class ScanItemFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ScanItemFragment.
+     * @return A new instance of fragment ScanTrackFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ScanItemFragment newInstance(String param1, String param2) {
-        ScanItemFragment fragment = new ScanItemFragment();
+    public static ScanTrackFragment newInstance(String param1, String param2) {
+        ScanTrackFragment fragment = new ScanTrackFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class ScanItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_scan_item, container, false);
+        return inflater.inflate(R.layout.fragment_scan_track, container, false);
     }
 }
