@@ -24,19 +24,6 @@ public class TrackRepository extends GenericRepository<Track> {
         super(Track.class);
     }
 
-    @Override
-    protected void manipulateResult(Track track, OnDocumentsFetchedListener<Track> listener) {
-        fetchAttributesForTrack(track, listener);
-    }
-
-    @Override
-    protected void manipulateResults(List<Track> tracks, OnDocumentsFetchedListener<Track> listener) {
-        for (Track track : tracks) {
-            fetchAttributesForTrack(track, listener);
-        }
-        listener.onDocumentsFetched(tracks);
-    }
-
     /**
      * Fetches the attributes for a track from Firestore
      * @param track the track for which the attributes are to be fetched
@@ -71,4 +58,18 @@ public class TrackRepository extends GenericRepository<Track> {
         Tasks.whenAll(contactTaskSource.getTask(), itemsTaskSource.getTask())
                 .addOnCompleteListener(task -> listener.onDocumentFetched(track));
     }
+
+    @Override
+    protected void manipulateResult(Track track, OnDocumentsFetchedListener<Track> listener) {
+        fetchAttributesForTrack(track, listener);
+    }
+
+    @Override
+    protected void manipulateResults(List<Track> tracks, OnDocumentsFetchedListener<Track> listener) {
+        for (Track track : tracks) {
+            fetchAttributesForTrack(track, listener);
+        }
+        listener.onDocumentsFetched(tracks);
+    }
+
 }

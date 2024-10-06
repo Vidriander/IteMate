@@ -23,30 +23,40 @@ public class ItemRepository extends GenericRepository<Item> {
         super(Item.class);
     }
 
-    @Override
-    protected void manipulateResults(List<Item> items, OnDocumentsFetchedListener<Item> listener) {
-        for (Item item : items) {
-            setContainedAndAssociatedItems(item);
-        }
-        listener.onDocumentsFetched(items);
+    /**
+     * Gets an item from the database by its NFC tag
+     * @param nfcTag the NFC tag of the item
+     * @param listener the listener to be called when the item is fetched
+     */
+    public void getItemByNfcTagFromFirestore(String nfcTag, OnDocumentsFetchedListener<Item> listener) {
+        db.collection("items")
+                .whereEqualTo("nfcTag", nfcTag)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        Item item = null;
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            item = document.toObject(Item.class);
+                            item.setId(document.getId());
+                            break; // Assuming NFC tag is unique, so we take the first result
+                        }
+                        listener.onDocumentFetched(item);
+                    } else {
+                        Log.w("Firestore", "Error fetching item by NFC tag", task.getException());
+                        listener.onDocumentFetched(null);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore", "Error fetching item by NFC tag", e);
+//                    listener.onItemFetched(null);
+                });
     }
 
     /**
-     * Method to set the contained and associated items of an item.
-     *
-     * @param item the item whose contained and associated items are to be set
+     * Gets an item from the database by its title
+     * @param itemIDs list of item IDs
+     * @return list of item objects
      */
-    public void setContainedAndAssociatedItems(Item item) {
-        // Fetch contained items
-        if (item.getContainedItemIDs() != null && !item.getContainedItemIDs().isEmpty()) {
-            item.setContainedItems(getItemslistByListOfIDsFromFirestore(item.getContainedItemIDs()));
-        }
-        // Fetch associated items
-        if (item.getAssociatedItemIDs() != null && !item.getAssociatedItemIDs().isEmpty()) {
-            item.setAssociatedItems(getItemslistByListOfIDsFromFirestore(item.getAssociatedItemIDs()));
-        }
-    }
-
     private static ArrayList<Item> getItemslistByListOfIDsFromFirestore(List<String> itemIDs) {
         ArrayList<Item> items = new ArrayList<>();
         for (String itemID : itemIDs) {
@@ -65,6 +75,30 @@ public class ItemRepository extends GenericRepository<Item> {
                     });
         }
         return items;
+    }
+
+    /**
+     * Method to set the contained and associated items of an item.
+     *
+     * @param item the item whose contained and associated items are to be set
+     */
+    public void setContainedAndAssociatedItems(Item item) {
+        // Fetch contained items
+        if (item.getContainedItemIDs() != null && !item.getContainedItemIDs().isEmpty()) {
+            item.setContainedItems(getItemslistByListOfIDsFromFirestore(item.getContainedItemIDs()));
+        }
+        // Fetch associated items
+        if (item.getAssociatedItemIDs() != null && !item.getAssociatedItemIDs().isEmpty()) {
+            item.setAssociatedItems(getItemslistByListOfIDsFromFirestore(item.getAssociatedItemIDs()));
+        }
+    }
+
+    @Override
+    protected void manipulateResults(List<Item> items, OnDocumentsFetchedListener<Item> listener) {
+        for (Item item : items) {
+            setContainedAndAssociatedItems(item);
+        }
+        listener.onDocumentsFetched(items);
     }
 
     /**
@@ -97,32 +131,5 @@ public class ItemRepository extends GenericRepository<Item> {
                 });
     }
 
-    /**
-     * Gets an item from the database by its NFC tag
-     * @param nfcTag the NFC tag of the item
-     * @param listener the listener to be called when the item is fetched
-     */
-    public void getItemByNfcTagFromFirestore(String nfcTag, OnDocumentsFetchedListener<Item> listener) {
-        db.collection("items")
-                .whereEqualTo("nfcTag", nfcTag)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        Item item = null;
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            item = document.toObject(Item.class);
-                            item.setId(document.getId());
-                            break; // Assuming NFC tag is unique, so we take the first result
-                        }
-                            listener.onDocumentFetched(item);
-                    } else {
-                        Log.w("Firestore", "Error fetching item by NFC tag", task.getException());
-                        listener.onDocumentFetched(null);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("Firestore", "Error fetching item by NFC tag", e);
-//                    listener.onItemFetched(null);
-                });
-    }
+
 }
