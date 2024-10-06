@@ -54,6 +54,19 @@ public class ContactRepository extends GenericRepository<Contact> {
                 });
     }
 
+    public void deleteContactFromFirestore(Contact contact) {
+        db.collection("contacts").document(contact.getId())
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    // Handle success
+                    Log.d("ContactRepository", "Contact successfully deleted!");
+                })
+                .addOnFailureListener(e -> {
+                    // Handle failure
+                    Log.w("ContactRepository", "Error deleting contact", e);
+                });
+    }
+
     /**
      * Listener interface for fetching items
      */

@@ -1,5 +1,6 @@
 package iteMate.project.uiActivities.contactScreens;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
@@ -82,6 +83,14 @@ public class ContactEditActivity extends AppCompatActivity {
                 contactRepository.updateContactInFirestore(contactToDisplay);
             }
             // contactRepository.updateContactInFirestore(contactToDisplay);
+            finish();
+        });
+
+        // on click listener for delete button
+        findViewById(R.id.contact_edit_delete_btn).setOnClickListener(v -> {
+            contactRepository.deleteContactFromFirestore(contactToDisplay);
+            Intent intent = new Intent(ContactEditActivity.this, ContactActivity.class);
+            startActivity(intent);
             finish();
         });
     }

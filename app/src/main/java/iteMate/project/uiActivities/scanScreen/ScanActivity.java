@@ -184,7 +184,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         byte[] tagId = tag.getId(); // convert tag ID to byte array
         StringBuilder hexString = new StringBuilder();
         for (byte b : tagId) {
-            hexString.append(String.format("%02X", b)); // convert byte to HEX
+            hexString.append(String.format("%02X", b)); // convert byte to HEX, caps-lock on
         }
         return hexString.toString();
     }

@@ -104,7 +104,8 @@ public class GenericRepository<T extends DocumentEquivalent> {
                     if (task.isSuccessful()) {
                         List<T> documentList = task.getResult().toObjects(tClass);
                         manipulateResults(documentList, listener);
-//                        listener.onDocumentsFetched(documentList);
+                        // TODO copy documentId for later reference eg: delete
+                        //listener.onDocumentsFetched(documentList);
                     } else {
                         Log.w("Firestore", "Error getting documents.", task.getException());
                     }

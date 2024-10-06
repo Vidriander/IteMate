@@ -32,7 +32,8 @@ public class Contact implements Parcelable, DocumentEquivalent {
     }
 
     // Constructor
-    public Contact(String firstName, String lastName, String phone, String email, String street, String city, int zip ) {
+    public Contact(String id, String firstName, String lastName, String phone, String email, String street, String city, int zip, String ownerID) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -40,6 +41,7 @@ public class Contact implements Parcelable, DocumentEquivalent {
         this.street = street;
         this.city = city;
         this.zip = zip;
+        this.ownerID = ownerID;
     }
 
     // Getter
