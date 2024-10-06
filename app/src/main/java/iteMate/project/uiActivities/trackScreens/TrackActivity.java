@@ -40,7 +40,7 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         trackRepository = new TrackRepository();
 
         // Fetch tracks from Firestore
-        trackRepository.getAllTracksFromFirestore(this);
+        trackRepository.getAllDocumentsFromFirestore(this);
 
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.recyclerViewTrack);

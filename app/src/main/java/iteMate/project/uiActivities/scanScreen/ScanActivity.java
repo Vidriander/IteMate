@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import iteMate.project.R;
@@ -110,13 +110,15 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
      * @param tagId Tag ID as a Hex String
      */
     private void fetchItemByNfcTagId(String tagId) {
-        itemRepository.getItemByNfcTag(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
+        itemRepository.getItemByNfcTagFromFirestore(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
             @Override
             public void onDocumentFetched(Item item) {
                 if (item != null) {
                     Log.d("ScanActivity", "Item found: " + item.getTitle());
                     updateItemCardView(item);
-                    fetchTrackByItemTrackID(item.getActiveTrackID());
+                    if (item.getActiveTrackID() != null) {
+                        fetchTrackByItemTrackID(item.getActiveTrackID());
+                    }
                 } else {
                     Log.d("ScanActivity", "Item not found");
                 }
@@ -130,8 +132,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     }
 
     private void fetchTrackByItemTrackID(String trackID) {
-        // trackRepository.getDocumentFromFirestore(trackID, this);
-        trackRepository.fetchTrackByID(trackID, this);
+        trackRepository.getOneDocumentFromFirestore(trackID, this);
     }
 
     /**
@@ -158,6 +159,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     }
 
     private void updateTrackCardView(Track track) {
+        Toast.makeText(this, track.getContact().getFirstName(), Toast.LENGTH_SHORT).show(); // for testing
         runOnUiThread(() -> {
             ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
             if (fragment != null && fragment.getView() != null) {

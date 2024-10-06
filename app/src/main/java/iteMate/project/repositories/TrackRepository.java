@@ -29,24 +29,12 @@ public class TrackRepository extends GenericRepository<Track> {
         fetchAttributesForTrack(track, listener);
     }
 
-    /**
-     * Fetches all tracks from Firestore
-     * @param listener the listener to be called when the tracks are fetched
-     */
-    public void getAllTracksFromFirestore(OnDocumentsFetchedListener listener) {
-        db.collection("tracks")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        List<Track> trackList = task.getResult().toObjects(Track.class);
-                        for (Track track : trackList) {
-                            fetchAttributesForTrack(track, listener);
-                        }
-                        listener.onDocumentsFetched(trackList);
-                    } else {
-                        Log.w("Firestore", "Error getting documents.", task.getException());
-                    }
-                });
+    @Override
+    protected void manipulateResults(List<Track> tracks, OnDocumentsFetchedListener<Track> listener) {
+        for (Track track : tracks) {
+            fetchAttributesForTrack(track, listener);
+        }
+        listener.onDocumentsFetched(tracks);
     }
 
     /**
@@ -68,7 +56,6 @@ public class TrackRepository extends GenericRepository<Track> {
                     }
                     contactTaskSource.setResult(null);
                 });
-
         db.collection("items").whereIn(FieldPath.documentId(), track.getLentItemIDs())
                 .get()
                 .addOnCompleteListener(task -> {
@@ -83,20 +70,5 @@ public class TrackRepository extends GenericRepository<Track> {
 
         Tasks.whenAll(contactTaskSource.getTask(), itemsTaskSource.getTask())
                 .addOnCompleteListener(task -> listener.onDocumentFetched(track));
-    }
-
-
-    public void fetchTrackByID(String trackID, OnDocumentsFetchedListener<Track> listener) {
-        db.collection("tracks").whereEqualTo("_id", trackID)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        Track track = task.getResult().toObjects(Track.class).get(0);
-                        fetchAttributesForTrack(track, listener);
-                        listener.onDocumentFetched(track);
-                    } else {
-                        Log.w("Firestore", "Error getting documents.", task.getException());
-                    }
-                });
     }
 }

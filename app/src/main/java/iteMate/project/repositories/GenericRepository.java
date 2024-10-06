@@ -62,7 +62,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      * @param documentId the ID of the document to be fetched
      * @param listener   the listener to be called when the document is fetched
      */
-    public void getOneDocumentFromFirestore(String documentId, OnDocumentsFetchedListener<T> listener) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    public void getOneDocumentFromFirestore(String documentId, OnDocumentsFetchedListener<T> listener) {
         try {
             db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(documentId)
                     .get()

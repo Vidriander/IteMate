@@ -43,8 +43,6 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
             // setting the name of the contact
             String displayName = track.getContact().getName();
             holder.contactName.setText(displayName);
-        } else {
-            holder.contactName.setText("Unknown Contact");
         }
 
         //  setting the number of items

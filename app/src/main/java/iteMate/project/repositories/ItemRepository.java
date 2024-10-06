@@ -1,14 +1,9 @@
 package iteMate.project.repositories;
 
-import android.net.Uri;
 import android.util.Log;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +16,9 @@ import iteMate.project.models.Item;
  */
 public class ItemRepository extends GenericRepository<Item> {
 
-    // Default constructor
+    /**
+     * Constructor for the ItemRepository class
+     */
     public ItemRepository() {
         super(Item.class);
     }
@@ -42,15 +39,15 @@ public class ItemRepository extends GenericRepository<Item> {
     public void setContainedAndAssociatedItems(Item item) {
         // Fetch contained items
         if (item.getContainedItemIDs() != null && !item.getContainedItemIDs().isEmpty()) {
-            item.setContainedItems(getItemslistFromListOfIDs(item.getContainedItemIDs()));
+            item.setContainedItems(getItemslistByListOfIDsFromFirestore(item.getContainedItemIDs()));
         }
         // Fetch associated items
         if (item.getAssociatedItemIDs() != null && !item.getAssociatedItemIDs().isEmpty()) {
-            item.setAssociatedItems(getItemslistFromListOfIDs(item.getAssociatedItemIDs()));
+            item.setAssociatedItems(getItemslistByListOfIDsFromFirestore(item.getAssociatedItemIDs()));
         }
     }
 
-    private static ArrayList<Item> getItemslistFromListOfIDs(List<String> itemIDs) {
+    private static ArrayList<Item> getItemslistByListOfIDsFromFirestore(List<String> itemIDs) {
         ArrayList<Item> items = new ArrayList<>();
         for (String itemID : itemIDs) {
             db.collection("items").document(itemID)
@@ -100,8 +97,12 @@ public class ItemRepository extends GenericRepository<Item> {
                 });
     }
 
-    // ItemRepository.java
-    public void getItemByNfcTag(String nfcTag, OnDocumentsFetchedListener<Item> listener) {
+    /**
+     * Gets an item from the database by its NFC tag
+     * @param nfcTag the NFC tag of the item
+     * @param listener the listener to be called when the item is fetched
+     */
+    public void getItemByNfcTagFromFirestore(String nfcTag, OnDocumentsFetchedListener<Item> listener) {
         db.collection("items")
                 .whereEqualTo("nfcTag", nfcTag)
                 .get()
