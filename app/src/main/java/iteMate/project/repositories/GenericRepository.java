@@ -41,22 +41,6 @@ public class GenericRepository<T extends DocumentEquivalent> {
     }
 
     /**
-     * Adds a document to Firestore
-     *
-     * @param element the document to be added
-     */
-    public void addDocumentToFirestore(T element) {
-        db.collection(element.getCollectionPath())
-                .add(element)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d("Firestore", "Element added with ID: " + documentReference.getId());
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("Firestore", "Error adding item", e);
-                });
-    }
-
-    /**
      * Fetches a document from Firestore by its ID
      *
      * @param documentId the ID of the document to be fetched
@@ -78,16 +62,6 @@ public class GenericRepository<T extends DocumentEquivalent> {
             Log.e("GenericRepository", "Error getting document", e);
         }
 
-    }
-
-    /**
-     * Allows to subclass to manipulate the result of the fetch before returning it by overriding this method
-     *
-     * @param document the document to be manipulated
-     * @return the manipulated document
-     */
-    protected void manipulateResult(T document, OnDocumentsFetchedListener<T> listener) {
-        listener.onDocumentFetched(document);
     }
 
     /**
@@ -119,14 +93,19 @@ public class GenericRepository<T extends DocumentEquivalent> {
     }
 
     /**
-     * Allows to subclass to manipulate the results of the fetch before returning them by overriding this method
+     * Adds a document to Firestore
      *
-     * @param documents the documents to be manipulated
-     * @return the manipulated documents
+     * @param element the document to be added
      */
-    protected void manipulateResults(List<T> documents, OnDocumentsFetchedListener<T> listener) {
-        // do smt
-        listener.onDocumentsFetched(documents);
+    public void addDocumentToFirestore(T element) {
+        db.collection(element.getCollectionPath())
+                .add(element)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("Firestore", "Element added with ID: " + documentReference.getId());
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore", "Error adding item", e);
+                });
     }
 
     /**
@@ -217,6 +196,25 @@ public class GenericRepository<T extends DocumentEquivalent> {
                 Log.e("ItemsDetailActivity", "Error getting download URL", exception);
             });
         }
+    }
+
+    /**
+     * Allows to subclass to manipulate the result of the fetch before returning it by overriding this method
+     *
+     * @param document the document to be manipulated
+     */
+    protected void manipulateResult(T document, OnDocumentsFetchedListener<T> listener) {
+        listener.onDocumentFetched(document);
+    }
+
+    /**
+     * Allows to subclass to manipulate the results of the fetch before returning them by overriding this method
+     *
+     * @param documents the documents to be manipulated
+     */
+    protected void manipulateResults(List<T> documents, OnDocumentsFetchedListener<T> listener) {
+        // do smt
+        listener.onDocumentsFetched(documents);
     }
 
     /**
