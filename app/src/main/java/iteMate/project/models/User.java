@@ -13,6 +13,7 @@ public class User implements Parcelable, DocumentEquivalent {
      */
     private static final String collectionPath = "users";
 
+    private String id;
     private String email;
     private String password;
 
@@ -26,13 +27,15 @@ public class User implements Parcelable, DocumentEquivalent {
         this.password = password;
     }
 
-    // Getters
-    public String getEmail() {
-        return email;
+    // Getter
+    @Override
+    public String getId() {
+        return id;
     }
 
-    public String getPassword() {
-        return password;
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     // Parcelable implementation

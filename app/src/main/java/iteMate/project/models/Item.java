@@ -173,9 +173,11 @@ public class Item implements Parcelable, DocumentEquivalent {
      * Returns the ID of the item
      * @return ID of the item
      */
+    @Override
     public String getId() {
         return id;
     }
+
     /**
      * Returns the title of the item
      * @return Title of the item

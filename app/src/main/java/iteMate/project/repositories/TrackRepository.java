@@ -93,63 +93,7 @@ public class TrackRepository extends GenericRepository<Track> {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         Track track = task.getResult().toObjects(Track.class).get(0);
                         fetchAttributesForTrack(track, listener);
-                         listener.onDocumentFetched(track);
-                    } else {
-                        Log.w("Firestore", "Error getting documents.", task.getException());
-                    }
-                });
-    }
-
-    public List<Item> getContainedItemsOfTrack(Track track) {
-        List<Item> itemList = new ArrayList<>();
-        db.collection("items").whereIn(FieldPath.documentId(), track.getLentItemIDs())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        itemList.addAll(task.getResult().toObjects(Item.class));
-                    } else {
-                        Log.w("Firestore", "Error getting items.", task.getException());
-                    }
-                });
-        return itemList;
-    }
-
-    /**
-     * Updates a track in Firestore
-     * @param trackId the id of the track to be updated
-     */
-    public void updateTrackInFirestore(String trackId) {
-        db.collection("tracks").whereEqualTo("trackId", trackId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            db.collection("tracks").document(document.getId())
-                                    .update("status", "lent out")
-                                    .addOnSuccessListener(aVoid -> Log.d("Firestore", "Track updated successfully!"))
-                                    .addOnFailureListener(e -> Log.w("Firestore", "Error updating track", e));
-                        }
-                    } else {
-                        Log.w("Firestore", "Error getting documents.", task.getException());
-                    }
-                });
-    }
-
-    /**
-     * Deletes a track from Firestore
-     * @param trackId the id of the track to be deleted
-     */
-    public void deleteTrackFromFirestore(String trackId) {
-        db.collection("tracks").whereEqualTo("trackId", trackId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            db.collection("tracks").document(document.getId())
-                                    .delete()
-                                    .addOnSuccessListener(aVoid -> Log.d("Firestore", "Track deleted successfully!"))
-                                    .addOnFailureListener(e -> Log.w("Firestore", "Error deleting track", e));
-                        }
+                        listener.onDocumentFetched(track);
                     } else {
                         Log.w("Firestore", "Error getting documents.", task.getException());
                     }

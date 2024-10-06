@@ -17,6 +17,7 @@ import java.util.List;
 
 import iteMate.project.R;
 import iteMate.project.models.Item;
+import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.scanScreen.ScanActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
@@ -35,15 +36,18 @@ public class InnerItemsAdapter extends RecyclerView.Adapter<InnerItemsAdapter.Vi
      */
     private boolean inEditScreen;
 
+    private ItemRepository itemRepository;
+
     public InnerItemsAdapter(List<Item> items, Context context, boolean inEditScreen) {
         this.items = items;
         this.context = context;
         this.inEditScreen = inEditScreen;
+        this.itemRepository = new ItemRepository();
 
         // Set the contained and associated items for each of the contained and associated items.
         // This ensures that the contained and associated items are already loaded when the user clicks on one.
         for (Item item : items) {
-            ItemRepository.setContainedAndAssociatedItems(item);
+            itemRepository.setContainedAndAssociatedItems(item);
         }
     }
 

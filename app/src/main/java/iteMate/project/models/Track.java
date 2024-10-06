@@ -18,7 +18,10 @@ public class Track implements Parcelable, DocumentEquivalent {
      * Collection name in Firestore
      */
     private static final String collectionPath = "tracks";
-
+    /**
+     * ID of the track in the database
+     */
+    private String id;
     /**
      * Date on which the item was given out
      */
@@ -164,9 +167,19 @@ public class Track implements Parcelable, DocumentEquivalent {
     public String getCollectionPath() {
         return collectionPath;
     }
+
+    @Override
+    public String getId() {
+        return null;
+    }
     // endregion
 
     // region Setters
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
     /**
      * Method to set the Contact
      * @param contact the contact to set

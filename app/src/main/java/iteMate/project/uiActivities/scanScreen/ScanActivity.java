@@ -89,12 +89,6 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         String tagId = extractTagId(tag);
         updateTagIdTextView(tagId); // Display tag ID for testing
         fetchItemByNfcTagId(tagId);
-        try {
-            fetchTrackByItemTrackID(tagId);
-        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
-                 InstantiationException e) {
-            Log.e("ScanActivity", "Error fetching track from Firestore", e);
-        }
     }
 
     /**

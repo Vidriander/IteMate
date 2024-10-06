@@ -32,6 +32,7 @@ public class ItemsEditActivity extends AppCompatActivity {
     private TextView title;
     private TextView nfcTag;
     private TextView description;
+    ItemRepository itemRepository;
 
     /**
      * Get the item possibly updated in the activity.
@@ -58,6 +59,8 @@ public class ItemsEditActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        itemRepository = new ItemRepository();
 
         // Get the item to display from the intent:
         itemToDisplay = getIntent().getParcelableExtra("item");
@@ -89,7 +92,7 @@ public class ItemsEditActivity extends AppCompatActivity {
         // Settting on click listener for save button
         findViewById(R.id.item_edit_save).setOnClickListener(click -> {
             saveChangesToItem();
-            ItemRepository.updateItemInFirestore(itemToDisplay);
+            itemRepository.updateDocumentInFirestore(itemToDisplay);
             finish();
         });
         // Setting on click listener for cancel button

@@ -13,12 +13,13 @@ import java.util.Set;
 
 import iteMate.project.SearchUtils;
 import iteMate.project.models.Item;
+import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ItemAdapter;
 import iteMate.project.R;
 import iteMate.project.uiActivities.MainActivity;
 
-public class ItemsActivity extends MainActivity implements ItemRepository.OnItemsFetchedListener {
+public class ItemsActivity extends MainActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
 
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
@@ -47,7 +48,8 @@ public class ItemsActivity extends MainActivity implements ItemRepository.OnItem
         itemList = new ArrayList<>();
         searchList = new ArrayList<>(itemList);
 
-        fetchItems();
+        // Fetch all items from Firestore
+        itemRepository.getAllDocumentsFromFirestore(this);
 
         // Initialize Adapter and set to RecyclerView
         itemAdapter = new ItemAdapter(searchList, this);
@@ -88,12 +90,6 @@ public class ItemsActivity extends MainActivity implements ItemRepository.OnItem
         itemAdapter.notifyDataSetChanged();
     }
 
-    // Fetch items from Firestore
-    private void fetchItems() {
-        Log.d("ItemsActivity", "Fetching items from Firestore");
-        itemRepository.getAllItemsFromFirestore(this);
-    }
-
     @Override
     public void setLayoutResID() {
         layoutResID = R.layout.activity_items;
@@ -104,10 +100,24 @@ public class ItemsActivity extends MainActivity implements ItemRepository.OnItem
         bottomNavID = R.id.items;
     }
 
+
     @Override
-    public void onItemsFetched(List<Item> items) {
+    public void onResume() {
+        super.onResume();
+        ItemsEditActivity.resetItemToDisplay();
+        ManageInnerItemsActivity.resetUpdatedItem();
+        itemRepository.getAllDocumentsFromFirestore(this);
+    }
+
+    @Override
+    public void onDocumentFetched(Item document) {
+        // Not used
+    }
+
+    @Override
+    public void onDocumentsFetched(List documents) {
         itemList.clear();
-        itemList.addAll(items);
+        itemList.addAll(documents);
 
         searchList.clear();
         searchList.addAll(itemList);
@@ -115,11 +125,4 @@ public class ItemsActivity extends MainActivity implements ItemRepository.OnItem
         itemAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        ItemsEditActivity.resetItemToDisplay();
-        ManageInnerItemsActivity.resetUpdatedItem();
-        fetchItems();
-    }
 }

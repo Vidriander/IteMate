@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -30,12 +32,12 @@ public class GenericRepository<T extends DocumentEquivalent> {
         this.tClass = tClass;
 
         // Enable offline persistence
-//        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-//                .setLocalCacheSettings(
-//                        PersistentCacheSettings.newBuilder().build()  // Enables persistent disk storage
-//                )
-//                .build();
-//        db.setFirestoreSettings(settings);
+/*        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setLocalCacheSettings(
+                        PersistentCacheSettings.newBuilder().build()  // Enables persistent disk storage
+                )
+                .build();
+        db.setFirestoreSettings(settings);*/
     }
 
     /**
@@ -44,7 +46,8 @@ public class GenericRepository<T extends DocumentEquivalent> {
      * @param element the document to be added
      */
     public void addDocumentToFirestore(T element) {
-        db.collection(element.getCollectionPath()).add(element)
+        db.collection(element.getCollectionPath())
+                .add(element)
                 .addOnSuccessListener(documentReference -> {
                     Log.d("Firestore", "Element added with ID: " + documentReference.getId());
                 })
@@ -58,23 +61,22 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param documentId the ID of the document to be fetched
      * @param listener   the listener to be called when the document is fetched
-     * @throws NoSuchMethodException     if the constructor of the class does not exist
-     * @throws InvocationTargetException if the constructor of the class cannot be invoked
-     * @throws IllegalAccessException    if the class or its nullary constructor is not accessible
-     * @throws InstantiationException    if the class that declares the underlying constructor represents an abstract class
      */
-    public void getDocumentFromFirestore(String documentId, OnDocumentsFetchedListener<T> listener) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
-        db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(documentId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        T document = task.getResult().toObject(tClass);
-                        manipulateResult(document, listener);
-//                        listener.onDocumentFetched(document);
-                    } else {
-                        Log.w("Firestore", "Error getting document.", task.getException());
-                    }
-                });
+    public void getOneDocumentFromFirestore(String documentId, OnDocumentsFetchedListener<T> listener) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        try {
+            db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(documentId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            T document = task.getResult().toObject(tClass);
+                            manipulateResult(document, listener);
+                        } else {
+                            Log.w("Firestore", "Error getting document.", task.getException());
+                        }
+                    });
+        } catch (Exception e) {
+            Log.e("GenericRepository", "Error getting document", e);
+        }
 
     }
 
@@ -92,24 +94,28 @@ public class GenericRepository<T extends DocumentEquivalent> {
      * Fetches all documents from Firestore of the type of the class
      *
      * @param listener the listener to be called when the documents are fetched
-     * @throws NoSuchMethodException     if the constructor of the class does not exist
-     * @throws InvocationTargetException if the constructor of the class cannot be invoked
-     * @throws IllegalAccessException    if the class or its nullary constructor is not accessible
-     * @throws InstantiationException    if the class that declares the underlying constructor represents an abstract class
      */
-    public void getAllDocumentsFromFirestore(OnDocumentsFetchedListener<T> listener) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
-        db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        List<T> documentList = task.getResult().toObjects(tClass);
-                        manipulateResults(documentList, listener);
-                        // TODO copy documentId for later reference eg: delete
-                        //listener.onDocumentsFetched(documentList);
-                    } else {
-                        Log.w("Firestore", "Error getting documents.", task.getException());
-                    }
-                });
+    public void getAllDocumentsFromFirestore(OnDocumentsFetchedListener<T> listener) {
+        try {
+            db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot documentList = task.getResult();
+                            List<T> objects = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : documentList) {
+                                T object = document.toObject(tClass);
+                                object.setId(document.getId());
+                                objects.add(object);
+                            }
+                            manipulateResults(objects, listener);
+                        } else {
+                            Log.w("Firestore", "Error getting documents.", task.getException());
+                        }
+                    });
+        } catch (Exception e) {
+            Log.e("GenericRepository", "Error getting all documents", e);
+        }
     }
 
     /**
@@ -121,6 +127,48 @@ public class GenericRepository<T extends DocumentEquivalent> {
     protected void manipulateResults(List<T> documents, OnDocumentsFetchedListener<T> listener) {
         // do smt
         listener.onDocumentsFetched(documents);
+    }
+
+    /**
+     * Updates a document in Firestore
+     * @param document the document to be updated
+     */
+    public void updateDocumentInFirestore(T document) {
+        try{
+            db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(document.getId())
+                    .set(document)
+                    .addOnSuccessListener(aVoid -> {
+                        // Handle success
+                        Log.d("ContactRepository", "Contact successfully updated!");
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle failure
+                        Log.w("ContactRepository", "Error updating contact", e);
+                    });
+        } catch (Exception e) {
+            Log.e("GenericRepository", "Error updating document", e);
+        }
+    }
+
+    /**
+     * Deletes a document from Firestore
+     * @param document the document to be deleted
+     */
+    public void deleteDocumentFromFirestore(T document) {
+        try {
+            db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(document.getId())
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        // Handle success
+                        Log.d("ContactRepository", "Contact successfully deleted!");
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle failure
+                        Log.w("ContactRepository", "Error deleting contact", e);
+                    });
+        } catch (Exception e) {
+            Log.e("GenericRepository", "Error deleting document", e);
+        }
     }
 
     /**

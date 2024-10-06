@@ -80,7 +80,7 @@ public class ContactEditActivity extends AppCompatActivity {
             if (contactToDisplay.getId() == null || contactToDisplay.getId().isEmpty()) {
                 contactRepository.addDocumentToFirestore(contactToDisplay);
             } else {
-                contactRepository.updateContactInFirestore(contactToDisplay);
+                contactRepository.updateDocumentInFirestore(contactToDisplay);
             }
             // contactRepository.updateContactInFirestore(contactToDisplay);
             finish();
@@ -88,7 +88,7 @@ public class ContactEditActivity extends AppCompatActivity {
 
         // on click listener for delete button
         findViewById(R.id.contact_edit_delete_btn).setOnClickListener(v -> {
-            contactRepository.deleteContactFromFirestore(contactToDisplay);
+            contactRepository.deleteDocumentFromFirestore(contactToDisplay);
             Intent intent = new Intent(ContactEditActivity.this, ContactActivity.class);
             startActivity(intent);
             finish();
