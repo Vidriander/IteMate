@@ -101,7 +101,7 @@ public class ItemRepository extends GenericRepository<Item> {
     }
 
     // ItemRepository.java
-    public void getItemByNfcTag(String nfcTag, OnItemFetchedListener listener) {
+    public void getItemByNfcTag(String nfcTag, OnDocumentsFetchedListener<Item> listener) {
         db.collection("items")
                 .whereEqualTo("nfcTag", nfcTag)
                 .get()
@@ -113,33 +113,15 @@ public class ItemRepository extends GenericRepository<Item> {
                             item.setId(document.getId());
                             break; // Assuming NFC tag is unique, so we take the first result
                         }
-                        try {
-                            listener.onItemFetched(item);
-                        } catch (InvocationTargetException | NoSuchMethodException |
-                                 IllegalAccessException | InstantiationException e) {
-                            Log.w("Firestore", "Error fetching item by NFC tag", e);
-                        }
+                            listener.onDocumentFetched(item);
                     } else {
-//                        listener.onItemFetched(null);
+                        Log.w("Firestore", "Error fetching item by NFC tag", task.getException());
+                        listener.onDocumentFetched(null);
                     }
                 })
                 .addOnFailureListener(e -> {
                     Log.w("Firestore", "Error fetching item by NFC tag", e);
 //                    listener.onItemFetched(null);
                 });
-    }
-
-    /**
-     * Listener interface for fetching an single item
-     */
-    public interface OnItemFetchedListener {
-        void onItemFetched(Item item) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException;
-    }
-
-    /**
-     * Listener interface for fetching multiple items
-     */
-    public interface OnItemsFetchedListener {
-        void onItemsFetched(List<Item> items);
     }
 }

@@ -110,22 +110,29 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
      * @param tagId Tag ID as a Hex String
      */
     private void fetchItemByNfcTagId(String tagId) {
-        itemRepository.getItemByNfcTag(tagId, item -> {
-            if (item != null) {
-                Log.d("ScanActivity", "Item found: " + item.getTitle());
-                updateItemCardView(item);
-                fetchTrackByItemTrackID(item.getActiveTrackID());
-            } else {
-                Log.d("ScanActivity", "Item not found");
+        itemRepository.getItemByNfcTag(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
+            @Override
+            public void onDocumentFetched(Item item) {
+                if (item != null) {
+                    Log.d("ScanActivity", "Item found: " + item.getTitle());
+                    updateItemCardView(item);
+                    fetchTrackByItemTrackID(item.getActiveTrackID());
+                } else {
+                    Log.d("ScanActivity", "Item not found");
+                }
+            }
+
+            @Override
+            public void onDocumentsFetched(List<Item> documents) {
+                // Not used in this context
             }
         });
     }
 
-    private void fetchTrackByItemTrackID(String trackID) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
+    private void fetchTrackByItemTrackID(String trackID) {
         // trackRepository.getDocumentFromFirestore(trackID, this);
         trackRepository.fetchTrackByID(trackID, this);
     }
-
 
     /**
      * Update the item card view with the item details
