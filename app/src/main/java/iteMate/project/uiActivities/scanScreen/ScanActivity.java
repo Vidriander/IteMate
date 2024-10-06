@@ -141,40 +141,37 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
      * @param item Item object
      */
     private void updateItemCardView(Item item) {
-        runOnUiThread(() -> {
-            ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-            if (fragment != null && fragment.getView() != null) {
-                CardView itemCardView = fragment.getView().findViewById(R.id.item_card_view_scan);
-                if (itemCardView != null) {
-                    itemCardView.setVisibility(View.VISIBLE);
-                    // Update item card content
-                    TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
-                    cardContent.setText(item.getTitle());
-                    TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
-                    cardSubContent.setText(item.getDescription());
-                    GenericRepository.setImageForView(this, item.getImage(), itemCardView.findViewById(R.id.itemcard_image_scan));
-                }
+        ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fragment != null && fragment.getView() != null) {
+            CardView itemCardView = fragment.getView().findViewById(R.id.item_card_view_scan);
+            if (itemCardView != null) {
+                itemCardView.setVisibility(View.VISIBLE);
+                // Update item card content
+                TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
+                cardContent.setText(item.getTitle());
+                TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
+                cardSubContent.setText(item.getDescription());
+                GenericRepository.setImageForView(this, item.getImage(), itemCardView.findViewById(R.id.itemcard_image_scan));
             }
-        });
+        }
     }
 
     private void updateTrackCardView(Track track) {
-        Toast.makeText(this, track.getContact().getFirstName(), Toast.LENGTH_SHORT).show(); // for testing
-        runOnUiThread(() -> {
-            ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-            if (fragment != null && fragment.getView() != null) {
-                CardView trackCardView = fragment.getView().findViewById(R.id.track_card_view_scan);
-                if (trackCardView != null) {
-                    trackCardView.setVisibility(View.VISIBLE);
-                    // Update track card content
-                    TextView cardContent = trackCardView.findViewById(R.id.trackcard_contactname_scan);
-                    cardContent.setText(track.getContact().getName());
-                    TextView cardSubContent = trackCardView.findViewById(R.id.trackcard_daycounter_scan);
-                    cardSubContent.setText(track.getDaysLeft());
-                }
-
+        ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fragment != null && fragment.getView() != null) {
+            CardView trackCardView = fragment.getView().findViewById(R.id.track_card_view_scan);
+            if (trackCardView != null) {
+                trackCardView.setVisibility(View.VISIBLE);
+                // Update track card content
+                TextView cardContent = trackCardView.findViewById(R.id.trackcard_contactname_scan);
+                cardContent.setText(track.getContact().getName());
+                TextView cardSubContent = trackCardView.findViewById(R.id.trackcard_daycounter_scan);
+                cardSubContent.setText(String.valueOf(track.getDaysLeft()));
+                TextView cardSubContent2 = trackCardView.findViewById(R.id.trackcard_numberofitems_scan);
+                cardSubContent2.setText(String.valueOf(track.getNumberOfItems()));
             }
-        });
+
+        }
     }
 
     /**
