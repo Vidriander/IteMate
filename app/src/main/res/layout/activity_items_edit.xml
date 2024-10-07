@@ -90,18 +90,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <TextView
-                            android:id="@+id/item_edit_sideheader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:text="NFC_Tag"
-                            android:textSize="16sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/itemEditItemname"
-                            app:layout_constraintTop_toTopOf="parent" />
-
                         <EditText
                             android:id="@+id/itemEditItemname"
                             android:layout_width="wrap_content"

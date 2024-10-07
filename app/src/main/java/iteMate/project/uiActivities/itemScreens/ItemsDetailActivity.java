@@ -47,25 +47,31 @@ public class ItemsDetailActivity extends AppCompatActivity {
 
         // Get the item to display from the intent:
         itemToDisplay = getIntent().getParcelableExtra("item");
+        if (getIntent().getFlags() == Intent.FLAG_ACTIVITY_CLEAR_TOP) {
+            finish();
+        }
 
-        setDetailViewContents();
+        if (itemToDisplay != null) {
+            // Set the view contents
+            setDetailViewContents();
 
-        // Initialize RecyclerViews and Adapters
-        containedItemsRecyclerView = findViewById(R.id.itemdetailview_containeditems_recyclerview);
-        containedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        associatedItemsRecyclerView = findViewById(R.id.itemdetailview_associateditems_recyclerview);
-        associatedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        setUpRecyclerAdapters();
+            // Initialize RecyclerViews and Adapters
+            containedItemsRecyclerView = findViewById(R.id.itemdetailview_containeditems_recyclerview);
+            containedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            associatedItemsRecyclerView = findViewById(R.id.itemdetailview_associateditems_recyclerview);
+            associatedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            setUpRecyclerAdapters();
 
-        // on click listener for back button
-        findViewById(R.id.detailitem_back_button).setOnClickListener(v -> finish());
+            // on click listener for back button
+            findViewById(R.id.detailitem_back_button).setOnClickListener(v -> finish());
 
-        // on click listener for edit button
-        findViewById(R.id.detailitem_edit_button).setOnClickListener(v -> {
-            Intent intent = new Intent(ItemsDetailActivity.this, ItemsEditActivity.class);
-            intent.putExtra("item", itemToDisplay);
-            startActivity(intent);
-        });
+            // on click listener for edit button
+            findViewById(R.id.detailitem_edit_button).setOnClickListener(v -> {
+                Intent intent = new Intent(ItemsDetailActivity.this, ItemsEditActivity.class);
+                intent.putExtra("item", itemToDisplay);
+                startActivity(intent);
+            });
+        }
     }
 
     /**
@@ -79,44 +85,41 @@ public class ItemsDetailActivity extends AppCompatActivity {
     }
 
     private void setDetailViewContents() {
-        if (itemToDisplay != null) {
-            // Setting the image
-            GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.item_detailcard_image));
-            // Setting the title
-            ((TextView) findViewById(R.id.item_detailcard_title)).setText(itemToDisplay.getTitle());
-            // Setting the description
-            ((TextView) findViewById(R.id.itemdetailcard_itemdescription)).setText(String.valueOf(itemToDisplay.getDescription()));
-            // Setting availability
-            String availability;
-            int color;
-            TextView availabilityTextView = findViewById(R.id.available_text);
-            if (itemToDisplay.getActiveTrackID() != null && !itemToDisplay.getActiveTrackID().isEmpty()) {
-                availability = "track";
-                color = getResources().getColor(R.color.unavailable_red, null);
-                availabilityTextView.setOnClickListener(v -> {
-                    TrackRepository trackRepository = new TrackRepository();
-                    trackRepository.getOneDocumentFromFirestore(itemToDisplay.getActiveTrackID(), new GenericRepository.OnDocumentsFetchedListener<Track>() {
-                        @Override
-                        public void onDocumentFetched(Track document) {
-                            Intent intent = new Intent(ItemsDetailActivity.this, TrackDetailActivity.class);
-                            intent.putExtra("track", document);
-                            startActivity(intent);
-                        }
-                        @Override
-                        public void onDocumentsFetched(List<Track> documents) {
-                        }
-                    });
-                });
-            } else {
-                availability = "lend";
-                color = getResources().getColor(R.color.available_green, null);
-            }
-            availabilityTextView.setText(availability);
-            availabilityTextView.setTextColor(color);
 
+        // Setting the image
+        GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.item_detailcard_image));
+        // Setting the title
+        ((TextView) findViewById(R.id.item_detailcard_title)).setText(itemToDisplay.getTitle());
+        // Setting the description
+        ((TextView) findViewById(R.id.itemdetailcard_itemdescription)).setText(String.valueOf(itemToDisplay.getDescription()));
+        // Setting availability
+        String availability;
+        int color;
+        TextView availabilityTextView = findViewById(R.id.available_text);
+        if (itemToDisplay.getActiveTrackID() != null && !itemToDisplay.getActiveTrackID().isEmpty()) {
+            availability = "track";
+            color = getResources().getColor(R.color.unavailable_red, null);
+            availabilityTextView.setOnClickListener(v -> {
+                TrackRepository trackRepository = new TrackRepository();
+                trackRepository.getOneDocumentFromFirestore(itemToDisplay.getActiveTrackID(), new GenericRepository.OnDocumentsFetchedListener<Track>() {
+                    @Override
+                    public void onDocumentFetched(Track document) {
+                        Intent intent = new Intent(ItemsDetailActivity.this, TrackDetailActivity.class);
+                        intent.putExtra("track", document);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onDocumentsFetched(List<Track> documents) {
+                    }
+                });
+            });
         } else {
-            Log.e("ItemsDetailActivity", "itemToDisplay is null in setDetailViewContents");
+            availability = "lend";
+            color = getResources().getColor(R.color.available_green, null);
         }
+        availabilityTextView.setText(availability);
+        availabilityTextView.setTextColor(color);
     }
 
     @Override

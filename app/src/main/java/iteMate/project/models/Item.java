@@ -74,10 +74,9 @@ public class Item implements Parcelable, DocumentEquivalent {
      * Default constructor for an item
      */
     public Item() {
-        nfcTag = "0";
-        title = "Add Item";
+        title = "New Item";
         description = "This is a blob of antimatter. Please handle with care.";
-        image = "";
+        image = "itemImages/default_image.jpg";
         available = true;
     }
 

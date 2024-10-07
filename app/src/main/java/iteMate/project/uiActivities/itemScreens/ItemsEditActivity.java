@@ -60,6 +60,7 @@ public class ItemsEditActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Initialize the item repository
         itemRepository = new ItemRepository();
 
         // Get the item to display from the intent:
@@ -133,9 +134,6 @@ public class ItemsEditActivity extends AppCompatActivity {
         // Setting the name
         title = findViewById(R.id.itemEditItemname);
         title.setText(itemToDisplay.getTitle());
-        // Setting the NfcTag
-        nfcTag = findViewById(R.id.item_edit_sideheader);
-        nfcTag.setText(String.valueOf(itemToDisplay.getNfcTag()));
         // Setting the description
         description = findViewById(R.id.itemeditcard_itemdescription);
         description.setText(String.valueOf(itemToDisplay.getDescription()));

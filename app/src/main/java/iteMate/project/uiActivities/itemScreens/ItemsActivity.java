@@ -3,6 +3,8 @@ package iteMate.project.uiActivities.itemScreens;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -10,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import iteMate.project.SearchUtils;
 import iteMate.project.models.Item;
@@ -60,22 +65,29 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 performSearch(query);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
-
                 performSearch(query);
                 return true;
             }
+        });
+
+        // Set add button functionality
+        findViewById(R.id.add_button_items).setOnClickListener(v -> {
+            Item newItem = new Item();
+            Intent intent = new Intent(this, ItemsEditActivity.class);
+            intent.putExtra("item", newItem);
+            startActivity(intent);
         });
     }
 
     /**
      * Perform the search and update the itemList
+     *
      * @param query The search query
      */
     private void performSearch(String query) {
@@ -106,7 +118,10 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
         super.onResume();
         ItemsEditActivity.resetItemToDisplay();
         ManageInnerItemsActivity.resetUpdatedItem();
-        itemRepository.getAllDocumentsFromFirestore(this);
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.schedule(() -> {
+            itemRepository.getAllDocumentsFromFirestore(this);
+        }, 1, TimeUnit.SECONDS);
     }
 
     @Override
@@ -115,7 +130,7 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
     }
 
     @Override
-    public void onDocumentsFetched(List documents) {
+    public void onDocumentsFetched(List<Item> documents) {
         itemList.clear();
         itemList.addAll(documents);
 
