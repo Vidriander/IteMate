@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 
 import iteMate.project.R;
 import iteMate.project.models.Item;
+import iteMate.project.models.Track;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
+import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +32,7 @@ public class ScanItemFragment extends Fragment {
     private String mParam2;
 
     private Item itemToDisplay;
+    private Track trackToDisplay;
 
     public ScanItemFragment() {
         // Required empty public constructor
@@ -74,10 +77,23 @@ public class ScanItemFragment extends Fragment {
             intent.putExtra("item", itemToDisplay);
             startActivity(intent);
         });
+
+        // Set item details for track card view
+        view.findViewById(R.id.track_card_view_scan).setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), TrackDetailActivity.class);
+            intent.putExtra("track", trackToDisplay);
+            startActivity(intent);
+        });
+
         return view;
     }
 
     void setItemToDisplay(Item item) {
         this.itemToDisplay = item;
     }
+
+    void setTrackToDisplay(Track track) {
+        this.trackToDisplay = track;
+    }
+
 }
