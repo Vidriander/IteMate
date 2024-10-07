@@ -61,7 +61,7 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
         }
 
         // Set up onClickListener for back button
-        findViewById(R.id.contact_back_button).setOnClickListener(v -> onBackPressed());
+        findViewById(R.id.contact_back_button).setOnClickListener(v -> finish());
 
         // Set up onClickListener for the add contact button
         findViewById(R.id.contact_add_button).setOnClickListener(v -> {

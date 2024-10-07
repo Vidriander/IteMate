@@ -47,18 +47,6 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/item_detailcard_sideheader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:text="NFC_Tag"
-                            android:textSize="16sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/item_detailcard_title"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
                             android:id="@+id/item_detailcard_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

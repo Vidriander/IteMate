@@ -6,6 +6,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -16,13 +18,14 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import iteMate.project.R;
 import iteMate.project.models.DocumentEquivalent;
 
 public class GenericRepository<T extends DocumentEquivalent> {
 
-    protected static FirebaseFirestore db;
+    protected FirebaseFirestore db;
     protected Class<T> tClass;
 
     public GenericRepository(Class<T> tClass) {
@@ -53,6 +56,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful() && task.getResult() != null) {
                             T document = task.getResult().toObject(tClass);
+                            Log.d("GenericRepository", "Document fetched: " + document);
                             manipulateResult(document, listener);
                         } else {
                             Log.w("Firestore", "Error getting document.", task.getException());
@@ -61,7 +65,6 @@ public class GenericRepository<T extends DocumentEquivalent> {
         } catch (Exception e) {
             Log.e("GenericRepository", "Error getting document", e);
         }
-
     }
 
     /**
@@ -110,10 +113,11 @@ public class GenericRepository<T extends DocumentEquivalent> {
 
     /**
      * Updates a document in Firestore
+     *
      * @param document the document to be updated
      */
     public void updateDocumentInFirestore(T document) {
-        try{
+        try {
             db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(document.getId())
                     .set(document)
                     .addOnSuccessListener(aVoid -> {
@@ -131,6 +135,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
 
     /**
      * Deletes a document from Firestore
+     *
      * @param document the document to be deleted
      */
     public void deleteDocumentFromFirestore(T document) {
@@ -203,8 +208,9 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param document the document to be manipulated
      */
-    protected void manipulateResult(T document, OnDocumentsFetchedListener<T> listener) {
+    protected T manipulateResult(T document, OnDocumentsFetchedListener<T> listener) {
         listener.onDocumentFetched(document);
+        return document;
     }
 
     /**
@@ -212,9 +218,9 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param documents the documents to be manipulated
      */
-    protected void manipulateResults(List<T> documents, OnDocumentsFetchedListener<T> listener) {
-        // do smt
+    protected List<T> manipulateResults(List<T> documents, OnDocumentsFetchedListener<T> listener) {
         listener.onDocumentsFetched(documents);
+        return documents;
     }
 
     /**

@@ -1,5 +1,6 @@
 package iteMate.project.uiActivities.itemScreens;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,9 +14,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import iteMate.project.models.Item;
 import iteMate.project.R;
+import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
+import iteMate.project.repositories.TrackRepository;
+import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 
 public class ItemsDetailActivity extends AppCompatActivity {
@@ -52,7 +58,7 @@ public class ItemsDetailActivity extends AppCompatActivity {
         setUpRecyclerAdapters();
 
         // on click listener for back button
-        findViewById(R.id.detailitem_back_button).setOnClickListener(v -> onBackPressed());
+        findViewById(R.id.detailitem_back_button).setOnClickListener(v -> finish());
 
         // on click listener for edit button
         findViewById(R.id.detailitem_edit_button).setOnClickListener(v -> {
@@ -72,17 +78,42 @@ public class ItemsDetailActivity extends AppCompatActivity {
         associatedItemsRecyclerView.setAdapter(associatedItemsAdapter);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
     private void setDetailViewContents() {
         if (itemToDisplay != null) {
+            // Setting the image
             GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.item_detailcard_image));
+            // Setting the title
             ((TextView) findViewById(R.id.item_detailcard_title)).setText(itemToDisplay.getTitle());
-            ((TextView) findViewById(R.id.item_detailcard_sideheader)).setText(String.valueOf(itemToDisplay.getNfcTag()));
+            // Setting the description
             ((TextView) findViewById(R.id.itemdetailcard_itemdescription)).setText(String.valueOf(itemToDisplay.getDescription()));
+            // Setting availability
+            String availability;
+            int color;
+            TextView availabilityTextView = findViewById(R.id.available_text);
+            if (itemToDisplay.getActiveTrackID() != null && !itemToDisplay.getActiveTrackID().isEmpty()) {
+                availability = "View Track";
+                color = getResources().getColor(R.color.unavailable_red, null);
+                availabilityTextView.setOnClickListener(v -> {
+                    TrackRepository trackRepository = new TrackRepository();
+                    trackRepository.getOneDocumentFromFirestore(itemToDisplay.getActiveTrackID(), new GenericRepository.OnDocumentsFetchedListener<Track>() {
+                        @Override
+                        public void onDocumentFetched(Track document) {
+                            Intent intent = new Intent(ItemsDetailActivity.this, TrackDetailActivity.class);
+                            intent.putExtra("track", document);
+                            startActivity(intent);
+                        }
+                        @Override
+                        public void onDocumentsFetched(List<Track> documents) {
+                        }
+                    });
+                });
+            } else {
+                availability = "Available";
+                color = getResources().getColor(R.color.available_green, null);
+            }
+            availabilityTextView.setText(availability);
+            availabilityTextView.setTextColor(color);
+
         } else {
             Log.e("ItemsDetailActivity", "itemToDisplay is null in setDetailViewContents");
         }

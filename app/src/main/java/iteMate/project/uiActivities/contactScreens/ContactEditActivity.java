@@ -22,7 +22,7 @@ public class ContactEditActivity extends AppCompatActivity {
     private static Contact contactToDisplay;
     private ContactRepository contactRepository;
 
-
+    // ahhhhhh!!!11!
     private EditText firstName;
     private EditText lastName;
     private EditText street;
@@ -69,7 +69,7 @@ public class ContactEditActivity extends AppCompatActivity {
         });
 
         // on click listener for cancel button
-        findViewById(R.id.contact_edit_cancel_btn).setOnClickListener(v -> onBackPressed());
+        findViewById(R.id.contact_edit_cancel_btn).setOnClickListener(v -> finish());
 
         // on click listener for save button
         findViewById(R.id.contact_edit_save_btn).setOnClickListener(v -> {
@@ -89,8 +89,6 @@ public class ContactEditActivity extends AppCompatActivity {
         // on click listener for delete button
         findViewById(R.id.contact_edit_delete_btn).setOnClickListener(v -> {
             contactRepository.deleteDocumentFromFirestore(contactToDisplay);
-            Intent intent = new Intent(ContactEditActivity.this, ContactActivity.class);
-            startActivity(intent);
             finish();
         });
     }

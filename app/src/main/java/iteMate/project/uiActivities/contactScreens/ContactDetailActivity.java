@@ -46,7 +46,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         });
 
         // on click listener for back button
-        findViewById(R.id.detailcontact_back_button).setOnClickListener(v -> onBackPressed());
+        findViewById(R.id.detailcontact_back_button).setOnClickListener(v -> finish());
 
         // on click listener for edit button
         findViewById(R.id.detailcontact_edit_button).setOnClickListener(v -> {

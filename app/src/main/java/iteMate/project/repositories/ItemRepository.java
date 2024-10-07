@@ -57,7 +57,7 @@ public class ItemRepository extends GenericRepository<Item> {
      * @param itemIDs list of item IDs
      * @return list of item objects
      */
-    private static ArrayList<Item> getItemslistByListOfIDsFromFirestore(List<String> itemIDs) {
+    private ArrayList<Item> getItemslistByListOfIDsFromFirestore(List<String> itemIDs) {
         ArrayList<Item> items = new ArrayList<>();
         for (String itemID : itemIDs) {
             db.collection("items").document(itemID)
@@ -94,11 +94,12 @@ public class ItemRepository extends GenericRepository<Item> {
     }
 
     @Override
-    protected void manipulateResults(List<Item> items, OnDocumentsFetchedListener<Item> listener) {
+    protected List<Item> manipulateResults(List<Item> items, OnDocumentsFetchedListener<Item> listener) {
         for (Item item : items) {
             setContainedAndAssociatedItems(item);
         }
         listener.onDocumentsFetched(items);
+        return items;
     }
 
     /**

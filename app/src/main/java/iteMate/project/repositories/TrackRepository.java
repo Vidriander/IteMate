@@ -60,16 +60,18 @@ public class TrackRepository extends GenericRepository<Track> {
     }
 
     @Override
-    protected void manipulateResult(Track track, OnDocumentsFetchedListener<Track> listener) {
+    protected Track manipulateResult(Track track, OnDocumentsFetchedListener<Track> listener) {
         fetchAttributesForTrack(track, listener);
+        return track;
     }
 
     @Override
-    protected void manipulateResults(List<Track> tracks, OnDocumentsFetchedListener<Track> listener) {
+    protected List<Track> manipulateResults(List<Track> tracks, OnDocumentsFetchedListener<Track> listener) {
         for (Track track : tracks) {
             fetchAttributesForTrack(track, listener);
         }
         listener.onDocumentsFetched(tracks);
+        return tracks;
     }
 
 }

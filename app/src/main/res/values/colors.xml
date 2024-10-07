@@ -6,4 +6,6 @@
     <color name="item_card_background">#CCD1D3</color>
     <color name="scan_button">#E89D2E</color>
     <color name="scan_button_icon">#FFFFFF</color>
+    <color name="unavailable_red">#FA3434</color>
+    <color name="available_green">#4CAF50</color>
 </resources>
