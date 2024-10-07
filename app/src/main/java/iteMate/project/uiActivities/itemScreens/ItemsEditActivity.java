@@ -89,7 +89,7 @@ public class ItemsEditActivity extends AppCompatActivity {
             intent.putExtra("isContainedItems", false);
             startActivity(intent);
         });
-        // Settting on click listener for save button
+        // Setting on click listener for save button
         findViewById(R.id.item_edit_save).setOnClickListener(click -> {
             saveChangesToItem();
             itemRepository.updateDocumentInFirestore(itemToDisplay);
@@ -99,6 +99,15 @@ public class ItemsEditActivity extends AppCompatActivity {
         findViewById(R.id.item_edit_cancel).setOnClickListener(click -> {
             resetItemToDisplay();
             ManageInnerItemsActivity.resetUpdatedItem();
+            finish();
+        });
+        // Setting on click listener for delete button
+        findViewById(R.id.item_edit_delete_btn).setOnClickListener(click -> {
+            itemRepository.deleteDocumentFromFirestore(itemToDisplay);
+            // Beende die nächste Activity
+            Intent intent = new Intent(this, ItemsDetailActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             finish();
         });
     }
