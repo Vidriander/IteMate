@@ -38,6 +38,8 @@ public class Track implements Parcelable, DocumentEquivalent {
      * ID of the contact to whom the item is given
      */
     private String contactID;
+
+    private boolean active;
     /**
      * List of items lent out
      */
@@ -105,6 +107,14 @@ public class Track implements Parcelable, DocumentEquivalent {
      */
     public String getContactID() {
         return contactID;
+    }
+
+    /**
+     * Getter for the status active:true = lent out, false = returned
+     * @return if the track has items that are not returned
+     */
+    public boolean isActive() {
+        return active;
     }
 
     /**
@@ -269,6 +279,7 @@ public class Track implements Parcelable, DocumentEquivalent {
         dest.writeLong(giveOutDate != null ? giveOutDate.toDate().getTime() : -1);
         dest.writeLong(returnDate != null ? returnDate.toDate().getTime() : -1);
         dest.writeParcelable(contact, flags);
+        dest.writeBoolean(active);
         dest.writeStringList(lentItemIDs);
         dest.writeTypedList(lentItemsList);
         dest.writeString(ownerID);
@@ -286,6 +297,7 @@ public class Track implements Parcelable, DocumentEquivalent {
         long returnDateLong = in.readLong();
         returnDate = returnDateLong != -1 ? new Timestamp(new Date(returnDateLong)) : null;
         contact = in.readParcelable(Contact.class.getClassLoader());
+        active = in.readBoolean();
         lentItemIDs = in.createStringArrayList();
         lentItemsList = in.createTypedArrayList(Item.CREATOR);
         ownerID = in.readString();
