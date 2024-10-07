@@ -91,7 +91,7 @@ public class ItemsDetailActivity extends AppCompatActivity {
             int color;
             TextView availabilityTextView = findViewById(R.id.available_text);
             if (itemToDisplay.getActiveTrackID() != null && !itemToDisplay.getActiveTrackID().isEmpty()) {
-                availability = "View Track";
+                availability = "track";
                 color = getResources().getColor(R.color.unavailable_red, null);
                 availabilityTextView.setOnClickListener(v -> {
                     TrackRepository trackRepository = new TrackRepository();
@@ -108,7 +108,7 @@ public class ItemsDetailActivity extends AppCompatActivity {
                     });
                 });
             } else {
-                availability = "Available";
+                availability = "lend";
                 color = getResources().getColor(R.color.available_green, null);
             }
             availabilityTextView.setText(availability);
