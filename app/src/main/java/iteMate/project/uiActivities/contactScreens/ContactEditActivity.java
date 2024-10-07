@@ -22,7 +22,6 @@ public class ContactEditActivity extends AppCompatActivity {
     private static Contact contactToDisplay;
     private ContactRepository contactRepository;
 
-
     private EditText firstName;
     private EditText lastName;
     private EditText street;
@@ -82,7 +81,6 @@ public class ContactEditActivity extends AppCompatActivity {
             } else {
                 contactRepository.updateDocumentInFirestore(contactToDisplay);
             }
-            // contactRepository.updateContactInFirestore(contactToDisplay);
             finish();
         });
 

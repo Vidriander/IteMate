@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -30,6 +31,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     private NfcAdapter nfcAdapter;
     private ItemRepository itemRepository;
     private TrackRepository trackRepository;
+    private ScanItemFragment scanItemFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
         // Add Fragments to the fragment container
         if (savedInstanceState == null) {
-            ScanItemFragment scanItemFragment = new ScanItemFragment();
+            scanItemFragment = new ScanItemFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, scanItemFragment);
@@ -116,6 +118,8 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                 if (item != null) {
                     Log.d("ScanActivity", "Item found: " + item.getTitle());
                     updateItemCardView(item);
+                    itemRepository.setContainedAndAssociatedItems(item);
+                    scanItemFragment.setItemToDisplay(item);
                     if (item.getActiveTrackID() != null) {
                         fetchTrackByItemTrackID(item.getActiveTrackID());
                     }
