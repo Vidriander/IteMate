@@ -1,5 +1,6 @@
 package iteMate.project.uiActivities.scanScreen;
 
+import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.repositories.TrackRepository;
+import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
+import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 
 /**
  * Activity for scanning NFC tags
@@ -122,6 +125,16 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                     scanItemFragment.setItemToDisplay(item);
                     if (item.getActiveTrackID() != null) {
                         fetchTrackByItemTrackID(item.getActiveTrackID());
+                        TrackRepository trackRepository = new TrackRepository();
+                        trackRepository.getOneDocumentFromFirestore(item.getActiveTrackID(), new GenericRepository.OnDocumentsFetchedListener<Track>() {
+                            @Override
+                            public void onDocumentFetched(Track document) {
+                                scanItemFragment.setTrackToDisplay(document);
+                            }
+                            @Override
+                            public void onDocumentsFetched(List<Track> documents) {
+                            }
+                        });
                     }
                 } else {
                     Log.d("ScanActivity", "Item not found");
@@ -135,6 +148,10 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         });
     }
 
+    /**
+     * Fetch track by item track ID
+     * @param trackID Track ID as a String
+     */
     private void fetchTrackByItemTrackID(String trackID) {
         trackRepository.getOneDocumentFromFirestore(trackID, this);
     }
@@ -160,6 +177,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
+    /**
+     * Update the track card view with the track details
+     *
+     * @param track Track object
+     */
     private void updateTrackCardView(Track track) {
         ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment != null && fragment.getView() != null) {
