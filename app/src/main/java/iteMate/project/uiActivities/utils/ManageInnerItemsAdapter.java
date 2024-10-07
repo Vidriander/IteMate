@@ -79,7 +79,7 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         itemList = new ArrayList<>();
         itemList.addAll(this.checkedItems);
         for (Item item : this.allItems) {
-            if (checkedItems.stream().map(Item::getNfcTag).noneMatch(tag -> tag.equals(item.getNfcTag()))) {
+            if (checkedItems.stream().map(Item::getId).noneMatch(tag -> tag.equals(item.getId()))) {
                 itemList.add(item);
             }
         }

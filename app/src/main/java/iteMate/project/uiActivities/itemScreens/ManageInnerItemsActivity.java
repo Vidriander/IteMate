@@ -89,19 +89,17 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
             resetUpdatedItem();
             finish();
         });
+
         // Configure the SearchView
         SearchView searchView = findViewById(R.id.manageInnerItemsSearchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 performSearch(query);
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String query) {
-
                 performSearch(query);
                 return true;
             }

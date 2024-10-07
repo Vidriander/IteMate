@@ -74,6 +74,7 @@ public class Item implements Parcelable, DocumentEquivalent {
      * Default constructor for an item
      */
     public Item() {
+        id = "-1";
         title = "New Item";
         description = "This is a blob of antimatter. Please handle with care.";
         image = "itemImages/default_image.jpg";

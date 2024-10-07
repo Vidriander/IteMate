@@ -2,6 +2,7 @@ package iteMate.project.repositories;
 
 import android.util.Log;
 
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -111,7 +112,7 @@ public class ItemRepository extends GenericRepository<Item> {
      */
     @Override
     public void updateDocumentInFirestore(Item item) {
-        db.collection("items").whereEqualTo("nfcTag", item.getNfcTag())
+        db.collection("items").whereEqualTo(FieldPath.documentId(), item.getId())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -134,7 +135,6 @@ public class ItemRepository extends GenericRepository<Item> {
                             // If no matching document is found, create a new document with only specific fields
                             Map<String, Object> newItemData = new HashMap<>();
                             newItemData.put("title", item.getTitle());
-//                            newItemData.put("nfcTag", item.getNfcTag());
                             newItemData.put("description", item.getDescription());
                             newItemData.put("image", item.getImage());
                             newItemData.put("containedItemIDs", item.getContainedItemIDs());
