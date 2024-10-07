@@ -82,7 +82,6 @@ public class ContactEditActivity extends AppCompatActivity {
             } else {
                 contactRepository.updateDocumentInFirestore(contactToDisplay);
             }
-            // contactRepository.updateContactInFirestore(contactToDisplay);
             finish();
         });
 

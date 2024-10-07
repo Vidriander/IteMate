@@ -1,5 +1,6 @@
 package iteMate.project.uiActivities.scanScreen;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import iteMate.project.R;
+import iteMate.project.models.Item;
+import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +28,8 @@ public class ScanItemFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Item itemToDisplay;
 
     public ScanItemFragment() {
         // Required empty public constructor
@@ -61,6 +66,18 @@ public class ScanItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_scan_item, container, false);
+        View view = inflater.inflate(R.layout.fragment_scan_item, container, false);
+
+        // Set on click listener for item card view
+        view.findViewById(R.id.item_card_view_scan).setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ItemsDetailActivity.class);
+            intent.putExtra("item", itemToDisplay);
+            startActivity(intent);
+        });
+        return view;
+    }
+
+    void setItemToDisplay(Item item) {
+        this.itemToDisplay = item;
     }
 }
