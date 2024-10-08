@@ -72,15 +72,20 @@ public class Item implements Parcelable, DocumentEquivalent {
      */
     private int defaultImage = R.drawable.gradient_background;
 
+
+
     /**
      * Default constructor for an item
      */
     public Item() {
         id = "-1";
+        nfcTag = "-1";
         title = "";
         description = "";
         image = "itemImages/default_image.jpg";
         available = true;
+        ownerID = "";
+        activeTrackID = "";
     }
 
     /**
@@ -212,10 +217,6 @@ public class Item implements Parcelable, DocumentEquivalent {
         return description;
     }
 
-    public int getDefaultImage() {
-        return defaultImage;
-    }
-
     /**
      * Returns the list of items contained in this item
      * @return List of items contained in this item
@@ -236,6 +237,27 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     public String getActiveTrackID() {
         return activeTrackID;
+    }
+
+    /**
+     * Getter for the contained item IDs
+     * @return List of IDs of items contained in this item
+     */
+    public List<String> getContainedItemIDs() {
+        return containedItemIDs;
+    }
+
+    /**
+     * Getter for the associated item IDs
+     * @return List of IDs of items associated with this item
+     */
+    public List<String> getAssociatedItemIDs() {
+        return associatedItemIDs;
+    }
+
+    @Override
+    public String getCollectionPath() {
+        return collectionPath;
     }
 
     /**
@@ -271,11 +293,19 @@ public class Item implements Parcelable, DocumentEquivalent {
     }
 
     /**
+     * Setter for the nfc tag ID of the item
+     */
+    public void setNfcTag(String tagId) {
+        this.nfcTag = tagId;
+    }
+
+    /**
      * setter for the ID of the track the item is in
      * @param activeTrackID ID of the track the item is in
      */
     public void setActiveTrackID(String activeTrackID) {
         this.activeTrackID = activeTrackID;
+        // TODO
     }
 
     /**
@@ -287,6 +317,10 @@ public class Item implements Parcelable, DocumentEquivalent {
         Log.d("Item", "setContainedItems size: " + containedItems.size());
     }
 
+    /**
+     * Setter for the Items contained in this item
+     * @param containedItemIDs List of items contained in this item
+     */
     public void setContainedItemIDs(ArrayList<String> containedItemIDs) {
         this.containedItemIDs = containedItemIDs;
     }
@@ -300,28 +334,11 @@ public class Item implements Parcelable, DocumentEquivalent {
         Log.d("Item", "setAssociatedItems size: " + associatedItems.size());
     }
 
+    /**
+     * Setter for the items associated with this item
+     * @param associatedItemIDs List of items associated with this item
+     */
     public void setAssociatedItemIDs(ArrayList<String> associatedItemIDs) {
         this.associatedItemIDs = associatedItemIDs;
-    }
-
-    /**
-     * Getter for the contained item IDs
-     * @return List of IDs of items contained in this item
-     */
-    public List<String> getContainedItemIDs() {
-        return containedItemIDs;
-    }
-
-    /**
-     * Getter for the associated item IDs
-     * @return List of IDs of items associated with this item
-     */
-    public List<String> getAssociatedItemIDs() {
-        return associatedItemIDs;
-    }
-
-    @Override
-    public String getCollectionPath() {
-        return collectionPath;
     }
 }

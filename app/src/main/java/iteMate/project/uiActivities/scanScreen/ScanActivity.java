@@ -126,7 +126,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         String tagId = extractTagId(tag);
         Log.d("ScanActivity", "Tag ID: " + tagId);
         fetchItemByNfcTagId(tagId);
-        transitionToItemFragment();
+        transitionToItemFragment(tagId);
     }
 
     /**
@@ -144,10 +144,10 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     /**
      * Transitions to the item fragment
      */
-    private void transitionToItemFragment() {
+    private void transitionToItemFragment(String TagId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, scanItemFragment);
+        fragmentTransaction.replace(R.id.fragment_container, scanItemFragment, TagId);
         fragmentTransaction.commit();
     }
 
@@ -181,8 +181,12 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             updateItemCardView(item);
             itemRepository.setContainedAndAssociatedItems(item);
             scanItemFragment.setItemToDisplay(item);
+            scanItemFragment.setNfcTagId(item.getNfcTag());
             if (item.getActiveTrackID() != null) {
                 fetchTrackByItemTrackID(item.getActiveTrackID());
+            } else {
+                // hide track card view
+                updateTrackCardView(null);
             }
         } else {
             Log.d("ScanActivity", "Item not found");
@@ -289,6 +293,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                 if (track == null) {
                     trackCardView.setVisibility(View.GONE);
                 } else {
+                    trackCardView.setVisibility(View.VISIBLE);
                     updateTrackCardContent(trackCardView, track);
                 }
             }

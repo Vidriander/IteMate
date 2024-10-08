@@ -24,6 +24,7 @@ public class ScanItemFragment extends Fragment {
 
     private Item itemToDisplay;
     private Track trackToDisplay;
+    private String tagId;
     private Button returnButton;
 
     public ScanItemFragment() {
@@ -42,6 +43,11 @@ public class ScanItemFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scan_item, container, false);
 
+        // Get tag ID from arguments
+        if (getArguments() != null) {
+            tagId = getArguments().getString("tagId");
+        }
+
         // Set item details for track card view
         view.findViewById(R.id.track_card_view_scan).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), TrackDetailActivity.class);
@@ -55,8 +61,9 @@ public class ScanItemFragment extends Fragment {
         // Set on click listener for item card view
         view.findViewById(R.id.item_card_view_scan).setOnClickListener(v -> {
             if (itemToDisplay == null) {
-                // if not item exists navigate to item edit screen and create new item
+                // if no item exists, navigate to item edit screen and create new item
                 Item newItem = new Item();
+                newItem.setNfcTag(tagId);
                 Intent intent = new Intent(getActivity(), ItemsEditActivity.class);
                 intent.putExtra("item", newItem);
                 startActivity(intent);
@@ -90,17 +97,11 @@ public class ScanItemFragment extends Fragment {
         this.itemToDisplay = item;
     }
 
-    /**
-     * Set the track to display in the fragment
-     *
-     * @param track Track to display
-     */
-    void setTrackToDisplay(Track track) {
+    public void setTrackToDisplay(Track track) {
         this.trackToDisplay = track;
     }
 
-    public Button getReturnButton() { // Add this method
-        return returnButton;
+    public void setNfcTagId(String tagId) {
+        this.tagId = tagId;
     }
-
 }
