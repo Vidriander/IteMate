@@ -183,7 +183,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             scanItemFragment.setItemToDisplay(item);
             scanItemFragment.setNfcTagId(item.getNfcTag());
             if (item.getActiveTrackID() != null) {
-                fetchTrackByItemTrackID(item.getActiveTrackID());
+                fetchTrackByItemTrackID(item.getActiveTrackID(), item);
             } else {
                 // hide track card view
                 updateTrackCardView(null);
@@ -195,13 +195,24 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
-    /**
-     * Fetches a track by its item track ID
-     *
-     * @param trackID the item track ID
-     */
-    private void fetchTrackByItemTrackID(String trackID) {
-        trackRepository.getOneDocumentFromFirestore(trackID, this);
+    private void fetchTrackByItemTrackID(String trackID, Item item) {
+        trackRepository.getOneDocumentFromFirestore(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
+            @Override
+            public void onDocumentFetched(Track track) {
+                if (track != null) {
+                    scanItemFragment.setTrackToDisplay(track);
+                    updateTrackCardView(track);
+                } else {
+                    scanItemFragment.setTrackToDisplay(null);
+                    updateTrackCardView(null);
+                }
+            }
+
+            @Override
+            public void onDocumentsFetched(List<Track> documents) {
+                // pass
+            }
+        });
     }
 
     /**
