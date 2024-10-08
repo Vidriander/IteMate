@@ -15,6 +15,9 @@ import iteMate.project.models.Track;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 
+/**
+ * Fragment for displaying scanned item and track
+ */
 public class ScanItemFragment extends Fragment {
 
     private Item itemToDisplay;
@@ -52,10 +55,20 @@ public class ScanItemFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Set the item to display in the fragment
+     *
+     * @param item Item to display
+     */
     void setItemToDisplay(Item item) {
         this.itemToDisplay = item;
     }
 
+    /**
+     * Set the track to display in the fragment
+     *
+     * @param track Track to display
+     */
     void setTrackToDisplay(Track track) {
         this.trackToDisplay = track;
     }

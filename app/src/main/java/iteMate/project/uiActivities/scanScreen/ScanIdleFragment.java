@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 
 import iteMate.project.R;
 
+/**
+ * Fragment for displaying idle state of scanning
+ */
 public class ScanIdleFragment extends Fragment {
 
     public ScanIdleFragment() {
