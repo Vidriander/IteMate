@@ -16,19 +16,47 @@ import iteMate.project.R;
 import iteMate.project.models.Contact;
 import iteMate.project.repositories.ContactRepository;
 
-
+/**
+ * Activity to edit a contact
+ */
 public class ContactEditActivity extends AppCompatActivity {
 
+    /**
+     * Contact to display in the edit view
+     */
     private static Contact contactToDisplay;
+    /**
+     * ContactRepository to interact with Firestore
+     */
     private ContactRepository contactRepository;
 
-    // ahhhhhh!!!11!
+    /**
+     * EditTexts for the contact's first name
+     */
     private EditText firstName;
+    /**
+     * EditTexts for the contact's last name
+     */
     private EditText lastName;
+    /**
+     * EditTexts for the contact's address
+     */
     private EditText street;
+    /**
+     * EditTexts for the contact's zip code
+     */
     private EditText zip;
+    /**
+     * EditTexts for the contact's city
+     */
     private EditText city;
+    /**
+     * EditTexts for the contact's phone number
+     */
     private EditText phone;
+    /**
+     * EditTexts for the contact's email
+     */
     private EditText email;
 
     @Override
@@ -92,6 +120,9 @@ public class ContactEditActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Set the contents of the edit view
+     */
     private void setEditViewContents() {
         if (contactToDisplay != null) {
             firstName.setText(contactToDisplay.getFirstName());
@@ -106,6 +137,9 @@ public class ContactEditActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Save the changes made to the contact in the edit view
+     */
     private void saveChangesToContact() {
         contactToDisplay.setFirstName(firstName.getText().toString());
         contactToDisplay.setLastName(lastName.getText().toString());
