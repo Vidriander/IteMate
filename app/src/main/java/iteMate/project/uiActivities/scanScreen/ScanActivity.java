@@ -1,17 +1,14 @@
 package iteMate.project.uiActivities.scanScreen;
 
-import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -23,8 +20,7 @@ import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.repositories.TrackRepository;
-import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
-import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
+
 
 /**
  * Activity for scanning NFC tags
@@ -35,6 +31,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     private ItemRepository itemRepository;
     private TrackRepository trackRepository;
     private ScanItemFragment scanItemFragment;
+    private ScanIdleFragment scanIdleFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +55,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
         // Add Fragments to the fragment container
         if (savedInstanceState == null) {
-            scanItemFragment = new ScanItemFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, scanItemFragment);
-            fragmentTransaction.commit();
+            setUpFragments();
         }
     }
 
@@ -92,21 +85,30 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     public void onTagDiscovered(Tag tag) {
         Log.d("ScanActivity", "NFC Tag discovered!");
         String tagId = extractTagId(tag);
-        updateTagIdTextView(tagId); // Display tag ID for testing
-        fetchItemByNfcTagId(tagId);
+        Log.d("ScanActivity", "Tag ID: " + tagId);
+        fetchItemByNfcTagId(tagId);transitionToItemFragment();
     }
 
     /**
-     * Update the tag ID TextView with the tag ID
-     * for testing purposes TODO: Remove this method
-     *
-     * @param tagId Tag ID as a long
+     * Set up the fragments
      */
-    private void updateTagIdTextView(String tagId) {
-        runOnUiThread(() -> {
-            TextView tagIdTextView = findViewById(R.id.showNfcTagID);
-            tagIdTextView.setText(tagId);
-        });
+    private void setUpFragments() {
+        scanIdleFragment = new ScanIdleFragment();
+        scanItemFragment = new ScanItemFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, ScanIdleFragment.class, null);
+        fragmentTransaction.commit();
+    }
+
+    /**
+     * Transition to the item fragment
+     */
+    private void transitionToItemFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, scanItemFragment);
+        fragmentTransaction.commit();
     }
 
     /**

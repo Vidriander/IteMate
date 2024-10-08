@@ -10,21 +10,25 @@ import android.view.ViewGroup;
 
 import iteMate.project.R;
 
-public class ScanTrackFragment extends Fragment {
+/**
+ * Fragment for displaying idle state of scanning
+ */
+public class ScanIdleFragment extends Fragment {
 
-    public ScanTrackFragment() {
+    public ScanIdleFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_scan_track, container, false);
+        return inflater.inflate(R.layout.fragment_idle, container, false);
     }
 }
