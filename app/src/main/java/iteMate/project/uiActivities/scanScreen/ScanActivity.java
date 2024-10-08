@@ -26,6 +26,7 @@ import iteMate.project.repositories.TrackRepository;
 
 /**
  * Activity for scanning NFC tags
+ * It displays the scanned item and track.
  */
 public class ScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback, GenericRepository.OnDocumentsFetchedListener<Track> {
 
@@ -50,6 +51,9 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
+    /**
+     * Initializes the NFC adapter
+     */
     private void initializeNfcAdapter() {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
@@ -58,15 +62,20 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
+    /**
+     * Initializes the repositories
+     */
     private void initializeRepositories() {
         itemRepository = new ItemRepository();
         trackRepository = new TrackRepository();
     }
 
+    /**
+     * Sets the functionality for the close button
+     */
     private void setCloseButtonFunctionality() {
         findViewById(R.id.close_nfcscan).setOnClickListener(v -> finish());
     }
-
 
     @Override
     protected void onResume() {
@@ -74,6 +83,9 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         enableNfcReaderMode();
     }
 
+    /**
+     * Enables the NFC reader mode
+     */
     private void enableNfcReaderMode() {
         if (nfcAdapter != null) {
             nfcAdapter.enableReaderMode(this, this,
@@ -84,14 +96,15 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
-
-
     @Override
     protected void onPause() {
         super.onPause();
         disableNfcReaderMode();
     }
 
+    /**
+     * Disables the NFC reader mode
+     */
     private void disableNfcReaderMode() {
         if (nfcAdapter != null) {
             nfcAdapter.disableReaderMode(this);
@@ -104,6 +117,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         handleTagDiscovered(tag);
     }
 
+    /**
+     * Handles the discovered NFC tag
+     *
+     * @param tag the discovered tag
+     */
     private void handleTagDiscovered(Tag tag) {
         String tagId = extractTagId(tag);
         Log.d("ScanActivity", "Tag ID: " + tagId);
@@ -112,7 +130,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     }
 
     /**
-     * Set up the fragments
+     * Sets up the fragments
      */
     private void setUpFragments() {
         scanIdleFragment = new ScanIdleFragment();
@@ -124,7 +142,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     }
 
     /**
-     * Transition to the item fragment
+     * Transitions to the item fragment
      */
     private void transitionToItemFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -133,6 +151,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         fragmentTransaction.commit();
     }
 
+    /**
+     * Fetches an item by its NFC tag ID
+     *
+     * @param tagId the NFC tag ID
+     */
     private void fetchItemByNfcTagId(String tagId) {
         itemRepository.getItemByNfcTagFromFirestore(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
             @Override
@@ -147,6 +170,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         });
     }
 
+    /**
+     * Handles the fetched item
+     *
+     * @param item the fetched item
+     */
     private void handleItemFetched(Item item) {
         if (item != null) {
             Log.d("ScanActivity", "Item found: " + item.getTitle());
@@ -163,10 +191,20 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
+    /**
+     * Fetches a track by its item track ID
+     *
+     * @param trackID the item track ID
+     */
     private void fetchTrackByItemTrackID(String trackID) {
         trackRepository.getOneDocumentFromFirestore(trackID, this);
     }
 
+    /**
+     * Updates the item card view
+     *
+     * @param item the item to display
+     */
     private void updateItemCardView(Item item) {
         ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment != null && fragment.getView() != null) {
@@ -182,6 +220,12 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
+    /**
+     * Updates the item card content
+     *
+     * @param itemCardView the item card view
+     * @param item         the item to display
+     */
     private void updateItemCardContent(CardView itemCardView, Item item) {
         TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
         cardContent.setText(item.getTitle());
@@ -191,6 +235,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         showButtons();
     }
 
+    /**
+     * Shows the "create new item" card
+     *
+     * @param itemCardView the item card view
+     */
     private void showCreateNewItemCard(CardView itemCardView) {
         TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
         cardContent.setText("Create new item");
@@ -201,6 +250,9 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         hideButtons();
     }
 
+    /**
+     * Sets the visability of the buttons to visible
+     */
     private void showButtons() {
         ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment != null && fragment.getView() != null) {
@@ -211,6 +263,9 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
+    /**
+     * Sets the visability of the buttons to gone
+     */
     private void hideButtons() {
         ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment != null && fragment.getView() != null) {
@@ -221,6 +276,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
+    /**
+     * Updates the track card view
+     *
+     * @param track the track to display
+     */
     private void updateTrackCardView(Track track) {
         ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment != null && fragment.getView() != null) {
@@ -236,6 +296,12 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
+    /**
+     * Updates the track card content
+     *
+     * @param track         the track to display
+     * @param trackCardView the track card view
+     */
     private void updateTrackCardContent(CardView trackCardView, Track track) {
         trackCardView.setVisibility(View.VISIBLE);
         TextView cardContent = trackCardView.findViewById(R.id.trackcard_contactname_scan);
@@ -246,6 +312,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         cardSubContent2.setText(String.valueOf(track.getNumberOfItems()));
     }
 
+    /**
+     * Manages the transparency of the buttons
+     *
+     * @param track - the track to display
+     */
     private void manageButtonTransparency(Track track) {
         ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment != null && fragment.getView() != null) {
@@ -263,6 +334,12 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
+    /**
+     * Extracts the tag ID oof a scanned tag
+     *
+     * @param tag the scanned tag
+     * @return the tag ID a scanned tag
+     */
     private String extractTagId(Tag tag) {
         byte[] tagId = tag.getId();
         StringBuilder hexString = new StringBuilder();
