@@ -21,12 +21,26 @@ import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
 
 public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerItemsAdapter.ViewHolder> {
+    /**
+     * List of items that are checked, given by the context
+     */
     private List<Item> checkedItems;
+    /**
+     * List of all items that are available to be checked, all items available in the context
+     */
     private List<Item> allItems;
+    /**
+     * List of items that are displayed in the RecyclerView
+     */
     private List<Item> itemList;
-    private Context context;
+    /**
+     * Context of the activity
+     */
+    private final Context context;
 
-    // A set to hold checked item tags
+    /**
+     * Set to store IDs of checked items
+     */
     private Set<String> checkedItemTags = new HashSet<String>();
 
     public ManageInnerItemsAdapter(List<Item> checkedItems, List<Item> allItems, Context context) {
@@ -34,7 +48,7 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         this.allItems = allItems;
         this.context = context;
 
-        // Initialize the set with the NFC tags of checked items
+        // Initialize the set with the IDs of checked items
         for (Item item : checkedItems) {
             checkedItemTags.add(item.getId());
         }
@@ -45,11 +59,13 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
     private void setUpLists() {
         itemList = new ArrayList<>();
 
+        // Add checked items to the list first
         for (Item item : this.allItems) {
             if (checkedItemTags.contains(item.getId())) {
                 itemList.add(item);
             }
         }
+        // Add the rest of the items to the list
         for (Item item : this.allItems) {
             if (!checkedItemTags.contains(item.getId())) {
                 itemList.add(item);
@@ -115,8 +131,6 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
 
         // Setting the checkbox:
         holder.checkBox.setChecked(checkedItemTags.contains(item.getId()));
-
-
 
         // Items currently not clickable. Is that desired?
 //        holder.itemView.setOnClickListener(v -> {

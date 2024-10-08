@@ -111,7 +111,7 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
     private void performSearch(String query) {
         // reset the searchList to the itemList
         searchList.clear();
-        searchList.addAll(isContainedItems ? itemToDisplay.getContainedItems() : itemToDisplay.getAssociatedItems());
+        searchList.addAll(allItems);
 
         // Perform the search and update the itemList
         List<Item> filteredList = SearchUtils.searchItems(searchList, query);
@@ -129,6 +129,7 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
 
     @Override
     public void onDocumentsFetched(List<Item> documents) {
-        adapter.notifyItemsAvailable(SortUtils.sortItemsByName(documents));
+        allItems = SortUtils.sortItemsByName(documents);
+        adapter.notifyItemsAvailable(allItems);
     }
 }
