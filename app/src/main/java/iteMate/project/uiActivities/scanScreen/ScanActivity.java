@@ -5,6 +5,7 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -188,6 +189,9 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment != null && fragment.getView() != null) {
             CardView trackCardView = fragment.getView().findViewById(R.id.track_card_view_scan);
+            Button returnButton = fragment.getView().findViewById(R.id.return_button);
+            Button lendButton = fragment.getView().findViewById(R.id.lend_button);
+
             if (trackCardView != null) {
                 trackCardView.setVisibility(View.VISIBLE);
                 // Update track card content
@@ -199,6 +203,16 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                 cardSubContent2.setText(String.valueOf(track.getNumberOfItems()));
             }
 
+            // Manage Button transparency of return & lend button
+            if (returnButton != null) {
+                if (track == null) {
+                    returnButton.setAlpha(0.5f);
+                    lendButton.setAlpha(1f);
+                } else {
+                    returnButton.setAlpha(1f);
+                    lendButton.setAlpha(0.5f);
+                }
+            }
         }
     }
 

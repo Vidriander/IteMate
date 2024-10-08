@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import iteMate.project.R;
 import iteMate.project.models.Item;
@@ -22,6 +23,7 @@ public class ScanItemFragment extends Fragment {
 
     private Item itemToDisplay;
     private Track trackToDisplay;
+    private Button returnButton;
 
     public ScanItemFragment() {
         // Required empty public constructor
@@ -30,6 +32,7 @@ public class ScanItemFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -38,6 +41,16 @@ public class ScanItemFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scan_item, container, false);
 
+        // Set item details for track card view
+        view.findViewById(R.id.track_card_view_scan).setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), TrackDetailActivity.class);
+            intent.putExtra("track", trackToDisplay);
+            startActivity(intent);
+        });
+
+        // Set up return button
+        returnButton = view.findViewById(R.id.return_button);
+
         // Set on click listener for item card view
         view.findViewById(R.id.item_card_view_scan).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ItemsDetailActivity.class);
@@ -45,11 +58,14 @@ public class ScanItemFragment extends Fragment {
             startActivity(intent);
         });
 
-        // Set item details for track card view
-        view.findViewById(R.id.track_card_view_scan).setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), TrackDetailActivity.class);
-            intent.putExtra("track", trackToDisplay);
-            startActivity(intent);
+        // Set on click listener for lend button
+        view.findViewById(R.id.lend_button).setOnClickListener(v -> {
+            // TODO Handle lend button click
+        });
+
+        // Set on click listener for return button
+        view.findViewById(R.id.return_button).setOnClickListener(v -> {
+            // TODO Handle return button click
         });
 
         return view;
@@ -71,6 +87,10 @@ public class ScanItemFragment extends Fragment {
      */
     void setTrackToDisplay(Track track) {
         this.trackToDisplay = track;
+    }
+
+    public Button getReturnButton() { // Add this method
+        return returnButton;
     }
 
 }
