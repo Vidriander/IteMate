@@ -7,6 +7,7 @@ import com.google.firebase.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Track class to store detail of a lend out item.
@@ -38,7 +39,9 @@ public class Track implements Parcelable, DocumentEquivalent {
      * ID of the contact to whom the item is given
      */
     private String contactID;
-
+    /**
+     * Status of the track, true = lent out, false = returned
+     */
     private boolean active;
     /**
      * List of items lent out
@@ -253,7 +256,25 @@ public class Track implements Parcelable, DocumentEquivalent {
         }
         this.additionalInfo = additionalInfo;
     }
+
+    /**
+     * Setter for the status active:true = lent out, false = returned
+     * @param active the status to set
+     */
+    public void setActive(boolean active) {
+        this.active = active;
+    }
     // endregion
+
+    //region Methods
+
+    /**
+     * Method to check if the track is active by checking if any of the items are assigned to the track
+     */
+    private void checkActive() {
+        active = lentItemsList.stream().noneMatch(item -> item.getActiveTrackID().equals(id));
+    }
+    //endregion
 
     //region Parcelable implementation
     public static final Creator<Track> CREATOR = new Creator<Track>() {
