@@ -40,20 +40,9 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
-        // Initialize NFC adapter
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter == null) {
-            Log.d("ScanActivity", "NFC is not available on this device.");
-            finish();
-            return;
-        }
-
-        // Initialize Repositories
-        itemRepository = new ItemRepository();
-        trackRepository = new TrackRepository();
-
-        // Set functionality of close button
-        findViewById(R.id.close_nfcscan).setOnClickListener(v -> finish());
+        initializeNfcAdapter();
+        initializeRepositories();
+        setCloseButtonFunctionality();
 
         // Add Fragments to the fragment container
         if (savedInstanceState == null) {
@@ -61,11 +50,32 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
+    private void initializeNfcAdapter() {
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter == null) {
+            Log.d("ScanActivity", "NFC is not available on this device.");
+            finish();
+        }
+    }
+
+    private void initializeRepositories() {
+        itemRepository = new ItemRepository();
+        trackRepository = new TrackRepository();
+    }
+
+    private void setCloseButtonFunctionality() {
+        findViewById(R.id.close_nfcscan).setOnClickListener(v -> finish());
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
+        enableNfcReaderMode();
+    }
+
+    private void enableNfcReaderMode() {
         if (nfcAdapter != null) {
-            // Enable Reader Mode when activity is resumed
             nfcAdapter.enableReaderMode(this, this,
                     NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_NFC_B |
                             NfcAdapter.FLAG_READER_NFC_F | NfcAdapter.FLAG_READER_NFC_V |
@@ -74,11 +84,16 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
+
+
     @Override
     protected void onPause() {
         super.onPause();
+        disableNfcReaderMode();
+    }
+
+    private void disableNfcReaderMode() {
         if (nfcAdapter != null) {
-            // Disable Reader Mode when the activity is paused
             nfcAdapter.disableReaderMode(this);
         }
     }
@@ -86,6 +101,10 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     @Override
     public void onTagDiscovered(Tag tag) {
         Log.d("ScanActivity", "NFC Tag discovered!");
+        handleTagDiscovered(tag);
+    }
+
+    private void handleTagDiscovered(Tag tag) {
         String tagId = extractTagId(tag);
         Log.d("ScanActivity", "Tag ID: " + tagId);
         fetchItemByNfcTagId(tagId);
@@ -114,40 +133,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         fragmentTransaction.commit();
     }
 
-    /**
-     * Fetch item by NFC tag ID and update the item card view
-     *
-     * @param tagId Tag ID as a Hex String
-     */
     private void fetchItemByNfcTagId(String tagId) {
         itemRepository.getItemByNfcTagFromFirestore(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
             @Override
             public void onDocumentFetched(Item item) {
-                if (item != null) {
-                    Log.d("ScanActivity", "Item found: " + item.getTitle());
-                    updateItemCardView(item);
-                    itemRepository.setContainedAndAssociatedItems(item);
-                    scanItemFragment.setItemToDisplay(item);
-                    if (item.getActiveTrackID() != null) {
-                        fetchTrackByItemTrackID(item.getActiveTrackID());
-                        TrackRepository trackRepository = new TrackRepository();
-                        trackRepository.getOneDocumentFromFirestore(item.getActiveTrackID(), new GenericRepository.OnDocumentsFetchedListener<Track>() {
-                            @Override
-                            public void onDocumentFetched(Track document) {
-                                scanItemFragment.setTrackToDisplay(document);
-                            }
-
-                            @Override
-                            public void onDocumentsFetched(List<Track> documents) {
-                            }
-                        });
-                    }
-                } else {
-                    Log.d("ScanActivity", "Item not found");
-                    // TODO handle item not found here and show new create card
-                    updateTrackCardView(null);
-                    updateItemCardView(null);
-                }
+                handleItemFetched(item);
             }
 
             @Override
@@ -157,20 +147,26 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         });
     }
 
-    /**
-     * Fetch track by item track ID
-     *
-     * @param trackID Track ID as a String
-     */
+    private void handleItemFetched(Item item) {
+        if (item != null) {
+            Log.d("ScanActivity", "Item found: " + item.getTitle());
+            updateItemCardView(item);
+            itemRepository.setContainedAndAssociatedItems(item);
+            scanItemFragment.setItemToDisplay(item);
+            if (item.getActiveTrackID() != null) {
+                fetchTrackByItemTrackID(item.getActiveTrackID());
+            }
+        } else {
+            Log.d("ScanActivity", "Item not found");
+            updateTrackCardView(null);
+            updateItemCardView(null);
+        }
+    }
+
     private void fetchTrackByItemTrackID(String trackID) {
         trackRepository.getOneDocumentFromFirestore(trackID, this);
     }
 
-    /**
-     * Update the item card view with the item details
-     *
-     * @param item Item object
-     */
     private void updateItemCardView(Item item) {
         ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment != null && fragment.getView() != null) {
@@ -178,63 +174,83 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             if (itemCardView != null) {
                 itemCardView.setVisibility(View.VISIBLE);
                 if (item != null) {
-                    // Update card content with item details
-                    TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
-                    cardContent.setText(item.getTitle());
-                    TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
-                    cardSubContent.setText(item.getDescription());
-                    GenericRepository.setImageForView(this, item.getImage(), itemCardView.findViewById(R.id.itemcard_image_scan));
-                    // show buttons
-                    Button lendButton = fragment.getView().findViewById(R.id.lend_button);
-                    lendButton.setVisibility(View.VISIBLE);
-                    Button returnButton = fragment.getView().findViewById(R.id.return_button);
-                    returnButton.setVisibility(View.VISIBLE);
+                    updateItemCardContent(itemCardView, item);
                 } else {
-                    // Update card to show "Create new item" card
-                    TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
-                    cardContent.setText("Create new item");
-                    TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
-                    cardSubContent.setText("");
-                    ImageView cardImage = itemCardView.findViewById(R.id.itemcard_image_scan);
-                    cardImage.setImageResource(R.drawable.add_button);
-                    // hide buttons
-                    Button lendButton = fragment.getView().findViewById(R.id.lend_button);
-                    lendButton.setVisibility(View.GONE);
-                    Button returnButton = fragment.getView().findViewById(R.id.return_button);
-                    returnButton.setVisibility(View.GONE);
+                    showCreateNewItemCard(itemCardView);
                 }
             }
         }
     }
 
-    /**
-     * Update the track card view with the track details
-     *
-     * @param track Track object
-     */
+    private void updateItemCardContent(CardView itemCardView, Item item) {
+        TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
+        cardContent.setText(item.getTitle());
+        TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
+        cardSubContent.setText(item.getDescription());
+        GenericRepository.setImageForView(this, item.getImage(), itemCardView.findViewById(R.id.itemcard_image_scan));
+        showButtons();
+    }
+
+    private void showCreateNewItemCard(CardView itemCardView) {
+        TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
+        cardContent.setText("Create new item");
+        TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
+        cardSubContent.setText("");
+        ImageView cardImage = itemCardView.findViewById(R.id.itemcard_image_scan);
+        cardImage.setImageResource(R.drawable.add_button);
+        hideButtons();
+    }
+
+    private void showButtons() {
+        ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fragment != null && fragment.getView() != null) {
+            Button lendButton = fragment.getView().findViewById(R.id.lend_button);
+            lendButton.setVisibility(View.VISIBLE);
+            Button returnButton = fragment.getView().findViewById(R.id.return_button);
+            returnButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideButtons() {
+        ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fragment != null && fragment.getView() != null) {
+            Button lendButton = fragment.getView().findViewById(R.id.lend_button);
+            lendButton.setVisibility(View.GONE);
+            Button returnButton = fragment.getView().findViewById(R.id.return_button);
+            returnButton.setVisibility(View.GONE);
+        }
+    }
+
     private void updateTrackCardView(Track track) {
         ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment != null && fragment.getView() != null) {
             CardView trackCardView = fragment.getView().findViewById(R.id.track_card_view_scan);
-            Button returnButton = fragment.getView().findViewById(R.id.return_button);
-            Button lendButton = fragment.getView().findViewById(R.id.lend_button);
-
             if (trackCardView != null) {
                 if (track == null) {
                     trackCardView.setVisibility(View.GONE);
                 } else {
-                    trackCardView.setVisibility(View.VISIBLE);
-                    // Update track card content
-                    TextView cardContent = trackCardView.findViewById(R.id.trackcard_contactname_scan);
-                    cardContent.setText(track.getContact().getName());
-                    TextView cardSubContent = trackCardView.findViewById(R.id.trackcard_daycounter_scan);
-                    cardSubContent.setText(String.valueOf(track.getDaysLeft()));
-                    TextView cardSubContent2 = trackCardView.findViewById(R.id.trackcard_numberofitems_scan);
-                    cardSubContent2.setText(String.valueOf(track.getNumberOfItems()));
+                    updateTrackCardContent(trackCardView, track);
                 }
             }
+            manageButtonTransparency(track);
+        }
+    }
 
-            // Manage return & lend button transparency
+    private void updateTrackCardContent(CardView trackCardView, Track track) {
+        trackCardView.setVisibility(View.VISIBLE);
+        TextView cardContent = trackCardView.findViewById(R.id.trackcard_contactname_scan);
+        cardContent.setText(track.getContact().getName());
+        TextView cardSubContent = trackCardView.findViewById(R.id.trackcard_daycounter_scan);
+        cardSubContent.setText(String.valueOf(track.getDaysLeft()));
+        TextView cardSubContent2 = trackCardView.findViewById(R.id.trackcard_numberofitems_scan);
+        cardSubContent2.setText(String.valueOf(track.getNumberOfItems()));
+    }
+
+    private void manageButtonTransparency(Track track) {
+        ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fragment != null && fragment.getView() != null) {
+            Button returnButton = fragment.getView().findViewById(R.id.return_button);
+            Button lendButton = fragment.getView().findViewById(R.id.lend_button);
             if (returnButton != null) {
                 if (track == null) {
                     returnButton.setAlpha(0.4f);
@@ -247,17 +263,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
-    /**
-     * Extract tag ID from the tag
-     *
-     * @param tag Tag object
-     * @return Tag ID as a HEX String
-     */
     private String extractTagId(Tag tag) {
-        byte[] tagId = tag.getId(); // convert tag ID to byte array
+        byte[] tagId = tag.getId();
         StringBuilder hexString = new StringBuilder();
         for (byte b : tagId) {
-            hexString.append(String.format("%02X", b)); // convert byte to HEX, caps-lock on
+            hexString.append(String.format("%02X", b));
         }
         return hexString.toString();
     }
@@ -272,4 +282,3 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         // pass
     }
 }
-
