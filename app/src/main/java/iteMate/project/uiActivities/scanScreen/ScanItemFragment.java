@@ -14,6 +14,7 @@ import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
+import iteMate.project.uiActivities.itemScreens.ItemsEditActivity;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 
 /**
@@ -53,9 +54,18 @@ public class ScanItemFragment extends Fragment {
 
         // Set on click listener for item card view
         view.findViewById(R.id.item_card_view_scan).setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), ItemsDetailActivity.class);
-            intent.putExtra("item", itemToDisplay);
-            startActivity(intent);
+            if (itemToDisplay == null) {
+                // if not item exists navigate to item edit screen and create new item
+                Item newItem = new Item();
+                Intent intent = new Intent(getActivity(), ItemsEditActivity.class);
+                intent.putExtra("item", newItem);
+                startActivity(intent);
+            } else {
+                // if item exists navigate to item detail screen
+                Intent intent = new Intent(getActivity(), ItemsDetailActivity.class);
+                intent.putExtra("item", itemToDisplay);
+                startActivity(intent);
+            }
         });
 
         // Set on click listener for lend button

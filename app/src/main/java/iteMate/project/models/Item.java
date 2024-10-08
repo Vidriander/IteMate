@@ -42,7 +42,7 @@ public class Item implements Parcelable, DocumentEquivalent {
     /**
      * Availability of the item
      */
-    private boolean available;  //  unnecessary as this is indicated by having a trackID - #TODO removed
+    private boolean available;
     /**
      * List of items contained in this item
      */
@@ -67,7 +67,9 @@ public class Item implements Parcelable, DocumentEquivalent {
      * ID of the track the item is in
      */
     private String activeTrackID;
-
+    /**
+     * Default image for an item
+     */
     private int defaultImage = R.drawable.gradient_background;
 
     /**
@@ -75,8 +77,8 @@ public class Item implements Parcelable, DocumentEquivalent {
      */
     public Item() {
         id = "-1";
-        title = "New Item";
-        description = "This is a blob of antimatter. Please handle with care.";
+        title = "";
+        description = "";
         image = "itemImages/default_image.jpg";
         available = true;
     }
