@@ -36,7 +36,7 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
 
         // Initialize the set with the NFC tags of checked items
         for (Item item : checkedItems) {
-            checkedItemTags.add(item.getNfcTag());
+            checkedItemTags.add(item.getId());
         }
 
         setUpLists();
@@ -46,12 +46,12 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         itemList = new ArrayList<>();
 
         for (Item item : this.allItems) {
-            if (checkedItemTags.contains(item.getNfcTag())) {
+            if (checkedItemTags.contains(item.getId())) {
                 itemList.add(item);
             }
         }
         for (Item item : this.allItems) {
-            if (!checkedItemTags.contains(item.getNfcTag())) {
+            if (!checkedItemTags.contains(item.getId())) {
                 itemList.add(item);
             }
         }
@@ -61,7 +61,7 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
     public List<Item> getNewCheckedItems() {
         List<Item> newCheckedItems = new ArrayList<>();
         for (Item item : itemList) {
-            if (checkedItemTags.contains(item.getNfcTag())) {
+            if (checkedItemTags.contains(item.getId())) {
                 newCheckedItems.add(item);
             }
         }
@@ -86,8 +86,6 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         notifyDataSetChanged();
     }
 
-
-
     @NonNull
     @Override
     public ManageInnerItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -101,7 +99,7 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
 
         // Setting the item name:
         holder.itemName.setText(item.getTitle());
-        // Setting the NFC tag number:
+        // Setting the Description
         holder.itemDescription.setText(String.valueOf(item.getDescription()));
         // Setting the image:
         GenericRepository.setImageForView(context, item.getImage(), holder.itemImage);
@@ -109,14 +107,14 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         // Handle checkbox state change
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                checkedItemTags.add(item.getNfcTag()); // Add tag to the checked set
+                checkedItemTags.add(item.getId()); // Add tag to the checked set
             } else {
-                checkedItemTags.remove(item.getNfcTag()); // Remove tag from the checked set
+                checkedItemTags.remove(item.getId()); // Remove tag from the checked set
             }
         });
 
         // Setting the checkbox:
-        holder.checkBox.setChecked(checkedItemTags.contains(item.getNfcTag()));
+        holder.checkBox.setChecked(checkedItemTags.contains(item.getId()));
 
 
 
