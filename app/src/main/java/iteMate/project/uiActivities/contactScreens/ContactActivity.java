@@ -20,7 +20,10 @@ import iteMate.project.uiActivities.utils.ContactAdapter;
 import iteMate.project.R;
 import iteMate.project.repositories.ContactRepository;
 
-
+/**
+ * This class is the main activity for the Contact screen. It displays a list of contacts
+ * and allows the user to search for contacts. The user can also add a new contact.
+ */
 public class ContactActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Contact> {
 
     private RecyclerView recyclerViewContact;
@@ -35,7 +38,7 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact); // Ensure this line is present
+        setContentView(R.layout.activity_contact);
 
         // Initialize ContactRepository
         contactRepository = new ContactRepository();
@@ -89,6 +92,9 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
         });
     }
 
+    /**
+     * Fetch contacts from Firestore
+     */
     private void fetchContacts() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
         Log.d("ContactActivity", "Fetching contacts from Firestore");
         contactRepository.getAllDocumentsFromFirestore(this);
