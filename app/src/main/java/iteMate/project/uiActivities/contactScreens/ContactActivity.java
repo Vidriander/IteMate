@@ -56,12 +56,7 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
         recyclerViewContact.setAdapter(contactAdapter);
 
         // Fetch contacts from Firestore DB
-        try {
-            fetchContacts();
-        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
-                 InstantiationException e) {
-            Log.e("ContactActivity", "Error fetching contacts from Firestore", e);
-        }
+        fetchContacts();
 
         // Set up onClickListener for back button
         findViewById(R.id.contact_back_button).setOnClickListener(v -> finish());
@@ -95,7 +90,7 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
     /**
      * Fetch contacts from Firestore
      */
-    private void fetchContacts() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException {
+    private void fetchContacts() {
         Log.d("ContactActivity", "Fetching contacts from Firestore");
         contactRepository.getAllDocumentsFromFirestore(this);
     }
@@ -114,13 +109,7 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            fetchContacts();
-        } catch (InvocationTargetException | NoSuchMethodException |
-                 IllegalAccessException | InstantiationException e) {
-            Log.e("ContactActivity", "Error fetching contacts from Firestore", e);
-        }
-
+        fetchContacts();
     }
 
     @Override
