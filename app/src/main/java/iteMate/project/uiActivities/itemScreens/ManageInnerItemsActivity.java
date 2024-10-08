@@ -17,12 +17,12 @@ import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ManageInnerItemsAdapter;
+import iteMate.project.uiActivities.utils.SortUtils;
 
 public class ManageInnerItemsActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
 
     private static Item itemToDisplay;
 
-    private RecyclerView recyclerView;
     private ManageInnerItemsAdapter adapter;
     /**
      * List of Items that will change dynamically based on search
@@ -57,7 +57,7 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
         searchList = new ArrayList<>(isContainedItems ? itemToDisplay.getContainedItems() : itemToDisplay.getAssociatedItems());
 
         // Initialize RecyclerView and Adapter
-        recyclerView = findViewById(R.id.manage_inner_items_recyclerview);
+        RecyclerView recyclerView = findViewById(R.id.manage_inner_items_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Fetch all items from Firestore
@@ -117,7 +117,7 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
         List<Item> filteredList = SearchUtils.searchItems(searchList, query);
         searchList.clear();
         searchList.addAll(filteredList);
-        adapter.setSearchList(searchList);
+        adapter.setSearchList(SortUtils.sortItemsByName(searchList));
 
         //TODO: Implement search functionality, erratic behavior observed
     }
@@ -128,7 +128,7 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
     }
 
     @Override
-    public void onDocumentsFetched(List documents) {
-        adapter.notifyItemsAvailable(documents);
+    public void onDocumentsFetched(List<Item> documents) {
+        adapter.notifyItemsAvailable(SortUtils.sortItemsByName(documents));
     }
 }
