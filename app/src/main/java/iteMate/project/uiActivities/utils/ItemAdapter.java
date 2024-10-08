@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
@@ -49,11 +50,20 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item item = items.get(position);
+        // setting tranparency of the cardview to signal that the item is currently being tracked
+        if (item.getActiveTrackID() != null && !item.getActiveTrackID().isEmpty()) {
+            holder.cardView.setAlpha(0.5f);
+        } else {
+            holder.cardView.setAlpha(1f);
+        }
+        // setting the item name
         holder.itemName.setText(item.getTitle());
+        // setting the item description
         holder.tagNumber.setText(String.valueOf(item.getDescription()));
-
+        // setting the item image
         GenericRepository.setImageForView(context, item.getImage(), holder.itemImage);
 
+        // setting the onClickListener for the cardview
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ItemsDetailActivity.class);
             intent.putExtra("item", item);
@@ -70,12 +80,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
      * ViewHolder class for the RecyclerView.
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public CardView cardView;
         public TextView itemName;
         public TextView tagNumber;
         public ImageView itemImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            cardView = itemView.findViewById(R.id.item_cardview);
             itemName = itemView.findViewById(R.id.itemcard_header_text);
             tagNumber = itemView.findViewById(R.id.itemcard_subheader_text);
             itemImage = itemView.findViewById(R.id.itemcard_image);
