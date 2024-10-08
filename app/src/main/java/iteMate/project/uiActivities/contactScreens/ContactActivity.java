@@ -13,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import iteMate.project.SearchUtils;
+import iteMate.project.uiActivities.utils.SearchUtils;
 import iteMate.project.models.Contact;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.uiActivities.utils.ContactAdapter;

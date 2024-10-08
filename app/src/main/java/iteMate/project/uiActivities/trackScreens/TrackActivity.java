@@ -7,12 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import iteMate.project.SearchUtils;
-import iteMate.project.models.Contact;
-import iteMate.project.models.Item;
+import iteMate.project.uiActivities.utils.SearchUtils;
 import iteMate.project.R;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;

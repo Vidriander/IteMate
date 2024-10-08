@@ -12,12 +12,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import iteMate.project.R;
-import iteMate.project.SearchUtils;
+import iteMate.project.uiActivities.utils.SearchUtils;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
-import iteMate.project.uiActivities.utils.InnerItemsAdapter;
-import iteMate.project.uiActivities.utils.ItemAdapter;
 import iteMate.project.uiActivities.utils.ManageInnerItemsAdapter;
 
 public class ManageInnerItemsActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {

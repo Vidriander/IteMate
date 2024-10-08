@@ -1,8 +1,7 @@
-package iteMate.project;
+package iteMate.project.uiActivities.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import iteMate.project.models.Contact;
 import iteMate.project.models.Item;

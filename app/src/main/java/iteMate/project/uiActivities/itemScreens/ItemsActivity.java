@@ -6,23 +6,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import iteMate.project.SearchUtils;
+import iteMate.project.uiActivities.utils.SearchUtils;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ItemAdapter;
 import iteMate.project.R;
 import iteMate.project.uiActivities.MainActivity;
+import iteMate.project.uiActivities.utils.SortUtils;
 
 public class ItemsActivity extends MainActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
 
@@ -68,7 +66,6 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
                 performSearch(query);
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String query) {
                 performSearch(query);
@@ -98,7 +95,7 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
         // Perform the search and update the itemList
         List<Item> filteredList = SearchUtils.searchItems(searchList, query);
         searchList.clear();
-        searchList.addAll(filteredList);
+        searchList.addAll(SortUtils.defaultItemSort(filteredList));
         itemAdapter.notifyDataSetChanged();
     }
 
@@ -135,7 +132,7 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
         itemList.addAll(documents);
 
         searchList.clear();
-        searchList.addAll(itemList);
+        searchList.addAll(SortUtils.defaultItemSort(itemList));
 
         itemAdapter.notifyDataSetChanged();
     }

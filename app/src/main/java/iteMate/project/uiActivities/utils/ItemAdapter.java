@@ -27,7 +27,7 @@ import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private List<Item> items;
-    private Context context;
+    private final Context context;
 
     public ItemAdapter(List<Item> items, Context context) {
         this.items = items;
