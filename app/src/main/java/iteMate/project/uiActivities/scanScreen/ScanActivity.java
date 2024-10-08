@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -87,7 +88,8 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         Log.d("ScanActivity", "NFC Tag discovered!");
         String tagId = extractTagId(tag);
         Log.d("ScanActivity", "Tag ID: " + tagId);
-        fetchItemByNfcTagId(tagId);transitionToItemFragment();
+        fetchItemByNfcTagId(tagId);
+        transitionToItemFragment();
     }
 
     /**
@@ -134,6 +136,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                             public void onDocumentFetched(Track document) {
                                 scanItemFragment.setTrackToDisplay(document);
                             }
+
                             @Override
                             public void onDocumentsFetched(List<Track> documents) {
                             }
@@ -141,6 +144,9 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                     }
                 } else {
                     Log.d("ScanActivity", "Item not found");
+                    // TODO handle item not found here and show new create card
+                    updateTrackCardView(null);
+                    updateItemCardView(null);
                 }
             }
 
@@ -153,6 +159,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
     /**
      * Fetch track by item track ID
+     *
      * @param trackID Track ID as a String
      */
     private void fetchTrackByItemTrackID(String trackID) {
@@ -170,12 +177,22 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             CardView itemCardView = fragment.getView().findViewById(R.id.item_card_view_scan);
             if (itemCardView != null) {
                 itemCardView.setVisibility(View.VISIBLE);
-                // Update item card content
+                if  (item != null) {
+                // Update card content with item details
                 TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
                 cardContent.setText(item.getTitle());
                 TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
                 cardSubContent.setText(item.getDescription());
                 GenericRepository.setImageForView(this, item.getImage(), itemCardView.findViewById(R.id.itemcard_image_scan));
+                } else {
+                    // Update card to show "Create new item" card
+                    TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
+                    cardContent.setText("Create new item");
+                    TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
+                    cardSubContent.setText("");
+                    ImageView cardImage = itemCardView.findViewById(R.id.itemcard_image_scan);
+                    cardImage.setImageResource(R.drawable.add_button);
+                }
             }
         }
     }
@@ -193,17 +210,21 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             Button lendButton = fragment.getView().findViewById(R.id.lend_button);
 
             if (trackCardView != null) {
-                trackCardView.setVisibility(View.VISIBLE);
-                // Update track card content
-                TextView cardContent = trackCardView.findViewById(R.id.trackcard_contactname_scan);
-                cardContent.setText(track.getContact().getName());
-                TextView cardSubContent = trackCardView.findViewById(R.id.trackcard_daycounter_scan);
-                cardSubContent.setText(String.valueOf(track.getDaysLeft()));
-                TextView cardSubContent2 = trackCardView.findViewById(R.id.trackcard_numberofitems_scan);
-                cardSubContent2.setText(String.valueOf(track.getNumberOfItems()));
+                if (track == null) {
+                    trackCardView.setVisibility(View.GONE);
+                } else {
+                    trackCardView.setVisibility(View.VISIBLE);
+                    // Update track card content
+                    TextView cardContent = trackCardView.findViewById(R.id.trackcard_contactname_scan);
+                    cardContent.setText(track.getContact().getName());
+                    TextView cardSubContent = trackCardView.findViewById(R.id.trackcard_daycounter_scan);
+                    cardSubContent.setText(String.valueOf(track.getDaysLeft()));
+                    TextView cardSubContent2 = trackCardView.findViewById(R.id.trackcard_numberofitems_scan);
+                    cardSubContent2.setText(String.valueOf(track.getNumberOfItems()));
+                }
             }
 
-            // Manage Button transparency of return & lend button
+            // Manage return & lend button transparency
             if (returnButton != null) {
                 if (track == null) {
                     returnButton.setAlpha(0.5f);
