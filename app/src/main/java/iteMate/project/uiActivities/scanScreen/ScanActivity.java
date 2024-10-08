@@ -177,13 +177,18 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             CardView itemCardView = fragment.getView().findViewById(R.id.item_card_view_scan);
             if (itemCardView != null) {
                 itemCardView.setVisibility(View.VISIBLE);
-                if  (item != null) {
-                // Update card content with item details
-                TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
-                cardContent.setText(item.getTitle());
-                TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
-                cardSubContent.setText(item.getDescription());
-                GenericRepository.setImageForView(this, item.getImage(), itemCardView.findViewById(R.id.itemcard_image_scan));
+                if (item != null) {
+                    // Update card content with item details
+                    TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
+                    cardContent.setText(item.getTitle());
+                    TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
+                    cardSubContent.setText(item.getDescription());
+                    GenericRepository.setImageForView(this, item.getImage(), itemCardView.findViewById(R.id.itemcard_image_scan));
+                    // show buttons
+                    Button lendButton = fragment.getView().findViewById(R.id.lend_button);
+                    lendButton.setVisibility(View.VISIBLE);
+                    Button returnButton = fragment.getView().findViewById(R.id.return_button);
+                    returnButton.setVisibility(View.VISIBLE);
                 } else {
                     // Update card to show "Create new item" card
                     TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
@@ -192,6 +197,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                     cardSubContent.setText("");
                     ImageView cardImage = itemCardView.findViewById(R.id.itemcard_image_scan);
                     cardImage.setImageResource(R.drawable.add_button);
+                    // hide buttons
+                    Button lendButton = fragment.getView().findViewById(R.id.lend_button);
+                    lendButton.setVisibility(View.GONE);
+                    Button returnButton = fragment.getView().findViewById(R.id.return_button);
+                    returnButton.setVisibility(View.GONE);
                 }
             }
         }
@@ -227,11 +237,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             // Manage return & lend button transparency
             if (returnButton != null) {
                 if (track == null) {
-                    returnButton.setAlpha(0.5f);
+                    returnButton.setAlpha(0.4f);
                     lendButton.setAlpha(1f);
                 } else {
                     returnButton.setAlpha(1f);
-                    lendButton.setAlpha(0.5f);
+                    lendButton.setAlpha(0.4f);
                 }
             }
         }
