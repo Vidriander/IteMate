@@ -4,6 +4,7 @@ import android.os.Parcelable;
 
 import com.google.firebase.Timestamp;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -22,6 +23,10 @@ public class Track implements Parcelable, DocumentEquivalent {
      * ID of the track in the database
      */
     private String id;
+    /**
+     * Readable, self-generated ID of the track
+     */
+    private String readableId;
     /**
      * Date on which the item was given out
      */
@@ -65,7 +70,7 @@ public class Track implements Parcelable, DocumentEquivalent {
         // Default constructor
     }
 
-    public Track(Timestamp giveOutDate, Timestamp returnDate, Contact contact, String contactID, List<Item> lentItemsList, List<String> lentItemIDs, String ownerID, String additionalInfo) {
+    public Track(Timestamp giveOutDate, Timestamp returnDate, Contact contact, String contactID, List<Item> lentItemsList, List<String> lentItemIDs, String ownerID, String additionalInfo) throws NullPointerException, IllegalArgumentException {
         this.giveOutDate = giveOutDate;
         this.returnDate = returnDate;
         setContact(contact);
@@ -74,6 +79,7 @@ public class Track implements Parcelable, DocumentEquivalent {
         setLentItemIDs(lentItemIDs);
         setOwnerID(ownerID);
         setAdditionalInfo(additionalInfo);
+        setReadableId();
     }
     // endregion
 
@@ -85,6 +91,15 @@ public class Track implements Parcelable, DocumentEquivalent {
      */
     public Timestamp getGiveOutDate() {
         return giveOutDate;
+    }
+
+    /**
+     * Getter for the date the item was given out in a readable format
+     * @return the giveOutDate in a readable format
+     */
+    public String getReadableGiveOutDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault());
+        return sdf.format(giveOutDate.toDate());
     }
 
     /**
@@ -182,7 +197,15 @@ public class Track implements Parcelable, DocumentEquivalent {
 
     @Override
     public String getId() {
-        return null;
+        return id;
+    }
+
+    /**
+     * Getter for the readable ID of the track
+     * @return the readableId
+     */
+    public String getReadableId() {
+        return readableId;
     }
     // endregion
 
@@ -190,6 +213,15 @@ public class Track implements Parcelable, DocumentEquivalent {
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    /**
+     * Setter the id of the track, that can be displayed to the user and sorted by
+     */
+    public void setReadableId() {
+        String newId = new SimpleDateFormat("MMddHHmmss", java.util.Locale.getDefault()).format(giveOutDate.toDate());
+        newId += contact.getName().substring(0, 3).toUpperCase();
+        readableId = newId;
     }
 
     /**
@@ -296,6 +328,7 @@ public class Track implements Parcelable, DocumentEquivalent {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         // Writing each field to the Parcel
+        dest.writeString(readableId);
         dest.writeLong(giveOutDate != null ? giveOutDate.toDate().getTime() : -1);
         dest.writeLong(returnDate != null ? returnDate.toDate().getTime() : -1);
         dest.writeParcelable(contact, flags);
@@ -312,6 +345,7 @@ public class Track implements Parcelable, DocumentEquivalent {
      * @param in Parcel to read from
      */
     protected Track(Parcel in) {
+        readableId = in.readString();
         long giveOutDateLong = in.readLong();
         giveOutDate = giveOutDateLong != -1 ? new Timestamp(new Date(giveOutDateLong)) : null;
         long returnDateLong = in.readLong();

@@ -26,7 +26,6 @@ import iteMate.project.repositories.ContactRepository;
  */
 public class ContactActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Contact> {
 
-    private RecyclerView recyclerViewContact;
     private ContactAdapter contactAdapter;
     private List<Contact> contactList;
     private ContactRepository contactRepository;
@@ -44,7 +43,7 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
         contactRepository = new ContactRepository();
 
         // Initialize RecyclerView
-        recyclerViewContact = findViewById(R.id.recyclerViewContacts);
+        RecyclerView recyclerViewContact = findViewById(R.id.recyclerViewContacts);
         recyclerViewContact.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize Contact list and search list

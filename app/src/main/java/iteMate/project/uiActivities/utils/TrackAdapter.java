@@ -45,8 +45,11 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
             holder.contactName.setText(displayName);
         }
 
-        //  setting the number of items
-        holder.numberOfItems.setText(String.valueOf(track.getNumberOfItems()));
+        //  setting the lend out date text
+        holder.lendOutDate.setText(track.getReadableGiveOutDate());
+
+        // setting the track id text
+        holder.trackIdText.setText(track.getReadableId());
 
         // setting the days left
         int daysLeftInt = track.getDaysLeft();
@@ -71,14 +74,16 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView contactName;
-        public TextView numberOfItems;
+        public TextView lendOutDate;
         public TextView daysLeft;
+        public TextView trackIdText;
 
         public ViewHolder(View itemView) {
             super(itemView);
             contactName = itemView.findViewById(R.id.trackcard_contactname);
-            numberOfItems = itemView.findViewById(R.id.trackcard_numberofitems);
+            lendOutDate = itemView.findViewById(R.id.track_card_date_text);
             daysLeft = itemView.findViewById(R.id.trackcard_daycounter);
+            trackIdText = itemView.findViewById(R.id.track_id_text);
         }
     }
 }
