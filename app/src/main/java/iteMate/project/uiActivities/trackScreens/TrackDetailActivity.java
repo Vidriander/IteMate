@@ -13,17 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controlller.TrackController;
+import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.repositories.TrackRepository;
 import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 
 public class TrackDetailActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Track> {
@@ -42,7 +38,7 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
         setContentView(R.layout.activity_track_detail);
 
         // Get the track to display from the controller
-        trackToDisplay = trackController.getCurrentObject();
+        trackToDisplay = trackController.getCurrentTrack();
         if (trackToDisplay == null) {
            finish();
         }
@@ -74,7 +70,7 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
         // on click listener for edit button
         findViewById(R.id.detailtrack_edit_button).setOnClickListener(v -> {
              Intent intent = new Intent(TrackDetailActivity.this, TrackEditActivity.class);
-             trackController.setCurrentObject(trackToDisplay);
+             trackController.setCurrentTrack(trackToDisplay);
              startActivity(intent);
         });
     }
@@ -109,7 +105,7 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
     @Override
     protected void onResume() {
         super.onResume();
-        trackToDisplay = trackController.getCurrentObject();
+        trackToDisplay = trackController.getCurrentTrack();
         setDetailViewContents();
     }
 

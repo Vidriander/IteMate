@@ -10,12 +10,13 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
-import iteMate.project.uiActivities.itemScreens.ItemsEditActivity;
+import iteMate.project.controller.TrackController;
 import iteMate.project.uiActivities.utils.SearchUtils;
 import iteMate.project.R;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.TrackRepository;
+import iteMate.project.uiActivities.utils.SortUtils;
 import iteMate.project.uiActivities.utils.TrackAdapter;
 import iteMate.project.uiActivities.MainActivity;
 
@@ -26,6 +27,7 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
     private List<Track> trackList;
     private List<Track> searchList;
     private TrackRepository trackRepository;
+    private final TrackController trackController = TrackController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,9 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
 
         // Initialize Track list
         trackList = new ArrayList<>();
+        trackList = new ArrayList<>();
         searchList = new ArrayList<>(trackList);
+        searchList = SortUtils.defaultTrackSort(searchList);
 
         // Initialize TrackRepository
         trackRepository = new TrackRepository();
@@ -53,6 +57,7 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         findViewById(R.id.add_button_track).setOnClickListener(v -> {
             Track newTrack = new Track();
             Intent intent = new Intent(this, TrackEditActivity.class);
+            trackController.setCurrentTrack(newTrack);
             startActivity(intent);
         });
 
@@ -85,7 +90,7 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         // Perform the search and update the itemList
         List<Track> filteredList = SearchUtils.searchTracks(searchList, query);
         searchList.clear();
-        searchList.addAll(filteredList);
+        searchList.addAll(SortUtils.defaultTrackSort(filteredList));
         trackAdapter.notifyDataSetChanged();
     }
 
@@ -112,9 +117,9 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
     @Override
     public void onDocumentsFetched(List<Track> documents) {
         trackList.clear();
-        trackList.addAll(documents);
+        trackList.addAll(SortUtils.defaultTrackSort(documents));
         searchList.clear();
-        searchList.addAll(documents);
+        searchList.addAll(SortUtils.defaultTrackSort(documents));
         trackAdapter.notifyDataSetChanged();
     }
 

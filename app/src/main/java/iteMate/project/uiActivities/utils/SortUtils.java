@@ -7,9 +7,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import iteMate.project.models.Item;
+import iteMate.project.models.Track;
 
 public class SortUtils {
-
+    //region Sort Items
     /**
      * Method to sort items by availability and in those two groups sort by name
      * @param itemList List of items to sort
@@ -52,4 +53,51 @@ public class SortUtils {
 
         return results;
     }
+    //endregion
+
+    //region Sort Tracks
+
+    /**
+     * Method to sort tracks by default: active tracks first, then inactive tracks, then by lend out date
+     * @param trackList List of tracks to sort
+     * @return List of tracks sorted by default
+     */
+    public static List<Track> defaultTrackSort(List<Track> trackList) {
+        return sortTracksByActiveState(sortTracksByLendOutDate(trackList));
+    }
+
+    /**
+     * Method to sort tracks by state (active or inactive)
+     * @param trackList List of tracks to sort
+     * @return List of tracks sorted by state
+     */
+    public static List<Track> sortTracksByActiveState(List<Track> trackList) {
+        List<Track> activeList = new ArrayList<>();
+        List<Track> inactiveList = new ArrayList<>();
+        List<Track> results = new ArrayList<>();
+
+        for (Track track : trackList) {
+            if (track.isActive()) {
+                activeList.add(track);
+            } else {
+                inactiveList.add(track);
+            }
+        }
+        results.addAll(activeList);
+        results.addAll(inactiveList);
+
+        return results;
+    }
+
+    /**
+     * Method to sort tracks by lend out date
+     * @param trackList List of tracks to sort
+     * @return List of tracks sorted by lend out date
+     */
+    public static List<Track> sortTracksByLendOutDate(List<Track> trackList) {
+        List<Track> sortedList = new ArrayList<>(trackList);
+        sortedList.sort(Comparator.comparing(Track::getGiveOutDate));
+        return sortedList;
+    }
+    //endregion
 }

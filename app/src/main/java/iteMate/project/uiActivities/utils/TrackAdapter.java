@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controlller.TrackController;
+import iteMate.project.controller.TrackController;
 import iteMate.project.models.Track;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 
@@ -67,7 +67,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, TrackDetailActivity.class);
-            trackController.setCurrentObject(track);
+            trackController.setCurrentTrack(track);
             context.startActivity(intent);
         });
     }

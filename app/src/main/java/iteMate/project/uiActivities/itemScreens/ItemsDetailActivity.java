@@ -1,9 +1,7 @@
 package iteMate.project.uiActivities.itemScreens;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -16,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import iteMate.project.controlller.TrackController;
+import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.R;
 import iteMate.project.models.Track;
@@ -107,7 +105,7 @@ public class ItemsDetailActivity extends AppCompatActivity {
                     @Override
                     public void onDocumentFetched(Track document) {
                         Intent intent = new Intent(ItemsDetailActivity.this, TrackDetailActivity.class);
-                        trackController.setCurrentObject(document);
+                        trackController.setCurrentTrack(document);
                         startActivity(intent);
                     }
 

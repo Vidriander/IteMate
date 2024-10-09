@@ -1,4 +1,4 @@
-package iteMate.project.controlller;
+package iteMate.project.controller;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.TrackRepository;
 
@@ -12,7 +12,7 @@ public class TrackController {
     /**
      * The current object that is being displayed or edited
      */
-    Track currentObject;
+    Track currentTrack;
 
     private final TrackRepository trackRepository;
 
@@ -36,28 +36,27 @@ public class TrackController {
      * @param track the track to be saved
      */
     public void saveChangesToTrack(Track track) {
-        setCurrentObject(track);
-        trackRepository.updateDocumentInFirestore(getCurrentObject());
-
+        setCurrentTrack(track);
+        trackRepository.updateDocumentInFirestore(getCurrentTrack());
     }
 
     /**
      * Returns the current object
      * @return the current object
      */
-    public Track getCurrentObject() {
-        return currentObject;
+    public Track getCurrentTrack() {
+        return currentTrack;
     }
 
     /**
      * Sets the current object
-     * @param currentObject the object to be set as current
+     * @param currentTrack the object to be set as current
      * @throws NullPointerException if the object is null
      */
-    public void setCurrentObject(Track currentObject) throws NullPointerException {
-        if (currentObject == null) {
+    public void setCurrentTrack(Track currentTrack) throws NullPointerException {
+        if (currentTrack == null) {
             throw new NullPointerException("Current object cannot be null");
         }
-        this.currentObject = currentObject;
+        this.currentTrack = currentTrack;
     }
 }

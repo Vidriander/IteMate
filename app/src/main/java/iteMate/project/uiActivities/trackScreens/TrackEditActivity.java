@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +26,7 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controlller.TrackController;
+import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
@@ -78,7 +77,7 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         });
 
         // Get the Track object from the intent
-        trackToDisplay = trackController.getCurrentObject();
+        trackToDisplay = trackController.getCurrentTrack();
 
         if (trackToDisplay == null) {
             Log.e("TrackEditActivity", "trackToDisplay is null");
