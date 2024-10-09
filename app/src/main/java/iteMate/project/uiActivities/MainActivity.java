@@ -17,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 
 import iteMate.project.R;
+import iteMate.project.uiActivities.appScreens.SettingsActivity;
 import iteMate.project.uiActivities.contactScreens.ContactActivity;
 import iteMate.project.uiActivities.homeScreen.HomeActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsActivity;
@@ -116,7 +117,7 @@ public abstract class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(MainActivity.this, ContactActivity.class));
                         return true;
                     case R.id.nav_settings:
-                        // startActivity(new Intent(MainActivity.this, SecondActivity.class)); // Replace SecondActivity with the activity you want to start
+                        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                         return true;
                     case R.id.nav_logout:
                         // startActivity(new Intent(MainActivity.this, ThirdActivity.class)); // Replace ThirdActivity with the activity you want to start
