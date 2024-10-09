@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import iteMate.project.R;
+import iteMate.project.controlller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
@@ -31,6 +32,7 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
     private RecyclerView horizontalRecyclerView;
     private InnerItemsAdapter horizontalAdapter;
     private List<Item> itemList;
+    private final TrackController trackController = TrackController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +41,11 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
 
         setContentView(R.layout.activity_track_detail);
 
-        // Get the track to display from the intent:
-        trackToDisplay = getIntent().getParcelableExtra("track");
+        // Get the track to display from the controller
+        trackToDisplay = trackController.getCurrentObject();
+        if (trackToDisplay == null) {
+           finish();
+        }
 
         itemList = trackToDisplay.getLentItemsList();
 
@@ -64,19 +69,14 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
         // on click listener for back button
-        findViewById(R.id.detailtrack_back_button).setOnClickListener(v -> onBackPressed());
+        findViewById(R.id.detailtrack_back_button).setOnClickListener(v -> finish());
 
         // on click listener for edit button
         findViewById(R.id.detailtrack_edit_button).setOnClickListener(v -> {
              Intent intent = new Intent(TrackDetailActivity.this, TrackEditActivity.class);
-             intent.putExtra("track", trackToDisplay);
+             trackController.setCurrentObject(trackToDisplay);
              startActivity(intent);
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     /*
@@ -104,6 +104,13 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
         } else {
             Log.e("TrackDetailActivity", "trackToDisplay is null in setDetailViewContents");
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        trackToDisplay = trackController.getCurrentObject();
+        setDetailViewContents();
     }
 
     @Override

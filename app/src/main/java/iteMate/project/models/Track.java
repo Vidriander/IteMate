@@ -3,6 +3,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.Exclude;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,58 +12,71 @@ import java.util.Date;
 
 /**
  * Track class to store detail of a lend out item.
+ * All attributes that should not be stored in Firestore are annotated with @Exclude (their getters are annotated)
  */
-public class Track implements Parcelable, DocumentEquivalent {
+public class Track implements DocumentEquivalent {
     // region Attributes
 
     /**
      * Collection name in Firestore
      */
     private static final String collectionPath = "tracks";
+
     /**
      * ID of the track in the database
      */
     private String id;
+
     /**
      * Date on which the item was given out
      */
     private final Timestamp giveOutDate;
+
     /**
      * Date on which the item is to be returned
      */
     private Timestamp returnDate;
+
     /**
      * Contact to whom the item is given
      */
     private Contact contact;
+
     /**
      * ID of the contact to whom the item is given
      */
     private String contactID;
+
     /**
      * Status of the track, true = lent out, false = returned
      */
     private boolean active;
+
     /**
      * List of all items initially lent out
      */
     private List<Item> lentItemsList;
+
     /**
      * List of item IDs lent out
      */
     private List<String> lentItemIDs = new ArrayList<>();
+
     /**
      * List of items yet to be returned
      */
     private List<Item> pendingItemsList;
+
     /**
      * List of IDs of items yet to be returned
      */
     private List<String> pendingItemIDs = new ArrayList<>();
+
     /**
      * ID of the owner of the item
      */
     private String ownerID;
+
     /**
      * Additional information about the track
      */
@@ -104,6 +118,7 @@ public class Track implements Parcelable, DocumentEquivalent {
      * Getter for the date the item was given out in a readable format
      * @return the giveOutDate in a readable format
      */
+    @Exclude
     public String getReadableGiveOutDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", java.util.Locale.getDefault());
         return sdf.format(giveOutDate.toDate());
@@ -121,6 +136,7 @@ public class Track implements Parcelable, DocumentEquivalent {
      * Getter for the contact to whom the item is given
      * @return the contact
      */
+    @Exclude
     public Contact getContact() {
         return contact;
     }
@@ -137,6 +153,7 @@ public class Track implements Parcelable, DocumentEquivalent {
      * Getter for the status active:true = lent out, false = returned
      * @return if the track has items that are not returned
      */
+    @Exclude
     public boolean isActive() {
         return active;
     }
@@ -145,6 +162,7 @@ public class Track implements Parcelable, DocumentEquivalent {
      * Getter for the list of items lent out
      * @return the lentItemsList
      */
+    @Exclude
     public List<Item> getLentItemsList() {
         return lentItemsList;
     }
@@ -177,6 +195,7 @@ public class Track implements Parcelable, DocumentEquivalent {
      * Method to get the number of items in the list
      * @return the number of items
      */
+    @Exclude
     public int getNumberOfItems() {
         return lentItemIDs.size();
     }
@@ -185,6 +204,7 @@ public class Track implements Parcelable, DocumentEquivalent {
      * Method to get the number of days left for the item to be returned
      * @return the number of days left
      */
+    @Exclude
     public int getDaysLeft() {
         if (returnDate == null) {
             return 0;
@@ -206,11 +226,13 @@ public class Track implements Parcelable, DocumentEquivalent {
      * @return the ID of the document
      */
     @Override
+    @Exclude
     public String getCollectionPath() {
         return collectionPath;
     }
 
     @Override
+    @Exclude
     public String getId() {
         return id;
     }
@@ -232,6 +254,18 @@ public class Track implements Parcelable, DocumentEquivalent {
             throw new NullPointerException("Contact cannot be null");
         }
         this.contact = contact;
+    }
+
+    /**
+     * Setter for the returnDate
+     * @param date the returnDate to set
+     * @throws NullPointerException if date is null
+     */
+    public void setReturnDate(Timestamp date) throws NullPointerException {
+        if (date == null) {
+            throw new NullPointerException("ReturnDate cannot be null");
+        }
+        this.returnDate = date;
     }
 
     /**
@@ -291,7 +325,7 @@ public class Track implements Parcelable, DocumentEquivalent {
      * @param additionalInfo the additionalInfo to set
      * @throws NullPointerException if additionalInfo is null
      */
-    private void setAdditionalInfo(String additionalInfo) throws NullPointerException {
+    public void setAdditionalInfo(String additionalInfo) throws NullPointerException {
         if (additionalInfo == null) {
             throw new NullPointerException("AdditionalInfo cannot be null");
         }
@@ -309,55 +343,4 @@ public class Track implements Parcelable, DocumentEquivalent {
         active = lentItemsList.stream().noneMatch(item -> item.getActiveTrackID().equals(id));
     }
     //endregion
-
-    //region Parcelable implementation
-    public static final Creator<Track> CREATOR = new Creator<Track>() {
-        @Override
-        public Track createFromParcel(Parcel in) {
-            return new Track(in);
-        }
-
-        @Override
-        public Track[] newArray(int size) {
-            return new Track[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        // Writing each field to the Parcel
-        dest.writeLong(giveOutDate != null ? giveOutDate.toDate().getTime() : -1);
-        dest.writeLong(returnDate != null ? returnDate.toDate().getTime() : -1);
-        dest.writeParcelable(contact, flags);
-        dest.writeBoolean(active);
-        dest.writeStringList(lentItemIDs);
-        dest.writeTypedList(lentItemsList);
-        dest.writeString(ownerID);
-        dest.writeString(contactID);
-        dest.writeString(additionalInfo);
-    }
-
-    /**
-     * Constructor for creating a Track from a Parcel
-     * @param in Parcel to read from
-     */
-    protected Track(Parcel in) {
-        long giveOutDateLong = in.readLong();
-        giveOutDate = giveOutDateLong != -1 ? new Timestamp(new Date(giveOutDateLong)) : null;
-        long returnDateLong = in.readLong();
-        returnDate = returnDateLong != -1 ? new Timestamp(new Date(returnDateLong)) : null;
-        contact = in.readParcelable(Contact.class.getClassLoader());
-        active = in.readBoolean();
-        lentItemIDs = in.createStringArrayList();
-        lentItemsList = in.createTypedArrayList(Item.CREATOR);
-        ownerID = in.readString();
-        contactID = in.readString();
-        additionalInfo = in.readString();
-    }
-    // endregion
 }

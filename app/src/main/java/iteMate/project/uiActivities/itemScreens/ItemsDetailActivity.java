@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import iteMate.project.controlller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.R;
 import iteMate.project.models.Track;
@@ -31,6 +32,7 @@ public class ItemsDetailActivity extends AppCompatActivity {
     private InnerItemsAdapter containedItemsAdapter;
     private RecyclerView associatedItemsRecyclerView;
     private InnerItemsAdapter associatedItemsAdapter;
+    private TrackController trackController = TrackController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +107,7 @@ public class ItemsDetailActivity extends AppCompatActivity {
                     @Override
                     public void onDocumentFetched(Track document) {
                         Intent intent = new Intent(ItemsDetailActivity.this, TrackDetailActivity.class);
-                        intent.putExtra("track", document);
+                        trackController.setCurrentObject(document);
                         startActivity(intent);
                     }
 

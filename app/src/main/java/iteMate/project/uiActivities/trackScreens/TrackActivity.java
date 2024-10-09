@@ -53,7 +53,6 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         findViewById(R.id.add_button_track).setOnClickListener(v -> {
             Track newTrack = new Track();
             Intent intent = new Intent(this, TrackEditActivity.class);
-            intent.putExtra("track", newTrack);
             startActivity(intent);
         });
 

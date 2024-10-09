@@ -1,5 +1,4 @@
 package iteMate.project.uiActivities.trackScreens;
-//package com.gtappdevelopers.kotlingfgproject;
 
 import android.app.DatePickerDialog;
 import android.graphics.Paint;
@@ -12,9 +11,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 import android.util.Log;
@@ -26,55 +22,48 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
+
 import java.util.List;
 
 import iteMate.project.R;
+import iteMate.project.controlller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.repositories.ItemRepository;
-import iteMate.project.repositories.TrackRepository;
-import iteMate.project.uiActivities.utils.ButtonController;
 import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 
 public class TrackEditActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
 
     private Track trackToDisplay;
-    private RecyclerView horizontalRecyclerView;
     private InnerItemsAdapter horizontalAdapter;
     private List<Item> itemList;
+    private final TrackController trackController = TrackController.getControllerInstance();
 
     /**
      * Date picker dialog for selecting date
      */
-    private View.OnClickListener datePicker = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // get instance of calendar
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
+    private final View.OnClickListener datePicker = v -> {
+        // get instance of calendar
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
 
-            // Variable for date picker dialog
-            DatePickerDialog datePickerDialog = new DatePickerDialog(
+        // Variable for date picker dialog
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
 
-                    TrackEditActivity.this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year,
-                                              int monthOfYear, int dayOfMonth) {
-                            // on below line we are setting date to our text view.
-                            String date = dayOfMonth + "." + (monthOfYear + 1) + "." + year;
-                            ((TextView)v).setText(date);
+                TrackEditActivity.this,
+                (view, year1, monthOfYear, dayOfMonth) -> {
+                    // on below line we are setting date to our text view.
+                    String date = dayOfMonth + "." + (monthOfYear + 1) + "." + year1;
+                    ((TextView)v).setText(date);
 
-                        }
-                    },
-                    // Passing year, month and day for selected date in date picker
-                    year, month, day);
-            // Calling show to display date picker dialog
-            datePickerDialog.show();
-        }
+                },
+                // Passing year, month and day for selected date in date picker
+                year, month, day);
+        // Calling show to display date picker dialog
+        datePickerDialog.show();
     };
 
     @Override
@@ -89,7 +78,7 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         });
 
         // Get the Track object from the intent
-        trackToDisplay = getIntent().getParcelableExtra("track");
+        trackToDisplay = trackController.getCurrentObject();
 
         if (trackToDisplay == null) {
             Log.e("TrackEditActivity", "trackToDisplay is null");
@@ -99,7 +88,7 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         setDetailViewContents();
 
         // Initialize RecyclerView for horizontal list of items
-        horizontalRecyclerView = findViewById(R.id.trackedit_recycler);
+        RecyclerView horizontalRecyclerView = findViewById(R.id.trackedit_recycler);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         horizontalAdapter = new InnerItemsAdapter(trackToDisplay.getLentItemsList(), this, true);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
@@ -114,13 +103,14 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
 
         // Setting on click for cancel button
         Button cancelButton = findViewById(R.id.trackedit_cancel);
-        cancelButton.setOnClickListener(click -> {
-            ButtonController.exitActivityWithoutSaving(this);
-        });
+        cancelButton.setOnClickListener(click -> finish());
+
         // setting on click for save button
         Button saveButton = findViewById(R.id.track_edit_save);
         saveButton.setOnClickListener(click -> {
-            ButtonController.exitActivityWithSaving(this);
+            saveChangesToLocalTrack();
+            trackController.saveChangesToTrack(trackToDisplay);
+            finish();
         });
     }
 
@@ -143,6 +133,23 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
 
         } else {
             Log.e("ItemsDetailActivity", "itemToDisplay is null in setDetailViewContents");
+        }
+    }
+
+    /**
+     * Saves the changes made to the local track object
+     */
+    private void saveChangesToLocalTrack() {
+        // setting the additional info
+        String additionalInfo = ((EditText) findViewById(R.id.trackEditAdditionalInfo)).getText().toString();
+        trackToDisplay.setAdditionalInfo(additionalInfo);
+        // setting the return date
+        String returnDateString = ((TextView) findViewById(R.id.returnDateEdit)).getText().toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", java.util.Locale.getDefault());
+        try {
+            trackToDisplay.setReturnDate(new Timestamp(sdf.parse(returnDateString)));
+        } catch (Exception e) {
+            Log.e("TrackEditActivity", "Error parsing return date: " + e.getMessage());
         }
     }
 

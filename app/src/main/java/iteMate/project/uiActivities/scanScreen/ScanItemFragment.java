@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import iteMate.project.R;
+import iteMate.project.controlller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
@@ -26,6 +27,7 @@ public class ScanItemFragment extends Fragment {
     private Track trackToDisplay;
     private String tagId;
     private Button returnButton;
+    private TrackController trackController = TrackController.getControllerInstance();
 
     public ScanItemFragment() {
         // Required empty public constructor
@@ -51,7 +53,7 @@ public class ScanItemFragment extends Fragment {
         // Set item details for track card view
         view.findViewById(R.id.track_card_view_scan).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), TrackDetailActivity.class);
-            intent.putExtra("track", trackToDisplay);
+            trackController.setCurrentObject(trackToDisplay);
             startActivity(intent);
         });
 
