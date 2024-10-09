@@ -139,7 +139,6 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginBottom="8dp"
                             android:text="01.09.2024"
-                            android:textColor="#0000FF"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/lend_date_header"
                             app:layout_constraintTop_toTopOf="parent" />

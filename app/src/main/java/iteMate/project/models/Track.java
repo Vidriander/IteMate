@@ -105,7 +105,7 @@ public class Track implements Parcelable, DocumentEquivalent {
      * @return the giveOutDate in a readable format
      */
     public String getReadableGiveOutDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", java.util.Locale.getDefault());
         return sdf.format(giveOutDate.toDate());
     }
 

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -64,7 +65,7 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
                             // on below line we are setting date to our text view.
-                            String date = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                            String date = dayOfMonth + "." + (monthOfYear + 1) + "." + year;
                             ((TextView)v).setText(date);
 
                         }
@@ -104,9 +105,9 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
         // Adding click listeners for our pick date buttons
-        TextView lendDate = findViewById(R.id.lentOnDateEdit);
-        lendDate.setOnClickListener(datePicker);
-        lendDate.setPaintFlags(lendDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+//        TextView lendDate = findViewById(R.id.lentOnDateEdit);
+//        lendDate.setOnClickListener(datePicker);
+//        lendDate.setPaintFlags(lendDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         TextView returnDate = findViewById(R.id.returnDateEdit);
         returnDate.setOnClickListener(datePicker);
         returnDate.setPaintFlags(returnDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -133,9 +134,10 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
             contact.setText(displayableName);
             contact.setPaintFlags(contact.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             // setting lent on date
-            ((TextView) findViewById(R.id.lentOnDateEdit)).setText(LocalDateTime.ofInstant(trackToDisplay.getGiveOutDate().toDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", java.util.Locale.getDefault());
+            ((TextView) findViewById(R.id.lentOnDateEdit)).setText(sdf.format(trackToDisplay.getGiveOutDate().toDate()));
             // setting return date
-            ((TextView) findViewById(R.id.returnDateEdit)).setText(LocalDateTime.ofInstant(trackToDisplay.getReturnDate().toDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
+            ((TextView) findViewById(R.id.returnDateEdit)).setText(sdf.format(trackToDisplay.getReturnDate().toDate()));
             // setting additional info field
             ((EditText) findViewById(R.id.trackEditAdditionalInfo)).setText(trackToDisplay.getAdditionalInfo());
 

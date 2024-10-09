@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -92,10 +93,11 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
             ((TextView)findViewById(R.id.track_detailcard_sideheader)).setText(itemCountText);
             // Setting the person to whom the item is given
             ((TextView)findViewById(R.id.lentToName_Text)).setText(titleText);
-            // Setting the give out date
-            ((TextView)findViewById(R.id.lentOnDate_text)).setText(LocalDateTime.ofInstant(trackToDisplay.getGiveOutDate().toDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
-            // Setting the return date
-            ((TextView)findViewById(R.id.returnDate_Text)).setText(LocalDateTime.ofInstant(trackToDisplay.getReturnDate().toDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
+            // setting lent on date
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", java.util.Locale.getDefault());
+            ((TextView) findViewById(R.id.lentOnDate_text)).setText(sdf.format(trackToDisplay.getGiveOutDate().toDate()));
+            // setting return date
+            ((TextView) findViewById(R.id.returnDate_Text)).setText(sdf.format(trackToDisplay.getReturnDate().toDate()));
             // Setting the additional info
             ((TextView)findViewById(R.id.trackdetailcard_itemdescription)).setText(trackToDisplay.getAdditionalInfo());
 
