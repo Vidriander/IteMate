@@ -18,6 +18,9 @@
         android:theme="@style/Theme.IteMate"
         tools:targetApi="31">
         <activity
+            android:name=".uiActivities.appScreens.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".uiActivities.appScreens.SettingsActivity"
             android:exported="false" />
         <activity
