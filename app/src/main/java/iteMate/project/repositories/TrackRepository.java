@@ -31,6 +31,8 @@ public class TrackRepository extends GenericRepository<Track> {
     public void fetchAttributesForTrack(Track track, OnDocumentsFetchedListener<Track> listener) {
         TaskCompletionSource<Void> contactTaskSource = new TaskCompletionSource<>();
         TaskCompletionSource<Void> itemsTaskSource = new TaskCompletionSource<>();
+        TaskCompletionSource<Void> pendingItemsTaskSource = new TaskCompletionSource<>();
+
 
         db.collection("contacts").document(track.getContactID())
                 .get()
@@ -54,8 +56,19 @@ public class TrackRepository extends GenericRepository<Track> {
                     }
                     itemsTaskSource.setResult(null);
                 });
+        db.collection("items").whereIn(FieldPath.documentId(), track.getPendingItemIDs())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Item> itemList = task.getResult().toObjects(Item.class);
+                        track.setPendingItemsList(itemList);
+                    } else {
+                        Log.w("Firestore", "Error getting items.", task.getException());
+                    }
+                    pendingItemsTaskSource.setResult(null);
+                });
 
-        Tasks.whenAll(contactTaskSource.getTask(), itemsTaskSource.getTask())
+        Tasks.whenAll(contactTaskSource.getTask(), itemsTaskSource.getTask(), pendingItemsTaskSource.getTask())
                 .addOnCompleteListener(task -> listener.onDocumentFetched(track));
     }
 
@@ -73,5 +86,4 @@ public class TrackRepository extends GenericRepository<Track> {
         listener.onDocumentsFetched(tracks);
         return tracks;
     }
-
 }

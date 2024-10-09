@@ -25,12 +25,9 @@ public class ItemsEditActivity extends AppCompatActivity {
      */
     private static Item itemToDisplay;
     private RecyclerView containedItemsRecyclerView;
-    private InnerItemsAdapter containedItemsAdapter;
     private RecyclerView associatedItemsRecyclerView;
-    private InnerItemsAdapter associatedItemsAdapter;
 
     private TextView title;
-    private TextView nfcTag;
     private TextView description;
     ItemRepository itemRepository;
 
@@ -118,10 +115,10 @@ public class ItemsEditActivity extends AppCompatActivity {
      */
     private void setUpRecyclerAdapters() {
         // contained Items
-        containedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getContainedItems(), this, false);
+        InnerItemsAdapter containedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getContainedItems(), this, false);
         containedItemsRecyclerView.setAdapter(containedItemsAdapter);
         // associated Items
-        associatedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getAssociatedItems(), this, false);
+        InnerItemsAdapter associatedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getAssociatedItems(), this, false);
         associatedItemsRecyclerView.setAdapter(associatedItemsAdapter);
     }
 

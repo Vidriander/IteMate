@@ -29,11 +29,12 @@ public class Contact implements Parcelable, DocumentEquivalent {
 
     // Default Constructor
     public Contact() {
+        firstName = "Select";
+        lastName = "Contact";
     }
 
     // Constructor
-    public Contact(String id, String firstName, String lastName, String phone, String email, String street, String city, int zip, String ownerID) {
-        this.id = id;
+    public Contact(String firstName, String lastName, String phone, String email, String street, String city, int zip, String ownerID) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;

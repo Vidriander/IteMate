@@ -4,11 +4,13 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import iteMate.project.uiActivities.itemScreens.ItemsEditActivity;
 import iteMate.project.uiActivities.utils.SearchUtils;
 import iteMate.project.R;
 import iteMate.project.models.Track;
@@ -47,6 +49,14 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         trackAdapter = new TrackAdapter(searchList, this);
         recyclerView.setAdapter(trackAdapter);
 
+        // set up the add button
+        findViewById(R.id.add_button_track).setOnClickListener(v -> {
+            Track newTrack = new Track();
+            Intent intent = new Intent(this, TrackEditActivity.class);
+            intent.putExtra("track", newTrack);
+            startActivity(intent);
+        });
+
         // Configure the SearchView
         SearchView searchView = findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -55,7 +65,6 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
                 performSearch(query);
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String query) {
                 performSearch(query);

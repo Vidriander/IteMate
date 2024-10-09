@@ -72,8 +72,6 @@ public class Item implements Parcelable, DocumentEquivalent {
      */
     private int defaultImage = R.drawable.gradient_background;
 
-
-
     /**
      * Default constructor for an item
      */

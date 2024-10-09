@@ -64,7 +64,8 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
                             // on below line we are setting date to our text view.
-                            ((TextView)v).setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            String date = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                            ((TextView)v).setText(date);
 
                         }
                     },
@@ -85,6 +86,7 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         // Get the Track object from the intent
         trackToDisplay = getIntent().getParcelableExtra("track");
 
@@ -92,10 +94,8 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
             Log.e("TrackEditActivity", "trackToDisplay is null");
             finish(); // Close the activity if trackToDisplay is null
         }
-        setDetailViewContents();
 
-        // Initialize ItemRepository
-        ItemRepository itemRepository = new ItemRepository();
+        setDetailViewContents();
 
         // Initialize RecyclerView for horizontal list of items
         horizontalRecyclerView = findViewById(R.id.trackedit_recycler);
@@ -146,7 +146,6 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
 
     @Override
     public void onDocumentFetched(Item document) {
-
     }
 
     @Override

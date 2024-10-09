@@ -17,8 +17,6 @@ public class ButtonController {
      * Method to exit the activity with saving
      */
     public static void exitActivityWithSaving(AppCompatActivity context) {
-        //TODO: Writing the altered date to the database
-
         context.finish();
     }
 }

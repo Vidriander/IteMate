@@ -24,13 +24,9 @@ public class Track implements Parcelable, DocumentEquivalent {
      */
     private String id;
     /**
-     * Readable, self-generated ID of the track
-     */
-    private String readableId;
-    /**
      * Date on which the item was given out
      */
-    private Timestamp giveOutDate;
+    private final Timestamp giveOutDate;
     /**
      * Date on which the item is to be returned
      */
@@ -48,13 +44,21 @@ public class Track implements Parcelable, DocumentEquivalent {
      */
     private boolean active;
     /**
-     * List of items lent out
+     * List of all items initially lent out
      */
     private List<Item> lentItemsList;
     /**
      * List of item IDs lent out
      */
     private List<String> lentItemIDs = new ArrayList<>();
+    /**
+     * List of items yet to be returned
+     */
+    private List<Item> pendingItemsList;
+    /**
+     * List of IDs of items yet to be returned
+     */
+    private List<String> pendingItemIDs = new ArrayList<>();
     /**
      * ID of the owner of the item
      */
@@ -67,7 +71,11 @@ public class Track implements Parcelable, DocumentEquivalent {
 
     // region Constructors
     public Track() {
-        // Default constructor
+        this.giveOutDate = new Timestamp(new Date());
+        this.returnDate = new Timestamp(new Date());
+        setContact(new Contact());
+        additionalInfo = "";
+        lentItemsList = new ArrayList<>();
     }
 
     public Track(Timestamp giveOutDate, Timestamp returnDate, Contact contact, String contactID, List<Item> lentItemsList, List<String> lentItemIDs, String ownerID, String additionalInfo) throws NullPointerException, IllegalArgumentException {
@@ -79,7 +87,6 @@ public class Track implements Parcelable, DocumentEquivalent {
         setLentItemIDs(lentItemIDs);
         setOwnerID(ownerID);
         setAdditionalInfo(additionalInfo);
-        setReadableId();
     }
     // endregion
 
@@ -151,6 +158,14 @@ public class Track implements Parcelable, DocumentEquivalent {
     }
 
     /**
+     * Getter for the IDs of items yet to be returned
+     * @return the pendingItemIDs
+     */
+    public List<String> getPendingItemIDs() {
+        return pendingItemIDs;
+    }
+
+    /**
      * Getter for the ID of the owner of the item
      * @return the ownerID
      */
@@ -199,29 +214,12 @@ public class Track implements Parcelable, DocumentEquivalent {
     public String getId() {
         return id;
     }
-
-    /**
-     * Getter for the readable ID of the track
-     * @return the readableId
-     */
-    public String getReadableId() {
-        return readableId;
-    }
     // endregion
 
     // region Setters
     @Override
     public void setId(String id) {
         this.id = id;
-    }
-
-    /**
-     * Setter the id of the track, that can be displayed to the user and sorted by
-     */
-    public void setReadableId() {
-        String newId = new SimpleDateFormat("MMddHHmmss", java.util.Locale.getDefault()).format(giveOutDate.toDate());
-        newId += contact.getName().substring(0, 3).toUpperCase();
-        readableId = newId;
     }
 
     /**
@@ -277,6 +275,18 @@ public class Track implements Parcelable, DocumentEquivalent {
     }
 
     /**
+     * Setter for the list of pending Items
+     * @param pendingItemsList the list of pendingItems to set
+     * @throws NullPointerException if pendingItemsList is null
+     */
+    public void setPendingItemsList(List<Item> pendingItemsList) throws NullPointerException {
+        if (pendingItemsList == null) {
+            throw new NullPointerException("PendingItemsList cannot be null");
+        }
+        this.pendingItemsList = pendingItemsList;
+    }
+
+    /**
      * Setter for the additional information about the track
      * @param additionalInfo the additionalInfo to set
      * @throws NullPointerException if additionalInfo is null
@@ -288,13 +298,6 @@ public class Track implements Parcelable, DocumentEquivalent {
         this.additionalInfo = additionalInfo;
     }
 
-    /**
-     * Setter for the status active:true = lent out, false = returned
-     * @param active the status to set
-     */
-    public void setActive(boolean active) {
-        this.active = active;
-    }
     // endregion
 
     //region Methods
@@ -328,7 +331,6 @@ public class Track implements Parcelable, DocumentEquivalent {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         // Writing each field to the Parcel
-        dest.writeString(readableId);
         dest.writeLong(giveOutDate != null ? giveOutDate.toDate().getTime() : -1);
         dest.writeLong(returnDate != null ? returnDate.toDate().getTime() : -1);
         dest.writeParcelable(contact, flags);
@@ -345,7 +347,6 @@ public class Track implements Parcelable, DocumentEquivalent {
      * @param in Parcel to read from
      */
     protected Track(Parcel in) {
-        readableId = in.readString();
         long giveOutDateLong = in.readLong();
         giveOutDate = giveOutDateLong != -1 ? new Timestamp(new Date(giveOutDateLong)) : null;
         long returnDateLong = in.readLong();

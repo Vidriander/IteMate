@@ -22,25 +22,15 @@
             android:layout_height="100dp"
             android:backgroundTint="#00A65959">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                app:cardCornerRadius="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/trackcard_contactname"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="8dp"
                 android:text="Contact Name"
-                android:textSize="28sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/track_card_date_text"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +40,9 @@
                 android:id="@+id/trackcard_daycounter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
                 android:text="+4d"
                 android:textColor="#00AE00"
                 android:textSize="42sp"
@@ -61,20 +53,20 @@
             <TextView
                 android:id="@+id/track_card_date_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="20dp"
                 android:text="10-09-2024"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/track_id_text"
+                android:id="@+id/numberItemsLentText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="16dp"
-                android:text="trackID23945"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="20dp"
+                android:text="3 items lent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/track_card_date_text" />
 

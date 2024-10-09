@@ -2,7 +2,6 @@ package iteMate.project.uiActivities.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +48,10 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         holder.lendOutDate.setText(track.getReadableGiveOutDate());
 
         // setting the track id text
-        holder.trackIdText.setText(track.getReadableId());
+        int numberOfAllItems = track.getLentItemIDs().size();
+        int numberOfPendingItems = track.getPendingItemIDs().size();
+        String itemsLentText = numberOfPendingItems + " of " + numberOfAllItems + " pending";
+        holder.itemsLentText.setText(itemsLentText);
 
         // setting the days left
         int daysLeftInt = track.getDaysLeft();
@@ -76,14 +78,14 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         public TextView contactName;
         public TextView lendOutDate;
         public TextView daysLeft;
-        public TextView trackIdText;
+        public TextView itemsLentText;
 
         public ViewHolder(View itemView) {
             super(itemView);
             contactName = itemView.findViewById(R.id.trackcard_contactname);
             lendOutDate = itemView.findViewById(R.id.track_card_date_text);
             daysLeft = itemView.findViewById(R.id.trackcard_daycounter);
-            trackIdText = itemView.findViewById(R.id.track_id_text);
+            itemsLentText = itemView.findViewById(R.id.numberItemsLentText);
         }
     }
 }
