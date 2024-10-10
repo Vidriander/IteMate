@@ -71,6 +71,8 @@
         <activity
             android:name=".uiActivities.itemScreens.ManageInnerItemsActivity"
             android:exported="false" />
+        <activity android:name=".uiActivities.contactScreens.SelectContactActivity"
+            android:exported="false" />
         <activity
             android:name=".uiActivities.homeScreen.HomeActivity"
             android:exported="true">

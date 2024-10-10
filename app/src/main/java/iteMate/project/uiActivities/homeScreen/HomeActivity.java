@@ -16,8 +16,6 @@ public class HomeActivity extends MainActivity {
         super.onCreate(savedInstanceState);
 
         // content of main-screen follows here
-
-
     }
 
     @Override
