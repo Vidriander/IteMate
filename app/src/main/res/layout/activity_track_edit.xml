@@ -16,7 +16,23 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/scan_button"
+            android:id="@+id/add_item_to_track_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/scan_button"
+            android:elevation="8dp"
+            app:elevation="8dp"
+            app:fabCustomSize="80dp"
+            app:layout_constraintBottom_toTopOf="@+id/scan_button_track_edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:maxImageSize="40dp"
+            app:srcCompat="@drawable/baseline_inventory_24"
+            app:tint="@color/scan_button_icon" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/scan_button_track_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"

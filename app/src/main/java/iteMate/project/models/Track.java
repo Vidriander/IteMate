@@ -85,6 +85,9 @@ public class Track implements DocumentEquivalent {
 
     // region Constructors
     public Track() {
+        // setting an initial value for the ID to avoid null pointer exceptions while updating the document in the database
+        this.id = "-1";
+
         this.giveOutDate = new Timestamp(new Date());
         this.returnDate = new Timestamp(new Date());
         setContact(new Contact());

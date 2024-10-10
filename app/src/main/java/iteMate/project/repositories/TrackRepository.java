@@ -24,10 +24,10 @@ public class TrackRepository extends GenericRepository<Track> {
         super(Track.class);
     }
 
-    @Override
+    /*@Override
     public void updateDocumentInFirestore(Track track) {
         db.collection("tracks").document(track.getId()).set(track);
-    }
+    }*/
 
     /**
      * Fetches the attributes for a track from Firestore
