@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
+import iteMate.project.controller.TrackController;
 import iteMate.project.models.Contact;
 
 
@@ -34,8 +34,11 @@ public class SelectContactAdapter extends RecyclerView.Adapter<SelectContactAdap
      */
     private List<Contact> contactList;
 
-    public SelectContactAdapter(Context context) {
+    public SelectContactAdapter(Context context, List<Contact> contactList) {
         this.context = context;
+        this.contactList = contactList;
+
+        selectedContact = TrackController.getControllerInstance().getCurrentTrack().getContact();
     }
 
     @NonNull
@@ -57,7 +60,11 @@ public class SelectContactAdapter extends RecyclerView.Adapter<SelectContactAdap
 
         // setting the listener for the checkbox
         holder.checkBox.setOnCheckedChangeListener(null); // Remove previous listener
-        holder.checkBox.setChecked(contact.equals(selectedContact)); // Set checkbox state
+
+        String currentContactId =  contact.getId();
+        String selectedContactId = selectedContact.getId();
+        boolean check = currentContactId.equals(selectedContactId);
+        holder.checkBox.setChecked(check); // Set checkbox state
 
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -73,7 +80,7 @@ public class SelectContactAdapter extends RecyclerView.Adapter<SelectContactAdap
 
     @Override
     public int getItemCount() {
-        return 0;
+        return contactList != null ? contactList.size() : 0;
     }
 
     /**
@@ -90,5 +97,14 @@ public class SelectContactAdapter extends RecyclerView.Adapter<SelectContactAdap
             contactAdress = itemView.findViewById(R.id.mailadressText_selectContact);
             checkBox = itemView.findViewById(R.id.selectContact_checkbox);
         }
+    }
+
+    public void setContactList(List<Contact> contactList) {
+        this.contactList = contactList;
+        notifyDataSetChanged();
+    }
+
+    public Contact getSelectedContact() {
+        return selectedContact;
     }
 }

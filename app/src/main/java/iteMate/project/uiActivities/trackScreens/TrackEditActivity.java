@@ -171,4 +171,11 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         itemList.addAll(documents);
         horizontalAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        trackToDisplay = trackController.getCurrentTrack();
+        setDetailViewContents();
+    }
 }

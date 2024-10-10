@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
@@ -61,6 +62,8 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         String daysLeftString = daysLeftInt >= 0 ? "+": "";
         if (daysLeftInt < 0) {
             holder.daysLeft.setTextColor(Color.RED);
+        } else {
+            holder.daysLeft.setTextColor(ContextCompat.getColor(context, R.color.positive_days_left_green));
         }
         daysLeftString += daysLeftInt + "d";
         holder.daysLeft.setText(daysLeftString);

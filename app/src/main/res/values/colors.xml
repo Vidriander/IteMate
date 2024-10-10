@@ -9,4 +9,5 @@
     <color name="unavailable_red">#FA3434</color>
     <color name="available_green">#4CAF50</color>
     <color name="add_item">#E89D2E</color>
+    <color name="positive_days_left_green">#00AF00</color>
 </resources>

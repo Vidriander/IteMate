@@ -123,6 +123,12 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         trackAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        trackRepository.getAllDocumentsFromFirestore(this);
+    }
+
 
 }
 

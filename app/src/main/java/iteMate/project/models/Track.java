@@ -257,6 +257,7 @@ public class Track implements DocumentEquivalent {
             throw new NullPointerException("Contact cannot be null");
         }
         this.contact = contact;
+        this.contactID = contact.getId();
     }
 
     /**
