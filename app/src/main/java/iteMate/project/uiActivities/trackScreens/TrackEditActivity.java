@@ -1,6 +1,7 @@
 package iteMate.project.uiActivities.trackScreens;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +31,7 @@ import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
+import iteMate.project.uiActivities.contactScreens.SelectContactActivity;
 import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 
 public class TrackEditActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
@@ -99,6 +101,13 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         TextView returnDate = findViewById(R.id.returnDateEdit);
         returnDate.setOnClickListener(datePicker);
         returnDate.setPaintFlags(returnDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        // setting on click listener for select contact text
+        TextView contact = findViewById(R.id.trackEditLentToText);
+        contact.setOnClickListener(click -> {
+            Intent intent = new Intent(this, SelectContactActivity.class);
+            startActivity(intent);
+        });
 
         // Setting on click for cancel button
         Button cancelButton = findViewById(R.id.trackedit_cancel);
