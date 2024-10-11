@@ -109,6 +109,7 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         // setting on click listener for select contact text
         TextView contact = findViewById(R.id.trackEditLentToText);
         contact.setOnClickListener(click -> {
+            saveChangesToLocalTrack();
             Intent intent = new Intent(this, SelectContactActivity.class);
             startActivity(intent);
         });
@@ -116,6 +117,7 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         // setting on click listener for manage items button
         FloatingActionButton manageItemsButton = findViewById(R.id.manage_items_in_track_button);
         manageItemsButton.setOnClickListener(click -> {
+            saveChangesToLocalTrack();
             Intent intent = new Intent(this, ManageTrackItemsActivity.class);
             startActivity(intent);
         });
@@ -127,7 +129,6 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         // setting on click for save button
         Button saveButton = findViewById(R.id.track_edit_save);
         saveButton.setOnClickListener(click -> {
-            saveChangesToLocalTrack();
             if (trackController.isReadyForUpload()) {
                 trackController.saveChangesToTrack(trackToDisplay);
                 finish();

@@ -50,28 +50,42 @@ public class TrackRepository extends GenericRepository<Track> {
                     }
                     contactTaskSource.setResult(null);
                 });
+        List<Item> lentItemsList = new ArrayList<>();
         db.collection("items").whereIn(FieldPath.documentId(), track.getLentItemIDs()) // TODO: might be empty
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        List<Item> itemList = task.getResult().toObjects(Item.class);
-                        track.setLentItemsList(itemList);
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Item item = document.toObject(Item.class);
+                            item.setId(document.getId());
+                            lentItemsList.add(item);
+                        }
+                        track.setLentItemsList(lentItemsList);
                     } else {
                         Log.w("Firestore", "Error getting items.", task.getException());
                     }
                     itemsTaskSource.setResult(null);
                 });
-        db.collection("items").whereIn(FieldPath.documentId(), track.getPendingItemIDs()) // TODO: might be empty
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        List<Item> itemList = task.getResult().toObjects(Item.class);
-                        track.setPendingItemsList(itemList);
-                    } else {
-                        Log.w("Firestore", "Error getting items.", task.getException());
-                    }
-                    pendingItemsTaskSource.setResult(null);
-                });
+        if (!track.getPendingItemIDs().isEmpty()) {
+            List<Item> pendingItemsList = new ArrayList<>();
+            db.collection("items").whereIn(FieldPath.documentId(), track.getPendingItemIDs()) // TODO: might be empty
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Item item = document.toObject(Item.class);
+                                item.setId(document.getId());
+                                pendingItemsList.add(item);
+                            }
+                            track.setPendingItemsList(pendingItemsList);
+                        } else {
+                            Log.w("Firestore", "Error getting items.", task.getException());
+                        }
+                        pendingItemsTaskSource.setResult(null);
+                    });
+        } else {
+            pendingItemsTaskSource.setResult(null);
+        }
 
         Tasks.whenAll(contactTaskSource.getTask(), itemsTaskSource.getTask(), pendingItemsTaskSource.getTask())
                 .addOnCompleteListener(task -> listener.onDocumentFetched(track));

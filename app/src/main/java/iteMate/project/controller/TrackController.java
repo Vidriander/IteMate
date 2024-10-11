@@ -46,6 +46,10 @@ public class TrackController {
     public void saveChangesToTrack(Track track) {
         setCurrentTrack(track);
         trackRepository.updateDocumentInFirestore(getCurrentTrack());
+        for (Item item : getCurrentTrack().getPendingItemsList()) {
+            item.setActiveTrackID(getCurrentTrack().getId());
+            itemRepository.updateDocumentInFirestore(item);
+        }
     }
 
     /**

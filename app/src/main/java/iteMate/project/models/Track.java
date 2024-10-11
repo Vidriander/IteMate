@@ -184,6 +184,15 @@ public class Track implements DocumentEquivalent {
     }
 
     /**
+     * Getter for the list of items yet to be returned
+     * @return the pendingItemsList
+     */
+    @Exclude
+    public List<Item> getPendingItemsList() {
+        return pendingItemsList;
+    }
+
+    /**
      * Getter for the IDs of items yet to be returned
      * @return the pendingItemIDs
      */
