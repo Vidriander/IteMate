@@ -49,6 +49,9 @@ public class ReturnScanActivity extends AppCompatActivity {
         itemAdapter = new ItemAdapter(itemList, this);
         recyclerView.setAdapter(itemAdapter);
 
+        // On click listener for the close button
+        findViewById(R.id.close_button).setOnClickListener(v -> finish());
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
