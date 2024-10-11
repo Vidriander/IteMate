@@ -18,6 +18,12 @@
         android:theme="@style/Theme.IteMate"
         tools:targetApi="31">
         <activity
+            android:name=".uiActivities.scanScreen.ManageScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".uiActivities.scanScreen.ReturnScanActivity"
+            android:exported="false" />
+        <activity
             android:name=".uiActivities.appScreens.LoginActivity"
             android:exported="false" />
         <activity
@@ -71,7 +77,8 @@
         <activity
             android:name=".uiActivities.itemScreens.ManageInnerItemsActivity"
             android:exported="false" />
-        <activity android:name=".uiActivities.contactScreens.SelectContactActivity"
+        <activity
+            android:name=".uiActivities.contactScreens.SelectContactActivity"
             android:exported="false" />
         <activity
             android:name=".uiActivities.appScreens.HomeActivity"

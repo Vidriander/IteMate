@@ -20,6 +20,7 @@ import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
+import iteMate.project.uiActivities.scanScreen.ReturnScanActivity;
 import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 
 public class TrackDetailActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Track> {
@@ -72,6 +73,13 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
              Intent intent = new Intent(TrackDetailActivity.this, TrackEditActivity.class);
              trackController.setCurrentTrack(trackToDisplay);
              startActivity(intent);
+        });
+
+        // on click listener for scan button
+        findViewById(R.id.detail_track_scan_button).setOnClickListener(v -> {
+            Intent intent = new Intent(TrackDetailActivity.this, ReturnScanActivity.class);
+            trackController.setCurrentTrack(trackToDisplay);
+            startActivity(intent);
         });
     }
 

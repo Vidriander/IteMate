@@ -32,6 +32,7 @@ import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.uiActivities.contactScreens.SelectContactActivity;
+import iteMate.project.uiActivities.scanScreen.ManageScanActivity;
 import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 
 public class TrackEditActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
@@ -119,6 +120,13 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
             saveChangesToLocalTrack();
             trackController.saveChangesToTrack(trackToDisplay);
             finish();
+        });
+
+        // setting on click scan button
+        Button scanButton = findViewById(R.id.scan_button_track_edit);
+        scanButton.setOnClickListener(click -> {
+            Intent intent = new Intent(this, ManageScanActivity.class);
+            startActivity(intent);
         });
     }
 
