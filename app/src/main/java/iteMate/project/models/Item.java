@@ -211,6 +211,14 @@ public class Item implements Parcelable, DocumentEquivalent {
     }
 
     /**
+     * Returns the availability of the item
+     * @return Availability of the item
+     */
+    public boolean isAvailable() {
+        return available;
+    }
+
+    /**
      * Returns the description of the item
      * @return Description of the item
      */
@@ -313,7 +321,18 @@ public class Item implements Parcelable, DocumentEquivalent {
      */
     public void setActiveTrackID(String activeTrackID) {
         this.activeTrackID = activeTrackID;
-        // TODO
+        if (activeTrackID == null) {
+           setAvailable(true);
+        } else {
+            setAvailable(false);
+        }
+    }
+
+    /**
+     * Setter for status of the item
+     */
+    private void setAvailable(boolean available) {
+        this.available = available;
     }
 
     /**

@@ -1,6 +1,9 @@
 package iteMate.project.uiActivities.scanScreen;
 
+import static iteMate.project.uiActivities.utils.ScanUtils.extractTagId;
+
 import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -22,12 +25,13 @@ import iteMate.project.uiActivities.utils.ItemAdapter;
 /**
  * Activity for returning items from a Track by an NFC scan
  */
-public class ReturnScanActivity extends AppCompatActivity {
+public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
     private NfcAdapter nfcAdapter;
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
     private List<Item> itemList;
+    private List<Item> listOfItemsToReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,5 +70,31 @@ public class ReturnScanActivity extends AppCompatActivity {
         if (nfcAdapter == null) {
             finish();
         }
+    }
+
+    @Override
+    public void onTagDiscovered(Tag tag) {
+        String tagId = extractTagId(tag);
+        removeItemFromReturnList(tagId);
+
+    }
+
+    /**
+     * Removes an item from the list of items to return
+     *
+     * @param tagId the tag ID of the item to remove
+     */
+    private void removeItemFromReturnList(String tagId) {
+        for (Item item : listOfItemsToReturn) {
+            if (item.getNfcTag().equals(tagId)) {
+                listOfItemsToReturn.remove(item);
+                makeItemAvailable(item);
+                break;
+            }
+        }
+    }
+
+    private void makeItemAvailable(Item item) {
+        item.setActiveTrackID(null);
     }
 }
