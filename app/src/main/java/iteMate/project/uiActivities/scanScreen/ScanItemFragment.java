@@ -36,7 +36,6 @@ public class ScanItemFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -57,9 +56,6 @@ public class ScanItemFragment extends Fragment {
             startActivity(intent);
         });
 
-        // Set up return button
-        returnButton = view.findViewById(R.id.return_button);
-
         // Set on click listener for item card view
         view.findViewById(R.id.item_card_view_scan).setOnClickListener(v -> {
             if (itemToDisplay == null) {
@@ -70,11 +66,18 @@ public class ScanItemFragment extends Fragment {
                 intent.putExtra("item", newItem);
                 startActivity(intent);
             } else {
-                // if item exists navigate to item detail screen
+                // if item exists navigate to item detail screen to display item details
                 Intent intent = new Intent(getActivity(), ItemsDetailActivity.class);
                 intent.putExtra("item", itemToDisplay);
                 startActivity(intent);
             }
+        });
+
+        // Set item details for track card view
+        view.findViewById(R.id.track_card_view_scan).setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), TrackDetailActivity.class);
+            trackController.setCurrentTrack(trackToDisplay);
+            startActivity(intent);
         });
 
         // Set on click listener for lend button
