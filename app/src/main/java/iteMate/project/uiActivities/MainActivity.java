@@ -20,7 +20,7 @@ import iteMate.project.R;
 import iteMate.project.uiActivities.appScreens.LoginActivity;
 import iteMate.project.uiActivities.appScreens.SettingsActivity;
 import iteMate.project.uiActivities.contactScreens.ContactActivity;
-import iteMate.project.uiActivities.homeScreen.HomeActivity;
+import iteMate.project.uiActivities.appScreens.HomeActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsActivity;
 import iteMate.project.uiActivities.scanScreen.ScanActivity;
 import iteMate.project.uiActivities.trackScreens.TrackActivity;

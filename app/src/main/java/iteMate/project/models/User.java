@@ -16,6 +16,8 @@ public class User implements Parcelable, DocumentEquivalent {
     private String id;
     private String email;
     private String password;
+    private Settings settings;
+
 
     // Default Constructor
     public User() {
@@ -25,6 +27,7 @@ public class User implements Parcelable, DocumentEquivalent {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+        this.settings = new Settings();
     }
 
     // Getter
@@ -42,6 +45,7 @@ public class User implements Parcelable, DocumentEquivalent {
     protected User(Parcel in) {
         email = in.readString();
         password = in.readString();
+        //settings = in.readByte() != 0;
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -65,6 +69,7 @@ public class User implements Parcelable, DocumentEquivalent {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(email);
         dest.writeString(password);
+        //dest.writeByte((byte) (settings ? 1 : 0));
     }
 
     @Override
