@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.R;
@@ -78,6 +79,9 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
         // on click listener for scan button
         findViewById(R.id.detail_track_scan_button).setOnClickListener(v -> {
             Intent intent = new Intent(TrackDetailActivity.this, ReturnScanActivity.class);
+            // add itemlist to intent
+            intent.putParcelableArrayListExtra("itemList", new ArrayList<>(itemList));
+
             trackController.setCurrentTrack(trackToDisplay);
             startActivity(intent);
         });

@@ -22,6 +22,9 @@ import iteMate.project.R;
 import iteMate.project.uiActivities.MainActivity;
 import iteMate.project.uiActivities.utils.SortUtils;
 
+/**
+ * Activity for managing the items
+ */
 public class ItemsActivity extends MainActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
 
     private RecyclerView recyclerView;
@@ -66,6 +69,7 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
                 performSearch(query);
                 return true;
             }
+
             @Override
             public boolean onQueryTextChange(String query) {
                 performSearch(query);

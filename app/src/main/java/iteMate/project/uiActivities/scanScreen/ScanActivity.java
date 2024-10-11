@@ -57,7 +57,6 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     private void initializeNfcAdapter() {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
-            Log.d("ScanActivity", "NFC is not available on this device.");
             finish();
         }
     }
