@@ -81,6 +81,29 @@ public class ItemRepository extends GenericRepository<Item> {
     }
 
     /**
+     * Gets all available items from the database (items that are not in a track)
+     * @return list of item objects
+     */
+    public void getAllAvailableItemsFromFirestore(OnDocumentsFetchedListener<Item> listener) {
+        List<Item> items = new ArrayList<>();
+        db.collection("items").whereEqualTo("activeTrackID", "") // Only get items that are not in a track
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Item item = document.toObject(Item.class);
+                            item.setId(document.getId());
+                            items.add(item);
+                        }
+                        listener.onDocumentsFetched(items);
+                        Log.w("Firestore", "Items fetched successfully!" + items);
+                    } else {
+                        Log.w("Firestore", "Error getting documents.", task.getException());
+                    }
+                });
+    }
+
+    /**
      * Method to set the contained and associated items of an item.
      *
      * @param item the item whose contained and associated items are to be set

@@ -50,7 +50,7 @@ public class TrackRepository extends GenericRepository<Track> {
                     }
                     contactTaskSource.setResult(null);
                 });
-        db.collection("items").whereIn(FieldPath.documentId(), track.getLentItemIDs())
+        db.collection("items").whereIn(FieldPath.documentId(), track.getLentItemIDs()) // TODO: might be empty
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -61,7 +61,7 @@ public class TrackRepository extends GenericRepository<Track> {
                     }
                     itemsTaskSource.setResult(null);
                 });
-        db.collection("items").whereIn(FieldPath.documentId(), track.getPendingItemIDs())
+        db.collection("items").whereIn(FieldPath.documentId(), track.getPendingItemIDs()) // TODO: might be empty
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

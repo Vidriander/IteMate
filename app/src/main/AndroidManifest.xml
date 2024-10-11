@@ -80,6 +80,8 @@
         <activity
             android:name=".uiActivities.contactScreens.SelectContactActivity"
             android:exported="false" />
+        <activity android:name=".uiActivities.trackScreens.ManageTrackItemsActivity"
+            android:exported="false" />
         <activity
             android:name=".uiActivities.appScreens.HomeActivity"
             android:exported="true">

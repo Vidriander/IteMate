@@ -24,6 +24,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 
 import java.util.List;
@@ -43,6 +44,7 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
     private InnerItemsAdapter horizontalAdapter;
     private List<Item> itemList;
     private final TrackController trackController = TrackController.getControllerInstance();
+    private RecyclerView horizontalRecyclerView;
 
     /**
      * Date picker dialog for selecting date
@@ -92,10 +94,9 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         setDetailViewContents();
 
         // Initialize RecyclerView for horizontal list of items
-        RecyclerView horizontalRecyclerView = findViewById(R.id.trackedit_recycler);
+        horizontalRecyclerView = findViewById(R.id.trackedit_recycler);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        horizontalAdapter = new InnerItemsAdapter(trackToDisplay.getLentItemsList(), this, true);
-        horizontalRecyclerView.setAdapter(horizontalAdapter);
+        setUpAdapter();
 
         // Adding click listeners for our pick date buttons
 //        TextView lendDate = findViewById(R.id.lentOnDateEdit);
@@ -109,6 +110,13 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         TextView contact = findViewById(R.id.trackEditLentToText);
         contact.setOnClickListener(click -> {
             Intent intent = new Intent(this, SelectContactActivity.class);
+            startActivity(intent);
+        });
+
+        // setting on click listener for manage items button
+        FloatingActionButton manageItemsButton = findViewById(R.id.manage_items_in_track_button);
+        manageItemsButton.setOnClickListener(click -> {
+            Intent intent = new Intent(this, ManageTrackItemsActivity.class);
             startActivity(intent);
         });
 
@@ -135,6 +143,11 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
             Intent intent = new Intent(this, ManageScanActivity.class);
             startActivity(intent);
         });
+    }
+
+    private void setUpAdapter() {
+        horizontalAdapter = new InnerItemsAdapter(trackToDisplay.getLentItemsList(), this, true);
+        horizontalRecyclerView.setAdapter(horizontalAdapter);
     }
 
     private void setDetailViewContents() {
@@ -192,5 +205,6 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         super.onResume();
         trackToDisplay = trackController.getCurrentTrack();
         setDetailViewContents();
+        setUpAdapter();
     }
 }

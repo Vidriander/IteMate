@@ -1,5 +1,11 @@
 package iteMate.project.controller;
+import java.util.ArrayList;
+import java.util.List;
+
+import iteMate.project.models.Item;
 import iteMate.project.models.Track;
+import iteMate.project.repositories.GenericRepository;
+import iteMate.project.repositories.ItemRepository;
 import iteMate.project.repositories.TrackRepository;
 
 public class TrackController {
@@ -15,9 +21,11 @@ public class TrackController {
     Track currentTrack;
 
     private final TrackRepository trackRepository;
+    private final ItemRepository itemRepository;
 
     private TrackController() {
         trackRepository = new TrackRepository();
+        itemRepository = new ItemRepository();
     }
 
     /**
@@ -63,6 +71,30 @@ public class TrackController {
     }
 
     /**
+     * Returns a list of items that can be lend or are already lend in the current track
+     */
+    public void getLendableItemsList(GenericRepository.OnDocumentsFetchedListener<Item> listener) {
+        List<Item> lendableItems = new ArrayList<>();
+        itemRepository.getAllAvailableItemsFromFirestore(new GenericRepository.OnDocumentsFetchedListener<Item>() {
+            @Override
+            public void onDocumentFetched(Item document) {
+            }
+            @Override
+            public void onDocumentsFetched(List<Item> documents) {
+                lendableItems.addAll(documents);
+
+                if (currentTrack != null) {
+                    List<Item> itemsInTrack = currentTrack.getLentItemsList();
+                    if (itemsInTrack != null) {
+                        lendableItems.addAll(itemsInTrack);
+                    }
+                }
+                listener.onDocumentsFetched(lendableItems);
+            }
+        });
+    }
+
+    /**
      * Sets the current object
      * @param currentTrack the object to be set as current
      * @throws NullPointerException if the object is null
@@ -73,6 +105,7 @@ public class TrackController {
         }
         this.currentTrack = currentTrack;
     }
+
 
 
 }
