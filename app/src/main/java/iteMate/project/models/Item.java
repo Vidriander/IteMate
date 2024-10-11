@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -179,6 +181,7 @@ public class Item implements Parcelable, DocumentEquivalent {
      * @return ID of the item
      */
     @Override
+    @Exclude
     public String getId() {
         return id;
     }
@@ -219,6 +222,7 @@ public class Item implements Parcelable, DocumentEquivalent {
      * Returns the list of items contained in this item
      * @return List of items contained in this item
      */
+    @Exclude
     public List<Item> getContainedItems() {
         Log.w("Debugging", "getContainedItems Aufruf: " + containedItems);
         return containedItems;
@@ -228,6 +232,7 @@ public class Item implements Parcelable, DocumentEquivalent {
      * Returns the list of items associated with this item
      * @return List of items associated with this item
      */
+    @Exclude
     public List<Item> getAssociatedItems() {
         Log.w("Debugging", "getAssociatedItems Aufruf: " + associatedItems);
         return associatedItems;
@@ -254,8 +259,13 @@ public class Item implements Parcelable, DocumentEquivalent {
     }
 
     @Override
+    @Exclude
     public String getCollectionPath() {
         return collectionPath;
+    }
+
+    public String getOwnerID() {
+        return ownerID;
     }
 
     /**

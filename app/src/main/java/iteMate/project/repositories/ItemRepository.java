@@ -133,45 +133,46 @@ public class ItemRepository extends GenericRepository<Item> {
      *
      * @param item the item to be updated or created
      */
-    @Override
-    public void updateDocumentInFirestore(Item item) {
-        db.collection("items").whereEqualTo(FieldPath.documentId(), item.getId())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if (!task.getResult().isEmpty()) {
-                            // If a matching document is found, update only specific fields
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                db.collection("items").document(document.getId())
-                                        .update(
-                                                "title", item.getTitle(),
-                                                "nfcTag", item.getNfcTag(),
-                                                "description", item.getDescription(),
-                                                "image", item.getImage(),
-                                                "containedItemIDs", item.getContainedItemIDs(),
-                                                "associatedItemIDs", item.getAssociatedItemIDs()
-                                        )
-                                        .addOnSuccessListener(aVoid -> Log.d("Firestore", "Item updated successfully!"))
-                                        .addOnFailureListener(e -> Log.w("Firestore", "Error updating item", e));
-                            }
-                        } else {
-                            // If no matching document is found, create a new document with only specific fields
-                            Map<String, Object> newItemData = new HashMap<>();
-                            newItemData.put("title", item.getTitle());
-                            newItemData.put("description", item.getDescription());
-                            newItemData.put("image", item.getImage());
-                            newItemData.put("containedItemIDs", item.getContainedItemIDs());
-                            newItemData.put("associatedItemIDs", item.getAssociatedItemIDs());
-
-                            db.collection("items").add(newItemData)
-                                    .addOnSuccessListener(documentReference -> Log.d("Firestore", "Item created successfully with ID: " + documentReference.getId()))
-                                    .addOnFailureListener(e -> Log.w("Firestore", "Error creating item", e));
-                        }
-                    } else {
-                        Log.w("Firestore", "Error getting documents.", task.getException());
-                    }
-                });
-    }
+//    @Override
+//    public void updateDocumentInFirestore(Item item) {
+//        db.collection("items").whereEqualTo(FieldPath.documentId(), item.getId())
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        if (!task.getResult().isEmpty()) {
+//                            // If a matching document is found, update only specific fields
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                db.collection("items").document(document.getId())
+//                                        .update(
+//                                                "title", item.getTitle(),
+//                                                "nfcTag", item.getNfcTag(),
+//                                                "description", item.getDescription(),
+//                                                "image", item.getImage(),
+//                                                "containedItemIDs", item.getContainedItemIDs(),
+//                                                "associatedItemIDs", item.getAssociatedItemIDs(),
+//                                                "activeTrackID", item.getActiveTrackID()
+//                                        )
+//                                        .addOnSuccessListener(aVoid -> Log.d("Firestore", "Item updated successfully!"))
+//                                        .addOnFailureListener(e -> Log.w("Firestore", "Error updating item", e));
+//                            }
+//                        } else {
+//                            // If no matching document is found, create a new document with only specific fields
+//                            Map<String, Object> newItemData = new HashMap<>();
+//                            newItemData.put("title", item.getTitle());
+//                            newItemData.put("description", item.getDescription());
+//                            newItemData.put("image", item.getImage());
+//                            newItemData.put("containedItemIDs", item.getContainedItemIDs());
+//                            newItemData.put("associatedItemIDs", item.getAssociatedItemIDs());
+//
+//                            db.collection("items").add(newItemData)
+//                                    .addOnSuccessListener(documentReference -> Log.d("Firestore", "Item created successfully with ID: " + documentReference.getId()))
+//                                    .addOnFailureListener(e -> Log.w("Firestore", "Error creating item", e));
+//                        }
+//                    } else {
+//                        Log.w("Firestore", "Error getting documents.", task.getException());
+//                    }
+//                });
+//    }
 
 
 }
