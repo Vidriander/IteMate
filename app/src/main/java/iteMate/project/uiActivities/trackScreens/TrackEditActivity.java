@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
@@ -117,8 +119,13 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         Button saveButton = findViewById(R.id.track_edit_save);
         saveButton.setOnClickListener(click -> {
             saveChangesToLocalTrack();
-            trackController.saveChangesToTrack(trackToDisplay);
-            finish();
+            if (trackController.isReadyForUpload()) {
+                trackController.saveChangesToTrack(trackToDisplay);
+                finish();
+            } else {
+                Toast toast = Toast.makeText(this, "Please fill out all fields and add at least one item", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         });
     }
 

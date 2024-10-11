@@ -292,6 +292,7 @@ public class Track implements DocumentEquivalent {
      * Setter for the list of lentItemIDs
      * @param lentItemIDs the lentItemIDs to set
      * @throws NullPointerException if lentItemIDs is null
+     * @throws IllegalArgumentException if lentItemIDs is empty
      */
     public void setLentItemIDs(List<String> lentItemIDs) throws NullPointerException {
         if (lentItemIDs == null) {

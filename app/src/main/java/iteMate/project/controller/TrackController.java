@@ -49,6 +49,20 @@ public class TrackController {
     }
 
     /**
+     * Checks if the current object is ready for upload and the edit activity can be closed
+     * @return true if the object is ready for upload, false otherwise
+     */
+    public boolean isReadyForUpload() {
+        return
+                currentTrack != null &&
+                currentTrack.getContact() != null &&
+                currentTrack.getLentItemsList() != null &&
+                currentTrack.getReturnDate() != null &&
+                currentTrack.getGiveOutDate().compareTo(currentTrack.getReturnDate()) < 0 &&
+                !currentTrack.getLentItemIDs().isEmpty();
+    }
+
+    /**
      * Sets the current object
      * @param currentTrack the object to be set as current
      * @throws NullPointerException if the object is null
@@ -59,4 +73,6 @@ public class TrackController {
         }
         this.currentTrack = currentTrack;
     }
+
+
 }
