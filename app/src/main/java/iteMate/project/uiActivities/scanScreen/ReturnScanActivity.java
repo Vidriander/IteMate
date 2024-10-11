@@ -27,7 +27,6 @@ public class ReturnScanActivity extends AppCompatActivity {
     private NfcAdapter nfcAdapter;
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
-    private ItemRepository itemRepository;
     private List<Item> itemList;
 
     @Override
