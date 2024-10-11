@@ -1,4 +1,4 @@
-package iteMate.project.uiActivities.itemScreens;
+package iteMate.project.uiActivities.trackScreens;
 
 import android.os.Bundle;
 
@@ -12,79 +12,56 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import iteMate.project.R;
-import iteMate.project.uiActivities.utils.SearchUtils;
+import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ManageInnerItemsAdapter;
+import iteMate.project.uiActivities.utils.SearchUtils;
 import iteMate.project.uiActivities.utils.SortUtils;
 
-public class ManageInnerItemsActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
-
-    private static Item itemToDisplay;
-
+public class ManageTrackItemsActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
+    /**
+     * Adapter for the RecyclerView that displays the lent items
+     */
     private ManageInnerItemsAdapter adapter;
+
     /**
      * List of Items that will change dynamically based on search
      */
     private List<Item> searchList;
 
     /**
-     * Get the updated item.
-     * @return The updated item, null if not initialized.
+     * List of all items available to lend
      */
-    public static Item getUpdatedItem() {
-        return itemToDisplay;
-    }
-    public static void resetUpdatedItem() {
-        itemToDisplay = null;
-    }
-
-    private boolean isContainedItems;
-
     private List<Item> allItems = new ArrayList<>();
+
+    private final TrackController trackController = TrackController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_inner_items);
 
-        // Get the item to display from the intent:
-        itemToDisplay = getIntent().getParcelableExtra("item");
-        isContainedItems = getIntent().getBooleanExtra("isContainedItems", true);
-
-        // Initialize searchList
-        searchList = new ArrayList<>(isContainedItems ? itemToDisplay.getContainedItems() : itemToDisplay.getAssociatedItems());
-
-        // Initialize RecyclerView
+        // Initialize RecyclerView and Adapter
         RecyclerView recyclerView = findViewById(R.id.manage_inner_items_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Fetch all items from Firestore
-        ItemRepository itemRepository = new ItemRepository();
-        itemRepository.getAllDocumentsFromFirestore(this);
-
-        // Setting up the adapter
-        List<Item> itemsToDisplay = isContainedItems ? itemToDisplay.getContainedItems() : itemToDisplay.getAssociatedItems();
-        adapter = new ManageInnerItemsAdapter(itemsToDisplay, allItems, this);
+        adapter = new ManageInnerItemsAdapter(trackController.getCurrentTrack().getLentItemsList(), allItems, this);
         recyclerView.setAdapter(adapter);
+
+        // Fetching all lendable items
+        trackController.getLendableItemsList(this);
 
         // Setting on click listener for save button
         findViewById(R.id.manageInnerItemsSavebutton).setOnClickListener(click -> {
             List<Item> newCheckedItems = adapter.getNewCheckedItems();
-            if (isContainedItems) {
-                itemToDisplay.setContainedItems((ArrayList<Item>) newCheckedItems);
-                itemToDisplay.setContainedItemIDs((ArrayList<String>) newCheckedItems.stream().map(Item::getId).collect(Collectors.toList()));
-            } else {
-                itemToDisplay.setAssociatedItems((ArrayList<Item>) newCheckedItems);
-                itemToDisplay.setAssociatedItemIDs((ArrayList<String>) newCheckedItems.stream().map(Item::getId).collect(Collectors.toList()));
-            }
+            trackController.getCurrentTrack().setLentItemsList(newCheckedItems);
+            trackController.getCurrentTrack().setPendingItemsList(newCheckedItems); // TODO: check for already returned items
             finish();
         });
 
         // Setting on click listener for cancel button
         findViewById(R.id.manageInnerItemsCancelbutton).setOnClickListener(click -> {
-            resetUpdatedItem();
             finish();
         });
 
@@ -122,7 +99,7 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
 
     @Override
     public void onDocumentFetched(Item document) {
-        // Not used
+
     }
 
     @Override

@@ -86,13 +86,18 @@ public class Track implements DocumentEquivalent {
     // region Constructors
     public Track() {
         // setting an initial value for the ID to avoid null pointer exceptions while updating the document in the database
-        this.id = "-1";
+        id = "-1";
 
-        this.giveOutDate = new Timestamp(new Date());
-        this.returnDate = new Timestamp(new Date());
+        giveOutDate = new Timestamp(new Date());
+        returnDate = new Timestamp(new Date());
         setContact(new Contact());
         additionalInfo = "";
         lentItemsList = new ArrayList<>();
+        lentItemIDs = new ArrayList<>();
+        pendingItemsList = new ArrayList<>();
+        pendingItemIDs = new ArrayList<>();
+
+        ownerID = "TODO";
     }
 
     public Track(Timestamp giveOutDate, Timestamp returnDate, Contact contact, String contactID, List<Item> lentItemsList, List<String> lentItemIDs, String ownerID, String additionalInfo) throws NullPointerException, IllegalArgumentException {
@@ -303,12 +308,18 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Setter for the list of items lent out
+     * Also sets the lentItemIDs automatically
      * @param itemList the list of items to set
      * @throws NullPointerException if itemList is null
      */
     public void setLentItemsList(List<Item> itemList) throws NullPointerException {
         if (itemList == null) {
             throw new NullPointerException("LentItemsList cannot be null");
+        }
+        // also setting the lentItemIDs
+        lentItemIDs.clear();
+        for (Item item : itemList) {
+            lentItemIDs.add(item.getId());
         }
         this.lentItemsList = itemList;
     }
@@ -321,6 +332,11 @@ public class Track implements DocumentEquivalent {
     public void setPendingItemsList(List<Item> pendingItemsList) throws NullPointerException {
         if (pendingItemsList == null) {
             throw new NullPointerException("PendingItemsList cannot be null");
+        }
+        // also setting the pendingItemIDs
+        pendingItemIDs.clear();
+        for (Item item : pendingItemsList) {
+            pendingItemIDs.add(item.getId());
         }
         this.pendingItemsList = pendingItemsList;
     }
