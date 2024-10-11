@@ -1,10 +1,6 @@
-package iteMate.project.uiActivities.homeScreen;
+package iteMate.project.uiActivities.appScreens;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-
-import androidx.appcompat.widget.SearchView;
 
 import iteMate.project.R;
 import iteMate.project.uiActivities.MainActivity;

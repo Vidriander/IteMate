@@ -74,7 +74,7 @@
         <activity android:name=".uiActivities.contactScreens.SelectContactActivity"
             android:exported="false" />
         <activity
-            android:name=".uiActivities.homeScreen.HomeActivity"
+            android:name=".uiActivities.appScreens.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

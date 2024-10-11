@@ -64,7 +64,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/setting2_switch"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,7 +73,7 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginBottom="32dp"
-            android:text="Settings 2"
+            android:text="Allow non NFC-Items"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -88,7 +88,7 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginBottom="32dp"
-            android:text="Settings 3"
+            android:text="Manual Track Creation"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -97,6 +97,37 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/setting2_switch" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/setting4_switch"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="32dp"
+            android:text="Manual Track edit"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setting3_switch" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/setting5_switch"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="32dp"
+            android:text="Deletable Items"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setting4_switch" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
