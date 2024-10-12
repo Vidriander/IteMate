@@ -1,9 +1,6 @@
 package iteMate.project.uiActivities.utils;
 
 import android.nfc.Tag;
-import android.util.Log;
-
-import java.util.List;
 
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;

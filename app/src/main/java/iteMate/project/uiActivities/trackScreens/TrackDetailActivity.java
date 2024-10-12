@@ -43,6 +43,7 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
         trackToDisplay = trackController.getCurrentTrack();
         if (trackToDisplay == null) {
            finish();
+           return;
         }
 
         itemList = trackToDisplay.getLentItemsList();

@@ -1,5 +1,7 @@
 package iteMate.project.uiActivities.scanScreen;
 
+import static iteMate.project.uiActivities.utils.ScanUtils.extractTagId;
+
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -349,20 +351,6 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
-    /**
-     * Extracts the tag ID oof a scanned tag
-     *
-     * @param tag the scanned tag
-     * @return the tag ID a scanned tag
-     */
-    private String extractTagId(Tag tag) {
-        byte[] tagId = tag.getId();
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : tagId) {
-            hexString.append(String.format("%02X", b));
-        }
-        return hexString.toString();
-    }
 
     @Override
     public void onDocumentFetched(Track document) {

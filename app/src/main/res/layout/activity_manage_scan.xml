@@ -54,7 +54,6 @@
             android:layout_height="match_parent"
             android:fillViewport="true">
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewItems"
                 android:layout_width="match_parent"
@@ -67,8 +66,8 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
-
         </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

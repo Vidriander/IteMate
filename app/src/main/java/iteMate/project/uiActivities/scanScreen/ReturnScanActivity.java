@@ -6,6 +6,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +16,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.R;
 import iteMate.project.models.Item;
-import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ItemAdapter;
 
 /**
@@ -47,6 +48,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
 
         // Retrieve the list of items from the Intent
         itemList = getIntent().getParcelableArrayListExtra("itemList");
+        listOfItemsToReturn = new ArrayList<>(itemList);
 
         // Initialize the adapter and set it to the RecyclerView
         itemAdapter = new ItemAdapter(itemList, this);
@@ -85,16 +87,53 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
      * @param tagId the tag ID of the item to remove
      */
     private void removeItemFromReturnList(String tagId) {
+        Toast.makeText(this, "Tag ID: " + tagId, Toast.LENGTH_SHORT).show();
+        Log.d("ReturnScanActivity", "Tag ID: " + tagId);
         for (Item item : listOfItemsToReturn) {
             if (item.getNfcTag().equals(tagId)) {
                 listOfItemsToReturn.remove(item);
                 makeItemAvailable(item);
-                break;
+            } else {
+                Toast.makeText(this, "Item not found", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private void makeItemAvailable(Item item) {
         item.setActiveTrackID(null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        enableNfcReaderMode();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        disableNfcReaderMode();
+    }
+
+    /**
+     * Enables the NFC reader mode
+     */
+    private void enableNfcReaderMode() {
+        if (nfcAdapter != null) {
+            nfcAdapter.enableReaderMode(this, this,
+                    NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_NFC_B |
+                            NfcAdapter.FLAG_READER_NFC_F | NfcAdapter.FLAG_READER_NFC_V |
+                            NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
+                    null);
+        }
+    }
+
+    /**
+     * Disables the NFC reader mode
+     */
+    private void disableNfcReaderMode() {
+        if (nfcAdapter != null) {
+            nfcAdapter.disableReaderMode(this);
+        }
     }
 }

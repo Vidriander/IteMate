@@ -122,7 +122,7 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
             startActivity(intent);
         });
 
-        // Setting on click for cancel button
+        // Setting on click listener for cancel button
         Button cancelButton = findViewById(R.id.trackedit_cancel);
         cancelButton.setOnClickListener(click -> finish());
 
@@ -138,8 +138,8 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
             }
         });
 
-        // setting on click scan button
-        Button scanButton = findViewById(R.id.scan_button_track_edit);
+        // setting on click listener for scan button
+        FloatingActionButton scanButton = findViewById(R.id.scan_button_track_edit);
         scanButton.setOnClickListener(click -> {
             Intent intent = new Intent(this, ManageScanActivity.class);
             startActivity(intent);
