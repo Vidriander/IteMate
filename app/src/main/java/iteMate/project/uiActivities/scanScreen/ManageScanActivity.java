@@ -1,6 +1,5 @@
 package iteMate.project.uiActivities.scanScreen;
 
-import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 
@@ -12,13 +11,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.List;
 
 import iteMate.project.R;
 import iteMate.project.models.Item;
-import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ItemAdapter;
 
 /**
