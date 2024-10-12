@@ -27,7 +27,7 @@ public class ScanItemFragment extends Fragment {
     private Track trackToDisplay;
     private String tagId;
     private Button returnButton;
-    private TrackController trackController = TrackController.getControllerInstance();
+    private final TrackController trackController = TrackController.getControllerInstance();
 
     public ScanItemFragment() {
         // Required empty public constructor

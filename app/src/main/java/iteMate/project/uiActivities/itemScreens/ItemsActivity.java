@@ -27,7 +27,6 @@ import iteMate.project.uiActivities.utils.SortUtils;
  */
 public class ItemsActivity extends MainActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
 
-    private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
     /**
      * List of Items that will change dynamically based on search
@@ -47,7 +46,7 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
         itemRepository = new ItemRepository();
 
         // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recyclerViewItems);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize Item list
@@ -120,9 +119,9 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
         ItemsEditActivity.resetItemToDisplay();
         ManageInnerItemsActivity.resetUpdatedItem();
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.schedule(() -> {
-            itemRepository.getAllDocumentsFromFirestore(this);
-        }, 1, TimeUnit.SECONDS);
+        executor.schedule(() ->
+            itemRepository.getAllDocumentsFromFirestore(this)
+        , 1, TimeUnit.SECONDS);
     }
 
     @Override

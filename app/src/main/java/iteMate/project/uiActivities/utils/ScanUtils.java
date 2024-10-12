@@ -10,8 +10,8 @@ import iteMate.project.repositories.TrackRepository;
 
 public class ScanUtils {
 
-    private static ItemRepository itemRepository = new ItemRepository();
-    private static TrackRepository trackRepository = new TrackRepository();
+    private static final ItemRepository itemRepository = new ItemRepository();
+    private static final TrackRepository trackRepository = new TrackRepository();
 
     public static String extractTagId(Tag tag) {
         byte[] tagId = tag.getId();

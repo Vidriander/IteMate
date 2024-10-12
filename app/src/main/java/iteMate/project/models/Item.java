@@ -48,19 +48,19 @@ public class Item implements Parcelable, DocumentEquivalent {
     /**
      * List of items contained in this item
      */
-    private ArrayList<Item> containedItems = new ArrayList<Item>();
+    private ArrayList<Item> containedItems = new ArrayList<>();
     /**
      * List of IDs of items contained in this item
      */
-    private ArrayList<String> containedItemIDs = new ArrayList<String>();
+    private ArrayList<String> containedItemIDs = new ArrayList<>();
     /**
      * List of items associated with this item, not necessary to list any
      */
-    private ArrayList<Item> associatedItems = new ArrayList<Item>();
+    private ArrayList<Item> associatedItems = new ArrayList<>();
     /**
      * List of IDs of items associated with this item
      */
-    private ArrayList<String> associatedItemIDs = new ArrayList<String>();
+    private ArrayList<String> associatedItemIDs = new ArrayList<>();
     /**
      * ID of the user who owns the item
      */
@@ -321,11 +321,7 @@ public class Item implements Parcelable, DocumentEquivalent {
      */
     public void setActiveTrackID(String activeTrackID) {
         this.activeTrackID = activeTrackID;
-        if (activeTrackID == null) {
-           setAvailable(true);
-        } else {
-            setAvailable(false);
-        }
+        setAvailable(activeTrackID == null);
     }
 
     /**

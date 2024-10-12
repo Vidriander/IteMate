@@ -1,6 +1,4 @@
 package iteMate.project.models;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Exclude;
@@ -365,12 +363,5 @@ public class Track implements DocumentEquivalent {
     // endregion
 
     //region Methods
-
-    /**
-     * Method to check if the track is active by checking if any of the items are assigned to the track
-     */
-    private void checkActive() {
-        active = lentItemsList.stream().noneMatch(item -> item.getActiveTrackID().equals(id));
-    }
     //endregion
 }

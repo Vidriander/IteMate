@@ -10,13 +10,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.List;
 
 import iteMate.project.R;
 import iteMate.project.models.Contact;
-import iteMate.project.repositories.ContactRepository;
-import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
-import iteMate.project.uiActivities.trackScreens.TrackEditActivity;
 
 public class ContactDetailActivity extends AppCompatActivity {
 
@@ -60,7 +56,9 @@ public class ContactDetailActivity extends AppCompatActivity {
     private void setDetailViewContents() {
         if (contactToDisplay != null) {
             // ((TextView) findViewById(R.id.contact_detailcard_sideheader)).setText(contactToDisplay.getFirstName() + " " + contactToDisplay.getLastName());
-            ((TextView) findViewById(R.id.contact_detailcard_title)).setText(contactToDisplay.getFirstName() + " " + contactToDisplay.getLastName());            ((TextView) findViewById(R.id.contact_detail_first_name)).setText(contactToDisplay.getFirstName());
+            String title = contactToDisplay.getFirstName() + " " + contactToDisplay.getLastName();
+            ((TextView) findViewById(R.id.contact_detailcard_title)).setText(title);
+            ((TextView) findViewById(R.id.contact_detail_first_name)).setText(contactToDisplay.getFirstName());
             ((TextView) findViewById(R.id.contact_detail_last_name)).setText(contactToDisplay.getLastName());
             ((TextView) findViewById(R.id.contact_detail_street)).setText(contactToDisplay.getStreet());
             ((TextView) findViewById(R.id.contact_detail_zip)).setText(String.valueOf(contactToDisplay.getZip()));

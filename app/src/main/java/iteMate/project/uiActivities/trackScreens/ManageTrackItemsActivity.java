@@ -9,13 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import iteMate.project.R;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.utils.ManageInnerItemsAdapter;
 import iteMate.project.uiActivities.utils.SearchUtils;
 import iteMate.project.uiActivities.utils.SortUtils;
@@ -61,9 +59,9 @@ public class ManageTrackItemsActivity extends AppCompatActivity implements Gener
         });
 
         // Setting on click listener for cancel button
-        findViewById(R.id.manageInnerItemsCancelbutton).setOnClickListener(click -> {
-            finish();
-        });
+        findViewById(R.id.manageInnerItemsCancelbutton).setOnClickListener(click ->
+            finish()
+        );
 
         // Configure the SearchView
         SearchView searchView = findViewById(R.id.manageInnerItemsSearchView);

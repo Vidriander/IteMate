@@ -27,10 +27,8 @@ public class ItemsDetailActivity extends AppCompatActivity {
 
     private Item itemToDisplay;
     private RecyclerView containedItemsRecyclerView;
-    private InnerItemsAdapter containedItemsAdapter;
     private RecyclerView associatedItemsRecyclerView;
-    private InnerItemsAdapter associatedItemsAdapter;
-    private TrackController trackController = TrackController.getControllerInstance();
+    private final TrackController trackController = TrackController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +76,9 @@ public class ItemsDetailActivity extends AppCompatActivity {
      * Set up the recycler adapters for the contained and associated items
      */
     private void setUpRecyclerAdapters() {
-        containedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getContainedItems(), this, false);
+        InnerItemsAdapter containedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getContainedItems(), this);
         containedItemsRecyclerView.setAdapter(containedItemsAdapter);
-        associatedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getAssociatedItems(), this, false);
+        InnerItemsAdapter associatedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getAssociatedItems(), this);
         associatedItemsRecyclerView.setAdapter(associatedItemsAdapter);
     }
 

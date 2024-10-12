@@ -26,7 +26,7 @@ import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
  */
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
-    private List<Item> items;
+    private final List<Item> items;
     private final Context context;
 
     public ItemAdapter(List<Item> items, Context context) {
@@ -50,7 +50,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item item = items.get(position);
-        // setting tranparency of the cardview to signal that the item is currently being tracked
+        // setting transparency of the cardview to signal that the item is currently being tracked
         if (item.getActiveTrackID() != null && !item.getActiveTrackID().isEmpty()) {
             holder.cardView.setAlpha(0.5f);
         } else {

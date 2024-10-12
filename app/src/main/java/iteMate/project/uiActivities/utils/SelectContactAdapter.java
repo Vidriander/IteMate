@@ -56,7 +56,7 @@ public class SelectContactAdapter extends RecyclerView.Adapter<SelectContactAdap
         holder.contactName.setText(contact.getName());
 
         // setting the contact address
-        holder.contactAdress.setText(contact.getEmail());
+        holder.contactAddress.setText(contact.getEmail());
 
         // setting the listener for the checkbox
         holder.checkBox.setOnCheckedChangeListener(null); // Remove previous listener
@@ -88,13 +88,13 @@ public class SelectContactAdapter extends RecyclerView.Adapter<SelectContactAdap
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView contactName;
-        public TextView contactAdress;
+        public TextView contactAddress;
         public CheckBox checkBox;
 
         public ViewHolder(View itemView) {
             super(itemView);
             contactName = itemView.findViewById(R.id.contactNameText_selectContact);
-            contactAdress = itemView.findViewById(R.id.mailadressText_selectContact);
+            contactAddress = itemView.findViewById(R.id.mailadressText_selectContact);
             checkBox = itemView.findViewById(R.id.selectContact_checkbox);
         }
     }

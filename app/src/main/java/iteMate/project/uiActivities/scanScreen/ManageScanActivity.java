@@ -22,11 +22,6 @@ import iteMate.project.uiActivities.utils.ItemAdapter;
  */
 public class ManageScanActivity extends AppCompatActivity {
 
-    private NfcAdapter nfcAdapter;
-    private RecyclerView recyclerView;
-    private ItemAdapter itemAdapter;
-    private List<Item> itemList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,14 +31,14 @@ public class ManageScanActivity extends AppCompatActivity {
         initializeNfcAdapter();
 
         // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recyclerViewItems);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Retrieve the list of items from the Intent
-        itemList = getIntent().getParcelableArrayListExtra("itemList");
+        List<Item> itemList = getIntent().getParcelableArrayListExtra("itemList");
 
         // Initialize the adapter and set it to the RecyclerView
-        itemAdapter = new ItemAdapter(itemList, this);
+        ItemAdapter itemAdapter = new ItemAdapter(itemList, this);
         recyclerView.setAdapter(itemAdapter);
 
         // On click listener for the close button
@@ -57,7 +52,7 @@ public class ManageScanActivity extends AppCompatActivity {
     }
 
     private void initializeNfcAdapter() {
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
             finish();
         }

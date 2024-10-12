@@ -75,14 +75,14 @@ public class ItemsEditActivity extends AppCompatActivity {
         associatedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         setUpRecyclerAdapters();
 
-        // Settting on click listener for managing contained items
+        // Setting on click listener for managing contained items
         findViewById(R.id.manageContainedItemsButton).setOnClickListener(click -> {
             Intent intent = new Intent(this, ManageInnerItemsActivity.class);
             intent.putExtra("item", itemToDisplay);
             intent.putExtra("isContainedItems", true);
             startActivity(intent);
         });
-        // Settting on click listener for managing associated items
+        // Setting on click listener for managing associated items
         findViewById(R.id.manageAssociatedItemsButton).setOnClickListener(click -> {
             Intent intent = new Intent(this, ManageInnerItemsActivity.class);
             intent.putExtra("item", itemToDisplay);
@@ -121,10 +121,10 @@ public class ItemsEditActivity extends AppCompatActivity {
      */
     private void setUpRecyclerAdapters() {
         // contained Items
-        InnerItemsAdapter containedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getContainedItems(), this, false);
+        InnerItemsAdapter containedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getContainedItems(), this);
         containedItemsRecyclerView.setAdapter(containedItemsAdapter);
         // associated Items
-        InnerItemsAdapter associatedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getAssociatedItems(), this, false);
+        InnerItemsAdapter associatedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getAssociatedItems(), this);
         associatedItemsRecyclerView.setAdapter(associatedItemsAdapter);
     }
 

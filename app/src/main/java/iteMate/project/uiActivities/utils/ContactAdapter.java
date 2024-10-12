@@ -14,25 +14,11 @@ import java.util.List;
 import iteMate.project.R;
 import iteMate.project.models.Contact;
 import iteMate.project.uiActivities.contactScreens.ContactDetailActivity;
-import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
 
-    private List<Contact> contacts;
-    private Context context;
-
-    /**
-     * Stores the id of the clicked Contact, if any.
-     */
-    private static Contact clickedContact;
-
-    /**
-     * Returns the id of the clicked Contact in order to display the correct Contact in the detail view.
-     * @return the id of the clicked Contact
-     */
-    public static Contact getClickedContact() {
-        return clickedContact;
-    }
+    private final List<Contact> contacts;
+    private final Context context;
 
     public ContactAdapter(List<Contact> contacts, Context context) {
         this.contacts = contacts;
@@ -50,12 +36,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Contact contact = contacts.get(position);
         holder.contactEmail.setText(contact.getEmail());
-        holder.contactName.setText(contact.getFirstName() + " " + contact.getLastName());
+        String contactName = contact.getFirstName() + " " + contact.getLastName();
+        holder.contactName.setText(contactName);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ContactDetailActivity.class);
             intent.putExtra("contact", contact);
-            clickedContact = contact;
             context.startActivity(intent);
         });
     }

@@ -9,7 +9,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +28,6 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
     private ContactAdapter contactAdapter;
     private List<Contact> contactList;
     private ContactRepository contactRepository;
-    /**
-     * List of Contacts that will change dynamically based on search
-     */
-    private List<Contact> searchList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +43,6 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
 
         // Initialize Contact list and search list
         contactList = new ArrayList<>();
-        searchList = new ArrayList<>(contactList);
 
         // Initialize ContactAdapter
         contactAdapter = new ContactAdapter(contactList, this);
@@ -120,9 +114,6 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
     public void onDocumentsFetched(List<Contact> documents) {
         contactList.clear();
         contactList.addAll(documents);
-
-        searchList.clear();
-        searchList.addAll(documents);
 
         contactAdapter.notifyDataSetChanged();
     }

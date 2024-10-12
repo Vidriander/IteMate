@@ -27,7 +27,6 @@ import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 public class TrackDetailActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Track> {
 
     private Track trackToDisplay;
-    private RecyclerView horizontalRecyclerView;
     private InnerItemsAdapter horizontalAdapter;
     private List<Item> itemList;
     private final TrackController trackController = TrackController.getControllerInstance();
@@ -62,9 +61,9 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
         });
 
         // Initialize RecyclerView  for horizontal list of items
-        horizontalRecyclerView = findViewById(R.id.trackdetailview_lentitems_recyclerview);
+        RecyclerView horizontalRecyclerView = findViewById(R.id.trackdetailview_lentitems_recyclerview);
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        horizontalAdapter = new InnerItemsAdapter(itemList, this,false);
+        horizontalAdapter = new InnerItemsAdapter(itemList, this);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
 
         // on click listener for back button

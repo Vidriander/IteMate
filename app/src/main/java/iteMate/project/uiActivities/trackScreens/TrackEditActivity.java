@@ -26,22 +26,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 
-import java.util.List;
-
 import iteMate.project.R;
 import iteMate.project.controller.TrackController;
-import iteMate.project.models.Item;
 import iteMate.project.models.Track;
-import iteMate.project.repositories.GenericRepository;
 import iteMate.project.uiActivities.contactScreens.SelectContactActivity;
 import iteMate.project.uiActivities.scanScreen.ManageScanActivity;
 import iteMate.project.uiActivities.utils.InnerItemsAdapter;
 
-public class TrackEditActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
+public class TrackEditActivity extends AppCompatActivity {
 
     private Track trackToDisplay;
-    private InnerItemsAdapter horizontalAdapter;
-    private List<Item> itemList;
     private final TrackController trackController = TrackController.getControllerInstance();
     private RecyclerView horizontalRecyclerView;
 
@@ -97,10 +91,6 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         setUpAdapter();
 
-        // Adding click listeners for our pick date buttons
-//        TextView lendDate = findViewById(R.id.lentOnDateEdit);
-//        lendDate.setOnClickListener(datePicker);
-//        lendDate.setPaintFlags(lendDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         TextView returnDate = findViewById(R.id.returnDateEdit);
         returnDate.setOnClickListener(datePicker);
         returnDate.setPaintFlags(returnDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -147,7 +137,7 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
     }
 
     private void setUpAdapter() {
-        horizontalAdapter = new InnerItemsAdapter(trackToDisplay.getLentItemsList(), this, true);
+        InnerItemsAdapter horizontalAdapter = new InnerItemsAdapter(trackToDisplay.getLentItemsList(), this);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
     }
 
@@ -188,17 +178,6 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         } catch (Exception e) {
             Log.e("TrackEditActivity", "Error parsing return date: " + e.getMessage());
         }
-    }
-
-    @Override
-    public void onDocumentFetched(Item document) {
-    }
-
-    @Override
-    public void onDocumentsFetched(List<Item> documents) {
-        itemList.clear();
-        itemList.addAll(documents);
-        horizontalAdapter.notifyDataSetChanged();
     }
 
     @Override

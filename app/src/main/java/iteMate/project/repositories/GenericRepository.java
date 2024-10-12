@@ -6,8 +6,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.gms.tasks.TaskCompletionSource;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -15,10 +13,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 
 import iteMate.project.R;
 import iteMate.project.models.DocumentEquivalent;
@@ -103,12 +99,12 @@ public class GenericRepository<T extends DocumentEquivalent> {
     public void addDocumentToFirestore(T element) {
         db.collection(element.getCollectionPath())
                 .add(element)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d("Firestore", "Element added with ID: " + documentReference.getId());
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("Firestore", "Error adding item", e);
-                });
+                .addOnSuccessListener(documentReference ->
+                    Log.d("Firestore", "Element added with ID: " + documentReference.getId())
+                )
+                .addOnFailureListener(e ->
+                    Log.w("Firestore", "Error adding item", e)
+                );
     }
 
     /**
@@ -181,7 +177,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
                     .diskCacheStrategy(DiskCacheStrategy.DATA)
                     .placeholder(R.drawable.placeholder_image)  // image in drawables
                     .error(R.drawable.error_image)  // image in drawables
-                    .into((ImageView) imageView);
+                    .into(imageView);
         } else {
             // Download the image from Firebase Storage and save it locally
             imageRef.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
@@ -191,13 +187,13 @@ public class GenericRepository<T extends DocumentEquivalent> {
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
                         .placeholder(R.drawable.placeholder_image)
                         .error(R.drawable.error_image)
-                        .into((ImageView) imageView);
+                        .into(imageView);
                 Log.d("ItemsDetailActivity", "Image downloaded and cached: " + localFile.getPath());
             }).addOnFailureListener(exception -> {
                 // Handle the error gracefully, e.g., show a placeholder image
                 Glide.with(context)
                         .load(R.drawable.error_image)
-                        .into((ImageView) imageView);
+                        .into(imageView);
                 Log.e("ItemsDetailActivity", "Error getting download URL", exception);
             });
         }

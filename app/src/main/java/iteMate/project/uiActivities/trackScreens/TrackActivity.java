@@ -22,7 +22,6 @@ import iteMate.project.uiActivities.MainActivity;
 
 public class TrackActivity extends MainActivity implements GenericRepository.OnDocumentsFetchedListener<Track> {
 
-    private RecyclerView recyclerView;
     private TrackAdapter trackAdapter;
     private List<Track> trackList;
     private List<Track> searchList;
@@ -46,7 +45,7 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         trackRepository.getAllDocumentsFromFirestore(this);
 
         // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recyclerViewTrack);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewTrack);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize Adapter and set to RecyclerView

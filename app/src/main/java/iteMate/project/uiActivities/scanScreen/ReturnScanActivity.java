@@ -29,9 +29,6 @@ import iteMate.project.uiActivities.utils.ItemAdapter;
 public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
     private NfcAdapter nfcAdapter;
-    private RecyclerView recyclerView;
-    private ItemAdapter itemAdapter;
-    private List<Item> itemList;
     private List<Item> listOfItemsToReturn;
 
     @Override
@@ -43,15 +40,15 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         initializeNfcAdapter();
 
         // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recyclerViewItems);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Retrieve the list of items from the Intent
-        itemList = getIntent().getParcelableArrayListExtra("itemList");
+        List<Item> itemList = getIntent().getParcelableArrayListExtra("itemList");
         listOfItemsToReturn = new ArrayList<>(itemList);
 
         // Initialize the adapter and set it to the RecyclerView
-        itemAdapter = new ItemAdapter(itemList, this);
+        ItemAdapter itemAdapter = new ItemAdapter(itemList, this);
         recyclerView.setAdapter(itemAdapter);
 
         // On click listener for the close button

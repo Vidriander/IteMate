@@ -36,7 +36,6 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     private ItemRepository itemRepository;
     private TrackRepository trackRepository;
     private ScanItemFragment scanItemFragment;
-    private ScanIdleFragment scanIdleFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +133,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
      * Sets up the fragments
      */
     private void setUpFragments() {
-        scanIdleFragment = new ScanIdleFragment();
+        ScanIdleFragment scanIdleFragment = new ScanIdleFragment();
         scanItemFragment = new ScanItemFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -8,12 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import iteMate.project.R;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Contact;
-import iteMate.project.models.Item;
 import iteMate.project.repositories.ContactRepository;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.uiActivities.utils.SelectContactAdapter;
@@ -23,11 +21,6 @@ public class SelectContactActivity extends AppCompatActivity implements GenericR
      * Adapter that will be used to display the contacts
      */
     private SelectContactAdapter adapter;
-
-    /**
-     * List of Contacts that will change dynamically based on search
-     */
-    private List<Contact> searchList = new ArrayList<>();
 
     /**
      * List of all Contacts
@@ -55,9 +48,9 @@ public class SelectContactActivity extends AppCompatActivity implements GenericR
         });
 
         // Setting on click listener for cancel button
-        findViewById(R.id.manageInnerItemsCancelbutton).setOnClickListener(click -> {
-            finish();
-        });
+        findViewById(R.id.manageInnerItemsCancelbutton).setOnClickListener(click ->
+            finish()
+        );
     }
 
     @Override
@@ -68,7 +61,6 @@ public class SelectContactActivity extends AppCompatActivity implements GenericR
     @Override
     public void onDocumentsFetched(List<Contact> documents) {
         allContacts = documents;
-        searchList = new ArrayList<>(allContacts);
         adapter.setContactList(allContacts);
     }
 }

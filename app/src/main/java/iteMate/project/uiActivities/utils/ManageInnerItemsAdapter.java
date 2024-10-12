@@ -41,7 +41,7 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
     /**
      * Set to store IDs of checked items
      */
-    private Set<String> checkedItemTags = new HashSet<String>();
+    private Set<String> checkedItemTags = new HashSet<>();
 
     public ManageInnerItemsAdapter(List<Item> checkedItems, List<Item> allItems, Context context) {
         this.checkedItems = checkedItems;
