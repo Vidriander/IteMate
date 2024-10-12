@@ -1,6 +1,8 @@
 package iteMate.project.controller;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
@@ -45,7 +47,11 @@ public class TrackController {
      */
     public void saveChangesToTrack(Track track) {
         setCurrentTrack(track);
-        trackRepository.updateDocumentInFirestore(getCurrentTrack());
+        if (Objects.equals(currentTrack.getId(), "-1")) {
+            trackRepository.addDocumentToFirestore(getCurrentTrack());
+        } else {
+            trackRepository.updateDocumentInFirestore(getCurrentTrack());
+        }
         for (Item item : getCurrentTrack().getPendingItemsList()) {
             item.setActiveTrackID(getCurrentTrack().getId());
             itemRepository.updateDocumentInFirestore(item);
@@ -65,13 +71,14 @@ public class TrackController {
      * @return true if the object is ready for upload, false otherwise
      */
     public boolean isReadyForUpload() {
-        return
-                currentTrack != null &&
-                currentTrack.getContact() != null &&
-                currentTrack.getLentItemsList() != null &&
-                currentTrack.getReturnDate() != null &&
-                currentTrack.getGiveOutDate().compareTo(currentTrack.getReturnDate()) < 0 &&
-                !currentTrack.getLentItemIDs().isEmpty();
+        boolean b1 = currentTrack != null;
+        boolean b2 = currentTrack.getContact() != null;
+        boolean b3 = currentTrack.getLentItemsList() != null;
+        boolean b4 = !currentTrack.getLentItemIDs().isEmpty();
+        boolean b5 = currentTrack.getReturnDate() != null;
+        boolean b6 = currentTrack.getGiveOutDate().compareTo(currentTrack.getReturnDate()) < 0;
+
+        return b1 && b2 && b3 && b4 && b5 && b6;
     }
 
     /**

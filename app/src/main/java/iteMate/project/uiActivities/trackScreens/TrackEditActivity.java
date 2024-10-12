@@ -128,6 +128,7 @@ public class TrackEditActivity extends AppCompatActivity implements GenericRepos
         // setting on click for save button
         Button saveButton = findViewById(R.id.track_edit_save);
         saveButton.setOnClickListener(click -> {
+            saveChangesToLocalTrack();
             if (trackController.isReadyForUpload()) {
                 trackController.saveChangesToTrack(trackToDisplay);
                 finish();

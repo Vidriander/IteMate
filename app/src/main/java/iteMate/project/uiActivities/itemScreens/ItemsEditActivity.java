@@ -12,6 +12,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Objects;
+
 import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
@@ -90,7 +92,11 @@ public class ItemsEditActivity extends AppCompatActivity {
         // Setting on click listener for save button
         findViewById(R.id.item_edit_save).setOnClickListener(click -> {
             saveChangesToItem();
-            itemRepository.updateDocumentInFirestore(itemToDisplay);
+            if (Objects.equals(itemToDisplay.getId(), "-1")) {
+                itemRepository.addDocumentToFirestore(itemToDisplay);
+            } else {
+                itemRepository.updateDocumentInFirestore(itemToDisplay);
+            }
             finish();
         });
         // Setting on click listener for cancel button
