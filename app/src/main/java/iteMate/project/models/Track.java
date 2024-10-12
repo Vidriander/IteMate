@@ -227,7 +227,7 @@ public class Track implements DocumentEquivalent {
             return 0;
         }
         long millisecondsLeft = returnDate.toDate().getTime() - new Date().getTime();
-        return (int) (millisecondsLeft / (1000 * 60 * 60 * 24));
+        return (int) (millisecondsLeft / (1000 * 60 * 60 * 24)) + 1; // +1 because of the rounding (might produce different error)
     }
 
     /**
