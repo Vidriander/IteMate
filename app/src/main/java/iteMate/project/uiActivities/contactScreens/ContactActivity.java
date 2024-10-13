@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import iteMate.project.uiActivities.utils.SearchUtils;
+import iteMate.project.utils.SearchUtils;
 import iteMate.project.models.Contact;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.uiActivities.utils.ContactAdapter;
+import iteMate.project.uiActivities.adapter.ContactAdapter;
 import iteMate.project.R;
 import iteMate.project.repositories.ContactRepository;
 

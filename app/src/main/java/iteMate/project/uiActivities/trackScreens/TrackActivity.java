@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.controller.TrackController;
-import iteMate.project.uiActivities.utils.SearchUtils;
+import iteMate.project.utils.SearchUtils;
 import iteMate.project.R;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.TrackRepository;
-import iteMate.project.uiActivities.utils.SortUtils;
-import iteMate.project.uiActivities.utils.TrackAdapter;
+import iteMate.project.utils.SortUtils;
+import iteMate.project.uiActivities.adapter.TrackAdapter;
 import iteMate.project.uiActivities.MainActivity;
 
 public class TrackActivity extends MainActivity implements GenericRepository.OnDocumentsFetchedListener<Track> {

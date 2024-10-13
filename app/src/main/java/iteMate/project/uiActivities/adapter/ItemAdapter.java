@@ -1,4 +1,4 @@
-package iteMate.project.uiActivities.utils;
+package iteMate.project.uiActivities.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.List;
 
 import iteMate.project.R;
+import iteMate.project.controller.ItemController;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
@@ -66,7 +67,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         // setting the onClickListener for the cardview
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ItemsDetailActivity.class);
-            intent.putExtra("item", item);
+            ItemController.getControllerInstance().setCurrentItem(item);
             context.startActivity(intent);
         });
     }

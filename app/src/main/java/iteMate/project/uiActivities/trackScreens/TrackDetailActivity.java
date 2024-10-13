@@ -22,7 +22,7 @@ import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.uiActivities.scanScreen.ReturnScanActivity;
-import iteMate.project.uiActivities.utils.InnerItemsAdapter;
+import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
 public class TrackDetailActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Track> {
 

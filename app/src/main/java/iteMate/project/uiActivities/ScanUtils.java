@@ -1,4 +1,4 @@
-package iteMate.project.uiActivities.utils;
+package iteMate.project.uiActivities;
 
 import android.nfc.Tag;
 

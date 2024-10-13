@@ -31,7 +31,7 @@ import iteMate.project.controller.TrackController;
 import iteMate.project.models.Track;
 import iteMate.project.uiActivities.contactScreens.SelectContactActivity;
 import iteMate.project.uiActivities.scanScreen.ManageScanActivity;
-import iteMate.project.uiActivities.utils.InnerItemsAdapter;
+import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
 public class TrackEditActivity extends AppCompatActivity {
 
@@ -120,7 +120,7 @@ public class TrackEditActivity extends AppCompatActivity {
         saveButton.setOnClickListener(click -> {
             saveChangesToLocalTrack();
             if (trackController.isReadyForUpload()) {
-                trackController.saveChangesToTrack(trackToDisplay);
+                trackController.saveChangesToDatabase(trackToDisplay);
                 finish();
             } else {
                 Toast toast = Toast.makeText(this, "Please fill out all fields and add at least one item", Toast.LENGTH_SHORT);

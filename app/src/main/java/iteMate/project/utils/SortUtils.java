@@ -1,4 +1,4 @@
-package iteMate.project.uiActivities.utils;
+package iteMate.project.utils;
 
 import java.util.ArrayList;
 import java.util.Comparator;

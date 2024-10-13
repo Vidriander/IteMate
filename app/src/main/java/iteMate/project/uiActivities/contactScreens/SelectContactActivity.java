@@ -14,7 +14,7 @@ import iteMate.project.controller.TrackController;
 import iteMate.project.models.Contact;
 import iteMate.project.repositories.ContactRepository;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.uiActivities.utils.SelectContactAdapter;
+import iteMate.project.uiActivities.adapter.SelectContactAdapter;
 
 public class SelectContactActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Contact> {
     /**

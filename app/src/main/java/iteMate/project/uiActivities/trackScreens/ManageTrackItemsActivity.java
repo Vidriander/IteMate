@@ -14,9 +14,9 @@ import iteMate.project.R;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.uiActivities.utils.ManageInnerItemsAdapter;
-import iteMate.project.uiActivities.utils.SearchUtils;
-import iteMate.project.uiActivities.utils.SortUtils;
+import iteMate.project.uiActivities.adapter.ManageInnerItemsAdapter;
+import iteMate.project.utils.SearchUtils;
+import iteMate.project.utils.SortUtils;
 
 public class ManageTrackItemsActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
     /**

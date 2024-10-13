@@ -12,13 +12,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Objects;
-
 import iteMate.project.R;
+import iteMate.project.controller.ItemController;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.repositories.ItemRepository;
-import iteMate.project.uiActivities.utils.InnerItemsAdapter;
+import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
 public class ItemsEditActivity extends AppCompatActivity {
 
@@ -31,7 +29,8 @@ public class ItemsEditActivity extends AppCompatActivity {
 
     private TextView title;
     private TextView description;
-    ItemRepository itemRepository;
+
+    private final ItemController itemController = ItemController.getControllerInstance();
 
     /**
      * Get the item possibly updated in the activity.
@@ -59,11 +58,8 @@ public class ItemsEditActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Initialize the item repository
-        itemRepository = new ItemRepository();
-
         // Get the item to display from the intent:
-        itemToDisplay = getIntent().getParcelableExtra("item");
+        itemToDisplay = itemController.getCurrentItem();
 
         // Setting the contents of the edit view:
         setEditViewContents();
@@ -78,25 +74,19 @@ public class ItemsEditActivity extends AppCompatActivity {
         // Setting on click listener for managing contained items
         findViewById(R.id.manageContainedItemsButton).setOnClickListener(click -> {
             Intent intent = new Intent(this, ManageInnerItemsActivity.class);
-            intent.putExtra("item", itemToDisplay);
             intent.putExtra("isContainedItems", true);
             startActivity(intent);
         });
         // Setting on click listener for managing associated items
         findViewById(R.id.manageAssociatedItemsButton).setOnClickListener(click -> {
             Intent intent = new Intent(this, ManageInnerItemsActivity.class);
-            intent.putExtra("item", itemToDisplay);
             intent.putExtra("isContainedItems", false);
             startActivity(intent);
         });
         // Setting on click listener for save button
         findViewById(R.id.item_edit_save).setOnClickListener(click -> {
             saveChangesToItem();
-            if (Objects.equals(itemToDisplay.getId(), "-1")) {
-                itemRepository.addDocumentToFirestore(itemToDisplay);
-            } else {
-                itemRepository.updateDocumentInFirestore(itemToDisplay);
-            }
+            itemController.saveChangesToDatabase();
             finish();
         });
         // Setting on click listener for cancel button
@@ -107,7 +97,7 @@ public class ItemsEditActivity extends AppCompatActivity {
         });
         // Setting on click listener for delete button
         findViewById(R.id.item_edit_delete_btn).setOnClickListener(click -> {
-            itemRepository.deleteDocumentFromFirestore(itemToDisplay);
+            itemController.deleteItemFromDatabase();
             // Beende die nächste Activity
             Intent intent = new Intent(this, ItemsDetailActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

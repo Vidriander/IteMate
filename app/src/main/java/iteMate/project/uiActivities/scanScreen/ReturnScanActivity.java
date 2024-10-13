@@ -1,6 +1,6 @@
 package iteMate.project.uiActivities.scanScreen;
 
-import static iteMate.project.uiActivities.utils.ScanUtils.extractTagId;
+import static iteMate.project.uiActivities.ScanUtils.extractTagId;
 
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
@@ -21,7 +21,7 @@ import java.util.List;
 
 import iteMate.project.R;
 import iteMate.project.models.Item;
-import iteMate.project.uiActivities.utils.ItemAdapter;
+import iteMate.project.uiActivities.adapter.ItemAdapter;
 
 /**
  * Activity for returning items from a Track by an NFC scan

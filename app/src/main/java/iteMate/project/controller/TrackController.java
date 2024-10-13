@@ -19,7 +19,7 @@ public class TrackController {
     /**
      * The current object that is being displayed or edited
      */
-    Track currentTrack;
+    private Track currentTrack;
 
     private final TrackRepository trackRepository;
     private final ItemRepository itemRepository;
@@ -44,7 +44,7 @@ public class TrackController {
      * Updates the current object with the given track and saves it to Firestore
      * @param track the track to be saved
      */
-    public void saveChangesToTrack(Track track) {
+    public void saveChangesToDatabase(Track track) {
         setCurrentTrack(track);
         if (Objects.equals(currentTrack.getId(), "-1")) {
             trackRepository.addDocumentToFirestore(getCurrentTrack());

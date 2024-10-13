@@ -12,12 +12,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import iteMate.project.R;
-import iteMate.project.uiActivities.utils.SearchUtils;
+import iteMate.project.controller.ItemController;
+import iteMate.project.utils.SearchUtils;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
-import iteMate.project.uiActivities.utils.ManageInnerItemsAdapter;
-import iteMate.project.uiActivities.utils.SortUtils;
+import iteMate.project.uiActivities.adapter.ManageInnerItemsAdapter;
+import iteMate.project.utils.SortUtils;
 
 public class ManageInnerItemsActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
 
@@ -50,7 +51,7 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
         setContentView(R.layout.activity_manage_inner_items);
 
         // Get the item to display from the intent:
-        itemToDisplay = getIntent().getParcelableExtra("item");
+        itemToDisplay = ItemController.getControllerInstance().getCurrentItem();
         isContainedItems = getIntent().getBooleanExtra("isContainedItems", true);
 
         // Initialize searchList

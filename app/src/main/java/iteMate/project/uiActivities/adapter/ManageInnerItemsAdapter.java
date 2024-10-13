@@ -1,4 +1,4 @@
-package iteMate.project.uiActivities.utils;
+package iteMate.project.uiActivities.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

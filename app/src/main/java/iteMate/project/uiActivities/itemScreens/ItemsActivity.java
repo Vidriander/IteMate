@@ -13,14 +13,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import iteMate.project.uiActivities.utils.SearchUtils;
+import iteMate.project.utils.SearchUtils;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
-import iteMate.project.uiActivities.utils.ItemAdapter;
+import iteMate.project.uiActivities.adapter.ItemAdapter;
 import iteMate.project.R;
 import iteMate.project.uiActivities.MainActivity;
-import iteMate.project.uiActivities.utils.SortUtils;
+import iteMate.project.utils.SortUtils;
 
 /**
  * Activity for managing the items

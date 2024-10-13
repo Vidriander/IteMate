@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.R;
@@ -21,7 +22,7 @@ import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.TrackRepository;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
-import iteMate.project.uiActivities.utils.InnerItemsAdapter;
+import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
 public class ItemsDetailActivity extends AppCompatActivity {
 
@@ -44,7 +45,7 @@ public class ItemsDetailActivity extends AppCompatActivity {
         });
 
         // Get the item to display from the intent:
-        itemToDisplay = getIntent().getParcelableExtra("item");
+        itemToDisplay = ItemController.getControllerInstance().getCurrentItem();
         if (getIntent().getFlags() == Intent.FLAG_ACTIVITY_CLEAR_TOP) {
             finish();
         }
@@ -66,7 +67,6 @@ public class ItemsDetailActivity extends AppCompatActivity {
             // on click listener for edit button
             findViewById(R.id.detailitem_edit_button).setOnClickListener(v -> {
                 Intent intent = new Intent(ItemsDetailActivity.this, ItemsEditActivity.class);
-                intent.putExtra("item", itemToDisplay);
                 startActivity(intent);
             });
         }
@@ -94,24 +94,25 @@ public class ItemsDetailActivity extends AppCompatActivity {
         String availability;
         int color;
         TextView availabilityTextView = findViewById(R.id.available_text);
+        // if item is in a track
         if (itemToDisplay.getActiveTrackID() != null && !itemToDisplay.getActiveTrackID().isEmpty()) {
             availability = "track";
             color = getResources().getColor(R.color.unavailable_red, null);
+            // on click listener if the item is in a track
             availabilityTextView.setOnClickListener(v -> {
-                TrackRepository trackRepository = new TrackRepository();
-                trackRepository.getOneDocumentFromFirestore(itemToDisplay.getActiveTrackID(), new GenericRepository.OnDocumentsFetchedListener<Track>() {
+                ItemController.getControllerInstance().getTrackOfCurrentItem(new GenericRepository.OnDocumentsFetchedListener<Track>() {
                     @Override
                     public void onDocumentFetched(Track document) {
                         Intent intent = new Intent(ItemsDetailActivity.this, TrackDetailActivity.class);
                         trackController.setCurrentTrack(document);
                         startActivity(intent);
                     }
-
                     @Override
                     public void onDocumentsFetched(List<Track> documents) {
                     }
                 });
             });
+        // if item is available
         } else {
             availability = "lend";
             color = getResources().getColor(R.color.available_green, null);
