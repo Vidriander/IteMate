@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import iteMate.project.controller.ItemController;
 import iteMate.project.utils.SearchUtils;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
@@ -25,40 +26,32 @@ import iteMate.project.utils.SortUtils;
 /**
  * Activity for managing the items
  */
-public class ItemsActivity extends MainActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
+public class ItemsActivity extends MainActivity {
 
     private ItemAdapter itemAdapter;
     /**
      * List of Items that will change dynamically based on search
      */
     private List<Item> searchList;
-    /**
-     * List of Items that will be used to reset to after a search
-     */
-    private List<Item> itemList;
-    private ItemRepository itemRepository;
+
+    private final ItemController itemController = ItemController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Initialize ItemRepository
-        itemRepository = new ItemRepository();
 
         // Initialize RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize Item list
-        itemList = new ArrayList<>();
-        searchList = new ArrayList<>(itemList);
-
-        // Fetch all items from Firestore
-        itemRepository.getAllDocumentsFromFirestore(this);
+        searchList = new ArrayList<>();
 
         // Initialize Adapter and set to RecyclerView
         itemAdapter = new ItemAdapter(searchList, this);
         recyclerView.setAdapter(itemAdapter);
+
+        refreshItemList();
 
         // Configure the SearchView
         SearchView searchView = findViewById(R.id.search_view);
@@ -68,7 +61,6 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
                 performSearch(query);
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String query) {
                 performSearch(query);
@@ -79,8 +71,8 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
         // Set add button functionality
         findViewById(R.id.add_button_items).setOnClickListener(v -> {
             Item newItem = new Item();
+            itemController.setCurrentItem(newItem);
             Intent intent = new Intent(this, ItemsEditActivity.class);
-            intent.putExtra("item", newItem);
             startActivity(intent);
         });
     }
@@ -91,12 +83,8 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
      * @param query The search query
      */
     private void performSearch(String query) {
-        // reset the searchList to the itemList
-        searchList.clear();
-        searchList.addAll(itemList);
-
         // Perform the search and update the itemList
-        List<Item> filteredList = SearchUtils.searchItems(searchList, query);
+        List<Item> filteredList = SearchUtils.searchItems(itemController.getCurrentItemList(), query);
         searchList.clear();
         searchList.addAll(SortUtils.defaultItemSort(filteredList));
         itemAdapter.notifyDataSetChanged();
@@ -116,26 +104,20 @@ public class ItemsActivity extends MainActivity implements GenericRepository.OnD
     @Override
     public void onResume() {
         super.onResume();
-        ItemsEditActivity.resetItemToDisplay();
-        ManageInnerItemsActivity.resetUpdatedItem();
+        itemController.resetCurrentItem();
+        itemController.refreshCurrentItemList();
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.schedule(() ->
-            itemRepository.getAllDocumentsFromFirestore(this)
+        executor.schedule(this::refreshItemList
         , 1, TimeUnit.SECONDS);
     }
 
-    @Override
-    public void onDocumentFetched(Item document) {
-        // Not used
-    }
-
-    @Override
-    public void onDocumentsFetched(List<Item> documents) {
-        itemList.clear();
-        itemList.addAll(documents);
+    /**
+     * Gets the current item list from the ItemController and refreshes the itemList sorted
+     */
+    private void refreshItemList() {
 
         searchList.clear();
-        searchList.addAll(SortUtils.defaultItemSort(itemList));
+        searchList.addAll(SortUtils.defaultItemSort(itemController.getCurrentItemList()));
 
         itemAdapter.notifyDataSetChanged();
     }

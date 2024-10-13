@@ -1,7 +1,11 @@
 package iteMate.project.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
@@ -14,10 +18,16 @@ import iteMate.project.repositories.TrackRepository;
  */
 public class ItemController {
 
+    // region Attributes
     /**
      * The current item that is being displayed or edited
      */
     private Item currentItem;
+
+    /**
+     * List of all items (that belong to the user)
+     */
+    private List<Item> currentItemList = new ArrayList<>();
 
     /**
      * Repository for managing items
@@ -33,10 +43,13 @@ public class ItemController {
      * Singleton instance of the ItemController
      */
     private static ItemController controllerInstance;
+    // endregion
 
+    // region Constructor and Singleton
     private ItemController() {
         itemRepository = new ItemRepository();
         trackRepository = new TrackRepository();
+        refreshCurrentItemList();
     }
 
     /**
@@ -49,13 +62,23 @@ public class ItemController {
         }
         return controllerInstance;
     }
+    // endregion
 
+    // region Getters and Setters
     /**
      * Getter for the current item
      * @return the current item
      */
     public Item getCurrentItem() {
         return currentItem;
+    }
+
+    /**
+     * Getter for the current item list
+     * @return the current item list
+     */
+    public List<Item> getCurrentItemList() {
+        return currentItemList;
     }
 
     /**
@@ -70,6 +93,15 @@ public class ItemController {
         this.currentItem = currentItem;
     }
 
+    /**
+     * Resets the current item to null
+     */
+    public void resetCurrentItem() {
+        currentItem = null;
+    }
+    // endregion
+
+    // region Item Database Management
     /**
      * Saves the changes to the current item to the database
      */
@@ -104,4 +136,20 @@ public class ItemController {
             }
         });
     }
+
+    /**
+     * Fetches all items from database and sets the current item list
+     */
+    public void refreshCurrentItemList() {
+        itemRepository.getAllDocumentsFromFirestore(new GenericRepository.OnDocumentsFetchedListener<Item>() {
+            @Override
+            public void onDocumentFetched(Item document) {
+            }
+            @Override
+            public void onDocumentsFetched(List<Item> documents) {
+                currentItemList = documents;
+            }
+        });
+    }
+    // endregion
 }

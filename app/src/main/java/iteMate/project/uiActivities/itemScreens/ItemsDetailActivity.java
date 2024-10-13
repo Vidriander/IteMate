@@ -124,7 +124,7 @@ public class ItemsDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        itemToDisplay = ItemsEditActivity.getItemToDisplay() != null ? ItemsEditActivity.getItemToDisplay() : itemToDisplay;
+        itemToDisplay = ItemController.getControllerInstance().getCurrentItem();
         setDetailViewContents();
         setUpRecyclerAdapters();
     }

@@ -32,21 +32,6 @@ public class ItemsEditActivity extends AppCompatActivity {
 
     private final ItemController itemController = ItemController.getControllerInstance();
 
-    /**
-     * Get the item possibly updated in the activity.
-     * @return updated item, null if activity not initialized.
-     */
-    public static Item getItemToDisplay() {
-        return itemToDisplay;
-    }
-
-    /**
-     * Reset the stored item to null.
-     */
-    public static void resetItemToDisplay() {
-        itemToDisplay = null;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,8 +76,6 @@ public class ItemsEditActivity extends AppCompatActivity {
         });
         // Setting on click listener for cancel button
         findViewById(R.id.item_edit_cancel).setOnClickListener(click -> {
-            resetItemToDisplay();
-            ManageInnerItemsActivity.resetUpdatedItem();
             finish();
         });
         // Setting on click listener for delete button
@@ -140,7 +123,7 @@ public class ItemsEditActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        itemToDisplay = ManageInnerItemsActivity.getUpdatedItem() != null ? ManageInnerItemsActivity.getUpdatedItem(): itemToDisplay;
+        itemToDisplay = itemController.getCurrentItem();
         setUpRecyclerAdapters();
     }
 }

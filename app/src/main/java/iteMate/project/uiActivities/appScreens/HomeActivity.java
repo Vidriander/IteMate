@@ -3,9 +3,14 @@ package iteMate.project.uiActivities.appScreens;
 import android.os.Bundle;
 
 import iteMate.project.R;
+import iteMate.project.controller.ItemController;
+import iteMate.project.controller.TrackController;
 import iteMate.project.uiActivities.MainActivity;
 
 public class HomeActivity extends MainActivity {
+
+    private final ItemController itemController = ItemController.getControllerInstance();
+    private final TrackController trackController = TrackController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

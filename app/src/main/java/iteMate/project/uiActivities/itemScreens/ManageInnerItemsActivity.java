@@ -25,21 +25,13 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
     private static Item itemToDisplay;
 
     private ManageInnerItemsAdapter adapter;
+
+    private final ItemController itemController = ItemController.getControllerInstance();
+
     /**
      * List of Items that will change dynamically based on search
      */
     private List<Item> searchList;
-
-    /**
-     * Get the updated item.
-     * @return The updated item, null if not initialized.
-     */
-    public static Item getUpdatedItem() {
-        return itemToDisplay;
-    }
-    public static void resetUpdatedItem() {
-        itemToDisplay = null;
-    }
 
     private boolean isContainedItems;
 
@@ -50,7 +42,7 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_inner_items);
 
-        // Get the item to display from the intent:
+        // Get the item to display from the controller:
         itemToDisplay = ItemController.getControllerInstance().getCurrentItem();
         isContainedItems = getIntent().getBooleanExtra("isContainedItems", true);
 
@@ -72,20 +64,13 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
 
         // Setting on click listener for save button
         findViewById(R.id.manageInnerItemsSavebutton).setOnClickListener(click -> {
-            List<Item> newCheckedItems = adapter.getNewCheckedItems();
-            if (isContainedItems) {
-                itemToDisplay.setContainedItems((ArrayList<Item>) newCheckedItems);
-                itemToDisplay.setContainedItemIDs((ArrayList<String>) newCheckedItems.stream().map(Item::getId).collect(Collectors.toList()));
-            } else {
-                itemToDisplay.setAssociatedItems((ArrayList<Item>) newCheckedItems);
-                itemToDisplay.setAssociatedItemIDs((ArrayList<String>) newCheckedItems.stream().map(Item::getId).collect(Collectors.toList()));
-            }
+            saveChangesToItem();
+            itemController.setCurrentItem(itemToDisplay);
             finish();
         });
 
         // Setting on click listener for cancel button
         findViewById(R.id.manageInnerItemsCancelbutton).setOnClickListener(click -> {
-            resetUpdatedItem();
             finish();
         });
 
@@ -119,6 +104,17 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
         searchList.clear();
         searchList.addAll(filteredList);
         adapter.setSearchList(SortUtils.sortItemsByName(searchList));
+    }
+
+    private void saveChangesToItem() {
+        List<Item> newCheckedItems = adapter.getNewCheckedItems();
+        if (isContainedItems) {
+            itemToDisplay.setContainedItems((ArrayList<Item>) newCheckedItems);
+            itemToDisplay.setContainedItemIDs((ArrayList<String>) newCheckedItems.stream().map(Item::getId).collect(Collectors.toList()));
+        } else {
+            itemToDisplay.setAssociatedItems((ArrayList<Item>) newCheckedItems);
+            itemToDisplay.setAssociatedItemIDs((ArrayList<String>) newCheckedItems.stream().map(Item::getId).collect(Collectors.toList()));
+        }
     }
 
     @Override
