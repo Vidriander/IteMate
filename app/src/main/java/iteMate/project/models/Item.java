@@ -7,8 +7,6 @@ import com.google.firebase.firestore.Exclude;
 import java.util.ArrayList;
 import java.util.List;
 
-import iteMate.project.R;
-
 /**
  * Item class to store the details of an item
  */
@@ -67,15 +65,11 @@ public class Item implements DocumentEquivalent {
     /**
      * ID of the user who owns the item
      */
-    private String ownerID;  // #TODO set ownerID = userID
+    private final String ownerID;  // #TODO set ownerID = userID
     /**
      * ID of the track the item is in
      */
     private String activeTrackID;
-    /**
-     * Default image for an item
-     */
-    private int defaultImage = R.drawable.gradient_background;
     // endregion
 
     // region Constructors
@@ -356,11 +350,11 @@ public class Item implements DocumentEquivalent {
         image = DEFAULT_IMAGE_PATH;
     }
 
-    @Exclude
     /**
      * Returns a deep copy of the item
      * @return deep copy of the item
      */
+    @Exclude
     public Item getDeepCopy() {
         Item newItem = new Item(this.id, this.nfcTag, this.title, this.description, this.image, this.available, this.containedItems, this.associatedItems, this.ownerID, this.activeTrackID);
         newItem.setContainedItemIDs(new ArrayList<>(this.containedItemIDs));
