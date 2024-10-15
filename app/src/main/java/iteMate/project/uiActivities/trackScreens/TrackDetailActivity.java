@@ -81,7 +81,7 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
             Intent intent = new Intent(TrackDetailActivity.this, ReturnScanActivity.class);
             // add itemlist to intent
             intent.putParcelableArrayListExtra("itemList", new ArrayList<>(itemList));
-
+            // TODO remove and
             trackController.setCurrentTrack(trackToDisplay);
             startActivity(intent);
         });

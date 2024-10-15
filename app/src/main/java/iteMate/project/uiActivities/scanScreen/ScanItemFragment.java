@@ -56,7 +56,7 @@ public class ScanItemFragment extends Fragment {
             startActivity(intent);
         });
 
-        // Set on click listener for item card view
+        // Set on click listener for item card
         view.findViewById(R.id.item_card_view_scan).setOnClickListener(v -> {
             if (itemToDisplay == null) {
                 // if no item exists, navigate to item edit screen and create new item
@@ -73,7 +73,7 @@ public class ScanItemFragment extends Fragment {
             }
         });
 
-        // Set item details for track card view
+        // Set on click listener for track card
         view.findViewById(R.id.track_card_view_scan).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), TrackDetailActivity.class);
             trackController.setCurrentTrack(trackToDisplay);
