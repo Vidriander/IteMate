@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import iteMate.project.R;
+import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
@@ -27,6 +28,7 @@ public class ScanItemFragment extends Fragment {
     private Track trackToDisplay;
     private String tagId;
     private Button returnButton;
+    private final ItemController itemController = ItemController.getControllerInstance();
     private final TrackController trackController = TrackController.getControllerInstance();
 
     public ScanItemFragment() {
@@ -63,12 +65,14 @@ public class ScanItemFragment extends Fragment {
                 Item newItem = new Item();
                 newItem.setNfcTag(tagId);
                 Intent intent = new Intent(getActivity(), ItemsEditActivity.class);
-                intent.putExtra("item", newItem);
+                // intent.putExtra("item", newItem);
+                itemController.setCurrentItem(newItem);
                 startActivity(intent);
             } else {
                 // if item exists navigate to item detail screen to display item details
                 Intent intent = new Intent(getActivity(), ItemsDetailActivity.class);
-                intent.putExtra("item", itemToDisplay);
+                // intent.putExtra("item", itemToDisplay);
+                itemController.setCurrentItem(itemToDisplay);
                 startActivity(intent);
             }
         });
