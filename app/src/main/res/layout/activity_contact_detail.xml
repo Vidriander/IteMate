@@ -17,7 +17,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:background="@color/navigation_color"
             android:padding="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -27,24 +27,24 @@
             <Button
                 android:id="@+id/detailcontact_back_button"
                 android:layout_width="65dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:backgroundTint="#00FFFFFF"
+                android:contentDescription="Back"
                 app:icon="@drawable/baseline_arrow_back_ios_new_24"
                 app:iconTint="@color/black"
-                android:contentDescription="Back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/detailcontact_edit_button"
-                android:layout_width="53dp"
-                android:layout_height="48dp"
+                android:layout_width="65dp"
+                android:layout_height="0dp"
                 android:backgroundTint="#00FFFFFF"
+                android:contentDescription="Edit"
                 app:icon="@drawable/baseline_edit_24"
                 app:iconGravity="end"
                 app:iconTint="@color/black"
-                android:contentDescription="Edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -73,6 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="Dave The Brave"
                         android:textSize="24sp"
                         android:textStyle="bold"

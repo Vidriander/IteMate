@@ -250,7 +250,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:background="@color/navigation_color"
             android:padding="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -260,7 +260,7 @@
             <Button
                 android:id="@+id/detailtrack_back_button"
                 android:layout_width="65dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:backgroundTint="#00FFFFFF"
                 app:icon="@drawable/baseline_arrow_back_ios_new_24"
                 app:iconTint="@color/black"
@@ -270,8 +270,8 @@
 
             <Button
                 android:id="@+id/detailtrack_edit_button"
-                android:layout_width="53dp"
-                android:layout_height="48dp"
+                android:layout_width="65dp"
+                android:layout_height="0dp"
                 android:backgroundTint="#00FFFFFF"
                 app:icon="@drawable/baseline_edit_24"
                 app:iconGravity="end"
