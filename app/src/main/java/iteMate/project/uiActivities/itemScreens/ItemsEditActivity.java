@@ -87,6 +87,18 @@ public class ItemsEditActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+        // setting on click listener for the delete image button
+        findViewById(R.id.delete_image_card).setOnClickListener(click -> {
+            itemToDisplay.resetImageToDefault();
+            itemController.setCurrentItem(itemToDisplay);
+            GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
+        });
+
+        // setting on click listener for the update image button
+        findViewById(R.id.upload_image_card).setOnClickListener(click -> {
+            // TODO: Implement image upload
+        });
     }
 
     /**

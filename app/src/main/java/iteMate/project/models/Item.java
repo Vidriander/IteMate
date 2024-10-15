@@ -22,6 +22,11 @@ public class Item implements Parcelable, DocumentEquivalent {
     private static final String collectionPath = "items";
 
     /**
+     * Default image path for an item
+     */
+    private static final String DEFAULT_IMAGE_PATH = "itemImages/default_image.jpg";
+
+    /**
      * database ID of the item
      */
     private String id;
@@ -82,7 +87,7 @@ public class Item implements Parcelable, DocumentEquivalent {
         nfcTag = "-1";
         title = "";
         description = "";
-        image = "itemImages/default_image.jpg";
+        resetImageToDefault();
         available = true;
         ownerID = "";
         activeTrackID = "";
@@ -363,5 +368,12 @@ public class Item implements Parcelable, DocumentEquivalent {
      */
     public void setAssociatedItemIDs(ArrayList<String> associatedItemIDs) {
         this.associatedItemIDs = associatedItemIDs;
+    }
+
+    /**
+     *
+     */
+    public void resetImageToDefault() {
+        image = DEFAULT_IMAGE_PATH;
     }
 }
