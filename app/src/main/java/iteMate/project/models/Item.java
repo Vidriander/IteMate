@@ -1,7 +1,5 @@
 package iteMate.project.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.firebase.firestore.Exclude;
@@ -14,8 +12,8 @@ import iteMate.project.R;
 /**
  * Item class to store the details of an item
  */
-public class Item implements Parcelable, DocumentEquivalent {
-
+public class Item implements DocumentEquivalent {
+    // region Attributes
     /**
      * Collection name in Firestore
      */
@@ -78,7 +76,9 @@ public class Item implements Parcelable, DocumentEquivalent {
      * Default image for an item
      */
     private int defaultImage = R.drawable.gradient_background;
+    // endregion
 
+    // region Constructors
     /**
      * Default constructor for an item
      */
@@ -95,94 +95,34 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Constructor for an item
-     * @param nfcTag NFC Tag of the item
-     * @param title Title of the item
-     * @param description Description of the item
-     * @param image Image path of the item
-     * @param available Availability of the item
-     * @param containedItems List of items contained in this item
+     *
+     * @param nfcTag          NFC Tag of the item
+     * @param title           Title of the item
+     * @param description     Description of the item
+     * @param image           Image path of the item
+     * @param available       Availability of the item
+     * @param containedItems  List of items contained in this item
      * @param associatedItems List of items associated with this item, not necessary to list any
      */
-    public Item(String id, String nfcTag, String title, String description, String image, boolean available, ArrayList<Item> containedItems, ArrayList<Item> associatedItems) {
-        this.id = id;
-        this.nfcTag = nfcTag;
-        this.title = title;
-        this.description = description;
+    public Item(String id, String nfcTag, String title, String description, String image, boolean available,
+                ArrayList<Item> containedItems, ArrayList<Item> associatedItems, String ownerID, String activeTrackID) {
+        setId(id);
+        setNfcTag(nfcTag);
+        setTitle(title);
+        setDescription(description);
         this.image = image;
-        this.available = available;
-        if (containedItems != null && !containedItems.isEmpty()) {
-            this.containedItems.addAll(containedItems);
-        }
-        if (associatedItems != null && !associatedItems.isEmpty()) {
-            this.associatedItems.addAll(associatedItems);
-        }
+        setAvailable(available);
+        setAssociatedItems(associatedItems); // IDs are not set here. willingly?
+        setContainedItems(containedItems);
+        this.ownerID = ownerID;
+        this.activeTrackID = activeTrackID;
     }
+    // endregion
 
-    /**
-     * Constructor for an item from a parcel
-     * @param in Parcel to read from
-     */
-    protected Item(Parcel in) {
-        id = in.readString();
-        nfcTag = in.readString();
-        title = in.readString();
-        description = in.readString();
-        image = in.readString();
-        available = in.readByte() != 0;
-        containedItems = in.createTypedArrayList(Item.CREATOR);
-        containedItemIDs = in.createStringArrayList();
-        associatedItems = in.createTypedArrayList(Item.CREATOR);
-        associatedItemIDs = in.createStringArrayList();
-        ownerID = in.readString();
-        activeTrackID = in.readString();
-        defaultImage = in.readInt();
-    }
-
-    /**
-     * Creator for an item
-     */
-    public static final Creator<Item> CREATOR = new Creator<Item>() {
-        @Override
-        public Item createFromParcel(Parcel in) {
-            return new Item(in);
-        }
-
-        @Override
-        public Item[] newArray(int size) {
-            return new Item[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    /**
-     * Writes the item to a parcel
-     * @param dest The Parcel in which the object should be written.
-     * @param flags Additional flags about how the object should be written.
-     * May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
-     */
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(nfcTag);
-        dest.writeString(title);
-        dest.writeString(description);
-        dest.writeString(image);
-        dest.writeByte((byte) (available ? 1 : 0));
-        dest.writeTypedList(containedItems);
-        dest.writeStringList(containedItemIDs);
-        dest.writeTypedList(associatedItems);
-        dest.writeStringList(associatedItemIDs);
-        dest.writeString(ownerID);
-        dest.writeString(activeTrackID);
-        dest.writeInt(defaultImage);
-    }
-
+    // region Getter
     /**
      * Returns the ID of the item
+     *
      * @return ID of the item
      */
     @Override
@@ -193,6 +133,7 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Returns the title of the item
+     *
      * @return Title of the item
      */
     public String getTitle() {
@@ -201,6 +142,7 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Returns the NFC Tag of the item
+     *
      * @return NFC Tag of the item
      */
     public String getImage() {
@@ -209,6 +151,7 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Returns the NFC Tag of the item
+     *
      * @return NFC Tag of the item
      */
     public String getNfcTag() {
@@ -217,6 +160,7 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Returns the availability of the item
+     *
      * @return Availability of the item
      */
     public boolean isAvailable() {
@@ -225,6 +169,7 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Returns the description of the item
+     *
      * @return Description of the item
      */
     public String getDescription() {
@@ -233,6 +178,7 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Returns the list of items contained in this item
+     *
      * @return List of items contained in this item
      */
     @Exclude
@@ -243,6 +189,7 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Returns the list of items associated with this item
+     *
      * @return List of items associated with this item
      */
     @Exclude
@@ -257,6 +204,7 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Getter for the contained item IDs
+     *
      * @return List of IDs of items contained in this item
      */
     public List<String> getContainedItemIDs() {
@@ -265,6 +213,7 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Getter for the associated item IDs
+     *
      * @return List of IDs of items associated with this item
      */
     public List<String> getAssociatedItemIDs() {
@@ -280,9 +229,12 @@ public class Item implements Parcelable, DocumentEquivalent {
     public String getOwnerID() {
         return ownerID;
     }
+    // endregion
 
+    // region Setter
     /**
      * Setter for the ID of the item
+     *
      * @param id ID of the item
      */
     public void setId(String id) {
@@ -291,6 +243,7 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Setter for the NFC Tag of the item
+     *
      * @param description NFC Tag of the item
      * @throws NullPointerException if description is null
      */
@@ -303,6 +256,7 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Setter for the title of the item
+     *
      * @param title title of the item
      * @throws NullPointerException if title is null
      */
@@ -315,13 +269,21 @@ public class Item implements Parcelable, DocumentEquivalent {
 
     /**
      * Setter for the nfc tag ID of the item
+     *
+     * @param tagId NFC Tag of the item
+     * @throws NullPointerException     if tagId is null
+     * @throws IllegalArgumentException if tagId is empty
      */
-    public void setNfcTag(String tagId) {
+    public void setNfcTag(String tagId) throws NullPointerException {
+        if (tagId == null) {
+            throw new NullPointerException("NFC Tag must not be null");
+        }
         this.nfcTag = tagId;
     }
 
     /**
      * setter for the ID of the track the item is in
+     *
      * @param activeTrackID ID of the track the item is in
      */
     public void setActiveTrackID(String activeTrackID) {
@@ -337,43 +299,72 @@ public class Item implements Parcelable, DocumentEquivalent {
     }
 
     /**
-     * Setter for the Items contained in this item
+     * Setter for the Items contained in this item.
+     *
      * @param containedItems List of items contained in this item
      */
-    public void setContainedItems(ArrayList<Item> containedItems) {
+    public void setContainedItems(ArrayList<Item> containedItems) throws NullPointerException {
+        if (containedItems == null) {
+            throw new NullPointerException("Contained items must not be null");
+        }
         this.containedItems = containedItems;
         Log.d("Item", "setContainedItems size: " + containedItems.size());
     }
 
     /**
      * Setter for the Items contained in this item
+     *
      * @param containedItemIDs List of items contained in this item
      */
-    public void setContainedItemIDs(ArrayList<String> containedItemIDs) {
+    public void setContainedItemIDs(ArrayList<String> containedItemIDs) throws NullPointerException {
+        if (containedItemIDs == null) {
+            throw new NullPointerException("Contained item IDs must not be null");
+        }
         this.containedItemIDs = containedItemIDs;
     }
 
     /**
      * Setter for the items associated with this item
+     *
      * @param associatedItems List of items associated with this item
      */
-    public void setAssociatedItems(ArrayList<Item> associatedItems) {
+    public void setAssociatedItems(ArrayList<Item> associatedItems) throws NullPointerException {
+        if (associatedItems == null) {
+            throw new NullPointerException("Associated items must not be null");
+        }
         this.associatedItems = associatedItems;
         Log.d("Item", "setAssociatedItems size: " + associatedItems.size());
     }
 
     /**
      * Setter for the items associated with this item
+     *
      * @param associatedItemIDs List of items associated with this item
      */
-    public void setAssociatedItemIDs(ArrayList<String> associatedItemIDs) {
+    public void setAssociatedItemIDs(ArrayList<String> associatedItemIDs) throws NullPointerException {
+        if (associatedItemIDs == null) {
+            throw new NullPointerException("Associated item IDs must not be null");
+        }
         this.associatedItemIDs = associatedItemIDs;
     }
+    // endregion
 
     /**
-     *
+     * Reset the image of the item to the default image
      */
     public void resetImageToDefault() {
         image = DEFAULT_IMAGE_PATH;
+    }
+
+    @Exclude
+    /**
+     * Returns a deep copy of the item
+     * @return deep copy of the item
+     */
+    public Item getDeepCopy() {
+        Item newItem = new Item(this.id, this.nfcTag, this.title, this.description, this.image, this.available, this.containedItems, this.associatedItems, this.ownerID, this.activeTrackID);
+        newItem.setContainedItemIDs(new ArrayList<>(this.containedItemIDs));
+        newItem.setAssociatedItemIDs(new ArrayList<>(this.associatedItemIDs));
+        return newItem;
     }
 }

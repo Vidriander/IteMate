@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
+import iteMate.project.controller.ItemController;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
@@ -52,7 +53,7 @@ public class InnerItemsAdapter extends RecyclerView.Adapter<InnerItemsAdapter.Vi
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ItemsDetailActivity.class);
-            intent.putExtra("item", item);
+            ItemController.getControllerInstance().setCurrentItem(item);
             context.startActivity(intent);
         });
     }

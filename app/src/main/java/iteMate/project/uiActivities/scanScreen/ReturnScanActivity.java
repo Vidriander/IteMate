@@ -46,7 +46,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Retrieve the list of items from the Intent
-        List<Item> itemList = getIntent().getParcelableArrayListExtra("itemList");
+        List<Item> itemList = trackController.getCurrentTrack().getLentItemsList();
         listOfItemsToReturn = new ArrayList<>(itemList);
 
         // Initialize the adapter and set it to the RecyclerView

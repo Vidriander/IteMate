@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
+import iteMate.project.controller.ItemController;
+import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.uiActivities.adapter.ItemAdapter;
 
@@ -35,7 +37,7 @@ public class ManageScanActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Retrieve the list of items from the Intent
-        List<Item> itemList = getIntent().getParcelableArrayListExtra("itemList");
+        List<Item> itemList = TrackController.getControllerInstance().getCurrentTrack().getLentItemsList(); // Change by David on 15.10. (no more parcel stuff)
 
         // Initialize the adapter and set it to the RecyclerView
         ItemAdapter itemAdapter = new ItemAdapter(itemList, this);

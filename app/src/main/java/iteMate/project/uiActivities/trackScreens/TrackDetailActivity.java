@@ -79,9 +79,6 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
         // on click listener for scan button
         findViewById(R.id.detail_track_scan_button).setOnClickListener(v -> {
             Intent intent = new Intent(TrackDetailActivity.this, ReturnScanActivity.class);
-            // add itemlist to intent
-            intent.putParcelableArrayListExtra("itemList", new ArrayList<>(itemList));
-            // TODO remove and
             trackController.setCurrentTrack(trackToDisplay);
             startActivity(intent);
         });
