@@ -10,4 +10,7 @@
     <color name="available_green">#4CAF50</color>
     <color name="add_item">#E89D2E</color>
     <color name="positive_days_left_green">#00AF00</color>
+    <color name="delete_button_red">#F44336</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="transparent_grey">#95070707</color>
 </resources>

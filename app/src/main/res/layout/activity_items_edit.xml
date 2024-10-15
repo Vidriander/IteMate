@@ -53,37 +53,77 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:srcCompat="@drawable/gradient_background" />
 
-                    <Button
-                        android:id="@+id/button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="80dp"
-                        android:layout_marginBottom="16dp"
-                        android:backgroundTint="@color/navigation_color"
-                        android:text="remove"
-                        android:textColor="@color/white"
-                        app:cornerRadius="10dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/delete_image_card"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="24dp"
+                        app:cardBackgroundColor="@color/transparent_grey"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <Button
-                        android:id="@+id/button2"
-                        android:layout_width="93dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="80dp"
-                        android:layout_marginBottom="16dp"
-                        android:backgroundTint="@color/navigation_color"
-                        android:text="update"
-                        android:textColor="@color/white"
-                        app:cornerRadius="10dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/imageView6"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginBottom="8dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/baseline_delete_outline_24" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/upload_image_card"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        app:cardBackgroundColor="@color/transparent_grey"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/delete_image_card">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/imageView7"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginBottom="8dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/baseline_file_upload_24" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.cardview.widget.CardView>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -95,6 +135,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="24dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@null"
+                            android:hint="@string/new_item_add_title_hint"
                             android:text="Titel"
                             android:textSize="24sp"
                             android:textStyle="bold"
@@ -108,6 +152,7 @@
 
                 <EditText
                     android:id="@+id/itemeditcard_itemdescription"
+                    android:background="@null"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -115,6 +160,7 @@
                     android:layout_marginBottom="24dp"
                     android:ems="10"
                     android:gravity="start|top"
+                    android:hint="@string/add_item_description_hint"
                     android:inputType="textMultiLine"
                     android:text="@string/track_detailcard_description"
                     android:textSize="14sp" />
@@ -136,7 +182,7 @@
 
                     <Button
                         android:id="@+id/manageContainedItemsButton"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:backgroundTint="@color/navigation_color"
@@ -174,10 +220,10 @@
 
                     <Button
                         android:id="@+id/manageAssociatedItemsButton"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
-                        android:backgroundTint="@color/item_card_background"
+                        android:backgroundTint="@color/navigation_color"
                         android:text="manage"
                         app:cornerRadius="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -200,13 +246,16 @@
 
                     <Button
                         android:id="@+id/item_edit_delete_btn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="40dp"
+                        android:layout_marginBottom="16dp"
+                        android:backgroundTint="@color/delete_button_red"
                         android:text="delete"
+                        app:cornerRadius="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.498"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -27,4 +27,6 @@
     <string name="search">Search</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_item_description_hint">Click to add description.</string>
+    <string name="new_item_add_title_hint">Add Title</string>
 </resources>
