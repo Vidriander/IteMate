@@ -326,7 +326,7 @@ public class Item implements Parcelable, DocumentEquivalent {
      */
     public void setActiveTrackID(String activeTrackID) {
         this.activeTrackID = activeTrackID;
-        setAvailable(activeTrackID == null);
+        setAvailable(activeTrackID == null || activeTrackID.isEmpty());
     }
 
     /**

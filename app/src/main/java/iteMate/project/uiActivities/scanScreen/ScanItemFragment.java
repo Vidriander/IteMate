@@ -87,11 +87,17 @@ public class ScanItemFragment extends Fragment {
         // Set on click listener for lend button
         view.findViewById(R.id.lend_button).setOnClickListener(v -> {
             // TODO Handle lend button click
+            // create new track
+            // add item to track (add item to track: setLendItemsList & setPendingItemsList)
+            // open new track
         });
 
         // Set on click listener for return button
         view.findViewById(R.id.return_button).setOnClickListener(v -> {
             // TODO Handle return button click
+            // delete item from pending items in track
+            // reset active track id in item
+            // reload fragment
         });
 
         return view;

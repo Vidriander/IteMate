@@ -1,6 +1,7 @@
 package iteMate.project.uiActivities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -128,6 +129,9 @@ public abstract class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // disable landscape mode
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Show the popup menu
         popupMenu.show();
