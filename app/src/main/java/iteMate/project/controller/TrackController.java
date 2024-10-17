@@ -46,15 +46,12 @@ public class TrackController {
      */
     public void saveChangesToDatabase(Track track) {
         setCurrentTrack(track);
-        if (Objects.equals(currentTrack.getId(), "-1")) {
+        if (Objects.equals(currentTrack.getId(), null) || currentTrack.getId().isEmpty()) {
             trackRepository.addDocumentToFirestore(getCurrentTrack());
         } else {
             trackRepository.updateDocumentInFirestore(getCurrentTrack());
         }
-        for (Item item : getCurrentTrack().getPendingItemsList()) {
-            item.setActiveTrackID(getCurrentTrack().getId());
-            itemRepository.updateDocumentInFirestore(item);
-        }
+        // Handling of active trackIDs in item controller
     }
 
     /**

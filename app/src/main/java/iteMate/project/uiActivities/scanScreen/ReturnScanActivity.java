@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.R;
+import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.uiActivities.adapter.ItemAdapter;
@@ -30,8 +31,10 @@ import iteMate.project.uiActivities.adapter.ItemAdapter;
 public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
     private NfcAdapter nfcAdapter;
-    private List<Item> listOfItemsToReturn;
+    private List<Item> listOfPendingItems;
+    private List<Item> listOfLentItems;
     private final TrackController trackController = TrackController.getControllerInstance();
+    private final ItemController itemController = ItemController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +48,14 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         RecyclerView recyclerView = findViewById(R.id.recyclerViewItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Retrieve the list of items from the Intent
-        List<Item> itemList = trackController.getCurrentTrack().getLentItemsList();
-        listOfItemsToReturn = new ArrayList<>(itemList);
+        // Retrieve the list of items fro the controller
+        listOfPendingItems = trackController.getCurrentTrack().getPendingItemsList();
+        listOfLentItems = new ArrayList<>(trackController.getCurrentTrack().getLentItemsList());
 
+        // TODO sorting der LentItemsliste
         // Initialize the adapter and set it to the RecyclerView
-        ItemAdapter itemAdapter = new ItemAdapter(itemList, this);
+        ItemAdapter itemAdapter = new ItemAdapter(listOfLentItems, this);
+        // TODO add logic to adapter to show only items that are lent
         recyclerView.setAdapter(itemAdapter);
 
         // On click listener for the close button
@@ -77,6 +82,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     public void onTagDiscovered(Tag tag) {
         String tagId = extractTagId(tag);
         removeItemFromReturnList(tagId);
+        updateTrack();
     }
 
     /**
@@ -85,20 +91,24 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
      * @param tagId the tag ID of the item to remove
      */
     private void removeItemFromReturnList(String tagId) {
-        Toast.makeText(this, "Tag ID: " + tagId, Toast.LENGTH_SHORT).show();
-        Log.d("ReturnScanActivity", "Tag ID: " + tagId);
-        for (Item item : listOfItemsToReturn) {
+        for (Item item : listOfPendingItems) {
             if (item.getNfcTag().equals(tagId)) {
-                listOfItemsToReturn.remove(item);
-                makeItemAvailable(item);
+                listOfPendingItems.remove(item);
+                item.setActiveTrackID(null);
+                itemController.setCurrentItem(item);
+                itemController.saveChangesToDatabase();
+                // inform the user
+                Toast.makeText(this, item.getTitle() + " was returned.", Toast.LENGTH_SHORT).show();
+                Log.d("ReturnScanActivity", "Item found and returned");
             } else {
-                Toast.makeText(this, "Item not found", Toast.LENGTH_SHORT).show();
+                Log.d("ReturnScanActivity", "Item not in Track");
             }
         }
     }
 
-    private void makeItemAvailable(Item item) {
-        item.setActiveTrackID(null);
+    private void updateTrack() {
+        trackController.getCurrentTrack().setPendingItemsList(listOfPendingItems);
+        trackController.saveChangesToDatabase(trackController.getCurrentTrack());
     }
 
     @Override

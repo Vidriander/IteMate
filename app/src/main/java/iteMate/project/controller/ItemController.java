@@ -106,7 +106,7 @@ public class ItemController {
      * Saves the changes to the current item to the database
      */
     public void saveChangesToDatabase() {
-        if (Objects.equals(currentItem.getId(), "-1")) {
+        if (Objects.equals(currentItem.getId(), null) || currentItem.getId().isEmpty()) {
             itemRepository.addDocumentToFirestore(currentItem);
         } else {
             itemRepository.updateDocumentInFirestore(currentItem);

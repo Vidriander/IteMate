@@ -77,14 +77,13 @@ public class Item implements DocumentEquivalent {
      * Default constructor for an item
      */
     public Item() {
-        id = "-1";
-        nfcTag = "-1";
+        nfcTag = "";
         title = "";
         description = "";
         resetImageToDefault();
         available = true;
         ownerID = "";
-        activeTrackID = "";
+        // activeTrackID = "";
     }
 
     /**

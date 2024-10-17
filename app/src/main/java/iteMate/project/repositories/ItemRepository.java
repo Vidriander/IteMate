@@ -79,7 +79,7 @@ public class ItemRepository extends GenericRepository<Item> {
      */
     public void getAllAvailableItemsFromFirestore(OnDocumentsFetchedListener<Item> listener) {
         List<Item> items = new ArrayList<>();
-        db.collection("items").whereEqualTo("activeTrackID", "") // Only get items that are not in a track
+        db.collection("items").whereEqualTo("activeTrackID", null) // Only get items that are not in a track
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

@@ -9,6 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import iteMate.project.R;
 import iteMate.project.controller.ItemController;
@@ -18,6 +22,7 @@ import iteMate.project.models.Track;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsEditActivity;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
+import iteMate.project.uiActivities.trackScreens.TrackEditActivity;
 
 /**
  * Fragment for displaying scanned item and track
@@ -65,13 +70,11 @@ public class ScanItemFragment extends Fragment {
                 Item newItem = new Item();
                 newItem.setNfcTag(tagId);
                 Intent intent = new Intent(getActivity(), ItemsEditActivity.class);
-                // intent.putExtra("item", newItem);
                 itemController.setCurrentItem(newItem);
                 startActivity(intent);
             } else {
                 // if item exists navigate to item detail screen to display item details
                 Intent intent = new Intent(getActivity(), ItemsDetailActivity.class);
-                // intent.putExtra("item", itemToDisplay);
                 itemController.setCurrentItem(itemToDisplay);
                 startActivity(intent);
             }
@@ -86,18 +89,43 @@ public class ScanItemFragment extends Fragment {
 
         // Set on click listener for lend button
         view.findViewById(R.id.lend_button).setOnClickListener(v -> {
-            // TODO Handle lend button click
-            // create new track
-            // add item to track (add item to track: setLendItemsList & setPendingItemsList)
-            // open new track
+
+            if (itemToDisplay.isAvailable()) {
+                // create new track
+                Track track = new Track();
+
+                // add item to track (add item to track: setLendItemsList & setPendingItemsList)
+                List<Item> itemList = new ArrayList<>();
+                itemList.add(itemToDisplay);
+                track.setLentItemsList(itemList);
+                track.setPendingItemsList(itemList);
+
+                // set active trackID to item and mark as led out
+                itemToDisplay.setActiveTrackID(track.getId());
+
+                // open track edit activity
+                trackController.setCurrentTrack(track);
+                Intent intent = new Intent(getActivity(), TrackEditActivity.class);
+                startActivity(intent);
+            }
         });
 
         // Set on click listener for return button
         view.findViewById(R.id.return_button).setOnClickListener(v -> {
-            // TODO Handle return button click
-            // delete item from pending items in track
-            // reset active track id in item
-            // reload fragment
+
+            if (trackToDisplay.getPendingItemsList().contains(itemToDisplay)) {
+                // remove item from pending items in track
+                trackToDisplay.getPendingItemsList().remove(itemToDisplay);
+
+                // reset active track id in item
+                itemToDisplay.setActiveTrackID(null);
+
+                Toast.makeText(getActivity(), "Item returned", Toast.LENGTH_SHORT).show();
+
+                // reload fragment
+                Intent intent = new Intent(getActivity(), ScanActivity.class);
+                startActivity(intent);
+            }
         });
 
         return view;

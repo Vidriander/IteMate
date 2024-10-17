@@ -83,9 +83,6 @@ public class Track implements DocumentEquivalent {
 
     // region Constructors
     public Track() {
-        // setting an initial value for the ID to avoid null pointer exceptions while updating the document in the database
-        id = "-1";
-
         giveOutDate = new Timestamp(new Date());
         returnDate = new Timestamp(new Date());
         setContact(new Contact());
@@ -94,7 +91,6 @@ public class Track implements DocumentEquivalent {
         lentItemIDs = new ArrayList<>();
         pendingItemsList = new ArrayList<>();
         pendingItemIDs = new ArrayList<>();
-
         ownerID = "TODO";
     }
 
@@ -306,7 +302,7 @@ public class Track implements DocumentEquivalent {
      * @throws NullPointerException if lentItemIDs is null
      * @throws IllegalArgumentException if lentItemIDs is empty
      */
-    public void setLentItemIDs(List<String> lentItemIDs) throws NullPointerException {
+    private void setLentItemIDs(List<String> lentItemIDs) throws NullPointerException {
         if (lentItemIDs == null) {
             throw new NullPointerException("LentItemIDs cannot be null");
         }

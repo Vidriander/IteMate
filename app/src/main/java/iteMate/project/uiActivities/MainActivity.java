@@ -42,6 +42,9 @@ public abstract class MainActivity extends AppCompatActivity {
         setBottomNavID();
         setContentView(layoutResID);
 
+        // disable landscape mode
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         // Initialize NFC adapter
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter != null) {
@@ -129,9 +132,6 @@ public abstract class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        // disable landscape mode
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Show the popup menu
         popupMenu.show();
