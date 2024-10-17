@@ -54,7 +54,12 @@ public class ManageTrackItemsActivity extends AppCompatActivity implements Gener
         findViewById(R.id.manageInnerItemsSavebutton).setOnClickListener(click -> {
             List<Item> newCheckedItems = adapter.getNewCheckedItems();
             trackController.getCurrentTrack().setLentItemsList(newCheckedItems);
-            trackController.getCurrentTrack().setPendingItemsList(newCheckedItems); // TODO: check for already returned items
+            for (Item item : newCheckedItems) {
+                if (!trackController.getCurrentTrack().getReturnedItemsList().contains(item)) {
+                    trackController.getCurrentTrack().getPendingItemsList().add(item);
+                }
+            }
+            trackController.getCurrentTrack().setPendingItemsList(trackController.getCurrentTrack().getPendingItemsList());
             finish();
         });
 

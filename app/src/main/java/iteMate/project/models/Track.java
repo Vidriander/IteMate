@@ -70,6 +70,10 @@ public class Track implements DocumentEquivalent {
      */
     private List<String> pendingItemIDs = new ArrayList<>();
 
+    private List<Item> returnedItemsList;
+
+    private List<String> returnedItemIDs = new ArrayList<>();
+
     /**
      * ID of the owner of the item
      */
@@ -91,6 +95,8 @@ public class Track implements DocumentEquivalent {
         lentItemIDs = new ArrayList<>();
         pendingItemsList = new ArrayList<>();
         pendingItemIDs = new ArrayList<>();
+        returnedItemsList = new ArrayList<>();
+        returnedItemIDs = new ArrayList<>();
         ownerID = "TODO";
     }
 
@@ -110,6 +116,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Getter for the date the item was given out
+     *
      * @return the giveOutDate
      */
     public Timestamp getGiveOutDate() {
@@ -118,6 +125,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Getter for the date the item was given out in a readable format
+     *
      * @return the giveOutDate in a readable format
      */
     @Exclude
@@ -128,6 +136,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Getter for the date the item is to be returned
+     *
      * @return the returnDate
      */
     public Timestamp getReturnDate() {
@@ -136,6 +145,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Getter for the contact to whom the item is given
+     *
      * @return the contact
      */
     @Exclude
@@ -145,6 +155,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Getter for the ID of the contact to whom the item is given
+     *
      * @return the contactID
      */
     public String getContactID() {
@@ -153,6 +164,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Getter for the status active:true = lent out, false = returned
+     *
      * @return if the track has items that are not returned
      */
     @Exclude
@@ -162,6 +174,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Getter for the list of items lent out
+     *
      * @return the lentItemsList
      */
     @Exclude
@@ -171,6 +184,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Getter for the list of IDs of items lent out
+     *
      * @return the lentItemIDs
      */
     public List<String> getLentItemIDs() {
@@ -179,6 +193,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Getter for the list of items yet to be returned
+     *
      * @return the pendingItemsList
      */
     @Exclude
@@ -188,14 +203,36 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Getter for the IDs of items yet to be returned
+     *
      * @return the pendingItemIDs
      */
     public List<String> getPendingItemIDs() {
         return pendingItemIDs;
     }
 
+
+    /**
+     * Getter for the list of items that have been returned
+     *
+     * @return the returnedItemsList
+     */
+    @Exclude
+    public List<Item> getReturnedItemsList() {
+        return returnedItemsList;
+    }
+
+    /**
+     * Getter for the IDs of items that have been returned
+     *
+     * @return the returnedItemIDs
+     */
+    public List<String> getReturnedItemIDs() {
+        return returnedItemIDs;
+    }
+
     /**
      * Getter for the ID of the owner of the item
+     *
      * @return the ownerID
      */
     public String getOwnerID() {
@@ -204,6 +241,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Method to get the number of items in the list
+     *
      * @return the number of items
      */
     @Exclude
@@ -213,6 +251,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Method to get the number of days left for the item to be returned
+     *
      * @return the number of days left
      */
     @Exclude
@@ -226,6 +265,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Getter for the additional information about the track
+     *
      * @return the additionalInfo
      */
     public String getAdditionalInfo() {
@@ -234,6 +274,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Method to get the path of the collection
+     *
      * @return the ID of the document
      */
     @Override
@@ -257,6 +298,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Method to set the Contact
+     *
      * @param contact the contact to set
      * @throws NullPointerException if contact is null
      */
@@ -270,6 +312,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Setter for the returnDate
+     *
      * @param date the returnDate to set
      * @throws NullPointerException if date is null
      */
@@ -282,8 +325,9 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Setter for the ownerID
+     *
      * @param ownerID the ownerID to set
-     * @throws NullPointerException if ownerID is null
+     * @throws NullPointerException     if ownerID is null
      * @throws IllegalArgumentException if ownerID is empty
      */
     public void setOwnerID(String ownerID) throws NullPointerException, IllegalArgumentException {
@@ -298,8 +342,9 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Setter for the list of lentItemIDs
+     *
      * @param lentItemIDs the lentItemIDs to set
-     * @throws NullPointerException if lentItemIDs is null
+     * @throws NullPointerException     if lentItemIDs is null
      * @throws IllegalArgumentException if lentItemIDs is empty
      */
     private void setLentItemIDs(List<String> lentItemIDs) throws NullPointerException {
@@ -312,6 +357,7 @@ public class Track implements DocumentEquivalent {
     /**
      * Setter for the list of items lent out
      * Also sets the lentItemIDs automatically
+     *
      * @param itemList the list of items to set
      * @throws NullPointerException if itemList is null
      */
@@ -329,6 +375,7 @@ public class Track implements DocumentEquivalent {
 
     /**
      * Setter for the list of pending Items
+     *
      * @param pendingItemsList the list of pendingItems to set
      * @throws NullPointerException if pendingItemsList is null
      */
@@ -345,7 +392,39 @@ public class Track implements DocumentEquivalent {
     }
 
     /**
+     * Setter for the list of returned Item
+     *
+     * @param returnedItemsList the pendingItemIDs to set
+     * @throws NullPointerException if pendingItemIDs is null
+     */
+    public void setReturnedItemsList(List<Item> returnedItemsList) throws NullPointerException {
+        if (returnedItemsList == null) {
+            throw new NullPointerException("ReturnedItemsList cannot be null");
+        }
+        // also setting the pendingItemIDs
+        returnedItemIDs.clear();
+        for (Item item : returnedItemsList) {
+            returnedItemIDs.add(item.getId());
+        }
+        this.returnedItemsList = returnedItemsList;
+    }
+
+    /**
+     * Setter for the list of returned Item IDs
+     *
+     * @param returnedItemIDs the pendingItemIDs to set
+     * @throws NullPointerException if pendingItemIDs is null
+     */
+    public void setReturnedItemIDs(List<String> returnedItemIDs) throws NullPointerException {
+        if (returnedItemIDs == null) {
+            throw new NullPointerException("ReturnedItemIDs cannot be null");
+        }
+        this.returnedItemIDs = returnedItemIDs;
+    }
+
+    /**
      * Setter for the additional information about the track
+     *
      * @param additionalInfo the additionalInfo to set
      * @throws NullPointerException if additionalInfo is null
      */

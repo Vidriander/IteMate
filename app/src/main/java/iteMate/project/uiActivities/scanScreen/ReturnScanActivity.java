@@ -33,6 +33,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     private NfcAdapter nfcAdapter;
     private List<Item> listOfPendingItems;
     private List<Item> listOfLentItems;
+    private List<Item> listOfReturnedItems;
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ItemController itemController = ItemController.getControllerInstance();
 
@@ -50,6 +51,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
 
         // Retrieve the list of items fro the controller
         listOfPendingItems = trackController.getCurrentTrack().getPendingItemsList();
+        listOfReturnedItems = trackController.getCurrentTrack().getReturnedItemsList();
         listOfLentItems = new ArrayList<>(trackController.getCurrentTrack().getLentItemsList());
 
         // TODO sorting der LentItemsliste
@@ -81,22 +83,31 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     @Override
     public void onTagDiscovered(Tag tag) {
         String tagId = extractTagId(tag);
-        removeItemFromReturnList(tagId);
-        updateTrack();
+        updateTrack(tagId);
+
+
     }
 
     /**
-     * Removes an item from the list of items to return
-     *
-     * @param tagId the tag ID of the item to remove
+     * Updates the track with the given tagId
+     * @param tagId the tagId of the scanned NFC tag
      */
-    private void removeItemFromReturnList(String tagId) {
+    private void updateTrack(String tagId) {
         for (Item item : listOfPendingItems) {
             if (item.getNfcTag().equals(tagId)) {
+
                 listOfPendingItems.remove(item);
+                listOfReturnedItems.add(item);
+
+                trackController.getCurrentTrack().setPendingItemsList(listOfPendingItems);
+                trackController.getCurrentTrack().setReturnedItemsList(listOfReturnedItems);
+
                 item.setActiveTrackID(null);
                 itemController.setCurrentItem(item);
                 itemController.saveChangesToDatabase();
+
+                trackController.saveChangesToDatabase(trackController.getCurrentTrack());
+
                 // inform the user
                 Toast.makeText(this, item.getTitle() + " was returned.", Toast.LENGTH_SHORT).show();
                 Log.d("ReturnScanActivity", "Item found and returned");
@@ -104,11 +115,6 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
                 Log.d("ReturnScanActivity", "Item not in Track");
             }
         }
-    }
-
-    private void updateTrack() {
-        trackController.getCurrentTrack().setPendingItemsList(listOfPendingItems);
-        trackController.saveChangesToDatabase(trackController.getCurrentTrack());
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
@@ -27,7 +28,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 
 import iteMate.project.R;
+import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
+import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.uiActivities.contactScreens.SelectContactActivity;
 import iteMate.project.uiActivities.scanScreen.ManageScanActivity;
@@ -37,6 +40,7 @@ public class TrackEditActivity extends AppCompatActivity {
 
     private Track trackToDisplay;
     private final TrackController trackController = TrackController.getControllerInstance();
+    private final ItemController itemController = ItemController.getControllerInstance();
     private RecyclerView horizontalRecyclerView;
 
     /**
@@ -56,7 +60,7 @@ public class TrackEditActivity extends AppCompatActivity {
                 (view, year1, monthOfYear, dayOfMonth) -> {
                     // on below line we are setting date to our text view.
                     String date = dayOfMonth + "." + (monthOfYear + 1) + "." + year1;
-                    ((TextView)v).setText(date);
+                    ((TextView) v).setText(date);
 
                 },
                 // Passing year, month and day for selected date in date picker
@@ -121,6 +125,15 @@ public class TrackEditActivity extends AppCompatActivity {
             saveChangesToLocalTrack();
             if (trackController.isReadyForUpload()) {
                 trackController.saveChangesToDatabase(trackToDisplay);
+                for (Item item : trackToDisplay.getLentItemsList()) {
+                    if (trackToDisplay.getPendingItemIDs().contains(item.getId())) {
+                        item.setActiveTrackID(trackToDisplay.getId());
+                        itemController.setCurrentItem(item);
+                        itemController.saveChangesToDatabase();
+                        //TODO items are not being marked as lent, fix that
+                        // Track is null bc not in db
+                    }
+                }
                 finish();
             } else {
                 Toast toast = Toast.makeText(this, "Please fill out all fields and add at least one item", Toast.LENGTH_SHORT);
@@ -130,7 +143,9 @@ public class TrackEditActivity extends AppCompatActivity {
 
         // setting on click listener for scan button
         FloatingActionButton scanButton = findViewById(R.id.scan_button_track_edit);
-        scanButton.setOnClickListener(click -> {
+        scanButton.setOnClickListener(click ->
+
+        {
             Intent intent = new Intent(this, ManageScanActivity.class);
             startActivity(intent);
         });
