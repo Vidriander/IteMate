@@ -17,7 +17,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/navigation_color"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewContacts"
+        app:layout_constraintBottom_toTopOf="@+id/swipeRefreshLayoutContacts"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp">
 
