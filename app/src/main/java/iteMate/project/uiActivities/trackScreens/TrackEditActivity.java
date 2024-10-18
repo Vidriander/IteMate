@@ -125,13 +125,15 @@ public class TrackEditActivity extends AppCompatActivity {
             saveChangesToLocalTrack();
             if (trackController.isReadyForUpload()) {
                 trackController.saveChangesToDatabase(trackToDisplay);
+
+                // Mark items as lent, set active track id & store in db
                 for (Item item : trackToDisplay.getLentItemsList()) {
                     if (trackToDisplay.getPendingItemIDs().contains(item.getId())) {
                         item.setActiveTrackID(trackToDisplay.getId());
                         itemController.setCurrentItem(item);
                         itemController.saveChangesToDatabase();
                         //TODO items are not being marked as lent, fix that
-                        // Track is null bc not in db
+                        // Track is null bc it is not in db yet
                     }
                 }
                 finish();
@@ -143,9 +145,7 @@ public class TrackEditActivity extends AppCompatActivity {
 
         // setting on click listener for scan button
         FloatingActionButton scanButton = findViewById(R.id.scan_button_track_edit);
-        scanButton.setOnClickListener(click ->
-
-        {
+        scanButton.setOnClickListener(click -> {
             Intent intent = new Intent(this, ManageScanActivity.class);
             startActivity(intent);
         });

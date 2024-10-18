@@ -84,8 +84,6 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     public void onTagDiscovered(Tag tag) {
         String tagId = extractTagId(tag);
         updateTrack(tagId);
-
-
     }
 
     /**

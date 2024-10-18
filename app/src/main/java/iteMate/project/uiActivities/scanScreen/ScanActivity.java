@@ -43,8 +43,12 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         setContentView(R.layout.activity_scan);
 
         initializeNfcAdapter();
-        initializeRepositories();
-        setCloseButtonFunctionality();
+        // initialize repositories
+        itemRepository = new ItemRepository();
+        trackRepository = new TrackRepository();
+
+        // on click listener for close button
+        findViewById(R.id.close_nfcscan).setOnClickListener(v -> finish());
 
         // Add Fragments to the fragment container
         if (savedInstanceState == null) {
@@ -60,21 +64,6 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         if (nfcAdapter == null) {
             finish();
         }
-    }
-
-    /**
-     * Initializes the repositories
-     */
-    private void initializeRepositories() {
-        itemRepository = new ItemRepository();
-        trackRepository = new TrackRepository();
-    }
-
-    /**
-     * Sets the functionality for the close button
-     */
-    private void setCloseButtonFunctionality() {
-        findViewById(R.id.close_nfcscan).setOnClickListener(v -> finish());
     }
 
     @Override
@@ -349,7 +338,6 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             }
         }
     }
-
 
     @Override
     public void onDocumentFetched(Track document) {
