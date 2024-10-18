@@ -3,6 +3,7 @@ package iteMate.project.uiActivities.itemScreens;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class ItemsActivity extends MainActivity {
      * List of Items that will change dynamically based on search
      */
     private List<Item> searchList;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private final ItemController itemController = ItemController.getControllerInstance();
 
@@ -66,6 +68,13 @@ public class ItemsActivity extends MainActivity {
                 performSearch(query);
                 return true;
             }
+        });
+
+        // Set on refresh listen for pull to refresh
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutItems);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            refreshItemList();
+            swipeRefreshLayout.setRefreshing(false);
         });
 
         // Set add button functionality

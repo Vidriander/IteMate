@@ -3,6 +3,7 @@ package iteMate.project.uiActivities.trackScreens;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import iteMate.project.uiActivities.MainActivity;
 public class TrackActivity extends MainActivity implements GenericRepository.OnDocumentsFetchedListener<Track> {
 
     private TrackAdapter trackAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private List<Track> trackList;
     private List<Track> searchList;
     private TrackRepository trackRepository;
@@ -58,6 +60,13 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
             Intent intent = new Intent(this, TrackEditActivity.class);
             trackController.setCurrentTrack(newTrack);
             startActivity(intent);
+        });
+
+        // set up on refresh listener for pull to refresh
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutTracks);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            trackRepository.getAllDocumentsFromFirestore(this);
+            swipeRefreshLayout.setRefreshing(false);
         });
 
         // Configure the SearchView

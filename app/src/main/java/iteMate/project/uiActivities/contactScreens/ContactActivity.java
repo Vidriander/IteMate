@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ import iteMate.project.repositories.ContactRepository;
 public class ContactActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Contact> {
 
     private ContactAdapter contactAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private List<Contact> contactList;
     private ContactRepository contactRepository;
 
@@ -59,6 +61,13 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
             Intent intent = new Intent(ContactActivity.this, ContactEditActivity.class);
             intent.putExtra("contact", new Contact());
             startActivity(intent);
+        });
+
+        // Set up on refresh listener for swipeRefreshLayout
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutContacts);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            fetchContacts();
+            swipeRefreshLayout.setRefreshing(false);
         });
 
         // Configure the SearchView
