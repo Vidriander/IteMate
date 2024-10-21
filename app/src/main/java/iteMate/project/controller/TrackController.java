@@ -115,6 +115,18 @@ public class TrackController {
         this.currentTrack = currentTrack;
     }
 
+    public void fetchTrackFromFirestore(String trackID, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
+        trackRepository.getOneDocumentFromFirestore(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
+            @Override
+            public void onDocumentFetched(Track document) {
+                listener.onDocumentFetched(document);
+            }
+            @Override
+            public void onDocumentsFetched(List<Track> documents) {
+            }
+        });
+    }
+
     // add methode to set availability of items
 
 

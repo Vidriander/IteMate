@@ -137,6 +137,18 @@ public class ItemController {
         });
     }
 
+    public void fetchItemByNfcTagId(String nfcTagId, GenericRepository.OnDocumentsFetchedListener<Item> listener) {
+        itemRepository.getItemByNfcTagFromFirestore(nfcTagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
+            @Override
+            public void onDocumentFetched(Item document) {
+                listener.onDocumentFetched(document);
+            }
+            @Override
+            public void onDocumentsFetched(List<Item> documents) {
+            }
+        });
+    }
+
     /**
      * Fetches all items from database and sets the current item list
      */

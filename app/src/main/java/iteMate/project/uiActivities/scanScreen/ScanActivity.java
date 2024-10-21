@@ -19,6 +19,8 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.List;
 
 import iteMate.project.R;
+import iteMate.project.controller.ItemController;
+import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
@@ -30,11 +32,11 @@ import iteMate.project.repositories.TrackRepository;
  * Activity for scanning NFC tags
  * It displays the scanned item and track.
  */
-public class ScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback, GenericRepository.OnDocumentsFetchedListener<Track> {
+public class ScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
     private NfcAdapter nfcAdapter;
-    private ItemRepository itemRepository;
-    private TrackRepository trackRepository;
+    private TrackController trackController;
+    private ItemController itemController;
     private ScanItemFragment scanItemFragment;
 
     @Override
@@ -43,9 +45,9 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         setContentView(R.layout.activity_scan);
 
         initializeNfcAdapter();
-        // initialize repositories
-        itemRepository = new ItemRepository();
-        trackRepository = new TrackRepository();
+        // initialize controller
+        itemController = ItemController.getControllerInstance();
+        trackController = TrackController.getControllerInstance();
 
         // on click listener for close button
         findViewById(R.id.close_nfcscan).setOnClickListener(v -> finish());
@@ -69,6 +71,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     @Override
     protected void onResume() {
         super.onResume();
+
         enableNfcReaderMode();
     }
 
@@ -102,19 +105,14 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
     @Override
     public void onTagDiscovered(Tag tag) {
-        Log.d("ScanActivity", "NFC Tag discovered!");
-        handleTagDiscovered(tag);
-    }
-
-    /**
-     * Handles the discovered NFC tag
-     *
-     * @param tag the discovered tag
-     */
-    private void handleTagDiscovered(Tag tag) {
+        // extract the tag ID
         String tagId = extractTagId(tag);
         Log.d("ScanActivity", "Tag ID: " + tagId);
+
+        // fetch the item (and track) by the tag ID from the database
         fetchItemByNfcTagId(tagId);
+
+        // transition to the item fragment
         transitionToItemFragment(tagId);
     }
 
@@ -146,15 +144,15 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
      * @param tagId the NFC tag ID
      */
     private void fetchItemByNfcTagId(String tagId) {
-        itemRepository.getItemByNfcTagFromFirestore(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
+        itemController.fetchItemByNfcTagId(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
             @Override
             public void onDocumentFetched(Item item) {
                 handleItemFetched(item);
             }
 
             @Override
-            public void onDocumentsFetched(List<Item> documents) {
-                // Not used in this context
+            public void onDocumentsFetched(List<Item> item) {
+
             }
         });
     }
@@ -168,7 +166,6 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         if (item != null) {
             Log.d("ScanActivity", "Item found: " + item.getTitle());
             updateItemCardView(item);
-            itemRepository.setContainedAndAssociatedItems(item);
             scanItemFragment.setItemToDisplay(item);
             scanItemFragment.setNfcTagId(item.getNfcTag());
             if (item.getActiveTrackID() != null) {
@@ -179,22 +176,16 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             }
         } else {
             Log.d("ScanActivity", "Item not found");
-            updateTrackCardView(null);
             updateItemCardView(null);
+            updateTrackCardView(null);
         }
     }
 
     private void fetchTrackByItemTrackID(String trackID, Item item) {
-        trackRepository.getOneDocumentFromFirestore(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
+        trackController.fetchTrackFromFirestore(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
             @Override
-            public void onDocumentFetched(Track track) {
-                if (track != null) {
-                    scanItemFragment.setTrackToDisplay(track);
-                    updateTrackCardView(track);
-                } else {
-                    scanItemFragment.setTrackToDisplay(null);
-                    updateTrackCardView(null);
-                }
+            public void onDocumentFetched(Track document) {
+                updateTrackCardView(document);
             }
 
             @Override
@@ -339,13 +330,4 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         }
     }
 
-    @Override
-    public void onDocumentFetched(Track document) {
-        updateTrackCardView(document);
-    }
-
-    @Override
-    public void onDocumentsFetched(List<Track> documents) {
-        // pass
-    }
 }
