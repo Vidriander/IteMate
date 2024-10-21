@@ -49,7 +49,9 @@ public class TrackController {
      */
     public void saveChangesToDatabase(Track track) {
         setCurrentTrack(track);
-        if (Objects.equals(currentTrack.getId(), null) || currentTrack.getId().isEmpty()) {
+        String trackId = currentTrack.getId();
+
+        if (trackId == null || trackId.isEmpty()) {
             trackRepository.addDocumentToFirestore(getCurrentTrack());
         } else {
             trackRepository.updateDocumentInFirestore(getCurrentTrack());
@@ -122,11 +124,12 @@ public class TrackController {
     public void fetchTrackFromFirestore(String trackID, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
         trackRepository.getOneDocumentFromFirestore(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
             @Override
-            public void onDocumentFetched(Track document) {
-                listener.onDocumentFetched(document);
+            public void onDocumentFetched(Track track) {
+                track.setId(trackID);
+                listener.onDocumentFetched(track);
             }
             @Override
-            public void onDocumentsFetched(List<Track> documents) {
+            public void onDocumentsFetched(List<Track> tracks) {
             }
         });
     }

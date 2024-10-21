@@ -109,12 +109,16 @@ public class ScanItemFragment extends Fragment {
         // Set on click listener for return button
         view.findViewById(R.id.return_button).setOnClickListener(v -> {
 
-            if (trackController.getCurrentTrack().getPendingItemsList().contains(itemController.getCurrentItem())) {
-                // remove item from pending items in track
-                trackController.getCurrentTrack().getPendingItemsList().remove(itemController.getCurrentItem());
 
-                // reset active track id in item
+            Track currentTrack = trackController.getCurrentTrack();
+            if (currentTrack.getPendingItemsList().stream().anyMatch(item -> item.getId().equals(itemController.getCurrentItem().getId()))) {
+                // remove item from pending list in the track & update track in database
+                currentTrack.getPendingItemsList().remove(itemController.getCurrentItem());
+                trackController.saveChangesToDatabase(currentTrack);
+
+                // reset active track id in item & update item in database
                 itemController.getCurrentItem().setActiveTrackID(null);
+                itemController.saveChangesToDatabase();
 
                 Toast.makeText(getActivity(), "Item returned", Toast.LENGTH_SHORT).show();
 
