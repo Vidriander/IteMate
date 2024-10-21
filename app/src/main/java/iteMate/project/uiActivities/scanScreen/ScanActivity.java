@@ -179,12 +179,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
             // update UI
             updateItemCardView(item);
-            scanItemFragment.setItemToDisplay();
             scanItemFragment.setNfcTagId(item.getNfcTag());
 
-            // fetch the track if the item is lent
+            // if the item is lent, fetch the track
             if (item.getActiveTrackID() != null) {
-                fetchTrackByItemTrackID(item.getActiveTrackID(), item);
+                fetchTrackByItemTrackID(item.getActiveTrackID(), item);;
             } else {
                 trackController.resetCurrentTrack();
                 // hide track card view

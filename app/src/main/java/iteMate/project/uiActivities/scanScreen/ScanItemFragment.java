@@ -29,8 +29,6 @@ import iteMate.project.uiActivities.trackScreens.TrackEditActivity;
  */
 public class ScanItemFragment extends Fragment {
 
-    private Item itemToDisplay;
-    private Track trackToDisplay;
     private String tagId;
     private final ItemController itemController = ItemController.getControllerInstance();
     private final TrackController trackController = TrackController.getControllerInstance();
@@ -58,13 +56,13 @@ public class ScanItemFragment extends Fragment {
         // Set item details for track card view
         view.findViewById(R.id.track_card_view_scan).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), TrackDetailActivity.class);
-            trackController.setCurrentTrack(trackToDisplay);
+            trackController.setCurrentTrack(trackController.getCurrentTrack());
             startActivity(intent);
         });
 
         // Set on click listener for item card
         view.findViewById(R.id.item_card_view_scan).setOnClickListener(v -> {
-            if (itemToDisplay == null) {
+            if (trackController.getCurrentTrack() == null) {
                 // if no item exists, navigate to item edit screen and create new item
                 Item newItem = new Item();
                 newItem.setNfcTag(tagId);
@@ -74,7 +72,6 @@ public class ScanItemFragment extends Fragment {
             } else {
                 // if item exists navigate to item detail screen to display item details
                 Intent intent = new Intent(getActivity(), ItemsDetailActivity.class);
-                itemController.setCurrentItem(itemToDisplay);
                 startActivity(intent);
             }
         });
@@ -82,25 +79,25 @@ public class ScanItemFragment extends Fragment {
         // Set on click listener for track card
         view.findViewById(R.id.track_card_view_scan).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), TrackDetailActivity.class);
-            trackController.setCurrentTrack(trackToDisplay);
+            trackController.setCurrentTrack(trackController.getCurrentTrack());
             startActivity(intent);
         });
 
         // Set on click listener for lend button
         view.findViewById(R.id.lend_button).setOnClickListener(v -> {
 
-            if (itemToDisplay.isAvailable()) {
+            if (itemController.getCurrentItem().isAvailable()) {
                 // create new track
                 Track track = new Track();
 
                 // add item to track (add item to track: setLendItemsList & setPendingItemsList)
                 List<Item> itemList = new ArrayList<>();
-                itemList.add(itemToDisplay);
+                itemList.add(itemController.getCurrentItem());
                 track.setLentItemsList(itemList);
                 track.setPendingItemsList(itemList);
 
-                // set active trackID to item and mark as led out
-                itemToDisplay.setActiveTrackID(track.getId());
+                // set active trackID to item and mark as lent out
+                itemController.getCurrentItem().setActiveTrackID(track.getId());
 
                 // open track edit activity
                 trackController.setCurrentTrack(track);
@@ -112,12 +109,12 @@ public class ScanItemFragment extends Fragment {
         // Set on click listener for return button
         view.findViewById(R.id.return_button).setOnClickListener(v -> {
 
-            if (trackToDisplay.getPendingItemsList().contains(itemToDisplay)) {
+            if (trackController.getCurrentTrack().getPendingItemsList().contains(itemController.getCurrentItem())) {
                 // remove item from pending items in track
-                trackToDisplay.getPendingItemsList().remove(itemToDisplay);
+                trackController.getCurrentTrack().getPendingItemsList().remove(itemController.getCurrentItem());
 
                 // reset active track id in item
-                itemToDisplay.setActiveTrackID(null);
+                itemController.getCurrentItem().setActiveTrackID(null);
 
                 Toast.makeText(getActivity(), "Item returned", Toast.LENGTH_SHORT).show();
 
@@ -128,17 +125,6 @@ public class ScanItemFragment extends Fragment {
         });
 
         return view;
-    }
-
-    /**
-     * Set the item to display in the fragment*
-     */
-    void setItemToDisplay() {
-        this.itemToDisplay = itemController.getCurrentItem();
-    }
-
-    public void setTrackToDisplay() {
-        this.trackToDisplay = trackController.getCurrentTrack();
     }
 
     public void setNfcTagId(String tagId) {
