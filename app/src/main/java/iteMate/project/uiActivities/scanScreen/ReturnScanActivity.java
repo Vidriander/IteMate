@@ -36,6 +36,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     private List<Item> listOfReturnedItems;
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ItemController itemController = ItemController.getControllerInstance();
+    private ItemAdapter itemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +53,10 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         // Retrieve the list of items fro the controller
         listOfPendingItems = trackController.getCurrentTrack().getPendingItemsList();
         listOfReturnedItems = trackController.getCurrentTrack().getReturnedItemsList();
-        listOfLentItems = new ArrayList<>(trackController.getCurrentTrack().getLentItemsList());
+        List<Item> listOfLentItems = new ArrayList<>(trackController.getCurrentTrack().getLentItemsList());
 
-        // TODO sorting der LentItemsliste
         // Initialize the adapter and set it to the RecyclerView
-        ItemAdapter itemAdapter = new ItemAdapter(listOfLentItems, this);
-        // TODO add logic to adapter to show only items that are lent
+        itemAdapter = new ItemAdapter(listOfLentItems, this);
         recyclerView.setAdapter(itemAdapter);
 
         // On click listener for the close button
@@ -84,6 +83,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     public void onTagDiscovered(Tag tag) {
         String tagId = extractTagId(tag);
         updateTrack(tagId);
+        // TODO refresh
     }
 
     /**
@@ -93,7 +93,6 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     private void updateTrack(String tagId) {
         for (Item item : listOfPendingItems) {
             if (item.getNfcTag().equals(tagId)) {
-
                 listOfPendingItems.remove(item);
                 listOfReturnedItems.add(item);
 
@@ -106,9 +105,14 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
 
                 trackController.saveChangesToDatabase(trackController.getCurrentTrack());
 
-                // inform the user
+                // Update the adapter with the new list
+                // itemAdapter.updateItems(new ArrayList<>(trackController.getCurrentTrack().getLentItemsList()));
+                //TODO discuss design
+
+                // Inform the user
                 Toast.makeText(this, item.getTitle() + " was returned.", Toast.LENGTH_SHORT).show();
                 Log.d("ReturnScanActivity", "Item found and returned");
+                return; // Exit the loop once the item is found and processed
             } else {
                 Log.d("ReturnScanActivity", "Item not in Track");
             }
