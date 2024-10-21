@@ -131,16 +131,14 @@ public class ScanItemFragment extends Fragment {
     }
 
     /**
-     * Set the item to display in the fragment
-     *
-     * @param item Item to display
+     * Set the item to display in the fragment*
      */
-    void setItemToDisplay(Item item) {
-        this.itemToDisplay = item;
+    void setItemToDisplay() {
+        this.itemToDisplay = itemController.getCurrentItem();
     }
 
-    public void setTrackToDisplay(Track track) {
-        this.trackToDisplay = track;
+    public void setTrackToDisplay() {
+        this.trackToDisplay = trackController.getCurrentTrack();
     }
 
     public void setNfcTagId(String tagId) {
