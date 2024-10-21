@@ -115,6 +115,10 @@ public class TrackController {
         this.currentTrack = currentTrack;
     }
 
+    public void resetCurrentTrack() {
+        currentTrack = null;
+    }
+
     public void fetchTrackFromFirestore(String trackID, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
         trackRepository.getOneDocumentFromFirestore(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
             @Override

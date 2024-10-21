@@ -24,8 +24,6 @@ import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.repositories.ItemRepository;
-import iteMate.project.repositories.TrackRepository;
 
 
 /**
@@ -71,7 +69,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     @Override
     protected void onResume() {
         super.onResume();
-
+        transitionToIdleFragment();
         enableNfcReaderMode();
     }
 
@@ -86,6 +84,16 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                             NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
                     null);
         }
+    }
+
+    /**
+     * Transitions to the idle fragment
+     */
+    private void transitionToIdleFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, ScanIdleFragment.class, null);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -166,11 +174,13 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         if (item != null) {
             Log.d("ScanActivity", "Item found: " + item.getTitle());
             updateItemCardView(item);
+            itemController.setCurrentItem(item);
             scanItemFragment.setItemToDisplay(item);
             scanItemFragment.setNfcTagId(item.getNfcTag());
             if (item.getActiveTrackID() != null) {
                 fetchTrackByItemTrackID(item.getActiveTrackID(), item);
             } else {
+                trackController.resetCurrentTrack();
                 // hide track card view
                 updateTrackCardView(null);
             }
@@ -185,6 +195,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         trackController.fetchTrackFromFirestore(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
             @Override
             public void onDocumentFetched(Track document) {
+                trackController.setCurrentTrack(document);
                 updateTrackCardView(document);
             }
 

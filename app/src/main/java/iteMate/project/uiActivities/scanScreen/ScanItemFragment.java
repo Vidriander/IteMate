@@ -32,7 +32,6 @@ public class ScanItemFragment extends Fragment {
     private Item itemToDisplay;
     private Track trackToDisplay;
     private String tagId;
-    private Button returnButton;
     private final ItemController itemController = ItemController.getControllerInstance();
     private final TrackController trackController = TrackController.getControllerInstance();
 
