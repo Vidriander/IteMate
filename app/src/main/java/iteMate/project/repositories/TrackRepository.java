@@ -96,10 +96,22 @@ public class TrackRepository extends GenericRepository<Track> {
     public void addDocumentToFirestore(Track track) {
         db.collection("tracks").add(track).addOnSuccessListener(documentReference -> {
             String documentId = documentReference.getId();
-            // TODO set active trackid in items
-            // get pending itemid and set item activetrackid
-
-            Log.d("TrackRepository", "Document ID: " + documentId);
+            new ItemRepository().getAllDocumentsFromFirestore(new OnDocumentsFetchedListener<Item>() {
+                @Override
+                public void onDocumentFetched(Item document) {
+                    // Do nothing
+                }
+                @Override
+                public void onDocumentsFetched(List<Item> documents) {
+                    for (Item item : documents) {
+                        if (track.getPendingItemIDs().contains(item.getId())) {
+                            item.setActiveTrackID(documentId);
+                            new ItemRepository().updateDocumentInFirestore(item);
+                        }
+                    }
+                }
+                // TODO: change ItemRepository to singleton to prevent multiple instances (for each item to update)
+            });
         });
     }
 
