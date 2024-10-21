@@ -1,6 +1,9 @@
 package iteMate.project.uiActivities.scanScreen;
 
+import static iteMate.project.uiActivities.ScanUtils.extractTagId;
+
 import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -22,12 +25,20 @@ import iteMate.project.uiActivities.adapter.ItemAdapter;
 /**
  * Activity for managing the inner items of a track with a NFC scan
  */
-public class ManageScanActivity extends AppCompatActivity {
+public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
+
+    private NfcAdapter nfcAdapter;
+
+    private ItemAdapter itemAdapter;
+
+    private List<Item> listOfLentItems;
+
+    private final TrackController trackController = TrackController.getControllerInstance();
+    private final ItemController itemController = ItemController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_manage_scan);
 
         initializeNfcAdapter();
@@ -36,11 +47,12 @@ public class ManageScanActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerViewItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
         // Retrieve the list of items from the Intent
-        List<Item> itemList = TrackController.getControllerInstance().getCurrentTrack().getLentItemsList(); // Change by David on 15.10. (no more parcel stuff)
+        listOfLentItems = TrackController.getControllerInstance().getCurrentTrack().getLentItemsList(); // Change by David on 15.10. (no more parcel stuff)
 
         // Initialize the adapter and set it to the RecyclerView
-        ItemAdapter itemAdapter = new ItemAdapter(itemList, this);
+        itemAdapter = new ItemAdapter(listOfLentItems, this);
         recyclerView.setAdapter(itemAdapter);
 
         // On click listener for the close button
@@ -54,9 +66,15 @@ public class ManageScanActivity extends AppCompatActivity {
     }
 
     private void initializeNfcAdapter() {
-        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
             finish();
         }
+    }
+
+    @Override
+    public void onTagDiscovered(Tag tag) {
+        String tagId = extractTagId(tag);
+        // TODO implement business logic
     }
 }

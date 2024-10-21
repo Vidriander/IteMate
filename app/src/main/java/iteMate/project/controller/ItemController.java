@@ -3,9 +3,6 @@ package iteMate.project.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
@@ -162,6 +159,10 @@ public class ItemController {
                 currentItemList = documents;
             }
         });
+    }
+
+    public interface OnItemFetchedListener {
+        void onItemFetched(Item item);
     }
     // endregion
 }

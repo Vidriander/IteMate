@@ -32,7 +32,6 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
 
     private NfcAdapter nfcAdapter;
     private List<Item> listOfPendingItems;
-    private List<Item> listOfLentItems;
     private List<Item> listOfReturnedItems;
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ItemController itemController = ItemController.getControllerInstance();
