@@ -124,18 +124,10 @@ public class TrackEditActivity extends AppCompatActivity {
         saveButton.setOnClickListener(click -> {
             saveChangesToLocalTrack();
             if (trackController.isReadyForUpload()) {
+
+                // save track in database first to get its ID
                 trackController.saveChangesToDatabase(trackToDisplay);
 
-                // Mark items as lent, set active track id & store in db
-                for (Item item : trackToDisplay.getLentItemsList()) {
-                    if (trackToDisplay.getPendingItemIDs().contains(item.getId())) {
-                        item.setActiveTrackID(trackToDisplay.getId());
-                        itemController.setCurrentItem(item);
-                        itemController.saveChangesToDatabase();
-                        //TODO items are not being marked as lent, fix that
-                        // Track is null bc it is not in db yet
-                    }
-                }
                 finish();
             } else {
                 Toast toast = Toast.makeText(this, "Please fill out all fields and add at least one item", Toast.LENGTH_SHORT);

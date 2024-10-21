@@ -2,8 +2,10 @@ package iteMate.project.repositories;
 
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -88,6 +90,17 @@ public class TrackRepository extends GenericRepository<Track> {
 
         Tasks.whenAll(contactTaskSource.getTask(), itemsTaskSource.getTask(), pendingItemsTaskSource.getTask())
                 .addOnCompleteListener(task -> listener.onDocumentFetched(track));
+    }
+
+    @Override
+    public void addDocumentToFirestore(Track track) {
+        db.collection("tracks").add(track).addOnSuccessListener(documentReference -> {
+            String documentId = documentReference.getId();
+            // TODO set active trackid in items
+            // get pending itemid and set item activetrackid
+
+            Log.d("TrackRepository", "Document ID: " + documentId);
+        });
     }
 
     @Override

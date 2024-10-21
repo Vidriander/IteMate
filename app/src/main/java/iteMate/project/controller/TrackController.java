@@ -1,4 +1,7 @@
 package iteMate.project.controller;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -51,7 +54,6 @@ public class TrackController {
         } else {
             trackRepository.updateDocumentInFirestore(getCurrentTrack());
         }
-        // Handling of active trackIDs in item controller
     }
 
     /**
