@@ -113,6 +113,10 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
     @Override
     public void onTagDiscovered(Tag tag) {
+        // reset the current item and track
+        itemController.resetCurrentItem();
+        trackController.resetCurrentTrack();
+
         // extract the tag ID
         String tagId = extractTagId(tag);
         Log.d("ScanActivity", "Tag ID: " + tagId);
@@ -310,7 +314,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
                     updateTrackCardContent(trackCardView, track);
                 }
             }
-            manageButtonTransparency(track);
+            updateButtonTransparency();
         }
     }
 
@@ -332,16 +336,14 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
     /**
      * Manages the transparency of the buttons
-     *
-     * @param track - the track to display
      */
-    private void manageButtonTransparency(Track track) {
+    private void updateButtonTransparency() {
         ScanItemFragment fragment = (ScanItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment != null && fragment.getView() != null) {
             Button returnButton = fragment.getView().findViewById(R.id.return_button);
             Button lendButton = fragment.getView().findViewById(R.id.lend_button);
             if (returnButton != null) {
-                if (track == null) {
+                if (trackController.getCurrentTrack() == null) {
                     returnButton.setAlpha(0.4f);
                     lendButton.setAlpha(1f);
                 } else {
