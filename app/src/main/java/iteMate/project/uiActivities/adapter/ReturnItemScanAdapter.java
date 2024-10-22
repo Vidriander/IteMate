@@ -79,6 +79,12 @@ public class ReturnItemScanAdapter extends RecyclerView.Adapter<ReturnItemScanAd
         return items.size();
     }
 
+    public void setItems(List<Item> lentItemsList) {
+        items.clear();
+        items.addAll(lentItemsList);
+        notifyDataSetChanged();
+    }
+
     /**
      * ViewHolder class for the RecyclerView.
      */

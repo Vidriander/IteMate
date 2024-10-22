@@ -81,7 +81,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     @Override
     public void onTagDiscovered(Tag tag) {
         String tagId = extractTagId(tag);
-        updateTrack(tagId);
+        handleTag(tagId);
         // TODO refresh
     }
 
@@ -89,20 +89,23 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
      * Updates the track with the given tagId
      * @param tagId the tagId of the scanned NFC tag
      */
-    private void updateTrack(String tagId) {
+    private void handleTag(String tagId) {
         for (Item item : listOfPendingItems) {
             if (item.getNfcTag().equals(tagId)) {
+
+                // Remove the item from the pending list and add it to the returned list
                 listOfPendingItems.remove(item);
                 listOfReturnedItems.add(item);
 
+                // Update the track with the new lists
                 trackController.getCurrentTrack().setPendingItemsList(listOfPendingItems);
                 trackController.getCurrentTrack().setReturnedItemsList(listOfReturnedItems);
+                trackController.saveChangesToDatabase(trackController.getCurrentTrack());
 
+                // mark the item as returned
                 item.setActiveTrackID(null);
                 itemController.setCurrentItem(item);
                 itemController.saveChangesToDatabase();
-
-                trackController.saveChangesToDatabase(trackController.getCurrentTrack());
 
                 // Update the adapter with the new list
                 // itemAdapter.updateItems(new ArrayList<>(trackController.getCurrentTrack().getLentItemsList()));
