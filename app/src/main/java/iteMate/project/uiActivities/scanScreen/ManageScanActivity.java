@@ -1,12 +1,12 @@
 package iteMate.project.uiActivities.scanScreen;
 
 import static iteMate.project.uiActivities.ScanUtils.extractTagId;
+import static iteMate.project.uiActivities.ScanUtils.fetchItemByNfcTagId;
 
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
-import iteMate.project.uiActivities.adapter.ItemAdapter;
+import iteMate.project.repositories.GenericRepository;
+import iteMate.project.uiActivities.adapter.ManageScanAdapter;
 
 /**
  * Activity for managing the inner items of a track with a NFC scan
@@ -28,13 +28,7 @@ import iteMate.project.uiActivities.adapter.ItemAdapter;
 public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
     private NfcAdapter nfcAdapter;
-
-    private ItemAdapter itemAdapter;
-
-    private List<Item> listOfLentItems;
-
     private final TrackController trackController = TrackController.getControllerInstance();
-    private final ItemController itemController = ItemController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +41,10 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
         RecyclerView recyclerView = findViewById(R.id.recyclerViewItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-        // Retrieve the list of items from the Intent
-        listOfLentItems = TrackController.getControllerInstance().getCurrentTrack().getLentItemsList(); // Change by David on 15.10. (no more parcel stuff)
-
         // Initialize the adapter and set it to the RecyclerView
-        itemAdapter = new ItemAdapter(listOfLentItems, this);
-        recyclerView.setAdapter(itemAdapter);
+        List<Item> listOfLentItems = trackController.getCurrentTrack().getLentItemsList();
+        ManageScanAdapter manageScanAdapter = new ManageScanAdapter(listOfLentItems, this);
+        recyclerView.setAdapter(manageScanAdapter);
 
         // On click listener for the close button
         findViewById(R.id.close_button).setOnClickListener(v -> finish());
@@ -73,8 +64,58 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (nfcAdapter != null) {
+            nfcAdapter.enableReaderMode(this, this, NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK, null);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (nfcAdapter != null) {
+            nfcAdapter.disableReaderMode(this);
+        }
+    }
+
+    @Override
     public void onTagDiscovered(Tag tag) {
         String tagId = extractTagId(tag);
-        // TODO implement business logic
+        fetchItemByNfcTagId(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
+            @Override
+            public void onDocumentFetched(Item item) {
+                handleItemFetched(item);
+                updateAdapter();
+            }
+
+            // Update the adapter with scanned item
+            private void updateAdapter() {
+                runOnUiThread(() -> {
+                    ManageScanAdapter adapter = (ManageScanAdapter) ((RecyclerView) findViewById(R.id.recyclerViewItems)).getAdapter();
+                    adapter.notifyDataSetChanged();
+                });
+            }
+
+            @Override
+            public void onDocumentsFetched(List<Item> items) {
+
+            }
+        });
     }
+
+    public void handleItemFetched(Item item) {
+        if (item != null && item.getActiveTrackID() == null) {
+
+            // Add the item to the current track
+            if (trackController.getCurrentTrack().getLentItemsList().contains(item)) {
+                trackController.getCurrentTrack().getLentItemsList().remove(item);
+            } else {
+                trackController.getCurrentTrack().getLentItemsList().add(item);
+            }
+            trackController.getCurrentTrack().setPendingItemsList(trackController.getCurrentTrack().getLentItemsList());
+            trackController.getCurrentTrack().setLentItemsList(trackController.getCurrentTrack().getPendingItemsList());
+        }
+    }
+
 }
