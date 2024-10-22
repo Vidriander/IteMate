@@ -26,7 +26,7 @@ public class ScanUtils {
         itemRepository.getItemByNfcTagFromFirestore(tagId, listener);
     }
 
-    public static void fetchTrackByItemTrackID(String trackID, Item item, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
+    public static void fetchTrackByItemTrackID(String trackID, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
         trackRepository.getOneDocumentFromFirestore(trackID, listener);
     }
 }

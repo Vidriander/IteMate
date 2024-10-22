@@ -28,9 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 
 import iteMate.project.R;
-import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
-import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.uiActivities.contactScreens.SelectContactActivity;
 import iteMate.project.uiActivities.scanScreen.ManageScanActivity;
@@ -40,7 +38,6 @@ public class TrackEditActivity extends AppCompatActivity {
 
     private Track trackToDisplay;
     private final TrackController trackController = TrackController.getControllerInstance();
-    private final ItemController itemController = ItemController.getControllerInstance();
     private RecyclerView horizontalRecyclerView;
 
     /**
