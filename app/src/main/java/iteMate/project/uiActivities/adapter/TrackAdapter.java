@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
@@ -68,6 +69,15 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         daysLeftString += daysLeftInt + "d";
         holder.daysLeft.setText(daysLeftString);
 
+        // Setting transparency of the cardview to signal if a track is done
+        if (track.getPendingItemIDs() == null || track.getPendingItemIDs().isEmpty()) {
+            // Grey out if track has pending items
+            holder.cardView.setAlpha(0.4f);
+        } else {
+            // Show track if items are pending
+            holder.cardView.setAlpha(1f);
+        }
+
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, TrackDetailActivity.class);
             trackController.setCurrentTrack(track);
@@ -81,6 +91,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public CardView cardView;
         public TextView contactName;
         public TextView lendOutDate;
         public TextView daysLeft;
@@ -88,6 +99,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
 
         public ViewHolder(View itemView) {
             super(itemView);
+            cardView = itemView.findViewById(R.id.track_cardview);
             contactName = itemView.findViewById(R.id.trackcard_contactname);
             lendOutDate = itemView.findViewById(R.id.track_card_date_text);
             daysLeft = itemView.findViewById(R.id.trackcard_daycounter);
