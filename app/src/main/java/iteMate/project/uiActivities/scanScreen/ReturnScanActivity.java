@@ -35,7 +35,6 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     private List<Item> listOfReturnedItems;
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ItemController itemController = ItemController.getControllerInstance();
-    private ReturnItemScanAdapter returnItemScanAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +54,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         List<Item> listOfLentItems = new ArrayList<>(trackController.getCurrentTrack().getLentItemsList());
 
         // Initialize the adapter and set it to the RecyclerView
-        returnItemScanAdapter = new ReturnItemScanAdapter(listOfLentItems, this);
+        ReturnItemScanAdapter returnItemScanAdapter = new ReturnItemScanAdapter(listOfLentItems, this);
         recyclerView.setAdapter(returnItemScanAdapter);
 
         // On click listener for the close button
@@ -82,7 +81,17 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     public void onTagDiscovered(Tag tag) {
         String tagId = extractTagId(tag);
         handleTag(tagId);
-        // TODO refresh
+        updateAdapter();
+    }
+
+    /**
+     * Updates the adapter with the new list of items
+     */
+    private void updateAdapter() {
+        runOnUiThread(() -> {
+            ReturnItemScanAdapter adapter = (ReturnItemScanAdapter) ((RecyclerView) findViewById(R.id.recyclerViewItems)).getAdapter();
+            adapter.notifyDataSetChanged();
+        });
     }
 
     /**

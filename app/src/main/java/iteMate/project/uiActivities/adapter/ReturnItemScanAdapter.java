@@ -51,6 +51,7 @@ public class ReturnItemScanAdapter extends RecyclerView.Adapter<ReturnItemScanAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item item = items.get(position);
+
         // setting transparency of the cardview to signal that the item is lent / not available
         if (item.getActiveTrackID() != null && !item.getActiveTrackID().isEmpty()) {
             // show item if it is lent
@@ -59,6 +60,7 @@ public class ReturnItemScanAdapter extends RecyclerView.Adapter<ReturnItemScanAd
             // grey out if items was returned
             holder.cardView.setAlpha(0.4f);
         }
+
         // setting the item name
         holder.itemName.setText(item.getTitle());
         // setting the item description
@@ -79,6 +81,9 @@ public class ReturnItemScanAdapter extends RecyclerView.Adapter<ReturnItemScanAd
         return items.size();
     }
 
+    /**
+     * Updates the adapter with the new list of items
+     */
     public void setItems(List<Item> lentItemsList) {
         items.clear();
         items.addAll(lentItemsList);
