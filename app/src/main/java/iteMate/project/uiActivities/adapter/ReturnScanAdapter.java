@@ -25,12 +25,12 @@ import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
  * Adapter for the RecyclerView in the ReturnScanActivity.
  * This adapter is responsible for displaying the items in the RecyclerView.
  */
-public class ReturnItemScanAdapter extends RecyclerView.Adapter<ReturnItemScanAdapter.ViewHolder> {
+public class ReturnScanAdapter extends RecyclerView.Adapter<ReturnScanAdapter.ViewHolder> {
 
     private final List<Item> items;
     private final Context context;
 
-    public ReturnItemScanAdapter(List<Item> items, Context context) {
+    public ReturnScanAdapter(List<Item> items, Context context) {
         this.items = items;
         this.context = context;
 

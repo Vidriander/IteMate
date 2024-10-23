@@ -105,16 +105,16 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
     }
 
     public void handleItemFetched(Item item) {
-        if (item != null && item.getActiveTrackID() == null) {
-
-            // Add the item to the current track
-            if (trackController.getCurrentTrack().getLentItemsList().contains(item)) {
-                trackController.getCurrentTrack().getLentItemsList().remove(item);
+        if (item != null
+                && item.getActiveTrackID() == null) {
+            List<Item> lendList = trackController.getCurrentTrack().getLentItemsList();
+            // If the item is already lent, remove it from the lent list, otherwise add it
+            if (lendList.contains(item)) {
+                lendList.remove(item);
             } else {
-                trackController.getCurrentTrack().getLentItemsList().add(item);
+                lendList.add(item);
             }
-            trackController.getCurrentTrack().setPendingItemsList(trackController.getCurrentTrack().getLentItemsList());
-            trackController.getCurrentTrack().setLentItemsList(trackController.getCurrentTrack().getPendingItemsList());
+            trackController.getCurrentTrack().setLentItemsList(lendList);
         }
     }
 

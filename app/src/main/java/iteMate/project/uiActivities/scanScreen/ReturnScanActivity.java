@@ -23,7 +23,7 @@ import iteMate.project.R;
 import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
-import iteMate.project.uiActivities.adapter.ReturnItemScanAdapter;
+import iteMate.project.uiActivities.adapter.ReturnScanAdapter;
 
 /**
  * Activity for returning items from a Track by an NFC scan
@@ -54,8 +54,8 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         List<Item> listOfLentItems = new ArrayList<>(trackController.getCurrentTrack().getLentItemsList());
 
         // Initialize the adapter and set it to the RecyclerView
-        ReturnItemScanAdapter returnItemScanAdapter = new ReturnItemScanAdapter(listOfLentItems, this);
-        recyclerView.setAdapter(returnItemScanAdapter);
+        ReturnScanAdapter returnScanAdapter = new ReturnScanAdapter(listOfLentItems, this);
+        recyclerView.setAdapter(returnScanAdapter);
 
         // On click listener for the close button
         findViewById(R.id.close_button).setOnClickListener(v -> finish());
@@ -89,7 +89,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
      */
     private void updateAdapter() {
         runOnUiThread(() -> {
-            ReturnItemScanAdapter adapter = (ReturnItemScanAdapter) ((RecyclerView) findViewById(R.id.recyclerViewItems)).getAdapter();
+            ReturnScanAdapter adapter = (ReturnScanAdapter) ((RecyclerView) findViewById(R.id.recyclerViewItems)).getAdapter();
             adapter.notifyDataSetChanged();
         });
     }
