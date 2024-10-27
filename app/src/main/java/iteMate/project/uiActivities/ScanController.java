@@ -39,7 +39,7 @@ public class ScanController {
      */
     public static synchronized ScanController getControllerInstance() {
         if (scanController == null) {
-            scanController = new ScanController();;
+            scanController = new ScanController();
         }
         return scanController;
     }

@@ -30,7 +30,6 @@ import iteMate.project.uiActivities.trackScreens.TrackEditActivity;
  */
 public class ScanItemFragment extends Fragment {
 
-    private String tagId;
     private final ItemController itemController = ItemController.getControllerInstance();
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ScanController scanController = ScanController.getControllerInstance();
@@ -49,8 +48,6 @@ public class ScanItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scan_item, container, false);
-
-        tagId = scanController.getNfcTagId();
 
         // Set item details for track card view
         view.findViewById(R.id.track_card_view_scan).setOnClickListener(v -> {
@@ -128,9 +125,5 @@ public class ScanItemFragment extends Fragment {
         });
 
         return view;
-    }
-
-    public void setNfcTagId(String tagId) {
-        this.tagId = tagId;
     }
 }
