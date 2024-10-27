@@ -60,12 +60,7 @@ public abstract class MainActivity extends AppCompatActivity {
 
         // Set up the menu button
         ImageButton menuButton = findViewById(R.id.menu_button);
-        menuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopupMenu(v);
-            }
-        });
+        menuButton.setOnClickListener(this::showPopupMenu);
 
         // Set up the scan button
         FloatingActionButton scanButton = findViewById(R.id.scan_button);
