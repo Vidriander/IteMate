@@ -33,7 +33,7 @@ public class ScanItemFragment extends Fragment {
     private String tagId;
     private final ItemController itemController = ItemController.getControllerInstance();
     private final TrackController trackController = TrackController.getControllerInstance();
-    private ScanController scanController = ScanController.getControllerInstance();
+    private final ScanController scanController = ScanController.getControllerInstance();
 
     public ScanItemFragment() {
         // Required empty public constructor
@@ -50,10 +50,7 @@ public class ScanItemFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scan_item, container, false);
 
-        // Get tag ID from arguments
-        if (getArguments() != null) {
-            tagId = getArguments().getString("tagId");
-        }
+        tagId = scanController.getNfcTagId();
 
         // Set item details for track card view
         view.findViewById(R.id.track_card_view_scan).setOnClickListener(v -> {
