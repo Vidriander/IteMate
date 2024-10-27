@@ -39,7 +39,7 @@ public class SelectContactActivity extends AppCompatActivity implements GenericR
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ContactRepository contactRepository = new ContactRepository();
-        contactRepository.getAllDocumentsFromFirestore(this);
+        contactRepository.getAllDocumentsFromDatabase(this);
 
         // Setting on click listener for save button
         findViewById(R.id.manageInnerItemsSavebutton).setOnClickListener(click -> {

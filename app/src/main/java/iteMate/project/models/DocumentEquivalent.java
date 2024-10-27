@@ -3,7 +3,7 @@ package iteMate.project.models;
 public interface DocumentEquivalent {
 
     /**
-     * Collection name in Firestore
+     * Collection name in database
      */
     String getCollectionPath();
 

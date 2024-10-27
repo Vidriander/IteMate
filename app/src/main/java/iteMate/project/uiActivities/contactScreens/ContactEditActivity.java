@@ -24,7 +24,7 @@ public class ContactEditActivity extends AppCompatActivity {
      */
     private static Contact contactToDisplay;
     /**
-     * ContactRepository to interact with Firestore
+     * ContactRepository to interact with database
      */
     private ContactRepository contactRepository;
 
@@ -102,18 +102,18 @@ public class ContactEditActivity extends AppCompatActivity {
             saveChangesToContact();
             Log.d("ContactEditActivity", "Saving changes to contact: " + contactToDisplay.toString());
 
-            // Add or update the contact in Firestore
+            // Add or update the contact in database
             if (contactToDisplay.getId() == null || contactToDisplay.getId().isEmpty()) {
-                contactRepository.addDocumentToFirestore(contactToDisplay);
+                contactRepository.addDocumentToDatabase(contactToDisplay);
             } else {
-                contactRepository.updateDocumentInFirestore(contactToDisplay);
+                contactRepository.updateDocumentInDatabase(contactToDisplay);
             }
             finish();
         });
 
         // on click listener for delete button
         findViewById(R.id.contact_edit_delete_btn).setOnClickListener(v -> {
-            contactRepository.deleteDocumentFromFirestore(contactToDisplay);
+            contactRepository.deleteDocumentFromDatabase(contactToDisplay);
             finish();
         });
     }

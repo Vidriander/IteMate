@@ -53,9 +53,9 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
         RecyclerView recyclerView = findViewById(R.id.manage_inner_items_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Fetch all items from Firestore
+        // Fetch all items from database
         ItemRepository itemRepository = new ItemRepository();
-        itemRepository.getAllDocumentsFromFirestore(this);
+        itemRepository.getAllDocumentsFromDatabase(this);
 
         // Setting up the adapter
         List<Item> itemsToDisplay = isContainedItems ? itemToDisplay.getContainedItems() : itemToDisplay.getAssociatedItems();

@@ -1,10 +1,7 @@
 package iteMate.project.controller;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
@@ -44,7 +41,7 @@ public class TrackController {
     }
 
     /**
-     * Updates the current object with the given track and saves it to Firestore
+     * Updates the current object with the given track and saves it to database
      * @param track the track to be saved
      */
     public void saveChangesToDatabase(Track track) {
@@ -52,9 +49,9 @@ public class TrackController {
         String trackId = currentTrack.getId();
 
         if (trackId == null || trackId.isEmpty()) {
-            trackRepository.addDocumentToFirestore(getCurrentTrack());
+            trackRepository.addDocumentToDatabase(getCurrentTrack());
         } else {
-            trackRepository.updateDocumentInFirestore(getCurrentTrack());
+            trackRepository.updateDocumentInDatabase(getCurrentTrack());
         }
     }
 
@@ -86,7 +83,7 @@ public class TrackController {
      */
     public void getLendableItemsList(GenericRepository.OnDocumentsFetchedListener<Item> listener) {
         List<Item> lendableItems = new ArrayList<>();
-        itemRepository.getAllAvailableItemsFromFirestore(new GenericRepository.OnDocumentsFetchedListener<Item>() {
+        itemRepository.getAllAvailableItemsFromDatabase(new GenericRepository.OnDocumentsFetchedListener<Item>() {
             @Override
             public void onDocumentFetched(Item document) {
             }
@@ -125,12 +122,12 @@ public class TrackController {
     }
 
     /**
-     * Fetches the track with the given ID from Firestore
+     * Fetches the track with the given ID from database
      * @param trackID the ID of the track to be fetched
      * @param listener listener that is notified when the track is ready
      */
-    public void fetchTrackFromFirestore(String trackID, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
-        trackRepository.getOneDocumentFromFirestore(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
+    public void fetchTrackFromDatabase(String trackID, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
+        trackRepository.getOneDocumentFromDatabase(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
             @Override
             public void onDocumentFetched(Track track) {
                 track.setId(trackID);

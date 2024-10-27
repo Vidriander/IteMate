@@ -25,7 +25,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
     protected Class<T> tClass;
 
     public GenericRepository(Class<T> tClass) {
-        // Initialize Firestore
+        // Initialize Firestore as the database
         db = FirebaseFirestore.getInstance();
         // remember the class of the document
         this.tClass = tClass;
@@ -45,7 +45,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      * @param documentId the ID of the document to be fetched
      * @param listener   the listener to be called when the document is fetched
      */
-    public void getOneDocumentFromFirestore(String documentId, OnDocumentsFetchedListener<T> listener) {
+    public void getOneDocumentFromDatabase(String documentId, OnDocumentsFetchedListener<T> listener) {
         try {
             db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(documentId)
                     .get()
@@ -68,7 +68,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param listener the listener to be called when the documents are fetched
      */
-    public void getAllDocumentsFromFirestore(OnDocumentsFetchedListener<T> listener) {
+    public void getAllDocumentsFromDatabase(OnDocumentsFetchedListener<T> listener) {
         try {
             db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath())
                     .get()
@@ -96,7 +96,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param element the document to be added
      */
-    public void addDocumentToFirestore(T element) {
+    public void addDocumentToDatabase(T element) {
         db.collection(element.getCollectionPath())
                 .add(element)
                 .addOnSuccessListener(documentReference ->
@@ -112,7 +112,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param document the document to be updated
      */
-    public void updateDocumentInFirestore(T document) {
+    public void updateDocumentInDatabase(T document) {
         try {
             db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(document.getId())
                     .set(document)
@@ -134,7 +134,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param document the document to be deleted
      */
-    public void deleteDocumentFromFirestore(T document) {
+    public void deleteDocumentFromDatabase(T document) {
         try {
             db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(document.getId())
                     .delete()

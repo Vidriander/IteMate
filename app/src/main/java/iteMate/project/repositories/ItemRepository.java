@@ -8,7 +8,7 @@ import iteMate.project.models.Item;
 
 /**
  * Repository class for items
- * This class is responsible for handling all interactions with Firestore
+ * This class is responsible for handling all interactions with database items
  * It contains methods for adding, fetching, deleting and updating items
  */
 public class ItemRepository extends GenericRepository<Item> {
@@ -25,7 +25,7 @@ public class ItemRepository extends GenericRepository<Item> {
      * @param nfcTag the NFC tag of the item
      * @param listener the listener to be called when the item is fetched
      */
-    public void getItemByNfcTagFromFirestore(String nfcTag, OnDocumentsFetchedListener<Item> listener) {
+    public void getItemByNfcTagFromDatabase(String nfcTag, OnDocumentsFetchedListener<Item> listener) {
         db.collection("items")
                 .whereEqualTo("nfcTag", nfcTag)
                 .get()
@@ -40,12 +40,12 @@ public class ItemRepository extends GenericRepository<Item> {
                         }
                         listener.onDocumentFetched(item);
                     } else {
-                        Log.w("Firestore", "Error fetching item by NFC tag", task.getException());
+                        Log.w("Database", "Error fetching item by NFC tag", task.getException());
                         listener.onDocumentFetched(null);
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Log.w("Firestore", "Error fetching item by NFC tag", e);
+                    Log.w("Database", "Error fetching item by NFC tag", e);
 //                    listener.onItemFetched(null);
                 });
     }
@@ -55,7 +55,7 @@ public class ItemRepository extends GenericRepository<Item> {
      * @param itemIDs list of item IDs
      * @return list of item objects
      */
-    private ArrayList<Item> getItemslistByListOfIDsFromFirestore(List<String> itemIDs) {
+    private ArrayList<Item> getItemslistByListOfIDsFromDatabase(List<String> itemIDs) {
         ArrayList<Item> items = new ArrayList<>();
         for (String itemID : itemIDs) {
             db.collection("items").document(itemID)
@@ -64,11 +64,11 @@ public class ItemRepository extends GenericRepository<Item> {
                         if (task.isSuccessful() && task.getResult() != null) {
                             Item item = task.getResult().toObject(Item.class);
                             if (item != null) {
-                                item.setId(task.getResult().getId()); // Set the Firestore document ID
+                                item.setId(task.getResult().getId()); // Set the database document ID
                                 items.add(item);
                             }
                         } else {
-                            Log.w("Firestore", "Error getting document: " + itemID, task.getException());
+                            Log.w("Database", "Error getting document: " + itemID, task.getException());
                         }
                     });
         }
@@ -78,7 +78,7 @@ public class ItemRepository extends GenericRepository<Item> {
     /**
      * Gets all available items from the database (items that are not in a track)
      */
-    public void getAllAvailableItemsFromFirestore(OnDocumentsFetchedListener<Item> listener) {
+    public void getAllAvailableItemsFromDatabase(OnDocumentsFetchedListener<Item> listener) {
         List<Item> items = new ArrayList<>();
         db.collection("items").whereEqualTo("activeTrackID", null) // Only get items that are not in a track
                 .get()
@@ -90,9 +90,9 @@ public class ItemRepository extends GenericRepository<Item> {
                             items.add(item);
                         }
                         listener.onDocumentsFetched(items);
-                        Log.w("Firestore", "Items fetched successfully!" + items);
+                        Log.w("Database", "Items fetched successfully!" + items);
                     } else {
-                        Log.w("Firestore", "Error getting documents.", task.getException());
+                        Log.w("Database", "Error getting documents.", task.getException());
                     }
                 });
     }
@@ -105,11 +105,11 @@ public class ItemRepository extends GenericRepository<Item> {
     public void setContainedAndAssociatedItems(Item item) {
         // Fetch contained items
         if (item.getContainedItemIDs() != null && !item.getContainedItemIDs().isEmpty()) {
-            item.setContainedItems(getItemslistByListOfIDsFromFirestore(item.getContainedItemIDs()));
+            item.setContainedItems(getItemslistByListOfIDsFromDatabase(item.getContainedItemIDs()));
         }
         // Fetch associated items
         if (item.getAssociatedItemIDs() != null && !item.getAssociatedItemIDs().isEmpty()) {
-            item.setAssociatedItems(getItemslistByListOfIDsFromFirestore(item.getAssociatedItemIDs()));
+            item.setAssociatedItems(getItemslistByListOfIDsFromDatabase(item.getAssociatedItemIDs()));
         }
     }
 

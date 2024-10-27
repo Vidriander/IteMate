@@ -50,7 +50,7 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
         contactAdapter = new ContactAdapter(contactList, this);
         recyclerViewContact.setAdapter(contactAdapter);
 
-        // Fetch contacts from Firestore DB
+        // Fetch contacts from DB
         fetchContacts();
 
         // Set up onClickListener for back button
@@ -90,11 +90,11 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
     }
 
     /**
-     * Fetch contacts from Firestore
+     * Fetch contacts from database
      */
     private void fetchContacts() {
-        Log.d("ContactActivity", "Fetching contacts from Firestore");
-        contactRepository.getAllDocumentsFromFirestore(this);
+        Log.d("ContactActivity", "Fetching contacts from Database");
+        contactRepository.getAllDocumentsFromDatabase(this);
     }
 
     /**

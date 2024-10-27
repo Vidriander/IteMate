@@ -43,8 +43,8 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         // Initialize TrackRepository
         trackRepository = new TrackRepository();
 
-        // Fetch tracks from Firestore
-        trackRepository.getAllDocumentsFromFirestore(this);
+        // Fetch tracks from Database
+        trackRepository.getAllDocumentsFromDatabase(this);
 
         // Initialize RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewTrack);
@@ -65,7 +65,7 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         // set up on refresh listener for pull to refresh
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutTracks);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            trackRepository.getAllDocumentsFromFirestore(this);
+            trackRepository.getAllDocumentsFromDatabase(this);
             swipeRefreshLayout.setRefreshing(false);
         });
 
@@ -134,7 +134,7 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
     @Override
     protected void onResume() {
         super.onResume();
-        trackRepository.getAllDocumentsFromFirestore(this);
+        trackRepository.getAllDocumentsFromDatabase(this);
     }
 
 

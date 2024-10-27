@@ -13,7 +13,7 @@ import java.util.List;
 public class Item implements DocumentEquivalent {
     // region Attributes
     /**
-     * Collection name in Firestore
+     * Collection name in database
      */
     private static final String collectionPath = "items";
 

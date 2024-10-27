@@ -207,7 +207,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
      * @param item    the item
      */
     private void fetchTrackByItemTrackID(String trackID, Item item) {
-        trackController.fetchTrackFromFirestore(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
+        trackController.fetchTrackFromDatabase(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
             @Override
             public void onDocumentFetched(Track track) {
                 trackController.setCurrentTrack(track);

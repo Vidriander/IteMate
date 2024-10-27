@@ -9,7 +9,7 @@ import android.os.Parcelable;
 public class Contact implements Parcelable, DocumentEquivalent {
 
     /**
-     * Collection name in Firestore
+     * Collection name in database
      */
     private static final String collectionPath = "contacts";
 

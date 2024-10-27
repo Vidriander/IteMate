@@ -10,13 +10,13 @@ import java.util.Date;
 
 /**
  * Track class to store detail of a lend out item.
- * All attributes that should not be stored in Firestore are annotated with @Exclude (their getters are annotated)
+ * All attributes that should not be stored in databasee are annotated with @Exclude (their getters are annotated)
  */
 public class Track implements DocumentEquivalent {
     // region Attributes
 
     /**
-     * Collection name in Firestore
+     * Collection name in database
      */
     private static final String collectionPath = "tracks";
 

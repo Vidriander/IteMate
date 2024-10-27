@@ -2,10 +2,8 @@ package iteMate.project.repositories;
 
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -31,7 +29,7 @@ public class TrackRepository extends GenericRepository<Track> {
     }*/
 
     /**
-     * Fetches the attributes for a track from Firestore
+     * Fetches the attributes for a track from database
      * @param track the track for which the attributes are to be fetched
      */
     public void fetchAttributesForTrack(Track track, OnDocumentsFetchedListener<Track> listener) {
@@ -93,10 +91,10 @@ public class TrackRepository extends GenericRepository<Track> {
     }
 
     @Override
-    public void addDocumentToFirestore(Track track) {
+    public void addDocumentToDatabase(Track track) {
         db.collection("tracks").add(track).addOnSuccessListener(documentReference -> {
             String documentId = documentReference.getId();
-            new ItemRepository().getAllDocumentsFromFirestore(new OnDocumentsFetchedListener<Item>() {
+            new ItemRepository().getAllDocumentsFromDatabase(new OnDocumentsFetchedListener<Item>() {
                 @Override
                 public void onDocumentFetched(Item document) {
                     // Do nothing
@@ -106,7 +104,7 @@ public class TrackRepository extends GenericRepository<Track> {
                     for (Item item : documents) {
                         if (track.getPendingItemIDs().contains(item.getId())) {
                             item.setActiveTrackID(documentId);
-                            new ItemRepository().updateDocumentInFirestore(item);
+                            new ItemRepository().updateDocumentInDatabase(item);
                         }
                     }
                 }

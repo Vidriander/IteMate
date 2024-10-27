@@ -23,10 +23,10 @@ public class ScanUtils {
     }
 
     public static void fetchItemByNfcTagId(String tagId, GenericRepository.OnDocumentsFetchedListener<Item> listener) {
-        itemRepository.getItemByNfcTagFromFirestore(tagId, listener);
+        itemRepository.getItemByNfcTagFromDatabase(tagId, listener);
     }
 
     public static void fetchTrackByItemTrackID(String trackID, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
-        trackRepository.getOneDocumentFromFirestore(trackID, listener);
+        trackRepository.getOneDocumentFromDatabase(trackID, listener);
     }
 }

@@ -104,9 +104,9 @@ public class ItemController {
      */
     public void saveChangesToDatabase() {
         if (Objects.equals(currentItem.getId(), null) || currentItem.getId().isEmpty()) {
-            itemRepository.addDocumentToFirestore(currentItem);
+            itemRepository.addDocumentToDatabase(currentItem);
         } else {
-            itemRepository.updateDocumentInFirestore(currentItem);
+            itemRepository.updateDocumentInDatabase(currentItem);
         }
     }
 
@@ -114,7 +114,7 @@ public class ItemController {
      * Deletes the current item from the database
      */
     public void deleteItemFromDatabase() {
-        itemRepository.deleteDocumentFromFirestore(currentItem);
+        itemRepository.deleteDocumentFromDatabase(currentItem);
     }
 
     /**
@@ -122,7 +122,7 @@ public class ItemController {
      * @param trackListener listener that is notified when the track is ready
      */
     public void getTrackOfCurrentItem(GenericRepository.OnDocumentsFetchedListener<Track> trackListener) {
-        trackRepository.getOneDocumentFromFirestore(currentItem.getActiveTrackID(), new GenericRepository.OnDocumentsFetchedListener<Track>() {
+        trackRepository.getOneDocumentFromDatabase(currentItem.getActiveTrackID(), new GenericRepository.OnDocumentsFetchedListener<Track>() {
             @Override
             public void onDocumentFetched(Track document) {
                 trackListener.onDocumentFetched(document);
@@ -135,7 +135,7 @@ public class ItemController {
     }
 
     public void fetchItemByNfcTagId(String nfcTagId, GenericRepository.OnDocumentsFetchedListener<Item> listener) {
-        itemRepository.getItemByNfcTagFromFirestore(nfcTagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
+        itemRepository.getItemByNfcTagFromDatabase(nfcTagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
             @Override
             public void onDocumentFetched(Item document) {
                 listener.onDocumentFetched(document);
@@ -150,7 +150,7 @@ public class ItemController {
      * Fetches all items from database and sets the current item list
      */
     public void refreshCurrentItemList() {
-        itemRepository.getAllDocumentsFromFirestore(new GenericRepository.OnDocumentsFetchedListener<Item>() {
+        itemRepository.getAllDocumentsFromDatabase(new GenericRepository.OnDocumentsFetchedListener<Item>() {
             @Override
             public void onDocumentFetched(Item document) {
             }
