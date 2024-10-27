@@ -51,7 +51,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         // Retrieve the list of items fro the controller
         listOfPendingItems = trackController.getCurrentTrack().getPendingItemsList();
         listOfReturnedItems = trackController.getCurrentTrack().getReturnedItemsList();
-        List<Item> listOfLentItems = new ArrayList<>(trackController.getCurrentTrack().getLentItemsList());
+        List<Item> listOfLentItems = trackController.getCurrentTrack().getLentItemsList();
 
         // Initialize the adapter and set it to the RecyclerView
         ReturnScanAdapter returnScanAdapter = new ReturnScanAdapter(listOfLentItems, this);
@@ -116,8 +116,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
                 itemController.setCurrentItem(item);
                 itemController.saveChangesToDatabase();
 
-                // Update the adapter with the new list
-                // itemAdapter.updateItems(new ArrayList<>(trackController.getCurrentTrack().getLentItemsList()));
+                updateAdapter();
 
                 // Inform the user
                 Toast.makeText(this, item.getTitle() + " was returned.", Toast.LENGTH_SHORT).show();
@@ -127,6 +126,8 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
                 Log.d("ReturnScanActivity", "Item not in Track");
             }
         }
+
+        updateAdapter();
     }
 
     @Override
