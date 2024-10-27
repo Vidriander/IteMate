@@ -1,7 +1,7 @@
 package iteMate.project.uiActivities.scanScreen;
 
-import static iteMate.project.uiActivities.ScanUtils.extractTagId;
-import static iteMate.project.uiActivities.ScanUtils.fetchItemByNfcTagId;
+import static iteMate.project.uiActivities.ScanController.extractTagId;
+import static iteMate.project.uiActivities.ScanController.fetchItemByNfcTagId;
 
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;

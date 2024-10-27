@@ -1,6 +1,6 @@
 package iteMate.project.uiActivities.scanScreen;
 
-import static iteMate.project.uiActivities.ScanUtils.extractTagId;
+import static iteMate.project.uiActivities.ScanController.extractTagId;
 
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
@@ -16,7 +16,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.R;
