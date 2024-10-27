@@ -117,10 +117,18 @@ public class TrackController {
         this.currentTrack = currentTrack;
     }
 
+    /**
+     * Resets the current object to null
+     */
     public void resetCurrentTrack() {
         currentTrack = null;
     }
 
+    /**
+     * Fetches the track with the given ID from Firestore
+     * @param trackID the ID of the track to be fetched
+     * @param listener listener that is notified when the track is ready
+     */
     public void fetchTrackFromFirestore(String trackID, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
         trackRepository.getOneDocumentFromFirestore(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
             @Override

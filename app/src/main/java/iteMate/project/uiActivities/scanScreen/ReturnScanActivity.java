@@ -118,7 +118,6 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
 
                 // Update the adapter with the new list
                 // itemAdapter.updateItems(new ArrayList<>(trackController.getCurrentTrack().getLentItemsList()));
-                //TODO discuss design
 
                 // Inform the user
                 Toast.makeText(this, item.getTitle() + " was returned.", Toast.LENGTH_SHORT).show();
