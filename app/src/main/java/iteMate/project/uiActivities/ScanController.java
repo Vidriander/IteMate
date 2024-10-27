@@ -2,6 +2,8 @@ package iteMate.project.uiActivities;
 
 import android.nfc.Tag;
 
+import java.util.List;
+
 import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
@@ -26,7 +28,7 @@ public class ScanController {
      * Constructor for ScanController
      * TODO make private for singleton
      */
-    public ScanController() {
+    private ScanController() {
         this.scanActivity = new ScanActivity();
         this.itemController = ItemController.getControllerInstance();
         this.trackController = TrackController.getControllerInstance();
@@ -45,6 +47,22 @@ public class ScanController {
     }
 
     /**
+     * Getter for the NFC tag ID
+     * @return the NFC tag ID
+     */
+    public String getNfcTagId() {
+        return tagId;
+    }
+
+    /**
+     * Setter for the NFC tag ID
+     * @param tagId NFC Tag of the item
+     */
+    public void setNfcTagId(String tagId) {
+        this.tagId = tagId;
+    }
+
+    /**
      * Extracts the tag ID from the tag
      * @param tag the tag to extract the ID from
      * @return the tag ID as a string
@@ -57,22 +75,6 @@ public class ScanController {
         }
         scanController.setNfcTagId(hexString.toString());
         return hexString.toString();
-    }
-
-    /**
-     * Setter for the NFC tag ID
-     * @param tagId NFC Tag of the item
-     */
-    public void setNfcTagId(String tagId) {
-        this.tagId = tagId;
-    }
-
-    /**
-     * Getter for the NFC tag ID
-     * @return the NFC tag ID
-     */
-    public String getNfcTagId() {
-        return tagId;
     }
 
     /**
@@ -91,5 +93,29 @@ public class ScanController {
      */
     public static void fetchTrackByItemTrackID(String trackID, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
         trackRepository.getOneDocumentFromDatabase(trackID, listener);
+    }
+
+    /**
+     * Handles the fetched item
+     * If the item is available and not in the lent items list, it will be added
+     * If the item is in the lent items list, it will be removed
+     *
+     * @param item The fetched item
+     */
+    public void handleItemFetched(Item item) {
+        if (item != null && item.getActiveTrackID() == null) {
+            List<Item> lendList = trackController.getCurrentTrack().getLentItemsList();
+            if (lendList.removeIf(lentItem -> lentItem.getId().equals(item.getId()))) {
+                // Item was removed
+            } else {
+                lendList.add(item);
+            }
+            trackController.getCurrentTrack().setLentItemsList(lendList);
+
+            if (!trackController.getCurrentTrack().getReturnedItemsList().contains(item)) {
+                trackController.getCurrentTrack().getPendingItemsList().add(item);
+            }
+            trackController.getCurrentTrack().setPendingItemsList(trackController.getCurrentTrack().getPendingItemsList());
+        }
     }
 }

@@ -22,6 +22,7 @@ import iteMate.project.R;
 import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
+import iteMate.project.uiActivities.ScanController;
 import iteMate.project.uiActivities.adapter.ReturnScanAdapter;
 
 /**
@@ -34,6 +35,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     private List<Item> listOfReturnedItems;
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ItemController itemController = ItemController.getControllerInstance();
+    private final ScanController scanController = ScanController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     @Override
     public void onTagDiscovered(Tag tag) {
         String tagId = extractTagId(tag);
+        scanController.setNfcTagId(tagId);
         handleTag(tagId);
         updateAdapter();
     }

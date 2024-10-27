@@ -20,6 +20,7 @@ import iteMate.project.R;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
+import iteMate.project.uiActivities.ScanController;
 import iteMate.project.uiActivities.adapter.ManageScanAdapter;
 
 /**
@@ -29,6 +30,7 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
 
     private NfcAdapter nfcAdapter;
     private final TrackController trackController = TrackController.getControllerInstance();
+    private final ScanController scanController = ScanController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
     @Override
     public void onTagDiscovered(Tag tag) {
         String tagId = extractTagId(tag);
+        scanController.setNfcTagId(tagId);
         fetchItemByNfcTagId(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
             @Override
             public void onDocumentFetched(Item item) {
@@ -112,19 +115,6 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
      * @param item The fetched item
      */
     public void handleItemFetched(Item item) {
-        if (item != null && item.getActiveTrackID() == null) {
-            List<Item> lendList = trackController.getCurrentTrack().getLentItemsList();
-            if (lendList.removeIf(lentItem -> lentItem.getId().equals(item.getId()))) {
-                // Item was removed
-            } else {
-                lendList.add(item);
-            }
-            trackController.getCurrentTrack().setLentItemsList(lendList);
-
-            if (!trackController.getCurrentTrack().getReturnedItemsList().contains(item)) {
-                trackController.getCurrentTrack().getPendingItemsList().add(item);
-            }
-            trackController.getCurrentTrack().setPendingItemsList(trackController.getCurrentTrack().getPendingItemsList());
-        }
+        scanController.handleItemFetched(item);
     }
 }

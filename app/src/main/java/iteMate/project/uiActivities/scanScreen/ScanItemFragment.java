@@ -58,18 +58,18 @@ public class ScanItemFragment extends Fragment {
 
         // Set on click listener for item card
         view.findViewById(R.id.item_card_view_scan).setOnClickListener(v -> {
+            Intent intent;
             if (trackController.getCurrentTrack() == null) {
                 // if no item exists, navigate to item edit screen and create new item
                 Item newItem = new Item();
                 newItem.setNfcTag(scanController.getNfcTagId());
-                Intent intent = new Intent(getActivity(), ItemsEditActivity.class);
                 itemController.setCurrentItem(newItem);
-                startActivity(intent);
+                intent = new Intent(getActivity(), ItemsEditActivity.class);
             } else {
                 // if item exists navigate to item detail screen to display item details
-                Intent intent = new Intent(getActivity(), ItemsDetailActivity.class);
-                startActivity(intent);
+                intent = new Intent(getActivity(), ItemsDetailActivity.class);
             }
+            startActivity(intent);
         });
 
         // Set on click listener for track card
