@@ -106,22 +106,25 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
 
     /**
      * Handles the fetched item
-     * If the item is already on the list, remove it from the lent list, otherwise add it
+     * If the item is available and not in the lent items list, it will be added
+     * If the item is in the lent items list, it will be removed
      *
      * @param item The fetched item
      */
     public void handleItemFetched(Item item) {
         if (item != null && item.getActiveTrackID() == null) {
             List<Item> lendList = trackController.getCurrentTrack().getLentItemsList();
-            boolean itemExists = lendList.stream().anyMatch(lentItem -> lentItem.getId().equals(item.getId()));
-            if (itemExists) {
-                lendList.removeIf(lentItem -> lentItem.getId().equals(item.getId()));
+            if (lendList.removeIf(lentItem -> lentItem.getId().equals(item.getId()))) {
+                // Item was removed
             } else {
                 lendList.add(item);
             }
             trackController.getCurrentTrack().setLentItemsList(lendList);
-            // TODO Update the lent items list and lent items in Firestore
+
+            if (!trackController.getCurrentTrack().getReturnedItemsList().contains(item)) {
+                trackController.getCurrentTrack().getPendingItemsList().add(item);
+            }
+            trackController.getCurrentTrack().setPendingItemsList(trackController.getCurrentTrack().getPendingItemsList());
         }
     }
-
 }
