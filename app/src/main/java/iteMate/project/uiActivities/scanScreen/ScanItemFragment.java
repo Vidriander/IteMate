@@ -19,6 +19,7 @@ import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
+import iteMate.project.uiActivities.ScanController;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsEditActivity;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
@@ -32,6 +33,7 @@ public class ScanItemFragment extends Fragment {
     private String tagId;
     private final ItemController itemController = ItemController.getControllerInstance();
     private final TrackController trackController = TrackController.getControllerInstance();
+    private ScanController scanController = ScanController.getControllerInstance();
 
     public ScanItemFragment() {
         // Required empty public constructor
@@ -65,7 +67,7 @@ public class ScanItemFragment extends Fragment {
             if (trackController.getCurrentTrack() == null) {
                 // if no item exists, navigate to item edit screen and create new item
                 Item newItem = new Item();
-                newItem.setNfcTag(tagId);
+                newItem.setNfcTag(scanController.getNfcTagId());
                 Intent intent = new Intent(getActivity(), ItemsEditActivity.class);
                 itemController.setCurrentItem(newItem);
                 startActivity(intent);

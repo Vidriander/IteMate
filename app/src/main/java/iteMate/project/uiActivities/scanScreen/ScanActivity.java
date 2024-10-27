@@ -24,6 +24,7 @@ import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
+import iteMate.project.uiActivities.ScanController;
 
 
 /**
@@ -33,6 +34,7 @@ import iteMate.project.repositories.GenericRepository;
 public class ScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
     private NfcAdapter nfcAdapter;
+    private ScanController scanController;
     private TrackController trackController;
     private ItemController itemController;
     private ScanItemFragment scanItemFragment;
@@ -46,6 +48,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         // initialize controller
         itemController = ItemController.getControllerInstance();
         trackController = TrackController.getControllerInstance();
+        scanController = ScanController.getControllerInstance();
 
         // on click listener for close button
         findViewById(R.id.close_nfcscan).setOnClickListener(v -> finish());
@@ -119,7 +122,9 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
         // extract the tag ID
         String tagId = extractTagId(tag);
+        scanController.setNfcTagId(tagId);
         Log.d("ScanActivity", "Tag ID: " + tagId);
+
 
         // fetch the item (and track) by the tag ID from the database
         fetchItemByNfcTagId(tagId);
