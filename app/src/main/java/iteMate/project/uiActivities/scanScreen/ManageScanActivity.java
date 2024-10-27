@@ -88,7 +88,7 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
         fetchItemByNfcTagId(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
             @Override
             public void onDocumentFetched(Item item) {
-                handleItemFetched(item);
+                scanController.handleItemFetched(item);
                 updateAdapter();
             }
 
@@ -105,16 +105,5 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
 
             }
         });
-    }
-
-    /**
-     * Handles the fetched item
-     * If the item is available and not in the lent items list, it will be added
-     * If the item is in the lent items list, it will be removed
-     *
-     * @param item The fetched item
-     */
-    public void handleItemFetched(Item item) {
-        scanController.handleItemFetched(item);
     }
 }

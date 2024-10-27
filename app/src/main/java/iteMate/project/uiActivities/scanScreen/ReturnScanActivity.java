@@ -5,8 +5,6 @@ import static iteMate.project.uiActivities.ScanController.extractTagId;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.uiActivities.ScanController;
@@ -34,7 +31,6 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     private List<Item> listOfPendingItems;
     private List<Item> listOfReturnedItems;
     private final TrackController trackController = TrackController.getControllerInstance();
-    private final ItemController itemController = ItemController.getControllerInstance();
     private final ScanController scanController = ScanController.getControllerInstance();
 
     @Override
