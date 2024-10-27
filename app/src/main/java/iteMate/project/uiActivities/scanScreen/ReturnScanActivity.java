@@ -82,7 +82,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     public void onTagDiscovered(Tag tag) {
         String tagId = extractTagId(tag);
         scanController.setNfcTagId(tagId);
-        handleTag(tagId);
+        scanController.handleTag(tagId, listOfPendingItems, listOfReturnedItems, this, this::updateAdapter);
         updateAdapter();
     }
 
@@ -96,41 +96,6 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         });
     }
 
-    /**
-     * Updates the track with the given tagId
-     * @param tagId the tagId of the scanned NFC tag
-     */
-    private void handleTag(String tagId) {
-        for (Item item : listOfPendingItems) {
-            if (item.getNfcTag().equals(tagId)) {
-
-                // Remove the item from the pending list and add it to the returned list
-                listOfPendingItems.remove(item);
-                listOfReturnedItems.add(item);
-
-                // Update the track with the new lists
-                trackController.getCurrentTrack().setPendingItemsList(listOfPendingItems);
-                trackController.getCurrentTrack().setReturnedItemsList(listOfReturnedItems);
-                trackController.saveChangesToDatabase(trackController.getCurrentTrack());
-
-                // mark the item as returned
-                item.setActiveTrackID(null);
-                itemController.setCurrentItem(item);
-                itemController.saveChangesToDatabase();
-
-                updateAdapter();
-
-                // Inform the user
-                Toast.makeText(this, item.getTitle() + " was returned.", Toast.LENGTH_SHORT).show();
-                Log.d("ReturnScanActivity", "Item found and returned");
-                return; // Exit the loop once the item is found and processed
-            } else {
-                Log.d("ReturnScanActivity", "Item not in Track");
-            }
-        }
-
-        updateAdapter();
-    }
 
     @Override
     protected void onResume() {
