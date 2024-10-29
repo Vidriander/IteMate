@@ -26,7 +26,6 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<Track> trackList;
     private List<Track> searchList;
-    //private TrackRepository trackRepository;
     private final TrackController trackController = TrackController.getControllerInstance();
 
     @Override
@@ -129,8 +128,6 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         super.onResume();
         trackController.fetchAllTracksFromDatabase(this);
     }
-
-
 }
 
 
