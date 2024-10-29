@@ -3,6 +3,7 @@ package iteMate.project.uiActivities.itemScreens;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,8 +74,13 @@ public class ItemsEditActivity extends AppCompatActivity {
         // Setting on click listener for save button
         findViewById(R.id.item_edit_save).setOnClickListener(click -> {
             saveChangesToItem();
-            itemController.saveChangesToDatabase();
-            finish();
+            if (itemController.isReadyForUpload()) {
+                itemController.saveChangesToDatabase();
+                finish();
+            } else {
+                Toast toast = Toast.makeText(this, "Please add at least a name to your item.", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         });
         // Setting on click listener for cancel button
         findViewById(R.id.item_edit_cancel).setOnClickListener(click -> {

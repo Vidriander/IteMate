@@ -99,6 +99,16 @@ public class ItemController {
     // endregion
 
     // region Item Database Management
+
+    /**
+     * Checks if the current item is ready for upload. Currently, an item is ready for upload if it has a title.
+     * @return true if the item is ready for upload, false otherwise
+     */
+    public boolean isReadyForUpload() {
+        return
+                currentItem.getTitle() != null && !currentItem.getTitle().isEmpty();
+    }
+
     /**
      * Saves the changes to the current item to the database
      */
