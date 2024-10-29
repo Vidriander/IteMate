@@ -1,7 +1,6 @@
 package iteMate.project.uiActivities.scanScreen;
 
 import static iteMate.project.controller.ScanController.extractNfcTagId;
-import static iteMate.project.controller.ScanController.fetchItemByNfcTagId;
 
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
@@ -19,7 +18,6 @@ import java.util.List;
 import iteMate.project.R;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
-import iteMate.project.repositories.GenericRepository;
 import iteMate.project.controller.ScanController;
 import iteMate.project.uiActivities.adapter.ManageScanAdapter;
 
@@ -85,9 +83,9 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
     public void onTagDiscovered(Tag tag) {
         String tagId = extractNfcTagId(tag);
         scanController.setNfcTagId(tagId);
-        fetchItemByNfcTagId(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
+        scanController.fetchItemByNfcTagId(tagId, new ScanController.OnItemFetchedListener() {
             @Override
-            public void onDocumentFetched(Item item) {
+            public void onItemFetched(Item item) {
                 scanController.toggleAddToLendList(item);
                 updateAdapter();
             }
@@ -98,11 +96,6 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
                     ManageScanAdapter adapter = (ManageScanAdapter) ((RecyclerView) findViewById(R.id.recyclerViewItems)).getAdapter();
                     adapter.notifyDataSetChanged();
                 });
-            }
-
-            @Override
-            public void onDocumentsFetched(List<Item> items) {
-
             }
         });
     }

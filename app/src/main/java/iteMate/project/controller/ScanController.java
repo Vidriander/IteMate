@@ -86,7 +86,7 @@ public class ScanController {
      * @param tagId    the NFC tag ID to search for
      * @param listener the listener to call when the item is fetched
      */
-    public static void fetchItemByNfcTagId(String tagId, GenericRepository.OnDocumentsFetchedListener<Item> listener) {
+    public void fetchItemByNfcTagId(String tagId, GenericRepository.OnDocumentsFetchedListener<Item> listener) {
         itemRepository.getItemByNfcTagFromDatabase(tagId, listener);
     }
 
@@ -110,7 +110,6 @@ public class ScanController {
     public void toggleAddToLendList(Item item) {
         if (item != null && item.getActiveTrackID() == null && trackController.getCurrentTrack().getReturnedItemIDs().isEmpty()) {
             List<Item> lendList = trackController.getCurrentTrack().getLentItemsList();
-
             // Toggle: If the item is in the lent list, remove it else add it
             if (lendList.removeIf(lentItem -> lentItem.getId().equals(item.getId()))) {
                 // Item was removed
@@ -174,4 +173,23 @@ public class ScanController {
             itemController.saveChangesToDatabase();
         }
     }
+
+    public interface OnItemFetchedListener {
+        void onItemFetched(Item item);
+    }
+
+    public void fetchItemByNfcTagId(String tagId, OnItemFetchedListener listener) {
+        itemRepository.getItemByNfcTagFromDatabase(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
+            @Override
+            public void onDocumentFetched(Item item) {
+                listener.onItemFetched(item);
+            }
+
+            @Override
+            public void onDocumentsFetched(List<Item> items) {
+                // No implementation needed
+            }
+        });
+    }
+
 }
