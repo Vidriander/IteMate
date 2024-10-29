@@ -144,11 +144,11 @@ public class ItemController {
         });
     }
 
-    public void fetchItemByNfcTagId(String nfcTagId, GenericRepository.OnDocumentsFetchedListener<Item> listener) {
+    public void fetchItemByNfcTagId(String nfcTagId, OnItemFetchedListener listener) {
         itemRepository.getItemByNfcTagFromDatabase(nfcTagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
             @Override
             public void onDocumentFetched(Item document) {
-                listener.onDocumentFetched(document);
+                listener.onItemFetched(document);
             }
             @Override
             public void onDocumentsFetched(List<Item> documents) {
@@ -170,6 +170,8 @@ public class ItemController {
             }
         });
     }
+
+
 
     public interface OnItemFetchedListener {
         void onItemFetched(Item item);

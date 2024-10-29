@@ -175,17 +175,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
      * @param tagId the NFC tag ID
      */
     private void fetchItemByNfcTagId(String tagId) {
-        itemController.fetchItemByNfcTagId(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
-            @Override
-            public void onDocumentFetched(Item item) {
-                handleItemFetched(item);
-            }
-
-            @Override
-            public void onDocumentsFetched(List<Item> item) {
-
-            }
-        });
+        itemController.fetchItemByNfcTagId(tagId, this::handleItemFetched);
     }
 
     /**
@@ -224,16 +214,11 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
      * @param trackID the track ID
      */
     private void fetchTrackByItemTrackID(String trackID) {
-        trackController.fetchTrackFromDatabase(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
+        trackController.fetchTrackFromDatabase(trackID, new TrackController.OnTrackFetchedListener() {
             @Override
-            public void onDocumentFetched(Track track) {
+            public void onTrackFetched(Track track) {
                 trackController.setCurrentTrack(track);
                 updateTrackCardView(track);
-            }
-
-            @Override
-            public void onDocumentsFetched(List<Track> documents) {
-                // pass
             }
         });
     }

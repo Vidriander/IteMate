@@ -81,26 +81,6 @@ public class ScanController {
     }
 
     /**
-     * Fetches the item from the database by the NFC tag ID
-     *
-     * @param tagId    the NFC tag ID to search for
-     * @param listener the listener to call when the item is fetched
-     */
-    public void fetchItemByNfcTagId(String tagId, GenericRepository.OnDocumentsFetchedListener<Item> listener) {
-        itemRepository.getItemByNfcTagFromDatabase(tagId, listener);
-    }
-
-    /**
-     * Fetches the track from the database by the item track ID
-     *
-     * @param trackID  the item track ID to search for
-     * @param listener the listener to call when the track is fetched
-     */
-    public static void fetchTrackByItemTrackID(String trackID, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
-        trackRepository.getOneDocumentFromDatabase(trackID, listener);
-    }
-
-    /**
      * Toggles Add / Remove from the lent items list
      * If the item is available and not in the lent items list, it will be added
      * If the item is in the lent items list, it will be removed

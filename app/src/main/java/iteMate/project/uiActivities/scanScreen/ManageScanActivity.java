@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
+import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.controller.ScanController;
@@ -29,6 +30,7 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
     private NfcAdapter nfcAdapter;
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ScanController scanController = ScanController.getControllerInstance();
+    private final ItemController itemController = ItemController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
     public void onTagDiscovered(Tag tag) {
         String tagId = extractNfcTagId(tag);
         scanController.setNfcTagId(tagId);
-        scanController.fetchItemByNfcTagId(tagId, new ScanController.OnItemFetchedListener() {
+        itemController.fetchItemByNfcTagId(tagId, new ItemController.OnItemFetchedListener() {
             @Override
             public void onItemFetched(Item item) {
                 scanController.toggleAddToLendList(item);

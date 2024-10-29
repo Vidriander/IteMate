@@ -126,17 +126,21 @@ public class TrackController {
      * @param trackID the ID of the track to be fetched
      * @param listener listener that is notified when the track is ready
      */
-    public void fetchTrackFromDatabase(String trackID, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
+    public void fetchTrackFromDatabase(String trackID, OnTrackFetchedListener listener) {
         trackRepository.getOneDocumentFromDatabase(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
             @Override
             public void onDocumentFetched(Track track) {
                 track.setId(trackID);
-                listener.onDocumentFetched(track);
+                listener.onTrackFetched(track);
             }
             @Override
             public void onDocumentsFetched(List<Track> tracks) {
             }
         });
+    }
+
+    public interface OnTrackFetchedListener {
+        void onTrackFetched(Track track);
     }
 
     // add methode to set availability of items
