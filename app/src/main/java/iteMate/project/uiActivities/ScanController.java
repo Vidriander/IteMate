@@ -102,26 +102,24 @@ public class ScanController {
     }
 
     /**
-     * Handles the fetched item
+     * Toggles the item in the lent items list
      * If the item is available and not in the lent items list, it will be added
      * If the item is in the lent items list, it will be removed
      *
      * @param item The fetched item
      */
-    public void handleItemFetched(Item item) {
-        if (item != null && item.getActiveTrackID() == null) {
+    public void toggleLendList(Item item) {
+        if (item != null && item.getActiveTrackID() == null && trackController.getCurrentTrack().getReturnedItemIDs().isEmpty()) {
             List<Item> lendList = trackController.getCurrentTrack().getLentItemsList();
+
+            // Toggle: If the item is in the lent list, remove it
             if (lendList.removeIf(lentItem -> lentItem.getId().equals(item.getId()))) {
                 // Item was removed
             } else {
                 lendList.add(item);
             }
             trackController.getCurrentTrack().setLentItemsList(lendList);
-
-            if (!trackController.getCurrentTrack().getReturnedItemsList().contains(item)) {
-                trackController.getCurrentTrack().getPendingItemsList().add(item);
-            }
-            trackController.getCurrentTrack().setPendingItemsList(trackController.getCurrentTrack().getPendingItemsList());
+            trackController.getCurrentTrack().setPendingItemsList(lendList);
         }
     }
 

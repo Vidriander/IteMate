@@ -35,6 +35,8 @@ import iteMate.project.uiActivities.trackScreens.TrackEditActivity;
 /**
  * Activity for scanning NFC tags
  * It displays the scanned item and track.
+ *
+ * @Author: CHRIS
  */
 public class ScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 

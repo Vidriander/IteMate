@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 import iteMate.project.R;
 import iteMate.project.controller.ItemController;
+import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
@@ -53,7 +55,7 @@ public class ReturnScanAdapter extends RecyclerView.Adapter<ReturnScanAdapter.Vi
         Item item = items.get(position);
 
         // setting transparency of the cardview to signal that the item is lent / not available
-        if (item.getActiveTrackID() != null && !item.getActiveTrackID().isEmpty()) {
+        if (item.getActiveTrackID() != null && Objects.equals(item.getActiveTrackID(), TrackController.getControllerInstance().getCurrentTrack().getId())) {
             // show item if it is lent
             holder.cardView.setAlpha(1f);
         } else {

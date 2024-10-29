@@ -88,7 +88,7 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
         fetchItemByNfcTagId(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
             @Override
             public void onDocumentFetched(Item item) {
-                scanController.handleItemFetched(item);
+                scanController.toggleLendList(item);
                 updateAdapter();
             }
 
