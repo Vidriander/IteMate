@@ -13,4 +13,5 @@
     <color name="delete_button_red">#F44336</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="transparent_grey">#95070707</color>
+    <color name="default_color_secondary_copy">#FF49454F</color>
 </resources>

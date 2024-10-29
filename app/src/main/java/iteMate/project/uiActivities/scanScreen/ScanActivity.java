@@ -270,7 +270,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
         cardSubContent.setText("");
         ImageView cardImage = itemCardView.findViewById(R.id.itemcard_image_scan);
-        cardImage.setImageResource(R.drawable.error_image);
+        cardImage.setImageResource(R.drawable.baseline_add_circle_outline_24);
         hideButtons();
     }
 
