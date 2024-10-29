@@ -6,8 +6,12 @@ import iteMate.project.repositories.GenericRepository;
 
 public class ContactController {
 
+    /**
+     * Singleton instance of the ContactController
+     */
     public static ContactController contactController;
 
+    private Contact currentContact;
     private final ContactRepository contactRepository;
 
     private ContactController() {
@@ -19,6 +23,14 @@ public class ContactController {
             contactController = new ContactController();
         }
         return contactController;
+    }
+
+    public void setCurrentContact(Contact currentContact) {
+        this.currentContact = currentContact;
+    }
+
+    public Contact getCurrentContact() {
+        return currentContact;
     }
 
     public void fetchAllContactsFromDatabase(GenericRepository.OnDocumentsFetchedListener<Contact> listener) {

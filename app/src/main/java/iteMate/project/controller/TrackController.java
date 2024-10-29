@@ -20,7 +20,6 @@ public class TrackController {
      * The current object that is being displayed or edited
      */
     private Track currentTrack;
-
     private final TrackRepository trackRepository;
     private final ItemRepository itemRepository;
 
@@ -41,6 +40,26 @@ public class TrackController {
     }
 
     /**
+     * Sets the current object
+     * @param currentTrack the object to be set as current
+     * @throws NullPointerException if the object is null
+     */
+    public void setCurrentTrack(Track currentTrack) throws NullPointerException {
+        if (currentTrack == null) {
+            throw new NullPointerException("Current object cannot be null");
+        }
+        this.currentTrack = currentTrack;
+    }
+
+    /**
+     * Returns the current object
+     * @return the current object
+     */
+    public Track getCurrentTrack() {
+        return currentTrack;
+    }
+
+    /**
      * Updates the current object with the given track and saves it to database
      * @param track the track to be saved
      */
@@ -53,14 +72,6 @@ public class TrackController {
         } else {
             trackRepository.updateDocumentInDatabase(getCurrentTrack());
         }
-    }
-
-    /**
-     * Returns the current object
-     * @return the current object
-     */
-    public Track getCurrentTrack() {
-        return currentTrack;
     }
 
     /**
@@ -102,17 +113,6 @@ public class TrackController {
         });
     }
 
-    /**
-     * Sets the current object
-     * @param currentTrack the object to be set as current
-     * @throws NullPointerException if the object is null
-     */
-    public void setCurrentTrack(Track currentTrack) throws NullPointerException {
-        if (currentTrack == null) {
-            throw new NullPointerException("Current object cannot be null");
-        }
-        this.currentTrack = currentTrack;
-    }
 
     /**
      * Resets the current object to null
