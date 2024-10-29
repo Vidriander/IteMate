@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.R;
+import iteMate.project.controller.ContactController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Contact;
-import iteMate.project.repositories.ContactRepository;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.uiActivities.adapter.SelectContactAdapter;
 
@@ -21,6 +21,8 @@ public class SelectContactActivity extends AppCompatActivity implements GenericR
      * Adapter that will be used to display the contacts
      */
     private SelectContactAdapter adapter;
+
+    private ContactController contactController = ContactController.getControllerInstance();
 
     /**
      * List of all Contacts
@@ -38,8 +40,7 @@ public class SelectContactActivity extends AppCompatActivity implements GenericR
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ContactRepository contactRepository = new ContactRepository();
-        contactRepository.getAllDocumentsFromDatabase(this);
+        contactController.fetchAllContactsFromDatabase(this);
 
         // Setting on click listener for save button
         findViewById(R.id.manageInnerItemsSavebutton).setOnClickListener(click -> {
