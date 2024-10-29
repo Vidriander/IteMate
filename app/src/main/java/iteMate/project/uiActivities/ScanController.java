@@ -166,4 +166,8 @@ public class ScanController {
         }
         updateAdapter.run();
     }
+
+    public void resetCurrentScan() {
+        tagId = "";
+    }
 }
