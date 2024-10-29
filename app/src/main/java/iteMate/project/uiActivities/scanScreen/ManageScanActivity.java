@@ -1,6 +1,6 @@
 package iteMate.project.uiActivities.scanScreen;
 
-import static iteMate.project.controller.ScanController.extractTagId;
+import static iteMate.project.controller.ScanController.extractNfcTagId;
 import static iteMate.project.controller.ScanController.fetchItemByNfcTagId;
 
 import android.nfc.NfcAdapter;
@@ -83,7 +83,7 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
 
     @Override
     public void onTagDiscovered(Tag tag) {
-        String tagId = extractTagId(tag);
+        String tagId = extractNfcTagId(tag);
         scanController.setNfcTagId(tagId);
         fetchItemByNfcTagId(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
             @Override

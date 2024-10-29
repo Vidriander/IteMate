@@ -1,6 +1,6 @@
 package iteMate.project.uiActivities.scanScreen;
 
-import static iteMate.project.controller.ScanController.extractTagId;
+import static iteMate.project.controller.ScanController.extractNfcTagId;
 
 import android.content.Intent;
 import android.nfc.NfcAdapter;
@@ -16,7 +16,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.R;
@@ -162,7 +161,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         scanController.resetCurrentScan();
 
         // extract the tag ID
-        String tagId = extractTagId(tag);
+        String tagId = extractNfcTagId(tag);
         scanController.setNfcTagId(tagId);
         Log.d("ScanActivity", "Tag ID: " + tagId);
 

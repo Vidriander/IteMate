@@ -1,9 +1,6 @@
 package iteMate.project.controller;
 
-import android.content.Context;
 import android.nfc.Tag;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +10,6 @@ import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.repositories.TrackRepository;
-import iteMate.project.uiActivities.scanScreen.ScanActivity;
 
 public class ScanController {
 
@@ -22,7 +18,6 @@ public class ScanController {
      */
     public static ScanController scanController;
 
-    private final ScanActivity scanActivity;
     private final ItemController itemController;
     private final TrackController trackController;
     private static final ItemRepository itemRepository = new ItemRepository();
@@ -34,7 +29,6 @@ public class ScanController {
      * TODO make private for singleton
      */
     private ScanController() {
-        this.scanActivity = new ScanActivity();
         this.itemController = ItemController.getControllerInstance();
         this.trackController = TrackController.getControllerInstance();
         this.tagId = "";
@@ -76,7 +70,7 @@ public class ScanController {
      * @param tag the tag to extract the ID from
      * @return the tag ID as a string
      */
-    public static String extractTagId(Tag tag) {
+    public static String extractNfcTagId(Tag tag) {
         byte[] tagId = tag.getId();
         StringBuilder hexString = new StringBuilder();
         for (byte b : tagId) {
@@ -107,7 +101,7 @@ public class ScanController {
     }
 
     /**
-     * Toggles the item in the lent items list
+     * Toggles Add / Remove from the lent items list
      * If the item is available and not in the lent items list, it will be added
      * If the item is in the lent items list, it will be removed
      *
@@ -126,48 +120,6 @@ public class ScanController {
             trackController.getCurrentTrack().setLentItemsList(lendList);
             trackController.getCurrentTrack().setPendingItemsList(lendList);
         }
-    }
-
-    /**
-     * Handles the tag
-     * If the tag is found in the pending items list, it will be removed and added to the returned items list
-     * If the tag is not found in the pending items list, a message will be displayed
-     *
-     * @param tagId               the tag ID to search for
-     * @param listOfPendingItems  the list of pending items
-     * @param listOfReturnedItems the list of returned items
-     * @param context             the context to display the message
-     * @param updateAdapter       the adapter to update
-     */
-    public void handleTag(String tagId, List<Item> listOfPendingItems, List<Item> listOfReturnedItems, Context context, Runnable updateAdapter) {
-        for (Item item : listOfPendingItems) {
-            if (item.getNfcTag().equals(tagId)) {
-
-                // Remove the item from the pending list and add it to the returned list
-                listOfPendingItems.remove(item);
-                listOfReturnedItems.add(item);
-
-                // Update the track with the new lists
-                trackController.getCurrentTrack().setPendingItemsList(listOfPendingItems);
-                trackController.getCurrentTrack().setReturnedItemsList(listOfReturnedItems);
-                trackController.saveChangesToDatabase(trackController.getCurrentTrack());
-
-                // mark the item as returned
-                item.setActiveTrackID(null);
-                itemController.setCurrentItem(item);
-                itemController.saveChangesToDatabase();
-
-                updateAdapter.run();
-
-                // Inform the user
-                Toast.makeText(context, item.getTitle() + " was returned.", Toast.LENGTH_SHORT).show();
-                Log.d("ReturnScanActivity", "Item found and returned");
-                return; // Exit the loop once the item is found and processed
-            } else {
-                Log.d("ReturnScanActivity", "Item not in Track");
-            }
-        }
-        updateAdapter.run();
     }
 
     public void resetCurrentScan() {

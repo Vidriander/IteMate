@@ -1,10 +1,12 @@
 package iteMate.project.uiActivities.scanScreen;
 
-import static iteMate.project.controller.ScanController.extractTagId;
+import static iteMate.project.controller.ScanController.extractNfcTagId;
 
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
+import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.controller.ScanController;
@@ -32,6 +35,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     private List<Item> listOfReturnedItems;
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ScanController scanController = ScanController.getControllerInstance();
+    private final ItemController itemController = ItemController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +81,29 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
 
     @Override
     public void onTagDiscovered(Tag tag) {
-        String tagId = extractTagId(tag);
+        String tagId = extractNfcTagId(tag);
         scanController.setNfcTagId(tagId);
-        scanController.handleTag(tagId, listOfPendingItems, listOfReturnedItems, this, this::updateAdapter);
+        handleTag(tagId);
         updateAdapter();
     }
+
+
+    public void handleTag(String tagId) {
+        for (Item item : listOfPendingItems) {
+            if (item.getNfcTag().equals(tagId)) {
+                itemController.setCurrentItem(item);
+                scanController.returnItem();
+                Toast.makeText(this, item.getTitle() + " was returned.", Toast.LENGTH_SHORT).show();
+                Log.d("ReturnScanActivity", "Item found and returned");
+                return; // Exit the loop once the item is found and processed
+            } else {
+                Toast.makeText(this, "Item not in Track", Toast.LENGTH_SHORT).show();
+            }
+        }
+        updateAdapter();
+    }
+
+
 
     /**
      * Updates the adapter with the new list of items
