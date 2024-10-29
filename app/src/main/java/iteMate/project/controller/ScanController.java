@@ -11,6 +11,9 @@ import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.repositories.TrackRepository;
 
+/**
+ * Controller for managing the scanning of NFC tags
+ */
 public class ScanController {
 
     /**
@@ -101,10 +104,19 @@ public class ScanController {
         }
     }
 
+    /**
+     * Resets the last scan
+     */
     public void resetCurrentScan() {
         tagId = "";
     }
 
+    /**
+     * Creates a new item with the given NFC tag ID
+     *
+     * @param nfcTagId the NFC tag ID
+     * @return the newly created item
+     */
     public Item createNewItem(String nfcTagId) {
         //TODO move to item controller?
         Item newItem = new Item();
@@ -113,6 +125,11 @@ public class ScanController {
         return newItem;
     }
 
+    /**
+     * Creates a new track
+     *
+     * @return the newly created track
+     */
     public Track createNewTrack() {
         //TODO move to track controller?
         Track newTrack = new Track();
@@ -120,8 +137,10 @@ public class ScanController {
         return newTrack;
     }
 
+    /**
+     * Lends the current item
+     */
     public void lendItem() {
-        //TODO move to track controller?
         if (itemController.getCurrentItem().isAvailable()) {
             // create new track
             scanController.createNewTrack();
@@ -140,6 +159,9 @@ public class ScanController {
         }
     }
 
+    /**
+     * Returns the current item
+     */
     public void returnItem() {
         Track currentTrack = trackController.getCurrentTrack();
         if (currentTrack != null) {
@@ -154,22 +176,10 @@ public class ScanController {
         }
     }
 
+    /**
+     * Listener for when an item is fetched
+     */
     public interface OnItemFetchedListener {
         void onItemFetched(Item item);
     }
-
-    public void fetchItemByNfcTagId(String tagId, OnItemFetchedListener listener) {
-        itemRepository.getItemByNfcTagFromDatabase(tagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
-            @Override
-            public void onDocumentFetched(Item item) {
-                listener.onItemFetched(item);
-            }
-
-            @Override
-            public void onDocumentsFetched(List<Item> items) {
-                // No implementation needed
-            }
-        });
-    }
-
 }
