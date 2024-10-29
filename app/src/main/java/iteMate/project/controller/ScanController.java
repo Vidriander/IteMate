@@ -1,14 +1,13 @@
-package iteMate.project.uiActivities;
+package iteMate.project.controller;
 
 import android.content.Context;
 import android.nfc.Tag;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import iteMate.project.controller.ItemController;
-import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
@@ -43,6 +42,7 @@ public class ScanController {
 
     /**
      * Returns the singleton instance of the ScanController
+     *
      * @return the singleton instance of the ScanController
      */
     public static synchronized ScanController getControllerInstance() {
@@ -54,6 +54,7 @@ public class ScanController {
 
     /**
      * Getter for the NFC tag ID
+     *
      * @return the NFC tag ID
      */
     public String getNfcTagId() {
@@ -62,6 +63,7 @@ public class ScanController {
 
     /**
      * Setter for the NFC tag ID
+     *
      * @param tagId NFC Tag of the item
      */
     public void setNfcTagId(String tagId) {
@@ -70,6 +72,7 @@ public class ScanController {
 
     /**
      * Extracts the tag ID from the tag
+     *
      * @param tag the tag to extract the ID from
      * @return the tag ID as a string
      */
@@ -85,7 +88,8 @@ public class ScanController {
 
     /**
      * Fetches the item from the database by the NFC tag ID
-     * @param tagId the NFC tag ID to search for
+     *
+     * @param tagId    the NFC tag ID to search for
      * @param listener the listener to call when the item is fetched
      */
     public static void fetchItemByNfcTagId(String tagId, GenericRepository.OnDocumentsFetchedListener<Item> listener) {
@@ -94,7 +98,8 @@ public class ScanController {
 
     /**
      * Fetches the track from the database by the item track ID
-     * @param trackID the item track ID to search for
+     *
+     * @param trackID  the item track ID to search for
      * @param listener the listener to call when the track is fetched
      */
     public static void fetchTrackByItemTrackID(String trackID, GenericRepository.OnDocumentsFetchedListener<Track> listener) {
@@ -108,11 +113,11 @@ public class ScanController {
      *
      * @param item The fetched item
      */
-    public void toggleLendList(Item item) {
+    public void toggleAddToLendList(Item item) {
         if (item != null && item.getActiveTrackID() == null && trackController.getCurrentTrack().getReturnedItemIDs().isEmpty()) {
             List<Item> lendList = trackController.getCurrentTrack().getLentItemsList();
 
-            // Toggle: If the item is in the lent list, remove it
+            // Toggle: If the item is in the lent list, remove it else add it
             if (lendList.removeIf(lentItem -> lentItem.getId().equals(item.getId()))) {
                 // Item was removed
             } else {
@@ -128,11 +133,11 @@ public class ScanController {
      * If the tag is found in the pending items list, it will be removed and added to the returned items list
      * If the tag is not found in the pending items list, a message will be displayed
      *
-     * @param tagId the tag ID to search for
-     * @param listOfPendingItems the list of pending items
+     * @param tagId               the tag ID to search for
+     * @param listOfPendingItems  the list of pending items
      * @param listOfReturnedItems the list of returned items
-     * @param context the context to display the message
-     * @param updateAdapter the adapter to update
+     * @param context             the context to display the message
+     * @param updateAdapter       the adapter to update
      */
     public void handleTag(String tagId, List<Item> listOfPendingItems, List<Item> listOfReturnedItems, Context context, Runnable updateAdapter) {
         for (Item item : listOfPendingItems) {
@@ -167,5 +172,54 @@ public class ScanController {
 
     public void resetCurrentScan() {
         tagId = "";
+    }
+
+    public Item createNewItem(String nfcTagId) {
+        //TODO move to item controller?
+        Item newItem = new Item();
+        newItem.setNfcTag(nfcTagId);
+        itemController.setCurrentItem(newItem);
+        return newItem;
+    }
+
+    public Track createNewTrack() {
+        //TODO move to track controller?
+        Track newTrack = new Track();
+        trackController.setCurrentTrack(newTrack);
+        return newTrack;
+    }
+
+    public void lendItem() {
+        //TODO move to track controller?
+        if (itemController.getCurrentItem().isAvailable()) {
+            // create new track
+            scanController.createNewTrack();
+
+            // add item to track (add item to track: setLendItemsList & setPendingItemsList)
+            List<Item> itemList = new ArrayList<>();
+            itemList.add(itemController.getCurrentItem());
+            trackController.getCurrentTrack().setLentItemsList(itemList);
+            trackController.getCurrentTrack().setPendingItemsList(itemList);
+
+            // set active trackID to item and mark as lent out
+            itemController.getCurrentItem().setActiveTrackID(trackController.getCurrentTrack().getId());
+
+            // open track edit activity
+            trackController.setCurrentTrack(trackController.getCurrentTrack());
+        }
+    }
+
+    public void returnItem() {
+        Track currentTrack = trackController.getCurrentTrack();
+        if (currentTrack != null) {
+            // remove item from pending list in the track & update track in database
+            currentTrack.getPendingItemIDs().remove(itemController.getCurrentItem().getId());
+            currentTrack.getReturnedItemIDs().add(itemController.getCurrentItem().getId());
+            trackController.saveChangesToDatabase(currentTrack);
+
+            // reset active track id in item & update item in database
+            itemController.getCurrentItem().setActiveTrackID(null);
+            itemController.saveChangesToDatabase();
+        }
     }
 }

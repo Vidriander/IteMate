@@ -1,6 +1,6 @@
 package iteMate.project.uiActivities.scanScreen;
 
-import static iteMate.project.uiActivities.ScanController.extractTagId;
+import static iteMate.project.controller.ScanController.extractTagId;
 
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
@@ -19,7 +19,7 @@ import java.util.List;
 import iteMate.project.R;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
-import iteMate.project.uiActivities.ScanController;
+import iteMate.project.controller.ScanController;
 import iteMate.project.uiActivities.adapter.ReturnScanAdapter;
 
 /**
@@ -46,6 +46,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Retrieve the list of items fro the controller
+        // TODO also move to controller class?
         listOfPendingItems = trackController.getCurrentTrack().getPendingItemsList();
         listOfReturnedItems = trackController.getCurrentTrack().getReturnedItemsList();
         List<Item> listOfLentItems = trackController.getCurrentTrack().getLentItemsList();

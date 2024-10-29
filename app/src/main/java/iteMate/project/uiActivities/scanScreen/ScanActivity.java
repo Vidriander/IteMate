@@ -1,6 +1,6 @@
 package iteMate.project.uiActivities.scanScreen;
 
-import static iteMate.project.uiActivities.ScanController.extractTagId;
+import static iteMate.project.controller.ScanController.extractTagId;
 
 import android.content.Intent;
 import android.nfc.NfcAdapter;
@@ -25,7 +25,7 @@ import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.uiActivities.ScanController;
+import iteMate.project.controller.ScanController;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsEditActivity;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
@@ -69,9 +69,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
             Intent intent;
             if (itemController.getCurrentItem() == null) {
                 // if no item exists, navigate to item edit screen and create new item
-                Item newItem = new Item();
-                newItem.setNfcTag(scanController.getNfcTagId());
-                itemController.setCurrentItem(newItem);
+                scanController.createNewItem(scanController.getNfcTagId());
                 intent = new Intent(this, ItemsEditActivity.class);
             } else {
                 // if item exists navigate to item detail screen to display item details
@@ -82,54 +80,25 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
 
         // Set on click listener for track card
         findViewById(R.id.track_card_view_scan).setOnClickListener(v -> {
-            Intent intent = new Intent(this, TrackDetailActivity.class);
             trackController.setCurrentTrack(trackController.getCurrentTrack());
+            Intent intent = new Intent(this, TrackDetailActivity.class);
             startActivity(intent);
         });
 
         // Set on click listener for lend button
         findViewById(R.id.lend_button).setOnClickListener(v -> {
+            scanController.lendItem();
+            Intent intent = new Intent(this, TrackEditActivity.class);
+            startActivity(intent);
 
-            if (itemController.getCurrentItem().isAvailable()) {
-                // create new track
-                Track track = new Track();
-
-                // add item to track (add item to track: setLendItemsList & setPendingItemsList)
-                List<Item> itemList = new ArrayList<>();
-                itemList.add(itemController.getCurrentItem());
-                track.setLentItemsList(itemList);
-                track.setPendingItemsList(itemList);
-
-                // set active trackID to item and mark as lent out
-                itemController.getCurrentItem().setActiveTrackID(track.getId());
-
-                // open track edit activity
-                trackController.setCurrentTrack(track);
-                Intent intent = new Intent(this, TrackEditActivity.class);
-                startActivity(intent);
-            }
         });
 
         // Set on click listener for return button
         findViewById(R.id.return_button).setOnClickListener(v -> {
-
-            Track currentTrack = trackController.getCurrentTrack();
-            if (currentTrack != null) {
-                // remove item from pending list in the track & update track in database
-                currentTrack.getPendingItemIDs().remove(itemController.getCurrentItem().getId());
-                currentTrack.getReturnedItemIDs().add(itemController.getCurrentItem().getId());
-                trackController.saveChangesToDatabase(currentTrack);
-
-                // reset active track id in item & update item in database
-                itemController.getCurrentItem().setActiveTrackID(null);
-                itemController.saveChangesToDatabase();
-
-                Toast.makeText(this, "Item returned", Toast.LENGTH_SHORT).show();
-
-                // reload fragment
-                Intent intent = new Intent(this, ScanActivity.class);
-                startActivity(intent);
-            }
+            scanController.returnItem();
+            Toast.makeText(this, "Item returned", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ScanActivity.class);
+            startActivity(intent);
         });
 
         // on click listener for close button
