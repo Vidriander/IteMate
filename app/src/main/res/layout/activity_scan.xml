@@ -176,15 +176,18 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/trackcard_numberofitems_scan"
+                        android:id="@+id/trackcard_scan_return_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="32dp"
-                        android:text="42"
+                        android:layout_marginStart="27dp"
+                        android:layout_marginEnd="131dp"
+                        android:layout_marginBottom="9dp"
+                        android:text="28.09.2000"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintStart_toEndOf="@+id/trackcard_daycounter_scan"
+                        app:layout_constraintTop_toBottomOf="@+id/trackcard_contactname_scan" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>

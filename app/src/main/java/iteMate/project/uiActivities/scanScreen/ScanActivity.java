@@ -16,15 +16,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import iteMate.project.R;
 import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
+import iteMate.project.controller.ScanController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.controller.ScanController;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsEditActivity;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
@@ -323,8 +324,8 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         cardContent.setText(track.getContact().getName());
         TextView cardSubContent = trackCardView.findViewById(R.id.trackcard_daycounter_scan);
         cardSubContent.setText(String.valueOf(track.getDaysLeft()));
-        TextView cardSubContent2 = trackCardView.findViewById(R.id.trackcard_numberofitems_scan);
-        cardSubContent2.setText(String.valueOf(track.getNumberOfItems()));
+        TextView cardSubContent2 = trackCardView.findViewById(R.id.trackcard_scan_return_date);
+        cardSubContent2.setText(new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(track.getReturnDate().toDate()));
     }
 
     /**

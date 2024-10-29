@@ -220,7 +220,6 @@ public class GenericRepository<T extends DocumentEquivalent> {
         return documents;
     }
 
-    // TODO: outsource to two separate external interfaces
     /**
      * Listener interface for fetching an single item
      */
