@@ -20,7 +20,6 @@ import iteMate.project.models.Item;
 import iteMate.project.R;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.repositories.TrackRepository;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 

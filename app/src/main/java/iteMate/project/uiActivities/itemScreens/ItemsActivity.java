@@ -17,8 +17,6 @@ import java.util.concurrent.TimeUnit;
 import iteMate.project.controller.ItemController;
 import iteMate.project.utils.SearchUtils;
 import iteMate.project.models.Item;
-import iteMate.project.repositories.GenericRepository;
-import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.adapter.ItemAdapter;
 import iteMate.project.R;
 import iteMate.project.uiActivities.MainActivity;
