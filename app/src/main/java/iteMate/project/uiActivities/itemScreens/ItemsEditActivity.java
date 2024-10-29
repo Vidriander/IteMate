@@ -134,6 +134,13 @@ public class ItemsEditActivity extends AppCompatActivity {
         // Setting the description
         description = findViewById(R.id.itemeditcard_itemdescription);
         description.setText(String.valueOf(itemToDisplay.getDescription()));
+
+        // setting visibility of the delete button
+        if (itemToDisplay.getId() != null) {
+            findViewById(R.id.item_edit_delete_btn).setVisibility(android.view.View.VISIBLE);
+        } else {
+            findViewById(R.id.item_edit_delete_btn).setVisibility(android.view.View.GONE);
+        }
     }
 
     private void saveChangesToItem() {
