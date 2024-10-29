@@ -265,12 +265,8 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
      * @param itemCardView the item card view
      */
     private void showCreateNewItemCard(CardView itemCardView) {
-        TextView cardContent = itemCardView.findViewById(R.id.itemcard_header_text_scan);
-        cardContent.setText("Create new item");
-        TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
-        cardSubContent.setText("");
         ImageView cardImage = itemCardView.findViewById(R.id.itemcard_image_scan);
-        cardImage.setImageResource(R.drawable.add_button);
+        cardImage.setImageResource(R.drawable.error_image);
         hideButtons();
     }
 
