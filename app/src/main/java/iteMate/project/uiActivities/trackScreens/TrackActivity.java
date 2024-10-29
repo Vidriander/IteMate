@@ -16,7 +16,6 @@ import iteMate.project.utils.SearchUtils;
 import iteMate.project.R;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
-import iteMate.project.repositories.TrackRepository;
 import iteMate.project.utils.SortUtils;
 import iteMate.project.uiActivities.adapter.TrackAdapter;
 import iteMate.project.uiActivities.MainActivity;
@@ -27,7 +26,7 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<Track> trackList;
     private List<Track> searchList;
-    private TrackRepository trackRepository;
+    //private TrackRepository trackRepository;
     private final TrackController trackController = TrackController.getControllerInstance();
 
     @Override
@@ -39,12 +38,6 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         trackList = new ArrayList<>();
         searchList = new ArrayList<>(trackList);
         searchList = SortUtils.defaultTrackSort(searchList);
-
-        // Initialize TrackRepository
-        trackRepository = new TrackRepository();
-
-        // Fetch tracks from Database
-        trackRepository.getAllDocumentsFromDatabase(this);
 
         // Initialize RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewTrack);
@@ -65,7 +58,7 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
         // set up on refresh listener for pull to refresh
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutTracks);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            trackRepository.getAllDocumentsFromDatabase(this);
+            trackController.fetchAllTracksFromDatabase(this);
             swipeRefreshLayout.setRefreshing(false);
         });
 
@@ -134,7 +127,7 @@ public class TrackActivity extends MainActivity implements GenericRepository.OnD
     @Override
     protected void onResume() {
         super.onResume();
-        trackRepository.getAllDocumentsFromDatabase(this);
+        trackController.fetchAllTracksFromDatabase(this);
     }
 
 

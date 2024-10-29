@@ -126,7 +126,7 @@ public class TrackController {
      * @param trackID the ID of the track to be fetched
      * @param listener listener that is notified when the track is ready
      */
-    public void fetchTrackFromDatabase(String trackID, OnTrackFetchedListener listener) {
+    public void fetchOneTrackFromDatabase(String trackID, OnTrackFetchedListener listener) {
         trackRepository.getOneDocumentFromDatabase(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
             @Override
             public void onDocumentFetched(Track track) {
@@ -137,6 +137,10 @@ public class TrackController {
             public void onDocumentsFetched(List<Track> tracks) {
             }
         });
+    }
+
+    public void fetchAllTracksFromDatabase(GenericRepository.OnDocumentsFetchedListener<Track> listener) {
+        trackRepository.getAllDocumentsFromDatabase(listener);
     }
 
     public interface OnTrackFetchedListener {

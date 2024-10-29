@@ -215,7 +215,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
      * @param trackID the track ID
      */
     private void fetchTrackByItemTrackID(String trackID) {
-        trackController.fetchTrackFromDatabase(trackID, new TrackController.OnTrackFetchedListener() {
+        trackController.fetchOneTrackFromDatabase(trackID, new TrackController.OnTrackFetchedListener() {
             @Override
             public void onTrackFetched(Track track) {
                 trackController.setCurrentTrack(track);
