@@ -10,9 +10,9 @@ public class ContactController {
      * Singleton instance of the ContactController
      */
     public static ContactController contactController;
-
-    private Contact currentContact;
     private final ContactRepository contactRepository;
+    private Contact currentContact;
+
 
     private ContactController() {
         this.contactRepository = new ContactRepository();

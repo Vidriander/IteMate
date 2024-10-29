@@ -389,6 +389,8 @@ public class Track implements DocumentEquivalent {
             pendingItemIDs.add(item.getId());
         }
         this.pendingItemsList = pendingItemsList;
+        // setting the active status, active = true if there are pending items
+        active = !pendingItemsList.isEmpty();
     }
 
     /**
@@ -433,6 +435,10 @@ public class Track implements DocumentEquivalent {
             throw new NullPointerException("AdditionalInfo cannot be null");
         }
         this.additionalInfo = additionalInfo;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     // endregion

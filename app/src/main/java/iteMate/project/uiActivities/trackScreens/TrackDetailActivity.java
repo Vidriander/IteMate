@@ -25,10 +25,10 @@ import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
 public class TrackDetailActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Track> {
 
-    private Track trackToDisplay;
-    private InnerItemsAdapter horizontalAdapter;
-    private List<Item> itemList;
     private final TrackController trackController = TrackController.getControllerInstance();
+    private InnerItemsAdapter horizontalAdapter;
+    private Track trackToDisplay;
+    private List<Item> itemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +104,9 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
             ((TextView) findViewById(R.id.returnDate_Text)).setText(sdf.format(trackToDisplay.getReturnDate().toDate()));
             // Setting the additional info
             ((TextView)findViewById(R.id.trackdetailcard_itemdescription)).setText(trackToDisplay.getAdditionalInfo());
+            // Setting the status of the track
+            String statusText = trackToDisplay.isActive() ? "Pending" : "Returned";
+            ((TextView)findViewById(R.id.lent_text)).setText(statusText);
 
         } else {
             Log.e("TrackDetailActivity", "trackToDisplay is null in setDetailViewContents");

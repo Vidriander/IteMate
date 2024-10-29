@@ -165,7 +165,7 @@ public class ScanController {
     public void returnItem() {
         Track currentTrack = trackController.getCurrentTrack();
         if (currentTrack != null) {
-            // remove item from pending list in the track & update track in database
+            // remove item from pending list in the track and add it to the returned list
             currentTrack.getPendingItemIDs().remove(itemController.getCurrentItem().getId());
             currentTrack.getReturnedItemIDs().add(itemController.getCurrentItem().getId());
             trackController.saveChangesToDatabase(currentTrack);
