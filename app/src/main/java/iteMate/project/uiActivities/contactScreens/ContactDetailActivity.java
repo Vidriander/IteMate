@@ -29,8 +29,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         contactToDisplay = getIntent().getParcelableExtra("contact");
 
         if(contactToDisplay == null) {
-            Log.e("ContactDetailActivity", "contactToDisplay is null");
-            finish(); // Close the activity if contactToDisplay is null
+            finish();
             return;
         }
         setDetailViewContents();

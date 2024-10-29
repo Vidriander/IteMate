@@ -2,8 +2,10 @@ package iteMate.project.controller;
 
 import iteMate.project.models.Contact;
 import iteMate.project.repositories.ContactRepository;
+import iteMate.project.repositories.GenericRepository;
 
 public class ContactController {
+
     public static ContactController contactController;
 
     private final ContactRepository contactRepository;
@@ -17,5 +19,9 @@ public class ContactController {
             contactController = new ContactController();
         }
         return contactController;
+    }
+
+    public void fetchAllContactsFromDatabase(GenericRepository.OnDocumentsFetchedListener<Contact> listener) {
+        contactRepository.getAllDocumentsFromDatabase(listener);
     }
 }

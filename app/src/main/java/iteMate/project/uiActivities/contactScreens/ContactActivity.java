@@ -2,7 +2,6 @@ package iteMate.project.uiActivities.contactScreens;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -13,12 +12,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import iteMate.project.controller.ContactController;
 import iteMate.project.utils.SearchUtils;
 import iteMate.project.models.Contact;
 import iteMate.project.repositories.GenericRepository;
 import iteMate.project.uiActivities.adapter.ContactAdapter;
 import iteMate.project.R;
-import iteMate.project.repositories.ContactRepository;
 
 /**
  * This class is the main activity for the Contact screen. It displays a list of contacts
@@ -29,15 +28,13 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
     private ContactAdapter contactAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<Contact> contactList;
-    private ContactRepository contactRepository;
+    private final ContactController contactController = ContactController.getControllerInstance();
+    //private ContactRepository contactRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
-
-        // Initialize ContactRepository
-        contactRepository = new ContactRepository();
 
         // Initialize RecyclerView
         RecyclerView recyclerViewContact = findViewById(R.id.recyclerViewContacts);
@@ -51,7 +48,7 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
         recyclerViewContact.setAdapter(contactAdapter);
 
         // Fetch contacts from DB
-        fetchContacts();
+        contactController.fetchAllContactsFromDatabase(this);
 
         // Set up onClickListener for back button
         findViewById(R.id.contact_back_button).setOnClickListener(v -> finish());
@@ -66,7 +63,7 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
         // Set up on refresh listener for swipeRefreshLayout
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutContacts);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            fetchContacts();
+            contactController.fetchAllContactsFromDatabase(this);
             swipeRefreshLayout.setRefreshing(false);
         });
 
@@ -90,14 +87,6 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
     }
 
     /**
-     * Fetch contacts from database
-     */
-    private void fetchContacts() {
-        Log.d("ContactActivity", "Fetching contacts from Database");
-        contactRepository.getAllDocumentsFromDatabase(this);
-    }
-
-    /**
      * Perform the search and update the contactList
      * @param query The search query
      */
@@ -111,7 +100,7 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
     @Override
     public void onResume() {
         super.onResume();
-        fetchContacts();
+        contactController.fetchAllContactsFromDatabase(this);
     }
 
     @Override
