@@ -33,6 +33,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     private NfcAdapter nfcAdapter;
     private List<Item> listOfPendingItems;
     private List<Item> listOfReturnedItems;
+    private ReturnScanAdapter returnScanAdapter;
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ScanController scanController = ScanController.getControllerInstance();
     private final ItemController itemController = ItemController.getControllerInstance();
@@ -56,7 +57,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         List<Item> listOfLentItems = trackController.getCurrentTrack().getLentItemsList();
 
         // Initialize the adapter and set it to the RecyclerView
-        ReturnScanAdapter returnScanAdapter = new ReturnScanAdapter(listOfLentItems, this);
+        returnScanAdapter = new ReturnScanAdapter(listOfLentItems, this);
         recyclerView.setAdapter(returnScanAdapter);
 
         // On click listener for the close button
@@ -84,37 +85,30 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         String tagId = extractNfcTagId(tag);
         scanController.setNfcTagId(tagId);
         handleTag(tagId);
-        updateAdapter();
-    }
 
+    }
 
     public void handleTag(String tagId) {
         for (Item item : listOfPendingItems) {
             if (item.getNfcTag().equals(tagId)) {
                 itemController.setCurrentItem(item);
                 scanController.returnItem();
-                Toast.makeText(this, item.getTitle() + " was returned.", Toast.LENGTH_SHORT).show();
-                Log.d("ReturnScanActivity", "Item found and returned");
+//                Toast.makeText(this, item.getTitle() + " was returned.", Toast.LENGTH_SHORT).show();
+//                Log.d("ReturnScanActivity", "Item found and returned");
+                updateAdapter();
                 return; // Exit the loop once the item is found and processed
             } else {
                 Toast.makeText(this, "Item not in Track", Toast.LENGTH_SHORT).show();
             }
         }
-        updateAdapter();
     }
-
-
 
     /**
      * Updates the adapter with the new list of items
      */
     private void updateAdapter() {
-        runOnUiThread(() -> {
-            ReturnScanAdapter adapter = (ReturnScanAdapter) ((RecyclerView) findViewById(R.id.recyclerViewItems)).getAdapter();
-            adapter.notifyDataSetChanged();
-        });
+        returnScanAdapter.setItems(trackController.getCurrentTrack().getLentItemsList());
     }
-
 
     @Override
     protected void onResume() {
