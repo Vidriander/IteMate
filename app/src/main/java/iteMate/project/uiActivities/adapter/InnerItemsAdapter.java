@@ -43,7 +43,6 @@ public class InnerItemsAdapter extends RecyclerView.Adapter<InnerItemsAdapter.Vi
         return new ViewHolder(view);
     }
 
-    // #TODO umschreiben - methode sehr lang!
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item item = items.get(position);

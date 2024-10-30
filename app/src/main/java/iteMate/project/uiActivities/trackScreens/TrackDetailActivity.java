@@ -20,13 +20,14 @@ import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
+import iteMate.project.uiActivities.adapter.TrackItemsAdapter;
 import iteMate.project.uiActivities.scanScreen.ReturnScanActivity;
 import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
 public class TrackDetailActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Track> {
 
     private final TrackController trackController = TrackController.getControllerInstance();
-    private InnerItemsAdapter horizontalAdapter;
+    private TrackItemsAdapter adapter;
     private Track trackToDisplay;
     private List<Item> itemList;
 
@@ -61,9 +62,9 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
 
         // Initialize RecyclerView  for horizontal list of items
         RecyclerView horizontalRecyclerView = findViewById(R.id.trackdetailview_lentitems_recyclerview);
-        horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        horizontalAdapter = new InnerItemsAdapter(itemList, this);
-        horizontalRecyclerView.setAdapter(horizontalAdapter);
+        horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new TrackItemsAdapter(itemList, this);
+        horizontalRecyclerView.setAdapter(adapter);
 
         // on click listener for back button
         findViewById(R.id.detailtrack_back_button).setOnClickListener(v -> finish());
@@ -125,7 +126,7 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
         trackToDisplay = document;
         itemList = document.getLentItemsList();
         Log.w("TrackDetailActivity", "LentItemList: " + itemList);
-        horizontalAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -140,6 +141,6 @@ public class TrackDetailActivity extends AppCompatActivity implements GenericRep
                 Log.d("TrackDetailActivity", "Added " + lendList.size() + " items to itemList");
             }
         }
-        horizontalAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 }
