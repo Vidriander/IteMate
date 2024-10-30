@@ -288,6 +288,15 @@ public class Track implements DocumentEquivalent {
     public String getId() {
         return id;
     }
+
+    /**
+     * Method to check if the track is done
+     * @return true if the track is done aka all items are returned / there are no pending items
+     */
+    @Exclude
+    public boolean isDone() {
+        return pendingItemsList.isEmpty();
+    }
     // endregion
 
     // region Setters

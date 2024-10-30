@@ -68,6 +68,10 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         }
         daysLeftString += daysLeftInt + "d";
         holder.daysLeft.setText(daysLeftString);
+        if (track.isDone()) {
+            holder.daysLeft.setText("✓");
+            holder.daysLeft.setTextColor(Color.GRAY);
+        }
 
         // Setting transparency of the cardview to signal if a track is done
         if (track.getPendingItemIDs() == null || track.getPendingItemIDs().isEmpty()) {
