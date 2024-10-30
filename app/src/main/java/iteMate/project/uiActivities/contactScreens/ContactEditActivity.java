@@ -3,6 +3,7 @@ package iteMate.project.uiActivities.contactScreens;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class ContactEditActivity extends AppCompatActivity {
      */
     private ContactRepository contactRepository;
 
+    private TextView title;
     /**
      * EditTexts for the contact's first name
      */
@@ -77,6 +79,7 @@ public class ContactEditActivity extends AppCompatActivity {
         }
 
         // Initialize EditTexts
+        title = findViewById(R.id.contact_editcard_title);
         firstName = findViewById(R.id.contact_edit_first_name);
         lastName = findViewById(R.id.contact_edit_last_name);
         street = findViewById(R.id.contact_edit_street);
@@ -123,6 +126,11 @@ public class ContactEditActivity extends AppCompatActivity {
      */
     private void setEditViewContents() {
         if (contactToDisplay != null) {
+            String titleText = contactToDisplay.getFirstName() + " " + contactToDisplay.getLastName();
+            if (titleText.trim().isEmpty()) {
+                titleText = "New Contact";
+            }
+            title.setText(titleText);
             firstName.setText(contactToDisplay.getFirstName());
             lastName.setText(contactToDisplay.getLastName());
             street.setText(contactToDisplay.getStreet());
