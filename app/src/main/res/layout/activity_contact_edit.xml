@@ -326,14 +326,17 @@
 
                 <Button
                     android:id="@+id/contact_edit_delete_btn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/delete_button_red"
+                    android:text="delete"
+                    app:cornerRadius="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="delete" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
 
