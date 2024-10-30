@@ -62,7 +62,8 @@ public class SortUtils {
      * @return List of tracks sorted by default
      */
     public static List<Track> defaultTrackSort(List<Track> trackList) {
-        return sortTracksByActiveState(sortTracksByLendOutDate(trackList));
+        List<Track> result =  sortTracksByActiveState(sortTracksByLendOutDate(trackList));
+        return result;
     }
 
     /**
@@ -76,7 +77,7 @@ public class SortUtils {
         List<Track> results = new ArrayList<>();
 
         for (Track track : trackList) {
-            if (track.isActive()) {
+            if (!track.isDone()) {
                 activeList.add(track);
             } else {
                 inactiveList.add(track);

@@ -295,7 +295,7 @@ public class Track implements DocumentEquivalent {
      */
     @Exclude
     public boolean isDone() {
-        return pendingItemsList.isEmpty();
+        return pendingItemIDs.isEmpty();
     }
     // endregion
 
