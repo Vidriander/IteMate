@@ -1,6 +1,7 @@
 package iteMate.project.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -95,6 +96,7 @@ public class SortUtils {
     public static List<Track> sortTracksByLendOutDate(List<Track> trackList) {
         List<Track> sortedList = new ArrayList<>(trackList);
         sortedList.sort(Comparator.comparing(Track::getGiveOutDate));
+        Collections.reverse(sortedList);
         return sortedList;
     }
     //endregion
