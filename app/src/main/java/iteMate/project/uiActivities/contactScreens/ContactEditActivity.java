@@ -134,7 +134,7 @@ public class ContactEditActivity extends AppCompatActivity {
             firstName.setText(contactToDisplay.getFirstName());
             lastName.setText(contactToDisplay.getLastName());
             street.setText(contactToDisplay.getStreet());
-            zip.setText(String.valueOf(contactToDisplay.getZip()));
+            zip.setText(contactToDisplay.getZip());
             city.setText(contactToDisplay.getCity());
             phone.setText(contactToDisplay.getPhone());
             email.setText(contactToDisplay.getEmail());
@@ -150,7 +150,7 @@ public class ContactEditActivity extends AppCompatActivity {
         contactToDisplay.setFirstName(firstName.getText().toString());
         contactToDisplay.setLastName(lastName.getText().toString());
         contactToDisplay.setStreet(street.getText().toString());
-        contactToDisplay.setZip(Integer.parseInt(zip.getText().toString()));
+        contactToDisplay.setZip(zip.getText().toString());
         contactToDisplay.setCity(city.getText().toString());
         contactToDisplay.setPhone(phone.getText().toString());
         contactToDisplay.setEmail(email.getText().toString());

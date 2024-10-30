@@ -24,8 +24,8 @@ public class Contact implements Parcelable, DocumentEquivalent {
     private String email;
     private String street;
     private String city;
-    private int zip;
-    private String ownerID;  // #TODO setter for ownerID
+    private String zip;
+    private String ownerID;
 
     // Default Constructor
     public Contact() {
@@ -34,7 +34,7 @@ public class Contact implements Parcelable, DocumentEquivalent {
     }
 
     // Constructor
-    public Contact(String firstName, String lastName, String phone, String email, String street, String city, int zip, String ownerID) {
+    public Contact(String firstName, String lastName, String phone, String email, String street, String city, String zip, String ownerID) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -82,7 +82,7 @@ public class Contact implements Parcelable, DocumentEquivalent {
         return city;
     }
 
-    public int getZip() {
+    public String getZip() {
         return zip;
     }
 
@@ -116,7 +116,7 @@ public class Contact implements Parcelable, DocumentEquivalent {
         this.city = city;
     }
 
-    public void setZip(int zip) {
+    public void setZip(String zip) {
         this.zip = zip;
     }
 
@@ -129,7 +129,7 @@ public class Contact implements Parcelable, DocumentEquivalent {
         email = in.readString();
         street = in.readString();
         city = in.readString();
-        zip = in.readInt();
+        zip = in.readString();
         ownerID = in.readString();
     }
 
@@ -159,7 +159,7 @@ public class Contact implements Parcelable, DocumentEquivalent {
         dest.writeString(email);
         dest.writeString(street);
         dest.writeString(city);
-        dest.writeInt(zip);
+        dest.writeString(zip);
         dest.writeString(ownerID);
     }
 
