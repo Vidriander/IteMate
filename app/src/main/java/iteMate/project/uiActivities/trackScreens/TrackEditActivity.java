@@ -148,6 +148,9 @@ public class TrackEditActivity extends AppCompatActivity {
     private void setDetailViewContents() {
         if (trackToDisplay != null) {
             String displayableName = trackToDisplay.getContact().getFirstName() + " " + trackToDisplay.getContact().getLastName();
+            if (displayableName.equals(" ")) {
+                displayableName = "Select Contact";
+            }
             // setting title
             ((TextView) findViewById(R.id.trackedit_title)).setText(displayableName);
             // setting "lent to" field & underline

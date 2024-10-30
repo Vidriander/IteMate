@@ -29,8 +29,8 @@ public class Contact implements Parcelable, DocumentEquivalent {
 
     // Default Constructor
     public Contact() {
-        firstName = "Select";
-        lastName = "Contact";
+        firstName = "";
+        lastName = "";
     }
 
     // Constructor
