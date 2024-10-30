@@ -139,6 +139,7 @@
                             android:layout_marginBottom="16dp"
                             android:background="@null"
                             android:hint="@string/new_item_add_title_hint"
+                            android:singleLine="true"
                             android:text="Titel"
                             android:textSize="24sp"
                             android:textStyle="bold"
