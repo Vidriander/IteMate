@@ -8,8 +8,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.PersistentCacheSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -21,6 +19,8 @@ import java.util.List;
 
 import iteMate.project.R;
 import iteMate.project.models.DocumentEquivalent;
+import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
+import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
 
 public class GenericRepository<T extends DocumentEquivalent> {
 

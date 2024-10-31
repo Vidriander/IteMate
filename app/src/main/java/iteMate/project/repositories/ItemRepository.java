@@ -5,6 +5,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import iteMate.project.models.Item;
+import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
+import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
 
 /**
  * Repository class for items

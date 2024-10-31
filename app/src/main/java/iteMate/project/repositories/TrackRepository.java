@@ -9,12 +9,14 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import iteMate.project.models.Contact;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
+import iteMate.project.repositories.listeners.Listener;
+import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
+import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
 
 /**
  * Repository class for tracks

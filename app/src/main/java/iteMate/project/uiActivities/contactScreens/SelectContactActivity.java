@@ -13,8 +13,7 @@ import iteMate.project.R;
 import iteMate.project.controller.ContactController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Contact;
-import iteMate.project.repositories.GenericRepository;
-import iteMate.project.repositories.OnMultipleDocumentsFetchedListener;
+import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
 import iteMate.project.uiActivities.adapter.SelectContactAdapter;
 
 public class SelectContactActivity extends AppCompatActivity implements OnMultipleDocumentsFetchedListener<Contact> {

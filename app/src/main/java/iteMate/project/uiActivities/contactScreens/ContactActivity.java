@@ -13,10 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.controller.ContactController;
-import iteMate.project.repositories.OnMultipleDocumentsFetchedListener;
+import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
 import iteMate.project.utils.SearchUtils;
 import iteMate.project.models.Contact;
-import iteMate.project.repositories.GenericRepository;
 import iteMate.project.uiActivities.adapter.ContactAdapter;
 import iteMate.project.R;
 

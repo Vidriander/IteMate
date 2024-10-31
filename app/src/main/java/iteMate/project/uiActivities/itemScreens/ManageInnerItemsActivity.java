@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import iteMate.project.R;
 import iteMate.project.controller.ItemController;
-import iteMate.project.repositories.OnMultipleDocumentsFetchedListener;
+import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
 import iteMate.project.utils.SearchUtils;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.ItemRepository;

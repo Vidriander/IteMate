@@ -2,7 +2,7 @@ package iteMate.project.controller;
 
 import iteMate.project.models.Contact;
 import iteMate.project.repositories.ContactRepository;
-import iteMate.project.repositories.OnMultipleDocumentsFetchedListener;
+import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
 
 public class ContactController {
 

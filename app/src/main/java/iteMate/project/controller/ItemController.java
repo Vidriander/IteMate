@@ -7,7 +7,7 @@ import java.util.Objects;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.ItemRepository;
-import iteMate.project.repositories.OnSingleDocumentFetchedListener;
+import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
 import iteMate.project.repositories.TrackRepository;
 
 /**
