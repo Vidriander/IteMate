@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.PersistentCacheSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -30,11 +32,10 @@ public class GenericRepository<T extends DocumentEquivalent> {
         // remember the class of the document
         this.tClass = tClass;
 
-        // Enable offline persistence
-/*        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setLocalCacheSettings(
-                        PersistentCacheSettings.newBuilder().build()  // Enables persistent disk storage
-                )
+/*        // Enable offline persistence
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                // Enables persistent disk storage
+                .setLocalCacheSettings(PersistentCacheSettings.newBuilder().build())
                 .build();
         db.setFirestoreSettings(settings);*/
     }
@@ -100,10 +101,10 @@ public class GenericRepository<T extends DocumentEquivalent> {
         db.collection(element.getCollectionPath())
                 .add(element)
                 .addOnSuccessListener(documentReference ->
-                    Log.d("Firestore", "Element added with ID: " + documentReference.getId())
+                        Log.d("Firestore", "Element added with ID: " + documentReference.getId())
                 )
                 .addOnFailureListener(e ->
-                    Log.w("Firestore", "Error adding item", e)
+                        Log.w("Firestore", "Error adding item", e)
                 );
     }
 
@@ -152,6 +153,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
     }
 
     // TODO: remove UI dependency
+
     /**
      * Sets an image for an ImageView from Firebase Storage
      *

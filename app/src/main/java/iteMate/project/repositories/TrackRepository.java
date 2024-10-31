@@ -115,7 +115,9 @@ public class TrackRepository extends GenericRepository<Track> {
 
     @Override
     protected Track manipulateResult(Track track, OnDocumentsFetchedListener<Track> listener) {
-        fetchAttributesForTrack(track, listener);
+        if (track != null) {
+            fetchAttributesForTrack(track, listener);
+        }
         return track;
     }
 
