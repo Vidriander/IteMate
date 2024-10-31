@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -23,11 +24,6 @@ public class TrackRepository extends GenericRepository<Track> {
         super(Track.class);
     }
 
-    /*@Override
-    public void updateDocumentInFirestore(Track track) {
-        db.collection("tracks").document(track.getId()).set(track);
-    }*/
-
     /**
      * Fetches the attributes for a track from database
      * @param track the track for which the attributes are to be fetched
@@ -42,7 +38,9 @@ public class TrackRepository extends GenericRepository<Track> {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
-                        Contact contact = task.getResult().toObject(Contact.class);
+                        DocumentSnapshot document = task.getResult();
+                        Contact contact = document.toObject(Contact.class);
+                        contact.setId(document.getId());
                         track.setContact(contact);
                     } else {
                         Log.w("Firestore", "Error getting contact.", task.getException());

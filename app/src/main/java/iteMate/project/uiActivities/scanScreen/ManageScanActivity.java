@@ -28,6 +28,7 @@ import iteMate.project.uiActivities.adapter.ManageScanAdapter;
 public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
 
     private NfcAdapter nfcAdapter;
+    ManageScanAdapter manageScanAdapter;
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ScanController scanController = ScanController.getControllerInstance();
     private final ItemController itemController = ItemController.getControllerInstance();
@@ -45,7 +46,7 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
 
         // Initialize the adapter and set it to the RecyclerView
         List<Item> listOfLentItems = trackController.getCurrentTrack().getLentItemsList();
-        ManageScanAdapter manageScanAdapter = new ManageScanAdapter(listOfLentItems, this);
+        manageScanAdapter = new ManageScanAdapter(listOfLentItems, this);
         recyclerView.setAdapter(manageScanAdapter);
 
         // On click listener for the close button
@@ -85,20 +86,9 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
     public void onTagDiscovered(Tag tag) {
         String tagId = extractNfcTagId(tag);
         scanController.setNfcTagId(tagId);
-        itemController.fetchItemByNfcTagId(tagId, new ItemController.OnItemFetchedListener() {
-            @Override
-            public void onItemFetched(Item item) {
-                scanController.toggleAddToLendList(item);
-                updateAdapter();
-            }
-
-            // Update the adapter with scanned item
-            private void updateAdapter() {
-                runOnUiThread(() -> {
-                    ManageScanAdapter adapter = (ManageScanAdapter) ((RecyclerView) findViewById(R.id.recyclerViewItems)).getAdapter();
-                    adapter.notifyDataSetChanged();
-                });
-            }
+        itemController.fetchItemByNfcTagId(tagId, item -> {
+            scanController.toggleAddToLendList(item);
+            manageScanAdapter.notifyDataSetChanged();
         });
     }
 }

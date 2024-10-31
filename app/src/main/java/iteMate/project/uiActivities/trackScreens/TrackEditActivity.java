@@ -122,7 +122,6 @@ public class TrackEditActivity extends AppCompatActivity {
             saveChangesToLocalTrack();
             if (trackController.isReadyForUpload()) {
 
-                // save track in database first to get its ID
                 trackController.saveChangesToDatabase(trackToDisplay);
 
                 finish();
@@ -135,6 +134,7 @@ public class TrackEditActivity extends AppCompatActivity {
         // setting on click listener for scan button
         FloatingActionButton scanButton = findViewById(R.id.scan_button_track_edit);
         scanButton.setOnClickListener(click -> {
+            saveChangesToLocalTrack();
             Intent intent = new Intent(this, ManageScanActivity.class);
             startActivity(intent);
         });

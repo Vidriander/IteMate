@@ -33,6 +33,7 @@ public class Contact implements Parcelable, DocumentEquivalent {
     public Contact() {
         firstName = "";
         lastName = "";
+        id = "";
     }
 
     // Constructor

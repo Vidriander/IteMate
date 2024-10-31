@@ -97,8 +97,8 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
 //                Log.d("ReturnScanActivity", "Item found and returned");
                 updateAdapter();
                 return; // Exit the loop once the item is found and processed
-            } else {
-                Toast.makeText(this, "Item not in Track", Toast.LENGTH_SHORT).show();
+            } else { // TODO move out of loop!
+//                Toast.makeText(this, "Item not in Track", Toast.LENGTH_SHORT).show();
             }
         }
     }
