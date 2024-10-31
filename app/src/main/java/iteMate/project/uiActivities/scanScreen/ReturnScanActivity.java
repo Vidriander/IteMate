@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import iteMate.project.R;
 import iteMate.project.controller.ItemController;
@@ -34,6 +35,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     private List<Item> listOfPendingItems;
     private List<Item> listOfReturnedItems;
     private ReturnScanAdapter returnScanAdapter;
+    private RecyclerView recyclerView;
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ScanController scanController = ScanController.getControllerInstance();
     private final ItemController itemController = ItemController.getControllerInstance();
@@ -47,7 +49,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         initializeNfcAdapter();
 
         // Initialize RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewItems);
+        recyclerView = findViewById(R.id.recyclerViewItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Retrieve the list of items fro the controller
@@ -85,7 +87,6 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         String tagId = extractNfcTagId(tag);
         scanController.setNfcTagId(tagId);
         handleTag(tagId);
-
     }
 
     public void handleTag(String tagId) {
@@ -93,21 +94,15 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
             if (item.getNfcTag().equals(tagId)) {
                 itemController.setCurrentItem(item);
                 scanController.returnItem();
-//                Toast.makeText(this, item.getTitle() + " was returned.", Toast.LENGTH_SHORT).show();
-//                Log.d("ReturnScanActivity", "Item found and returned");
-                updateAdapter();
-                return; // Exit the loop once the item is found and processed
-            } else { // TODO move out of loop!
-//                Toast.makeText(this, "Item not in Track", Toast.LENGTH_SHORT).show();
+                // Run the UI update on the main thread
+                runOnUiThread(() -> {
+                    returnScanAdapter.notifyDataSetChanged(); // Or refreshAdapter() if necessary
+                    Toast.makeText(this, item.getTitle() + " was returned.", Toast.LENGTH_LONG).show();
+                });
+                return;
             }
         }
-    }
-
-    /**
-     * Updates the adapter with the new list of items
-     */
-    private void updateAdapter() {
-        returnScanAdapter.setItems(trackController.getCurrentTrack().getLentItemsList());
+        Toast.makeText(this, "Item not in Track", Toast.LENGTH_LONG).show();
     }
 
     @Override

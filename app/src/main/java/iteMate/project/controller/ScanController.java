@@ -161,8 +161,14 @@ public class ScanController {
         Track currentTrack = trackController.getCurrentTrack();
         if (currentTrack != null) {
             // remove item from pending list in the track and add it to the returned list
-            currentTrack.getPendingItemIDs().remove(itemController.getCurrentItem().getId());
-            currentTrack.getReturnedItemIDs().add(itemController.getCurrentItem().getId());
+            String itemID = itemController.getCurrentItem().getId();
+            currentTrack.getPendingItemIDs().remove(itemID);
+            currentTrack.getReturnedItemIDs().add(itemID);
+            for (Item item: currentTrack.getLentItemsList()) {
+                if (item.getId().equals(itemID)) {
+                    item.setActiveTrackID(null);
+                }
+            }
             trackController.saveChangesToDatabase(currentTrack);
 
             // reset active track id in item & update item in database

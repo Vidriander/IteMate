@@ -119,6 +119,7 @@ public class TrackDetailActivity extends AppCompatActivity implements OnSingleDo
         super.onResume();
         trackToDisplay = trackController.getCurrentTrack();
         setDetailViewContents();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

@@ -2,6 +2,7 @@ package iteMate.project.uiActivities.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,12 +55,11 @@ public class ReturnScanAdapter extends RecyclerView.Adapter<ReturnScanAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item item = items.get(position);
 
-        // setting transparency of the cardview to signal that the item is lent / not available
-        if (item.getActiveTrackID() != null && Objects.equals(item.getActiveTrackID(), TrackController.getControllerInstance().getCurrentTrack().getId())) {
-            // show item if it is lent
-            holder.cardView.setAlpha(1f);
-        } else {
-            // grey out if items was returned
+        Log.d("Adapter", "Item position " + position + ", activeTrackID: " + item.getActiveTrackID());
+
+        holder.cardView.setAlpha(1f); // Default state
+        if (item.getActiveTrackID() == null ||
+                !Objects.equals(item.getActiveTrackID(), TrackController.getControllerInstance().getCurrentTrack().getId())) {
             holder.cardView.setAlpha(0.4f);
         }
 
@@ -81,15 +81,6 @@ public class ReturnScanAdapter extends RecyclerView.Adapter<ReturnScanAdapter.Vi
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    /**
-     * Updates the adapter with the new list of items
-     */
-    public void setItems(List<Item> lentItemsList) {
-        items.clear();
-        items.addAll(lentItemsList);
-        notifyDataSetChanged();
     }
 
     /**
