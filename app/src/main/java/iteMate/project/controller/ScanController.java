@@ -19,21 +19,16 @@ public class ScanController {
     /**
      * Singleton instance of the ScanController
      */
-    public static ScanController scanController;
+    private static ScanController scanController;
 
-    private final ItemController itemController;
-    private final TrackController trackController;
-    private static final ItemRepository itemRepository = new ItemRepository();
-    private static final TrackRepository trackRepository = new TrackRepository();
+    private final ItemController itemController = ItemController.getControllerInstance();
+    private final TrackController trackController = TrackController.getControllerInstance();
     private String tagId;
 
     /**
      * Constructor for ScanController
-     * TODO make private for singleton
      */
     private ScanController() {
-        this.itemController = ItemController.getControllerInstance();
-        this.trackController = TrackController.getControllerInstance();
         this.tagId = "";
     }
 
@@ -174,12 +169,5 @@ public class ScanController {
             itemController.getCurrentItem().setActiveTrackID(null);
             itemController.saveChangesToDatabase();
         }
-    }
-
-    /**
-     * Listener for when an item is fetched
-     */
-    public interface OnItemFetchedListener {
-        void onItemFetched(Item item);
     }
 }

@@ -3,6 +3,8 @@ package iteMate.project.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.Exclude;
+
 /**
  * Contact class to store the details of a contact
  */
@@ -46,6 +48,7 @@ public class Contact implements Parcelable, DocumentEquivalent {
     }
 
     // Getter
+    @Exclude
     public String getId() {
         return id;
     }

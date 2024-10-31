@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.PersistentCacheSettings;
@@ -52,9 +53,11 @@ public class GenericRepository<T extends DocumentEquivalent> {
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful() && task.getResult() != null) {
-                            T document = task.getResult().toObject(tClass);
-                            Log.d("GenericRepository", "Document fetched: " + document);
-                            manipulateResult(document, listener);
+                            DocumentSnapshot document = task.getResult();
+                            T object = task.getResult().toObject(tClass);
+                            object.setId(document.getId());
+                            Log.d("GenericRepository", "Document fetched: " + object);
+                            manipulateResult(object, listener);
                         } else {
                             Log.w("Firestore", "Error getting document.", task.getException());
                         }
