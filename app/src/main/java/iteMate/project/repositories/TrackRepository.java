@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import iteMate.project.models.Contact;
@@ -28,7 +29,7 @@ public class TrackRepository extends GenericRepository<Track> {
      * Fetches the attributes for a track from database
      * @param track the track for which the attributes are to be fetched
      */
-    public void fetchAttributesForTrack(Track track, OnDocumentsFetchedListener<Track> listener) {
+    public void fetchAttributesForTrack(Track track, Listener listener) {
         TaskCompletionSource<Void> contactTaskSource = new TaskCompletionSource<>();
         TaskCompletionSource<Void> itemsTaskSource = new TaskCompletionSource<>();
         TaskCompletionSource<Void> pendingItemsTaskSource = new TaskCompletionSource<>();
@@ -85,34 +86,33 @@ public class TrackRepository extends GenericRepository<Track> {
         }
 
         Tasks.whenAll(contactTaskSource.getTask(), itemsTaskSource.getTask(), pendingItemsTaskSource.getTask())
-                .addOnCompleteListener(task -> listener.onDocumentFetched(track));
+                .addOnCompleteListener(task -> {
+                    if (listener instanceof OnSingleDocumentFetchedListener) {
+                        ((OnSingleDocumentFetchedListener<Track>) listener).onDocumentFetched(track);
+                    } else if (listener instanceof OnMultipleDocumentsFetchedListener) {
+                        ((OnMultipleDocumentsFetchedListener<Track>) listener).onDocumentsFetched(new ArrayList<>(List.of(track)));
+                    }
+                });
     }
 
     @Override
     public void addDocumentToDatabase(Track track) {
         db.collection("tracks").add(track).addOnSuccessListener(documentReference -> {
             String documentId = documentReference.getId();
-            new ItemRepository().getAllDocumentsFromDatabase(new OnDocumentsFetchedListener<Item>() {
-                @Override
-                public void onDocumentFetched(Item document) {
-                    // Do nothing
-                }
-                @Override
-                public void onDocumentsFetched(List<Item> documents) {
-                    for (Item item : documents) {
-                        if (track.getPendingItemIDs().contains(item.getId())) {
-                            item.setActiveTrackID(documentId);
-                            new ItemRepository().updateDocumentInDatabase(item);
-                        }
+            // TODO: change ItemRepository to singleton to prevent multiple instances (for each item to update)
+            new ItemRepository().getAllDocumentsFromDatabase(documents -> {
+                for (Item item : documents) {
+                    if (track.getPendingItemIDs().contains(item.getId())) {
+                        item.setActiveTrackID(documentId);
+                        new ItemRepository().updateDocumentInDatabase(item);
                     }
                 }
-                // TODO: change ItemRepository to singleton to prevent multiple instances (for each item to update)
             });
         });
     }
 
     @Override
-    protected Track manipulateResult(Track track, OnDocumentsFetchedListener<Track> listener) {
+    protected Track manipulateResult(Track track, OnSingleDocumentFetchedListener<Track> listener) {
         if (track != null) {
             fetchAttributesForTrack(track, listener);
         }
@@ -120,8 +120,9 @@ public class TrackRepository extends GenericRepository<Track> {
     }
 
     @Override
-    protected List<Track> manipulateResults(List<Track> tracks, OnDocumentsFetchedListener<Track> listener) {
+    protected List<Track> manipulateResults(List<Track> tracks, OnMultipleDocumentsFetchedListener<Track> listener) {
         for (Track track : tracks) {
+            // TODO think about if the listener is notified twice for the same track
             fetchAttributesForTrack(track, listener);
         }
         listener.onDocumentsFetched(tracks);

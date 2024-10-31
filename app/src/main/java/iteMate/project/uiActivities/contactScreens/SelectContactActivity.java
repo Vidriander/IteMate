@@ -14,9 +14,10 @@ import iteMate.project.controller.ContactController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Contact;
 import iteMate.project.repositories.GenericRepository;
+import iteMate.project.repositories.OnMultipleDocumentsFetchedListener;
 import iteMate.project.uiActivities.adapter.SelectContactAdapter;
 
-public class SelectContactActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Contact> {
+public class SelectContactActivity extends AppCompatActivity implements OnMultipleDocumentsFetchedListener<Contact> {
     /**
      * Adapter that will be used to display the contacts
      */
@@ -52,11 +53,6 @@ public class SelectContactActivity extends AppCompatActivity implements GenericR
         findViewById(R.id.manageInnerItemsCancelbutton).setOnClickListener(click ->
             finish()
         );
-    }
-
-    @Override
-    public void onDocumentFetched(Contact document) {
-
     }
 
     @Override

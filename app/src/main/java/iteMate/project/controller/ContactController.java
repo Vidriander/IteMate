@@ -2,7 +2,7 @@ package iteMate.project.controller;
 
 import iteMate.project.models.Contact;
 import iteMate.project.repositories.ContactRepository;
-import iteMate.project.repositories.GenericRepository;
+import iteMate.project.repositories.OnMultipleDocumentsFetchedListener;
 
 public class ContactController {
 
@@ -33,7 +33,7 @@ public class ContactController {
         return currentContact;
     }
 
-    public void fetchAllContactsFromDatabase(GenericRepository.OnDocumentsFetchedListener<Contact> listener) {
+    public void fetchAllContactsFromDatabase(OnMultipleDocumentsFetchedListener<Contact> listener) {
         contactRepository.getAllDocumentsFromDatabase(listener);
     }
 }

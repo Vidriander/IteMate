@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 
 import iteMate.project.R;
 import iteMate.project.controller.ItemController;
+import iteMate.project.repositories.OnMultipleDocumentsFetchedListener;
 import iteMate.project.utils.SearchUtils;
 import iteMate.project.models.Item;
-import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.adapter.ManageInnerItemsAdapter;
 import iteMate.project.utils.SortUtils;
 
-public class ManageInnerItemsActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
+public class ManageInnerItemsActivity extends AppCompatActivity implements OnMultipleDocumentsFetchedListener<Item> {
 
     private static Item itemToDisplay;
 
@@ -115,11 +115,6 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements Gener
             itemToDisplay.setAssociatedItems((ArrayList<Item>) newCheckedItems);
             itemToDisplay.setAssociatedItemIDs((ArrayList<String>) newCheckedItems.stream().map(Item::getId).collect(Collectors.toList()));
         }
-    }
-
-    @Override
-    public void onDocumentFetched(Item document) {
-        // Not used
     }
 
     @Override

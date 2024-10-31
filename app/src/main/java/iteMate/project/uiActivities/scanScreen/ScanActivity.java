@@ -26,6 +26,7 @@ import iteMate.project.controller.ScanController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
+import iteMate.project.repositories.OnSingleDocumentFetchedListener;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsEditActivity;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
@@ -215,12 +216,9 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
      * @param trackID the track ID
      */
     private void fetchTrackByItemTrackID(String trackID) {
-        trackController.fetchOneTrackFromDatabase(trackID, new TrackController.OnTrackFetchedListener() {
-            @Override
-            public void onTrackFetched(Track track) {
-                trackController.setCurrentTrack(track);
-                updateTrackCardView(track);
-            }
+        trackController.fetchOneTrackFromDatabase(trackID, track -> {
+            trackController.setCurrentTrack(track);
+            updateTrackCardView(track);
         });
     }
 

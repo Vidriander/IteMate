@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.controller.ContactController;
+import iteMate.project.repositories.OnMultipleDocumentsFetchedListener;
 import iteMate.project.utils.SearchUtils;
 import iteMate.project.models.Contact;
 import iteMate.project.repositories.GenericRepository;
@@ -23,7 +24,7 @@ import iteMate.project.R;
  * This class is the main activity for the Contact screen. It displays a list of contacts
  * and allows the user to search for contacts. The user can also add a new contact.
  */
-public class ContactActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Contact> {
+public class ContactActivity extends AppCompatActivity implements OnMultipleDocumentsFetchedListener<Contact> {
 
     private ContactAdapter contactAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -101,11 +102,6 @@ public class ContactActivity extends AppCompatActivity implements GenericReposit
     public void onResume() {
         super.onResume();
         contactController.fetchAllContactsFromDatabase(this);
-    }
-
-    @Override
-    public void onDocumentFetched(Contact document) {
-        // pass
     }
 
     @Override

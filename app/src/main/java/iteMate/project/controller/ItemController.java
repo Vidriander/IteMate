@@ -6,8 +6,8 @@ import java.util.Objects;
 
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
-import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
+import iteMate.project.repositories.OnSingleDocumentFetchedListener;
 import iteMate.project.repositories.TrackRepository;
 
 /**
@@ -131,50 +131,19 @@ public class ItemController {
      * Fetches the tack corresponding to the current item
      * @param trackListener listener that is notified when the track is ready
      */
-    public void getTrackOfCurrentItem(GenericRepository.OnDocumentsFetchedListener<Track> trackListener) {
-        trackRepository.getOneDocumentFromDatabase(currentItem.getActiveTrackID(), new GenericRepository.OnDocumentsFetchedListener<Track>() {
-            @Override
-            public void onDocumentFetched(Track document) {
-                trackListener.onDocumentFetched(document);
-            }
-            @Override
-            public void onDocumentsFetched(List<Track> documents) {
-
-            }
-        });
+    public void getTrackOfCurrentItem(OnSingleDocumentFetchedListener<Track> trackListener) {
+        trackRepository.getOneDocumentFromDatabase(currentItem.getActiveTrackID(), document -> trackListener.onDocumentFetched(document));
     }
 
-    public void fetchItemByNfcTagId(String nfcTagId, OnItemFetchedListener listener) {
-        itemRepository.getItemByNfcTagFromDatabase(nfcTagId, new GenericRepository.OnDocumentsFetchedListener<Item>() {
-            @Override
-            public void onDocumentFetched(Item document) {
-                listener.onItemFetched(document);
-            }
-            @Override
-            public void onDocumentsFetched(List<Item> documents) {
-            }
-        });
+    public void fetchItemByNfcTagId(String nfcTagId, OnSingleDocumentFetchedListener<Item> listener) {
+        itemRepository.getItemByNfcTagFromDatabase(nfcTagId, document -> listener.onDocumentFetched(document));
     }
 
     /**
      * Fetches all items from database and sets the current item list
      */
     public void refreshCurrentItemList() {
-        itemRepository.getAllDocumentsFromDatabase(new GenericRepository.OnDocumentsFetchedListener<Item>() {
-            @Override
-            public void onDocumentFetched(Item document) {
-            }
-            @Override
-            public void onDocumentsFetched(List<Item> documents) {
-                currentItemList = documents;
-            }
-        });
-    }
-
-
-
-    public interface OnItemFetchedListener {
-        void onItemFetched(Item item);
+        itemRepository.getAllDocumentsFromDatabase(documents -> currentItemList = documents);
     }
     // endregion
 }

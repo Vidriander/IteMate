@@ -14,11 +14,12 @@ import iteMate.project.R;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
+import iteMate.project.repositories.OnMultipleDocumentsFetchedListener;
 import iteMate.project.uiActivities.adapter.ManageInnerItemsAdapter;
 import iteMate.project.utils.SearchUtils;
 import iteMate.project.utils.SortUtils;
 
-public class ManageTrackItemsActivity extends AppCompatActivity implements GenericRepository.OnDocumentsFetchedListener<Item> {
+public class ManageTrackItemsActivity extends AppCompatActivity implements OnMultipleDocumentsFetchedListener<Item> {
     /**
      * Adapter for the RecyclerView that displays the lent items
      */
@@ -98,11 +99,6 @@ public class ManageTrackItemsActivity extends AppCompatActivity implements Gener
         searchList.clear();
         searchList.addAll(filteredList);
         adapter.setSearchList(SortUtils.sortItemsByName(searchList));
-    }
-
-    @Override
-    public void onDocumentFetched(Item document) {
-
     }
 
     @Override

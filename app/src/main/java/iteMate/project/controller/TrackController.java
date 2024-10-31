@@ -5,8 +5,9 @@ import java.util.List;
 
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
-import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
+import iteMate.project.repositories.OnMultipleDocumentsFetchedListener;
+import iteMate.project.repositories.OnSingleDocumentFetchedListener;
 import iteMate.project.repositories.TrackRepository;
 
 public class TrackController {
@@ -92,24 +93,18 @@ public class TrackController {
     /**
      * Returns a list of items that can be lend or are already lend in the current track
      */
-    public void getLendableItemsList(GenericRepository.OnDocumentsFetchedListener<Item> listener) {
+    public void getLendableItemsList(OnMultipleDocumentsFetchedListener<Item> listener) {
         List<Item> lendableItems = new ArrayList<>();
-        itemRepository.getAllAvailableItemsFromDatabase(new GenericRepository.OnDocumentsFetchedListener<Item>() {
-            @Override
-            public void onDocumentFetched(Item document) {
-            }
-            @Override
-            public void onDocumentsFetched(List<Item> documents) {
-                lendableItems.addAll(documents);
+        itemRepository.getAllAvailableItemsFromDatabase(documents -> {
+            lendableItems.addAll(documents);
 
-                if (currentTrack != null) {
-                    List<Item> itemsInTrack = currentTrack.getLentItemsList();
-                    if (itemsInTrack != null) {
-                        lendableItems.addAll(itemsInTrack);
-                    }
+            if (currentTrack != null) {
+                List<Item> itemsInTrack = currentTrack.getLentItemsList();
+                if (itemsInTrack != null) {
+                    lendableItems.addAll(itemsInTrack);
                 }
-                listener.onDocumentsFetched(lendableItems);
             }
+            listener.onDocumentsFetched(lendableItems);
         });
     }
 
@@ -126,25 +121,15 @@ public class TrackController {
      * @param trackID the ID of the track to be fetched
      * @param listener listener that is notified when the track is ready
      */
-    public void fetchOneTrackFromDatabase(String trackID, OnTrackFetchedListener listener) {
-        trackRepository.getOneDocumentFromDatabase(trackID, new GenericRepository.OnDocumentsFetchedListener<Track>() {
-            @Override
-            public void onDocumentFetched(Track track) {
-                track.setId(trackID);
-                listener.onTrackFetched(track);
-            }
-            @Override
-            public void onDocumentsFetched(List<Track> tracks) {
-            }
+    public void fetchOneTrackFromDatabase(String trackID, OnSingleDocumentFetchedListener<Track> listener) {
+        trackRepository.getOneDocumentFromDatabase(trackID, track -> {
+            track.setId(trackID);
+            listener.onDocumentFetched(track);
         });
     }
 
-    public void fetchAllTracksFromDatabase(GenericRepository.OnDocumentsFetchedListener<Track> listener) {
+    public void fetchAllTracksFromDatabase(OnMultipleDocumentsFetchedListener<Track> listener) {
         trackRepository.getAllDocumentsFromDatabase(listener);
-    }
-
-    public interface OnTrackFetchedListener {
-        void onTrackFetched(Track track);
     }
 
     // add methode to set availability of items

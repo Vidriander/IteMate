@@ -47,7 +47,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      * @param documentId the ID of the document to be fetched
      * @param listener   the listener to be called when the document is fetched
      */
-    public void getOneDocumentFromDatabase(String documentId, OnDocumentsFetchedListener<T> listener) {
+    public void getOneDocumentFromDatabase(String documentId, OnSingleDocumentFetchedListener<T> listener) {
         try {
             db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(documentId)
                     .get()
@@ -72,7 +72,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param listener the listener to be called when the documents are fetched
      */
-    public void getAllDocumentsFromDatabase(OnDocumentsFetchedListener<T> listener) {
+    public void getAllDocumentsFromDatabase(OnMultipleDocumentsFetchedListener<T> listener) {
         try {
             db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath())
                     .get()
@@ -210,7 +210,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param document the document to be manipulated
      */
-    protected T manipulateResult(T document, OnDocumentsFetchedListener<T> listener) {
+    protected T manipulateResult(T document, OnSingleDocumentFetchedListener<T> listener) {
         listener.onDocumentFetched(document);
         return document;
     }
@@ -220,17 +220,8 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param documents the documents to be manipulated
      */
-    protected List<T> manipulateResults(List<T> documents, OnDocumentsFetchedListener<T> listener) {
+    protected List<T> manipulateResults(List<T> documents, OnMultipleDocumentsFetchedListener<T> listener) {
         listener.onDocumentsFetched(documents);
         return documents;
-    }
-
-    /**
-     * Listener interface for fetching an single item
-     */
-    public interface OnDocumentsFetchedListener<T> {
-        void onDocumentFetched(T document);
-
-        void onDocumentsFetched(List<T> documents);
     }
 }

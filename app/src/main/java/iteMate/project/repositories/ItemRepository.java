@@ -25,7 +25,7 @@ public class ItemRepository extends GenericRepository<Item> {
      * @param nfcTag the NFC tag of the item
      * @param listener the listener to be called when the item is fetched
      */
-    public void getItemByNfcTagFromDatabase(String nfcTag, OnDocumentsFetchedListener<Item> listener) {
+    public void getItemByNfcTagFromDatabase(String nfcTag, OnSingleDocumentFetchedListener<Item> listener) {
         db.collection("items")
                 .whereEqualTo("nfcTag", nfcTag)
                 .get()
@@ -78,7 +78,7 @@ public class ItemRepository extends GenericRepository<Item> {
     /**
      * Gets all available items from the database (items that are not in a track)
      */
-    public void getAllAvailableItemsFromDatabase(OnDocumentsFetchedListener<Item> listener) {
+    public void getAllAvailableItemsFromDatabase(OnMultipleDocumentsFetchedListener<Item> listener) {
         List<Item> items = new ArrayList<>();
         db.collection("items").whereEqualTo("activeTrackID", null) // Only get items that are not in a track
                 .get()
@@ -114,7 +114,7 @@ public class ItemRepository extends GenericRepository<Item> {
     }
 
     @Override
-    protected List<Item> manipulateResults(List<Item> items, OnDocumentsFetchedListener<Item> listener) {
+    protected List<Item> manipulateResults(List<Item> items, OnMultipleDocumentsFetchedListener<Item> listener) {
         for (Item item : items) {
             setContainedAndAssociatedItems(item);
         }

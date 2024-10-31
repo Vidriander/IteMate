@@ -20,6 +20,7 @@ import iteMate.project.models.Item;
 import iteMate.project.R;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
+import iteMate.project.repositories.OnSingleDocumentFetchedListener;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
@@ -99,16 +100,10 @@ public class ItemsDetailActivity extends AppCompatActivity {
             color = getResources().getColor(R.color.unavailable_red, null);
             // on click listener if the item is in a track
             availabilityTextView.setOnClickListener(v -> {
-                ItemController.getControllerInstance().getTrackOfCurrentItem(new GenericRepository.OnDocumentsFetchedListener<Track>() {
-                    @Override
-                    public void onDocumentFetched(Track document) {
-                        Intent intent = new Intent(ItemsDetailActivity.this, TrackDetailActivity.class);
-                        trackController.setCurrentTrack(document);
-                        startActivity(intent);
-                    }
-                    @Override
-                    public void onDocumentsFetched(List<Track> documents) {
-                    }
+                ItemController.getControllerInstance().getTrackOfCurrentItem(document -> {
+                    Intent intent = new Intent(ItemsDetailActivity.this, TrackDetailActivity.class);
+                    trackController.setCurrentTrack(document);
+                    startActivity(intent);
                 });
             });
         // if item is available
