@@ -114,20 +114,18 @@ public class TrackRepository extends GenericRepository<Track> {
     }
 
     @Override
-    protected Track manipulateResult(Track track, OnSingleDocumentFetchedListener<Track> listener) {
+    protected void manipulateResult(Track track, OnSingleDocumentFetchedListener<Track> listener) {
         if (track != null) {
             fetchAttributesForTrack(track, listener);
         }
-        return track;
     }
 
     @Override
-    protected List<Track> manipulateResults(List<Track> tracks, OnMultipleDocumentsFetchedListener<Track> listener) {
+    protected void manipulateResults(List<Track> tracks, OnMultipleDocumentsFetchedListener<Track> listener) {
         for (Track track : tracks) {
             // TODO think about if the listener is notified twice for the same track
             fetchAttributesForTrack(track, listener);
         }
         listener.onDocumentsFetched(tracks);
-        return tracks;
     }
 }

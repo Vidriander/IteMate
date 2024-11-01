@@ -116,11 +116,10 @@ public class ItemRepository extends GenericRepository<Item> {
     }
 
     @Override
-    protected List<Item> manipulateResults(List<Item> items, OnMultipleDocumentsFetchedListener<Item> listener) {
+    protected void manipulateResults(List<Item> items, OnMultipleDocumentsFetchedListener<Item> listener) {
         for (Item item : items) {
             setContainedAndAssociatedItems(item);
         }
         listener.onDocumentsFetched(items);
-        return items;
     }
 }

@@ -1,7 +1,6 @@
 package iteMate.project.repositories;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -218,9 +217,8 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param document the document to be manipulated
      */
-    protected T manipulateResult(T document, OnSingleDocumentFetchedListener<T> listener) {
+    protected void manipulateResult(T document, OnSingleDocumentFetchedListener<T> listener) {
         listener.onDocumentFetched(document);
-        return document;
     }
 
     /**
@@ -228,9 +226,8 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param documents the documents to be manipulated
      */
-    protected List<T> manipulateResults(List<T> documents, OnMultipleDocumentsFetchedListener<T> listener) {
+    protected void manipulateResults(List<T> documents, OnMultipleDocumentsFetchedListener<T> listener) {
         listener.onDocumentsFetched(documents);
-        return documents;
     }
 
 }

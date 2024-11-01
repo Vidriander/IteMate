@@ -1,11 +1,26 @@
 package iteMate.project.controller;
 
+import android.content.Context;
+import android.net.Uri;
+import android.os.Environment;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
+import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
 import iteMate.project.repositories.TrackRepository;
@@ -121,6 +136,51 @@ public class ItemController {
     }
 
     /**
+     * Saves the changes to the current item to the database
+     * @param title the new title of the item
+     * @param description the new description of the item
+     */
+    public void saveChangesToItem(String title, String description) {
+        currentItem.setTitle(title);
+        currentItem.setDescription(description);
+    }
+
+    /**
+     * Handles the image upload of the current item
+     * @param imageUri the URI of the image to upload
+     * @param context the context of the activity
+     * @param imageView the ImageView to set the image to
+     */
+    public void handleImageUpload(Uri imageUri, Context context, ImageView imageView) {
+        if (imageUri != null) {
+            String imagePath = "itemImages/" + imageUri.getLastPathSegment();
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            StorageReference imageRef = storageRef.child(imagePath);
+            imageRef.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        currentItem.setImage(imagePath);
+                        setCurrentItem(currentItem);
+                        saveChangesToDatabase();
+                        GenericRepository.setImageForView(context, currentItem.getImage(), imageView);
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(context, "Image upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        }
+    }
+
+    /**
+     * Creates a new image file for the current item
+     * @param context the context of the activity
+     * @return the new image file
+     * @throws IOException if the file creation fails
+     */
+    public File createImageFile(Context context) throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return File.createTempFile(imageFileName, ".jpg", storageDir);
+    }
+
+    /**
      * Deletes the current item from the database
      */
     public void deleteItemFromDatabase() {
@@ -132,11 +192,11 @@ public class ItemController {
      * @param trackListener listener that is notified when the track is ready
      */
     public void getTrackOfCurrentItem(OnSingleDocumentFetchedListener<Track> trackListener) {
-        trackRepository.getOneDocumentFromDatabase(currentItem.getActiveTrackID(), document -> trackListener.onDocumentFetched(document));
+        trackRepository.getOneDocumentFromDatabase(currentItem.getActiveTrackID(), trackListener);
     }
 
     public void fetchItemByNfcTagId(String nfcTagId, OnSingleDocumentFetchedListener<Item> listener) {
-        itemRepository.getItemByNfcTagFromDatabase(nfcTagId, document -> listener.onDocumentFetched(document));
+        itemRepository.getItemByNfcTagFromDatabase(nfcTagId, listener);
     }
 
     /**

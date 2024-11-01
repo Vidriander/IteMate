@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.TextView;
@@ -21,14 +20,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import iteMate.project.R;
 import iteMate.project.controller.ItemController;
@@ -50,7 +43,7 @@ public class ItemsEditActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_PICK = 2;
     private Uri photoURI;
     private ActivityResultLauncher<Intent> captureImageLauncher;
-
+    private ActivityResultLauncher<Intent> pickPhotoLauncher;
 
     private TextView title;
     private TextView description;
@@ -97,6 +90,18 @@ public class ItemsEditActivity extends AppCompatActivity {
                 }
         );
 
+        pickPhotoLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri selectedImage = result.getData().getData();
+                        handleImageUpload(selectedImage);
+                    }
+                }
+        );
+
+
+
         // Setting on click listener for managing contained items
         findViewById(R.id.manageContainedItemsButton).setOnClickListener(click -> {
             Intent intent = new Intent(this, ManageInnerItemsActivity.class);
@@ -111,7 +116,7 @@ public class ItemsEditActivity extends AppCompatActivity {
         });
         // Setting on click listener for save button
         findViewById(R.id.item_edit_save).setOnClickListener(click -> {
-            saveChangesToItem();
+            itemController.saveChangesToItem(title.getText().toString(), description.getText().toString());
             if (itemController.isReadyForUpload()) {
                 itemController.saveChangesToDatabase();
                 finish();
@@ -143,9 +148,7 @@ public class ItemsEditActivity extends AppCompatActivity {
         });
 
         // setting on click listener for the update image button
-        findViewById(R.id.upload_image_card).setOnClickListener(click -> {
-            showImagePickerDialog();
-        });
+        findViewById(R.id.upload_image_card).setOnClickListener(click -> showImagePickerDialog());
     }
 
     /**
@@ -173,7 +176,7 @@ public class ItemsEditActivity extends AppCompatActivity {
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
             try {
-                photoFile = createImageFile();
+                photoFile = itemController.createImageFile(this);
             } catch (IOException ex) {
                 Log.e("ItemsEditActivity", "Error occurred while creating the file", ex);
             }
@@ -186,25 +189,11 @@ public class ItemsEditActivity extends AppCompatActivity {
     }
 
     /**
-     * Create a file to store the image.
-     *
-     * @return The created file.
-     * @throws IOException If an error occurs while creating the file.
-     */
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(imageFileName, ".jpg", storageDir);
-    }
-
-    /**
      * Dispatch an intent to pick a picture from the gallery.
      */
     private void dispatchPickPictureIntent() {
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(pickPhoto, REQUEST_IMAGE_PICK);
-    }
+        pickPhotoLauncher.launch(pickPhoto);    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -227,23 +216,7 @@ public class ItemsEditActivity extends AppCompatActivity {
      * @param imageUri The URI of the image to upload.
      */
     private void handleImageUpload(Uri imageUri) {
-        if (imageUri != null) {
-            String imagePath = "itemImages/" + imageUri.getLastPathSegment();
-            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-            StorageReference imageRef = storageRef.child(imagePath);
-            imageRef.putFile(imageUri)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        // Save the path in Firestore
-                        itemToDisplay.setImage(imagePath);
-                        itemController.setCurrentItem(itemToDisplay);
-                        itemController.saveChangesToDatabase();
-                        GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
-                    })
-                    .addOnFailureListener(e -> {
-                        // Handle failure
-                        Toast.makeText(this, "Image upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
-        }
+        itemController.handleImageUpload(imageUri, this, findViewById(R.id.editItemMainImage));
     }
 
     /**
@@ -277,14 +250,6 @@ public class ItemsEditActivity extends AppCompatActivity {
         } else {
             findViewById(R.id.item_edit_delete_btn).setVisibility(android.view.View.GONE);
         }
-    }
-
-    /**
-     * Save the changes to the item.
-     */
-    private void saveChangesToItem() {
-        itemToDisplay.setTitle(title.getText().toString());
-        itemToDisplay.setDescription(description.getText().toString());
     }
 
     @Override
