@@ -5,7 +5,6 @@ import static iteMate.project.controller.ScanController.extractNfcTagId;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import iteMate.project.R;
 import iteMate.project.controller.ItemController;

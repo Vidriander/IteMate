@@ -26,7 +26,7 @@ import java.io.IOException;
 import iteMate.project.R;
 import iteMate.project.controller.ItemController;
 import iteMate.project.models.Item;
-import iteMate.project.repositories.GenericRepository;
+import iteMate.project.repositories.GenericRepository;  //TODO remove
 import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
 public class ItemsEditActivity extends AppCompatActivity {
