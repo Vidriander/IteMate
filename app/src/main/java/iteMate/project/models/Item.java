@@ -342,6 +342,10 @@ public class Item implements DocumentEquivalent {
     }
     // endregion
 
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     /**
      * Reset the image of the item to the default image
      */

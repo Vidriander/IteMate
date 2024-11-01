@@ -1,6 +1,7 @@
 package iteMate.project.repositories;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -8,6 +9,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.PersistentCacheSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -33,12 +36,16 @@ public class GenericRepository<T extends DocumentEquivalent> {
         // remember the class of the document
         this.tClass = tClass;
 
-/*        // Enable offline persistence
+        // Enable offline persistence
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 // Enables persistent disk storage
                 .setLocalCacheSettings(PersistentCacheSettings.newBuilder().build())
                 .build();
-        db.setFirestoreSettings(settings);*/
+        db.setFirestoreSettings(settings);
+    }
+
+    public void forceSync() {
+        db.disableNetwork().addOnCompleteListener(task -> db.enableNetwork());
     }
 
     /**
@@ -55,6 +62,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
                         if (task.isSuccessful() && task.getResult() != null) {
                             DocumentSnapshot document = task.getResult();
                             T object = task.getResult().toObject(tClass);
+                            assert object != null;
                             object.setId(document.getId());
                             Log.d("GenericRepository", "Document fetched: " + object);
                             manipulateResult(object, listener);
@@ -224,4 +232,5 @@ public class GenericRepository<T extends DocumentEquivalent> {
         listener.onDocumentsFetched(documents);
         return documents;
     }
+
 }

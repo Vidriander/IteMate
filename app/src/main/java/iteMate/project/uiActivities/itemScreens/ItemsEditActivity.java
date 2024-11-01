@@ -1,17 +1,30 @@
 package iteMate.project.uiActivities.itemScreens;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import iteMate.project.R;
 import iteMate.project.controller.ItemController;
@@ -28,6 +41,11 @@ public class ItemsEditActivity extends AppCompatActivity {
     private static Item legacyItem;
     private RecyclerView containedItemsRecyclerView;
     private RecyclerView associatedItemsRecyclerView;
+
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_PICK = 2;
+    private Uri photoURI;
+
 
     private TextView title;
     private TextView description;
@@ -107,7 +125,86 @@ public class ItemsEditActivity extends AppCompatActivity {
         // setting on click listener for the update image button
         findViewById(R.id.upload_image_card).setOnClickListener(click -> {
             // TODO: Implement image upload
+            showImagePickerDialog();
         });
+    }
+
+    private void showImagePickerDialog() {
+        String[] options = {"Take Photo", "Choose from Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Image")
+                .setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        dispatchTakePictureIntent();
+                    } else if (which == 1) {
+                        dispatchPickPictureIntent();
+                    }
+                })
+                .show();
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Handle error
+            }
+            if (photoFile != null) {
+                photoURI = FileProvider.getUriForFile(this, "iteMate.project.fileprovider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return File.createTempFile(imageFileName, ".jpg", storageDir);
+    }
+
+    private void dispatchPickPictureIntent() {
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(pickPhoto, REQUEST_IMAGE_PICK);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                // Handle the photo taken
+                handleImageUpload(photoURI);
+            } else if (requestCode == REQUEST_IMAGE_PICK) {
+                // Handle the image picked from gallery
+                Uri selectedImage = data.getData();
+                handleImageUpload(selectedImage);
+            }
+        }
+    }
+
+    private void handleImageUpload(Uri imageUri) {
+        if (imageUri != null) {
+            String imagePath = "itemImages/" + imageUri.getLastPathSegment();
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            StorageReference imageRef = storageRef.child(imagePath);
+            imageRef.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        // Save the path in Firestore
+                        itemToDisplay.setImage(imagePath);
+                        itemController.setCurrentItem(itemToDisplay);
+                        itemController.saveChangesToDatabase();
+                        GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle failure
+                        Toast.makeText(this, "Image upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 
     /**
