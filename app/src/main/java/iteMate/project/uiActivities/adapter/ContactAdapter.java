@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
+import iteMate.project.controller.ContactController;
 import iteMate.project.models.Contact;
 import iteMate.project.uiActivities.contactScreens.ContactDetailActivity;
 
@@ -39,9 +40,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         String contactName = contact.getFirstName() + " " + contact.getLastName();
         holder.contactName.setText(contactName);
 
+        // Set up onClickListener for the contact card
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ContactDetailActivity.class);
-            intent.putExtra("contact", contact);
+            ContactController.getControllerInstance().setCurrentContact(contact);
             context.startActivity(intent);
         });
     }

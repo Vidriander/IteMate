@@ -32,7 +32,7 @@ import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 public class ItemsEditActivity extends AppCompatActivity {
 
     private final ItemController itemController = ItemController.getControllerInstance();
-    private static Item itemToDisplay;  //TODO check if this can be replaced by itemController.getCurrentItem()
+    private static Item itemToDisplay;  //TODO @dave check if this can be replaced by itemController.getCurrentItem()
     private RecyclerView containedItemsRecyclerView;
     private RecyclerView associatedItemsRecyclerView;
 

@@ -29,7 +29,6 @@ public class ContactActivity extends AppCompatActivity implements OnMultipleDocu
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<Contact> contactList;
     private final ContactController contactController = ContactController.getControllerInstance();
-    //private ContactRepository contactRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +106,6 @@ public class ContactActivity extends AppCompatActivity implements OnMultipleDocu
     public void onDocumentsFetched(List<Contact> documents) {
         contactList.clear();
         contactList.addAll(documents);
-
         contactAdapter.notifyDataSetChanged();
     }
 }

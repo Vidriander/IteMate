@@ -27,13 +27,17 @@ import iteMate.project.utils.SortUtils;
  */
 public class ItemsActivity extends MainActivity {
 
+    /**
+     * Adapter for the RecyclerView
+     */
     private ItemAdapter itemAdapter;
     /**
      * List of Items that will change dynamically based on search
      */
-    private List<Item> searchList;
-    private SwipeRefreshLayout swipeRefreshLayout;
-
+    private List<Item> searchList;private SwipeRefreshLayout swipeRefreshLayout;
+    /**
+     * ItemController instance
+     */
     private final ItemController itemController = ItemController.getControllerInstance();
 
     @Override
@@ -107,7 +111,6 @@ public class ItemsActivity extends MainActivity {
         bottomNavID = R.id.items;
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -122,11 +125,8 @@ public class ItemsActivity extends MainActivity {
      * Gets the current item list from the ItemController and refreshes the itemList sorted
      */
     private void refreshItemList() {
-
         searchList.clear();
         searchList.addAll(SortUtils.defaultItemSort(itemController.getCurrentItemList()));
-
         itemAdapter.notifyDataSetChanged();
     }
-
 }

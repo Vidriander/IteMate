@@ -22,7 +22,7 @@ import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
 public class ItemsDetailActivity extends AppCompatActivity {
 
-    private Item itemToDisplay;
+    private Item itemToDisplay; //TODO: @dave can this be replaced by itemController.getCurrentItem()
     private RecyclerView containedItemsRecyclerView;
     private RecyclerView associatedItemsRecyclerView;
     private final TrackController trackController = TrackController.getControllerInstance();
@@ -78,8 +78,11 @@ public class ItemsDetailActivity extends AppCompatActivity {
         associatedItemsRecyclerView.setAdapter(associatedItemsAdapter);
     }
 
+    /**
+     * Set the contents of the detail view
+     */
     private void setDetailViewContents() {
-
+        //TODO to move generic repository to controller
         // Setting the image
         GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.item_detailcard_image));
         // Setting the title

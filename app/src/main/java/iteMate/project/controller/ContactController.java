@@ -4,35 +4,56 @@ import iteMate.project.models.Contact;
 import iteMate.project.repositories.ContactRepository;
 import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
 
+/**
+ * Controller for managing contacts
+ */
 public class ContactController {
 
     /**
      * Singleton instance of the ContactController
      */
-    public static ContactController contactController;
-    private final ContactRepository contactRepository;
     private Contact currentContact;
+    private static ContactController controllerInstance;
+    private final ContactRepository contactRepository;
 
-
+    /**
+     * Constructor for a Singleton instance of the ContactController
+     */
     private ContactController() {
         this.contactRepository = new ContactRepository();
     }
 
+    /**
+     * Returns the singleton instance of the ContactController
+     * @return the singleton instance of the ContactController
+     */
     public static synchronized ContactController getControllerInstance() {
-        if (contactController == null) {
-            contactController = new ContactController();
+        if (controllerInstance == null) {
+            controllerInstance = new ContactController();
         }
-        return contactController;
+        return controllerInstance;
     }
 
+    /**
+     * Sets the current contact that is being displayed or edited
+     * @param currentContact the current contact
+     */
     public void setCurrentContact(Contact currentContact) {
         this.currentContact = currentContact;
     }
 
+    /**
+     * Returns the current contact that is being displayed or edited
+     * @return the current contact
+     */
     public Contact getCurrentContact() {
         return currentContact;
     }
 
+    /**
+     * Fetches all contacts from the database
+     * @param listener the listener that will be called when the contacts are fetched
+     */
     public void fetchAllContactsFromDatabase(OnMultipleDocumentsFetchedListener<Contact> listener) {
         contactRepository.getAllDocumentsFromDatabase(listener);
     }

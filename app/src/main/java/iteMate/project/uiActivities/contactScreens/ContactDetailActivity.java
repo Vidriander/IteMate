@@ -12,11 +12,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 
 import iteMate.project.R;
+import iteMate.project.controller.ContactController;
 import iteMate.project.models.Contact;
 
 public class ContactDetailActivity extends AppCompatActivity {
 
     private Contact contactToDisplay;
+    private static final ContactController contactController = ContactController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contact_detail);
 
         // Get the contact to display from the intent:
-        contactToDisplay = getIntent().getParcelableExtra("contact");
+        contactToDisplay = contactController.getCurrentContact();
 
         if(contactToDisplay == null) {
             finish();
@@ -47,6 +49,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         findViewById(R.id.detailcontact_edit_button).setOnClickListener(v -> {
             Intent intent = new Intent(ContactDetailActivity.this, ContactEditActivity.class);
             intent.putExtra("contact", contactToDisplay);
+            contactController.setCurrentContact(contactToDisplay);
             startActivity(intent);
         });
 
@@ -54,7 +57,6 @@ public class ContactDetailActivity extends AppCompatActivity {
 
     private void setDetailViewContents() {
         if (contactToDisplay != null) {
-            // ((TextView) findViewById(R.id.contact_detailcard_sideheader)).setText(contactToDisplay.getFirstName() + " " + contactToDisplay.getLastName());
             String title = contactToDisplay.getFirstName() + " " + contactToDisplay.getLastName();
             ((TextView) findViewById(R.id.contact_detailcard_title)).setText(title);
             ((TextView) findViewById(R.id.contact_detail_first_name)).setText(contactToDisplay.getFirstName());
