@@ -1,5 +1,7 @@
 package iteMate.project.controller;
 
+import java.util.Objects;
+
 import iteMate.project.models.Contact;
 import iteMate.project.repositories.ContactRepository;
 import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
@@ -56,5 +58,17 @@ public class ContactController {
      */
     public void fetchAllContactsFromDatabase(OnMultipleDocumentsFetchedListener<Contact> listener) {
         contactRepository.getAllDocumentsFromDatabase(listener);
+    }
+
+    public void saveContactToDatabase(Contact contact) {
+        if (Objects.equals(currentContact.getId(), null) || currentContact.getId().isEmpty()) {
+            contactRepository.addDocumentToDatabase(currentContact);
+        } else {
+            contactRepository.updateDocumentInDatabase(currentContact);
+        }
+    }
+
+    public void deleteContactFromDatabase(Contact contact) {
+        contactRepository.deleteDocumentFromDatabase(contact);
     }
 }

@@ -14,7 +14,6 @@ import androidx.core.view.WindowInsetsCompat;
 import iteMate.project.R;
 import iteMate.project.controller.ContactController;
 import iteMate.project.models.Contact;
-import iteMate.project.repositories.ContactRepository;
 
 /**
  * Activity to edit a contact
@@ -26,12 +25,12 @@ public class ContactEditActivity extends AppCompatActivity {
      */
     private static Contact contactToDisplay;
     /**
-     * ContactRepository to interact with database
+     * Singleton instance of ContactController
      */
-    private ContactRepository contactRepository;
-
     private final ContactController contactController = ContactController.getControllerInstance();
-
+    /**
+     * TextView for the title of the contact
+     */
     private TextView title;
     /**
      * EditTexts for the contact's first name
@@ -69,14 +68,10 @@ public class ContactEditActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_contact_edit);
 
-        // Initialize ContactRepository
-        contactRepository = new ContactRepository();
-
         // Get the contact to edit from the controller
         contactToDisplay = contactController.getCurrentContact();
 
         if (contactToDisplay == null) {
-            Log.e("ContactEditActivity", "contactToDisplay is null");
             finish(); // Close the activity if contactToDisplay is null
             return;
         }
@@ -106,20 +101,14 @@ public class ContactEditActivity extends AppCompatActivity {
         // on click listener for save button
         findViewById(R.id.contact_edit_save_btn).setOnClickListener(v -> {
             saveChangesToContact();
-            Log.d("ContactEditActivity", "Saving changes to contact: " + contactToDisplay.toString());
-
-            // Add or update the contact in database
-            if (contactToDisplay.getId() == null || contactToDisplay.getId().isEmpty()) {
-                contactRepository.addDocumentToDatabase(contactToDisplay);
-            } else {
-                contactRepository.updateDocumentInDatabase(contactToDisplay);
-            }
+            contactController.setCurrentContact(contactToDisplay);
+            contactController.saveContactToDatabase(contactToDisplay);
             finish();
         });
 
         // on click listener for delete button
         findViewById(R.id.contact_edit_delete_btn).setOnClickListener(v -> {
-            contactRepository.deleteDocumentFromDatabase(contactToDisplay);
+            contactController.deleteContactFromDatabase(contactToDisplay);
             finish();
         });
     }

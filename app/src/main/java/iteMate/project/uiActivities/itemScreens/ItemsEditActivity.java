@@ -98,12 +98,14 @@ public class ItemsEditActivity extends AppCompatActivity {
             intent.putExtra("isContainedItems", true);
             startActivity(intent);
         });
+
         // Setting on click listener for managing associated items
         findViewById(R.id.manageAssociatedItemsButton).setOnClickListener(click -> {
             Intent intent = new Intent(this, ManageInnerItemsActivity.class);
             intent.putExtra("isContainedItems", false);
             startActivity(intent);
         });
+
         // Setting on click listener for save button
         findViewById(R.id.item_edit_save).setOnClickListener(click -> {
             itemController.saveChangesToItem(title.getText().toString(), description.getText().toString());
