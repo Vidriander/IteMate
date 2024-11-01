@@ -144,11 +144,13 @@ public class ItemsEditActivity extends AppCompatActivity {
 
         // setting on click listener for the update image button
         findViewById(R.id.upload_image_card).setOnClickListener(click -> {
-            // TODO: Implement image upload
             showImagePickerDialog();
         });
     }
 
+    /**
+     * Show a dialog to choose between taking a photo or picking one from the gallery.
+     */
     private void showImagePickerDialog() {
         String[] options = {"Take Photo", "Choose from Gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -163,11 +165,12 @@ public class ItemsEditActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Dispatch an intent to take a picture.
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) == null) {
-            Log.e("ItemsEditActivity", "No activity found to handle the intent");
-        } else {
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
@@ -178,12 +181,16 @@ public class ItemsEditActivity extends AppCompatActivity {
                 photoURI = FileProvider.getUriForFile(this, "iteMate.project.fileprovider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 captureImageLauncher.launch(takePictureIntent);
-            } else {
-                Log.e("ItemsEditActivity", "Photo file is null");
             }
         }
     }
 
+    /**
+     * Create a file to store the image.
+     *
+     * @return The created file.
+     * @throws IOException If an error occurs while creating the file.
+     */
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -191,6 +198,9 @@ public class ItemsEditActivity extends AppCompatActivity {
         return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
+    /**
+     * Dispatch an intent to pick a picture from the gallery.
+     */
     private void dispatchPickPictureIntent() {
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(pickPhoto, REQUEST_IMAGE_PICK);
@@ -211,6 +221,11 @@ public class ItemsEditActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Handle the image upload to Firebase Storage.
+     *
+     * @param imageUri The URI of the image to upload.
+     */
     private void handleImageUpload(Uri imageUri) {
         if (imageUri != null) {
             String imagePath = "itemImages/" + imageUri.getLastPathSegment();
@@ -264,6 +279,9 @@ public class ItemsEditActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Save the changes to the item.
+     */
     private void saveChangesToItem() {
         itemToDisplay.setTitle(title.getText().toString());
         itemToDisplay.setDescription(description.getText().toString());
