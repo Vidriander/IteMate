@@ -79,7 +79,7 @@ public class ItemsActivity extends MainActivity {
             swipeRefreshLayout.setRefreshing(false);
         });
 
-        // Set add button functionality
+        // Set on click listener for add button
         findViewById(R.id.add_button_items).setOnClickListener(v -> {
             Item newItem = new Item();
             itemController.setCurrentItem(newItem);

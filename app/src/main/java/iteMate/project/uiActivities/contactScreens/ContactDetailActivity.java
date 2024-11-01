@@ -15,9 +15,18 @@ import iteMate.project.R;
 import iteMate.project.controller.ContactController;
 import iteMate.project.models.Contact;
 
+/**
+ * Activity to display a contact's details
+ */
 public class ContactDetailActivity extends AppCompatActivity {
 
+    /**
+     * Contact to display in the detail view
+     */
     private Contact contactToDisplay;
+    /**
+     * Singleton instance of ContactController
+     */
     private static final ContactController contactController = ContactController.getControllerInstance();
 
     @Override
@@ -48,13 +57,13 @@ public class ContactDetailActivity extends AppCompatActivity {
         // on click listener for edit button
         findViewById(R.id.detailcontact_edit_button).setOnClickListener(v -> {
             Intent intent = new Intent(ContactDetailActivity.this, ContactEditActivity.class);
-            intent.putExtra("contact", contactToDisplay);
-            contactController.setCurrentContact(contactToDisplay);
             startActivity(intent);
         });
-
     }
 
+    /**
+     * Sets the contents of the detail view
+     */
     private void setDetailViewContents() {
         if (contactToDisplay != null) {
             String title = contactToDisplay.getFirstName() + " " + contactToDisplay.getLastName();

@@ -54,8 +54,9 @@ public class ContactActivity extends AppCompatActivity implements OnMultipleDocu
 
         // Set up onClickListener for the add contact button
         findViewById(R.id.contact_add_button).setOnClickListener(v -> {
+            Contact newContact = new Contact();
+            contactController.setCurrentContact(newContact);
             Intent intent = new Intent(ContactActivity.this, ContactEditActivity.class);
-            intent.putExtra("contact", new Contact());
             startActivity(intent);
         });
 

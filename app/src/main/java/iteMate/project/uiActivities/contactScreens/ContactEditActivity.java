@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import iteMate.project.R;
+import iteMate.project.controller.ContactController;
 import iteMate.project.models.Contact;
 import iteMate.project.repositories.ContactRepository;
 
@@ -28,6 +29,8 @@ public class ContactEditActivity extends AppCompatActivity {
      * ContactRepository to interact with database
      */
     private ContactRepository contactRepository;
+
+    private final ContactController contactController = ContactController.getControllerInstance();
 
     private TextView title;
     /**
@@ -69,8 +72,8 @@ public class ContactEditActivity extends AppCompatActivity {
         // Initialize ContactRepository
         contactRepository = new ContactRepository();
 
-        // Get the contact to edit from the intent
-        contactToDisplay = getIntent().getParcelableExtra("contact");
+        // Get the contact to edit from the controller
+        contactToDisplay = contactController.getCurrentContact();
 
         if (contactToDisplay == null) {
             Log.e("ContactEditActivity", "contactToDisplay is null");
