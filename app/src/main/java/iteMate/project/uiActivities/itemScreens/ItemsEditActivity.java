@@ -31,24 +31,17 @@ import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
 public class ItemsEditActivity extends AppCompatActivity {
 
-    /**
-     * The item to display in the activity.
-     */
-    private static Item itemToDisplay;
-    private static Item legacyItem;
+    private final ItemController itemController = ItemController.getControllerInstance();
+    private static Item itemToDisplay;  //TODO check if this can be replaced by itemController.getCurrentItem()
     private RecyclerView containedItemsRecyclerView;
     private RecyclerView associatedItemsRecyclerView;
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_IMAGE_PICK = 2;
     private Uri photoURI;
     private ActivityResultLauncher<Intent> captureImageLauncher;
     private ActivityResultLauncher<Intent> pickPhotoLauncher;
 
     private TextView title;
     private TextView description;
-
-    private final ItemController itemController = ItemController.getControllerInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +61,6 @@ public class ItemsEditActivity extends AppCompatActivity {
 
         // Get the item to display from the intent:
         itemToDisplay = itemController.getCurrentItem();
-        legacyItem = itemToDisplay.getDeepCopy();
 
         // Setting the contents of the edit view:
         setEditViewContents();
@@ -100,8 +92,6 @@ public class ItemsEditActivity extends AppCompatActivity {
                 }
         );
 
-
-
         // Setting on click listener for managing contained items
         findViewById(R.id.manageContainedItemsButton).setOnClickListener(click -> {
             Intent intent = new Intent(this, ManageInnerItemsActivity.class);
@@ -127,13 +117,12 @@ public class ItemsEditActivity extends AppCompatActivity {
         });
         // Setting on click listener for cancel button
         findViewById(R.id.item_edit_cancel).setOnClickListener(click -> {
-            itemController.setCurrentItem(legacyItem);
+            itemController.setCurrentItem(itemToDisplay.getDeepCopy());
             finish();
         });
         // Setting on click listener for delete button
         findViewById(R.id.item_edit_delete_btn).setOnClickListener(click -> {
             itemController.deleteItemFromDatabase();
-            // Beende die nächste Activity
             Intent intent = new Intent(this, ItemsDetailActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -152,7 +141,7 @@ public class ItemsEditActivity extends AppCompatActivity {
     }
 
     /**
-     * Show a dialog to choose between taking a photo or picking one from the gallery.
+     * Shows a dialog to choose between taking a photo or selecting one from the gallery
      */
     private void showImagePickerDialog() {
         String[] options = {"Take Photo", "Choose from Gallery"};
@@ -169,7 +158,7 @@ public class ItemsEditActivity extends AppCompatActivity {
     }
 
     /**
-     * Dispatch an intent to take a picture.
+     * Dispatches an intent to take a picture
      */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -189,62 +178,41 @@ public class ItemsEditActivity extends AppCompatActivity {
     }
 
     /**
-     * Dispatch an intent to pick a picture from the gallery.
+     * Dispatches an intent to pick a picture from the gallery
      */
     private void dispatchPickPictureIntent() {
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickPhotoLauncher.launch(pickPhoto);    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                // Handle the photo taken
-                handleImageUpload(photoURI);
-            } else if (requestCode == REQUEST_IMAGE_PICK) {
-                // Handle the image picked from gallery
-                Uri selectedImage = data.getData();
-                handleImageUpload(selectedImage);
-            }
-        }
+        pickPhotoLauncher.launch(pickPhoto);
     }
 
     /**
-     * Handle the image upload to Firebase Storage.
-     *
-     * @param imageUri The URI of the image to upload.
+     * Handles the image upload
+     * @param imageUri the URI of the image to upload
      */
     private void handleImageUpload(Uri imageUri) {
         itemController.handleImageUpload(imageUri, this, findViewById(R.id.editItemMainImage));
     }
 
     /**
-     * Set up the recycler adapters for the contained and associated items.
+     * Sets up the recycler adapters for the contained and associated items
      */
     private void setUpRecyclerAdapters() {
-        // contained Items
         InnerItemsAdapter containedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getContainedItems(), this);
         containedItemsRecyclerView.setAdapter(containedItemsAdapter);
-        // associated Items
         InnerItemsAdapter associatedItemsAdapter = new InnerItemsAdapter(itemToDisplay.getAssociatedItems(), this);
         associatedItemsRecyclerView.setAdapter(associatedItemsAdapter);
     }
 
     /**
-     * Set the contents of the edit view but the recycler views.
+     * Sets the contents of the edit view
      */
     private void setEditViewContents() {
-        // Setting the image:
         GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
-        // Setting the name
         title = findViewById(R.id.itemEditItemname);
         title.setText(itemToDisplay.getTitle());
-        // Setting the description
         description = findViewById(R.id.itemeditcard_itemdescription);
         description.setText(String.valueOf(itemToDisplay.getDescription()));
 
-        // setting visibility of the delete button
         if (itemToDisplay.getId() != null) {
             findViewById(R.id.item_edit_delete_btn).setVisibility(android.view.View.VISIBLE);
         } else {
