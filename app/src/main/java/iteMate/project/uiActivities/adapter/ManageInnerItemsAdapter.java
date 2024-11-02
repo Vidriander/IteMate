@@ -28,7 +28,7 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
     /**
      * List of items that are checked, given by the context
      */
-    private List<Item> checkedItems;
+    private final List<Item> checkedItems;
     /**
      * List of all items that are available to be checked, all items available in the context
      */
@@ -45,7 +45,7 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
     /**
      * Set to store IDs of checked items
      */
-    private Set<String> checkedItemTags = new HashSet<>();
+    private final Set<String> checkedItemTags = new HashSet<>();
 
     /**
      * Constructor for the ManageInnerItemsAdapter.
