@@ -80,14 +80,13 @@ public class TrackController {
      * @return true if the object is ready for upload, false otherwise
      */
     public boolean isReadyForUpload() {
-        boolean b1 = currentTrack != null;
         boolean b2 = currentTrack.getContact() != null;
         boolean b3 = currentTrack.getLentItemsList() != null;
         boolean b4 = !currentTrack.getLentItemIDs().isEmpty();
         boolean b5 = currentTrack.getReturnDate() != null;
         boolean b6 = currentTrack.getGiveOutDate().compareTo(currentTrack.getReturnDate()) < 0;
 
-        return b1 && b2 && b3 && b4 && b5 && b6;
+        return  b2 && b3 && b4 && b5 && b6;
     }
 
     /**
@@ -108,7 +107,6 @@ public class TrackController {
         });
     }
 
-
     /**
      * Resets the current object to null
      */
@@ -128,12 +126,13 @@ public class TrackController {
         });
     }
 
+    /**
+     * Fetches all tracks from database
+     * @param listener listener that is notified when the tracks are ready
+     */
     public void fetchAllTracksFromDatabase(OnMultipleDocumentsFetchedListener<Track> listener) {
         trackRepository.getAllDocumentsFromDatabase(listener);
     }
 
-    // add methode to set availability of items
-
-
-
+    // add methode to set availability of items TODO are we doing this?
 }

@@ -7,9 +7,6 @@ import java.util.List;
 
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
-import iteMate.project.repositories.GenericRepository;
-import iteMate.project.repositories.ItemRepository;
-import iteMate.project.repositories.TrackRepository;
 
 /**
  * Controller for managing the scanning of NFC tags

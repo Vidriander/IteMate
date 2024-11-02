@@ -195,6 +195,10 @@ public class ItemController {
         trackRepository.getOneDocumentFromDatabase(currentItem.getActiveTrackID(), trackListener);
     }
 
+    /**
+     * Fetches all items from the database
+     * @param listener listener that is notified when the items are ready
+     */
     public void fetchItemByNfcTagId(String nfcTagId, OnSingleDocumentFetchedListener<Item> listener) {
         itemRepository.getItemByNfcTagFromDatabase(nfcTagId, listener);
     }

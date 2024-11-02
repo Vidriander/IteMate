@@ -60,6 +60,9 @@ public class ContactController {
         contactRepository.getAllDocumentsFromDatabase(listener);
     }
 
+    /**
+     * Saves the current contact in the database
+     */
     public void saveContactToDatabase(Contact contact) {
         if (Objects.equals(currentContact.getId(), null) || currentContact.getId().isEmpty()) {
             contactRepository.addDocumentToDatabase(currentContact);
@@ -68,6 +71,9 @@ public class ContactController {
         }
     }
 
+    /**
+     * Deletes the current contact from the database
+     */
     public void deleteContactFromDatabase(Contact contact) {
         contactRepository.deleteDocumentFromDatabase(contact);
     }

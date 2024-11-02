@@ -121,7 +121,7 @@ public class ItemsEditActivity extends AppCompatActivity {
         });
         // Setting on click listener for cancel button
         findViewById(R.id.item_edit_cancel).setOnClickListener(click -> {
-            itemController.setCurrentItem(legacyItem);;
+            itemController.setCurrentItem(legacyItem);
             finish();
         });
         // Setting on click listener for delete button
