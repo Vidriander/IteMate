@@ -24,6 +24,11 @@ import iteMate.project.models.DocumentEquivalent;
 import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
 import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
 
+/**
+ * A generic repository for Firestore that can be used to fetch, add, update, and delete documents of a certain type
+ *
+ * @param <T> the type of the document to be fetched, added, updated, or deleted
+ */
 public class GenericRepository<T extends DocumentEquivalent> {
 
     protected FirebaseFirestore db;
@@ -163,7 +168,6 @@ public class GenericRepository<T extends DocumentEquivalent> {
     }
 
     // TODO: remove UI dependency
-
     /**
      * Sets an image for an ImageView from Firebase Storage
      *

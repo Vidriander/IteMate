@@ -81,10 +81,8 @@ public class ItemsActivity extends MainActivity {
 
         // Set on click listener for add button
         findViewById(R.id.add_button_items).setOnClickListener(v -> {
-            Item newItem = new Item();
-            itemController.setCurrentItem(newItem);
-            Intent intent = new Intent(this, ItemsEditActivity.class);
-            startActivity(intent);
+            itemController.setCurrentItem(new Item());
+            startActivity(new Intent(this, ItemsEditActivity.class));
         });
     }
 

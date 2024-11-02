@@ -211,12 +211,15 @@ public class ItemsEditActivity extends AppCompatActivity {
      * Sets the contents of the edit view
      */
     private void setEditViewContents() {
+        // Setting the image
         GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
+        // Setting the title and description
         title = findViewById(R.id.itemEditItemname);
         title.setText(itemToDisplay.getTitle());
+        // Setting the description
         description = findViewById(R.id.itemeditcard_itemdescription);
         description.setText(String.valueOf(itemToDisplay.getDescription()));
-
+        // Setting the delete button
         if (itemToDisplay.getId() != null) {
             findViewById(R.id.item_edit_delete_btn).setVisibility(android.view.View.VISIBLE);
         } else {
