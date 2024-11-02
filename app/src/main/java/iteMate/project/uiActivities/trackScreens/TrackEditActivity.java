@@ -34,6 +34,9 @@ import iteMate.project.uiActivities.contactScreens.SelectContactActivity;
 import iteMate.project.uiActivities.scanScreen.ManageScanActivity;
 import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
+/**
+ * Activity for editing a track
+ */
 public class TrackEditActivity extends AppCompatActivity {
 
     private Track trackToDisplay;
@@ -140,11 +143,17 @@ public class TrackEditActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets up the adapter for the horizontal RecyclerView
+     */
     private void setUpAdapter() {
         InnerItemsAdapter horizontalAdapter = new InnerItemsAdapter(trackToDisplay.getLentItemsList(), this);
         horizontalRecyclerView.setAdapter(horizontalAdapter);
     }
 
+    /**
+     * Sets the content of the detail view
+     */
     private void setDetailViewContents() {
         if (trackToDisplay != null) {
             String displayableName = trackToDisplay.getContact().getFirstName() + " " + trackToDisplay.getContact().getLastName();

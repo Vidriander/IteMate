@@ -29,6 +29,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     final List<Item> items;
     final Context context;
 
+    /**
+     * Constructor for the ItemAdapter.
+     *
+     * @param items   List of items to display in the RecyclerView.
+     * @param context Context of the activity.
+     */
     public ItemAdapter(List<Item> items, Context context) {
         this.items = items;
         this.context = context;

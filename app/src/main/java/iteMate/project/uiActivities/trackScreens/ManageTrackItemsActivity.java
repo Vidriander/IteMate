@@ -18,6 +18,9 @@ import iteMate.project.uiActivities.adapter.ManageInnerItemsAdapter;
 import iteMate.project.utils.SearchUtils;
 import iteMate.project.utils.SortUtils;
 
+/**
+ * Activity for managing the items in a track
+ */
 public class ManageTrackItemsActivity extends AppCompatActivity implements OnMultipleDocumentsFetchedListener<Item> {
     /**
      * Adapter for the RecyclerView that displays the lent items
@@ -34,6 +37,9 @@ public class ManageTrackItemsActivity extends AppCompatActivity implements OnMul
      */
     private List<Item> allItems = new ArrayList<>();
 
+    /**
+     * TrackController instance
+     */
     private final TrackController trackController = TrackController.getControllerInstance();
 
     @Override

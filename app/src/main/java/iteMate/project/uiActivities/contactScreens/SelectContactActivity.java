@@ -16,13 +16,19 @@ import iteMate.project.models.Contact;
 import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
 import iteMate.project.uiActivities.adapter.SelectContactAdapter;
 
+/**
+ * Activity to select a contact
+ */
 public class SelectContactActivity extends AppCompatActivity implements OnMultipleDocumentsFetchedListener<Contact> {
     /**
      * Adapter that will be used to display the contacts
      */
     private SelectContactAdapter adapter;
 
-    private ContactController contactController = ContactController.getControllerInstance();
+    /**
+     * Singleton instance of ContactController
+     */
+    private final ContactController contactController = ContactController.getControllerInstance();
 
     /**
      * List of all Contacts

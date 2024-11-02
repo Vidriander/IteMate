@@ -86,6 +86,11 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         handleTag(tagId);
     }
 
+    /**
+     * Handles the NFC tag
+     *
+     * @param tagId the NFC tag ID
+     */
     public void handleTag(String tagId) {
         for (Item item : listOfPendingItems) {
             if (item.getNfcTag().equals(tagId)) {

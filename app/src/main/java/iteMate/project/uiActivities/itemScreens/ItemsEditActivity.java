@@ -26,9 +26,11 @@ import java.io.IOException;
 import iteMate.project.R;
 import iteMate.project.controller.ItemController;
 import iteMate.project.models.Item;
-import iteMate.project.repositories.GenericRepository;  //TODO remove
 import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
+/**
+ * Activity for editing an item.
+ */
 public class ItemsEditActivity extends AppCompatActivity {
 
     private final ItemController itemController = ItemController.getControllerInstance();
@@ -84,6 +86,7 @@ public class ItemsEditActivity extends AppCompatActivity {
                 }
         );
 
+        // Setting up the image picker
         pickPhotoLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {

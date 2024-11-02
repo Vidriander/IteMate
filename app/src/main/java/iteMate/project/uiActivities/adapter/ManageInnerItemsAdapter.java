@@ -25,6 +25,7 @@ import iteMate.project.models.Item;
  * This adapter is responsible for displaying the items in the RecyclerView.
  */
 public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerItemsAdapter.ViewHolder> {
+
     /**
      * List of items that are checked, given by the context
      */

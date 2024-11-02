@@ -21,6 +21,9 @@ import iteMate.project.utils.SortUtils;
 import iteMate.project.uiActivities.adapter.TrackAdapter;
 import iteMate.project.uiActivities.MainActivity;
 
+/**
+ * Activity for listing and managing the tracks
+ */
 public class TrackActivity extends MainActivity implements OnMultipleDocumentsFetchedListener<Track>, OnSingleDocumentFetchedListener<Track> {
 
     private TrackAdapter trackAdapter;

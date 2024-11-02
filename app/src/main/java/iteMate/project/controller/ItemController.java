@@ -148,6 +148,12 @@ public class ItemController {
         currentItem.setDescription(description);
     }
 
+    /**
+     * Sets the image for the given ImageView
+     * @param context the context of the activity
+     * @param imagePath the path of the image
+     * @param imageView the ImageView to set the image to
+     */
     public void setImageForView(Context context, String imagePath, ImageView imageView) {
         GenericRepository<Item> repository = new GenericRepository<>(Item.class);
         repository.fetchImageUrl(imagePath, imageUrl -> {

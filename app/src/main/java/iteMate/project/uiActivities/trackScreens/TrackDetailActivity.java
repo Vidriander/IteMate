@@ -24,6 +24,9 @@ import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
 import iteMate.project.uiActivities.adapter.TrackItemsAdapter;
 import iteMate.project.uiActivities.scanScreen.ReturnScanActivity;
 
+/**
+ * Activity for displaying the details of a track
+ */
 public class TrackDetailActivity extends AppCompatActivity implements OnSingleDocumentFetchedListener<Track>, OnMultipleDocumentsFetchedListener<Track> {
 
     private final TrackController trackController = TrackController.getControllerInstance();
