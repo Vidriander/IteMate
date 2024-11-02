@@ -10,6 +10,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import iteMate.project.R;
 
+/**
+ * SettingsActivity class is the settings screen of the application.
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     @Override

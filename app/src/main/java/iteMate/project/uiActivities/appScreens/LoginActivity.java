@@ -10,6 +10,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import iteMate.project.R;
 
+/**
+ * LoginActivity class is the login screen of the application.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     @Override

@@ -7,6 +7,9 @@ import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.uiActivities.MainActivity;
 
+/**
+ * HomeActivity class is the main screen of the application.
+ */
 public class HomeActivity extends MainActivity {
 
     private final ItemController itemController = ItemController.getControllerInstance();

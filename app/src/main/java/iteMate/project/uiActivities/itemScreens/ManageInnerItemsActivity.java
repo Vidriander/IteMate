@@ -20,6 +20,9 @@ import iteMate.project.repositories.ItemRepository;  // TODO: remove
 import iteMate.project.uiActivities.adapter.ManageInnerItemsAdapter;
 import iteMate.project.utils.SortUtils;
 
+/**
+ * Activity for managing the inner items of an item
+ */
 public class ManageInnerItemsActivity extends AppCompatActivity implements OnMultipleDocumentsFetchedListener<Item> {
 
     private static Item itemToDisplay;
@@ -106,6 +109,9 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements OnMul
         adapter.setSearchList(SortUtils.sortItemsByName(searchList));
     }
 
+    /**
+     * Save the changes to the item
+     */
     private void saveChangesToItem() {
         List<Item> newCheckedItems = adapter.getNewCheckedItems();
         if (isContainedItems) {
