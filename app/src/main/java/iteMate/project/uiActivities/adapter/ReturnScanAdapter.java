@@ -33,6 +33,9 @@ public class ReturnScanAdapter extends RecyclerView.Adapter<ReturnScanAdapter.Vi
     private final List<Item> items;
     private final Context context;
 
+    /**
+     * ViewHolder class for the RecyclerView.
+     */
     public ReturnScanAdapter(List<Item> items, Context context) {
         this.items = items;
         this.context = context;
@@ -92,6 +95,11 @@ public class ReturnScanAdapter extends RecyclerView.Adapter<ReturnScanAdapter.Vi
         public TextView tagNumber;
         public ImageView itemImage;
 
+        /**
+         * Constructor for the ViewHolder
+         *
+         * @param itemView View of the item
+         */
         public ViewHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.item_cardview);

@@ -16,11 +16,18 @@ import iteMate.project.controller.ContactController;
 import iteMate.project.models.Contact;
 import iteMate.project.uiActivities.contactScreens.ContactDetailActivity;
 
+/**
+ * Adapter for the RecyclerView in the ContactActivity.
+ * This adapter is responsible for displaying the contacts in the RecyclerView.
+ */
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
 
     private final List<Contact> contacts;
     private final Context context;
 
+    /**
+     * ViewHolder class for the RecyclerView.
+     */
     public ContactAdapter(List<Contact> contacts, Context context) {
         this.contacts = contacts;
         this.context = context;
@@ -53,10 +60,18 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         return contacts.size();
     }
 
+    /**
+     * ViewHolder class for the RecyclerView.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView contactName;
         public TextView contactEmail;
 
+        /**
+         * Constructor for the ViewHolder.
+         *
+         * @param itemView View of the item
+         */
         public ViewHolder(View itemView) {
             super(itemView);
             contactName = itemView.findViewById(R.id.contactcard_header_text);

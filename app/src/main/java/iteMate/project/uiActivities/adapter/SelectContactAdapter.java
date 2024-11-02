@@ -16,7 +16,10 @@ import iteMate.project.R;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Contact;
 
-
+/**
+ * Adapter for the RecyclerView in the SelectContactActivity.
+ * This adapter is responsible for displaying the contacts in the RecyclerView.
+ */
 public class SelectContactAdapter extends RecyclerView.Adapter<SelectContactAdapter.ViewHolder> {
 
     /**
@@ -34,6 +37,12 @@ public class SelectContactAdapter extends RecyclerView.Adapter<SelectContactAdap
      */
     private List<Contact> contactList;
 
+    /**
+     * Constructor for the SelectContactAdapter.
+     *
+     * @param context     Context of the activity
+     * @param contactList List of all contacts that are displayed in the RecyclerView
+     */
     public SelectContactAdapter(Context context, List<Contact> contactList) {
         this.context = context;
         this.contactList = contactList;
@@ -99,11 +108,21 @@ public class SelectContactAdapter extends RecyclerView.Adapter<SelectContactAdap
         }
     }
 
+    /**
+     * Set the list of contacts that should be displayed in the RecyclerView.
+     *
+     * @param contactList List of contacts
+     */
     public void setContactList(List<Contact> contactList) {
         this.contactList = contactList;
         notifyDataSetChanged();
     }
 
+    /**
+     * Get the selected contact.
+     *
+     * @return Selected contact
+     */
     public Contact getSelectedContact() {
         return selectedContact;
     }

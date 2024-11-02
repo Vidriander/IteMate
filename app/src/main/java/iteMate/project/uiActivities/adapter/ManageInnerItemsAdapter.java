@@ -20,6 +20,10 @@ import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
 
+/**
+ * Adapter for the RecyclerView in the ManageInnerItemsActivity.
+ * This adapter is responsible for displaying the items in the RecyclerView.
+ */
 public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerItemsAdapter.ViewHolder> {
     /**
      * List of items that are checked, given by the context
@@ -43,6 +47,13 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
      */
     private Set<String> checkedItemTags = new HashSet<>();
 
+    /**
+     * Constructor for the ManageInnerItemsAdapter.
+     *
+     * @param checkedItems List of items that are checked, given by the context
+     * @param allItems     List of all items that are available to be checked, all items available in the context
+     * @param context      Context of the activity
+     */
     public ManageInnerItemsAdapter(List<Item> checkedItems, List<Item> allItems, Context context) {
         this.checkedItems = checkedItems;
         this.allItems = allItems;
@@ -56,6 +67,9 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         setUpLists();
     }
 
+    /**
+     * This method sets up the itemList by adding the checked items first and then the rest of the items.
+     */
     private void setUpLists() {
         itemList = new ArrayList<>();
 
@@ -73,7 +87,11 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         }
     }
 
-    // This method returns all items whose checkbox is checked
+    /**
+     * This method returns all items whose checkbox is checked.
+     *
+     * @return List of items whose checkbox is checked
+     */
     public List<Item> getNewCheckedItems() {
         List<Item> newCheckedItems = new ArrayList<>();
         for (Item item : itemList) {
@@ -84,12 +102,22 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         return newCheckedItems;
     }
 
+    /**
+     * Set the list of items to be displayed in the RecyclerView.
+     *
+     * @param searchList List of items to be displayed
+     */
     public void setSearchList(List<Item> searchList) {
         this.allItems = searchList;
         setUpLists();
         notifyDataSetChanged();
     }
 
+    /**
+     * Set the list of items to be displayed in the RecyclerView.
+     *
+     * @param items List of items to be displayed
+     */
     public void notifyItemsAvailable(List<Item> items) {
         allItems = items;
         itemList = new ArrayList<>();
@@ -131,13 +159,6 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
 
         // Setting the checkbox:
         holder.checkBox.setChecked(checkedItemTags.contains(item.getId()));
-
-        // Items currently not clickable. Is that desired?
-//        holder.itemView.setOnClickListener(v -> {
-//            Intent intent = new Intent(context, ItemsDetailActivity.class);
-//            intent.putExtra("item", item);
-//            context.startActivity(intent);
-//        });
     }
 
     @Override

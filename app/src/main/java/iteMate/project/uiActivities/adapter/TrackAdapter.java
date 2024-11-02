@@ -19,12 +19,22 @@ import iteMate.project.controller.TrackController;
 import iteMate.project.models.Track;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 
+/**
+ * Adapter for the RecyclerView in the TrackActivity.
+ * This adapter is responsible for displaying the tracks in the RecyclerView.
+ */
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> {
 
     private final List<Track> tracks;
     private final Context context;
     private final TrackController trackController;
 
+    /**
+     * Constructor for the TrackAdapter.
+     *
+     * @param tracks  List of all tracks that are displayed in the RecyclerView
+     * @param context Context of the activity
+     */
     public TrackAdapter(List<Track> tracks, Context context) {
         this.tracks = tracks;
         this.context = context;
@@ -94,6 +104,9 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         return tracks.size();  // Changed 'items' to 'tracks'
     }
 
+    /**
+     * ViewHolder class for the RecyclerView.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public CardView cardView;
         public TextView contactName;
@@ -101,6 +114,11 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         public TextView daysLeft;
         public TextView itemsLentText;
 
+        /**
+         * Constructor for the ViewHolder.
+         *
+         * @param itemView View of the item
+         */
         public ViewHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.track_cardview);

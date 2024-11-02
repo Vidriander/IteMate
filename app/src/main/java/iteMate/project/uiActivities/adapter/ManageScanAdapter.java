@@ -30,6 +30,9 @@ public class ManageScanAdapter extends RecyclerView.Adapter<ManageScanAdapter.Vi
     private final List<Item> items;
     private final Context context;
 
+    /**
+     * ViewHolder class for the RecyclerView.
+     */
     public ManageScanAdapter(List<Item> items, Context context) {
         this.items = items;
         this.context = context;
@@ -71,6 +74,11 @@ public class ManageScanAdapter extends RecyclerView.Adapter<ManageScanAdapter.Vi
         return items.size();
     }
 
+    /**
+     * Set the items to be displayed in the RecyclerView.
+     *
+     * @param lentItemsList List of items to be displayed
+     */
     public void setItems(List<Item> lentItemsList) {
         items.clear();
         items.addAll(lentItemsList);
@@ -86,6 +94,11 @@ public class ManageScanAdapter extends RecyclerView.Adapter<ManageScanAdapter.Vi
         public TextView tagNumber;
         public ImageView itemImage;
 
+        /**
+         * Constructor for the ViewHolder
+         *
+         * @param itemView View of the item
+         */
         public ViewHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.item_cardview);

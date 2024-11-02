@@ -11,13 +11,26 @@ import java.util.Objects;
 import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
-import iteMate.project.repositories.GenericRepository;
+import iteMate.project.repositories.GenericRepository; //TODO remove
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
+/**
+ * Adapter for the RecyclerView in the TrackItemsActivity.
+ * This adapter is responsible for displaying the items in the RecyclerView.
+ */
 public class TrackItemsAdapter extends ItemAdapter {
 
+    /**
+     * TrackController instance
+     */
     private final TrackController trackController = TrackController.getControllerInstance();
 
+    /**
+     * Constructor for the TrackItemsAdapter
+     *
+     * @param items   List of items to be displayed
+     * @param context Context of the activity
+     */
     public TrackItemsAdapter(List<Item> items, Context context) {
         super(items, context);
     }

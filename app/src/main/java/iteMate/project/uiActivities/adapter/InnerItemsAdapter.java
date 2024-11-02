@@ -20,10 +20,18 @@ import iteMate.project.repositories.GenericRepository;
 import iteMate.project.repositories.ItemRepository;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
+/**
+ * Adapter for the RecyclerView in the ManageInnerItemsActivity.
+ * This adapter is responsible for displaying the items in the RecyclerView.
+ */
 public class InnerItemsAdapter extends RecyclerView.Adapter<InnerItemsAdapter.ViewHolder> {
     private final List<Item> items;
     private final Context context;
 
+    /**
+     * Adapter for the RecyclerView in the ManageInnerItemsActivity.
+     * This adapter is responsible for displaying the items in the RecyclerView.
+     */
     public InnerItemsAdapter(List<Item> items, Context context) {
         this.items = items;
         this.context = context;
@@ -62,10 +70,16 @@ public class InnerItemsAdapter extends RecyclerView.Adapter<InnerItemsAdapter.Vi
         return items.size();
     }
 
+    /**
+     * ViewHolder class for the RecyclerView.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView itemName;
         public ImageView itemImage;
 
+        /**
+         * ViewHolder class for the RecyclerView.
+         */
         public ViewHolder(View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.containeditem_title);
