@@ -421,6 +421,7 @@ public class Track implements DocumentEquivalent {
      * @throws NullPointerException if pendingItemIDs is null
      */
     public void setReturnedItemsList(List<Item> returnedItemsList) throws NullPointerException {
+        // TODO: check if this can be removed
         if (returnedItemsList == null) {
             throw new NullPointerException("ReturnedItemsList cannot be null");
         }
@@ -439,6 +440,7 @@ public class Track implements DocumentEquivalent {
      * @throws NullPointerException if pendingItemIDs is null
      */
     public void setReturnedItemIDs(List<String> returnedItemIDs) throws NullPointerException {
+        // TODO: check if this can be removed
         if (returnedItemIDs == null) {
             throw new NullPointerException("ReturnedItemIDs cannot be null");
         }
@@ -456,10 +458,6 @@ public class Track implements DocumentEquivalent {
             throw new NullPointerException("AdditionalInfo cannot be null");
         }
         this.additionalInfo = additionalInfo;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     // endregion

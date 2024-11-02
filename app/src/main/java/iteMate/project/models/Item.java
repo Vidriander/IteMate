@@ -219,9 +219,6 @@ public class Item implements DocumentEquivalent {
         return collectionPath;
     }
 
-    public String getOwnerID() {
-        return ownerID;
-    }
     // endregion
 
     // region Setter

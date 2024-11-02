@@ -63,7 +63,7 @@ public class ContactController {
     /**
      * Saves the current contact in the database
      */
-    public void saveContactToDatabase(Contact contact) {
+    public void saveContactToDatabase() {
         if (Objects.equals(currentContact.getId(), null) || currentContact.getId().isEmpty()) {
             contactRepository.addDocumentToDatabase(currentContact);
         } else {

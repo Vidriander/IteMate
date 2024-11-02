@@ -102,7 +102,7 @@ public class ContactEditActivity extends AppCompatActivity {
         findViewById(R.id.contact_edit_save_btn).setOnClickListener(v -> {
             saveChangesToContact();
             contactController.setCurrentContact(contactToDisplay);
-            contactController.saveContactToDatabase(contactToDisplay);
+            contactController.saveContactToDatabase();
             finish();
         });
 
