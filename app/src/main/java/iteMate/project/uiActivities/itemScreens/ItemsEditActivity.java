@@ -33,6 +33,7 @@ public class ItemsEditActivity extends AppCompatActivity {
 
     private final ItemController itemController = ItemController.getControllerInstance();
     private static Item itemToDisplay;  //TODO @dave check if this can be replaced by itemController.getCurrentItem()
+    private static Item legacyItem;
     private RecyclerView containedItemsRecyclerView;
     private RecyclerView associatedItemsRecyclerView;
 
@@ -61,6 +62,7 @@ public class ItemsEditActivity extends AppCompatActivity {
 
         // Get the item to display from the intent:
         itemToDisplay = itemController.getCurrentItem();
+        legacyItem = itemToDisplay.getDeepCopy();
 
         // Setting the contents of the edit view:
         setEditViewContents();
@@ -119,7 +121,7 @@ public class ItemsEditActivity extends AppCompatActivity {
         });
         // Setting on click listener for cancel button
         findViewById(R.id.item_edit_cancel).setOnClickListener(click -> {
-            itemController.setCurrentItem(itemToDisplay.getDeepCopy());
+            itemController.setCurrentItem(legacyItem);;
             finish();
         });
         // Setting on click listener for delete button
