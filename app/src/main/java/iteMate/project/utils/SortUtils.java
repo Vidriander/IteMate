@@ -62,8 +62,7 @@ public class SortUtils {
      * @return List of tracks sorted by default
      */
     public static List<Track> defaultTrackSort(List<Track> trackList) {
-        List<Track> result =  sortTracksByActiveState(sortTracksByLendOutDate(trackList));
-        return result;
+        return sortTracksByActiveState(sortTracksByLendOutDate(trackList));
     }
 
     /**

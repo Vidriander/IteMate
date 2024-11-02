@@ -73,9 +73,7 @@ public class ManageInnerItemsActivity extends AppCompatActivity implements OnMul
         });
 
         // Setting on click listener for cancel button
-        findViewById(R.id.manageInnerItemsCancelbutton).setOnClickListener(click -> {
-            finish();
-        });
+        findViewById(R.id.manageInnerItemsCancelbutton).setOnClickListener(click -> finish());
 
         // Configure the SearchView
         SearchView searchView = findViewById(R.id.manageInnerItemsSearchView);

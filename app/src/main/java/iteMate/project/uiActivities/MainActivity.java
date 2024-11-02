@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.nfc.NfcAdapter;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -18,9 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 
 import iteMate.project.R;
-import iteMate.project.uiActivities.appScreens.LoginActivity;
-import iteMate.project.uiActivities.appScreens.SettingsActivity;
-import iteMate.project.uiActivities.contactScreens.ContactActivity;
 import iteMate.project.uiActivities.appScreens.HomeActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsActivity;
 import iteMate.project.uiActivities.scanScreen.ScanActivity;
@@ -65,12 +60,9 @@ public abstract class MainActivity extends AppCompatActivity {
         // Set up the scan button
         FloatingActionButton scanButton = findViewById(R.id.scan_button);
         if (scanButton != null) {
-            scanButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), ScanActivity.class));
-                    overridePendingTransition(0, 0);
-                }
+            scanButton.setOnClickListener(v -> {
+                startActivity(new Intent(getApplicationContext(), ScanActivity.class));
+                overridePendingTransition(0, 0);
             });
         }
 
@@ -78,28 +70,24 @@ public abstract class MainActivity extends AppCompatActivity {
         NavigationBarView navigationBarView = findViewById(R.id.bottom_navigation);
         navigationBarView.setSelectedItemId(bottomNavID);
 
-        navigationBarView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home:
-                        if (bottomNavID == R.id.home) return true;
-                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.items:
-                        if (bottomNavID == R.id.items) return true;
-                        startActivity(new Intent(getApplicationContext(), ItemsActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.track:
-                        if (bottomNavID == R.id.track) return true;
-                        startActivity(new Intent(getApplicationContext(), TrackActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-                }
-                return false;
+        navigationBarView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.home) {
+                if (bottomNavID == R.id.home) return true;
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (item.getItemId() == R.id.items) {
+                if (bottomNavID == R.id.items) return true;
+                startActivity(new Intent(getApplicationContext(), ItemsActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (item.getItemId() == R.id.track) {
+                if (bottomNavID == R.id.track) return true;
+                startActivity(new Intent(getApplicationContext(), TrackActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
             }
+            return false;
         });
     }
 
@@ -109,23 +97,27 @@ public abstract class MainActivity extends AppCompatActivity {
         popupMenu.getMenuInflater().inflate(R.menu.menu_drawer, popupMenu.getMenu());
 
         // Set click listener for menu items
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_contacts:
-                        startActivity(new Intent(MainActivity.this, ContactActivity.class));
-                        return true;
-                    case R.id.nav_settings:
-                        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                        return true;
-                    case R.id.nav_logout:
-                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                        return true;
-                    default:
-                        return false;
+        popupMenu.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.home) {
+                if (bottomNavID != R.id.home) {
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    overridePendingTransition(0, 0);
                 }
+                return true;
+            } else if (item.getItemId() == R.id.items) {
+                if (bottomNavID != R.id.items) {
+                    startActivity(new Intent(getApplicationContext(), ItemsActivity.class));
+                    overridePendingTransition(0, 0);
+                }
+                return true;
+            } else if (item.getItemId() == R.id.track) {
+                if (bottomNavID != R.id.track) {
+                    startActivity(new Intent(getApplicationContext(), TrackActivity.class));
+                    overridePendingTransition(0, 0);
+                }
+                return true;
             }
+            return false;
         });
 
         // Show the popup menu

@@ -33,7 +33,6 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     private List<Item> listOfPendingItems;
     private List<Item> listOfReturnedItems;
     private ReturnScanAdapter returnScanAdapter;
-    private RecyclerView recyclerView;
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ScanController scanController = ScanController.getControllerInstance();
     private final ItemController itemController = ItemController.getControllerInstance();
@@ -47,7 +46,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         initializeNfcAdapter();
 
         // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recyclerViewItems);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Retrieve the list of items fro the controller
