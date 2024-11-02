@@ -16,7 +16,6 @@ import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.R;
-import iteMate.project.repositories.GenericRepository;  //TODO remove
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 import iteMate.project.uiActivities.adapter.InnerItemsAdapter;
 
@@ -84,8 +83,7 @@ public class ItemsDetailActivity extends AppCompatActivity {
     private void setDetailViewContents() {
         //TODO to move generic repository to controller
         // Setting the image
-        GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.item_detailcard_image));
-        // Setting the title
+        ItemController.getControllerInstance().setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.item_detailcard_image));        // Setting the title
         ((TextView) findViewById(R.id.item_detailcard_title)).setText(itemToDisplay.getTitle());
         // Setting the description
         ((TextView) findViewById(R.id.itemdetailcard_itemdescription)).setText(String.valueOf(itemToDisplay.getDescription()));
@@ -98,13 +96,11 @@ public class ItemsDetailActivity extends AppCompatActivity {
             availability = "track";
             color = getResources().getColor(R.color.unavailable_red, null);
             // on click listener if the item is in a track
-            availabilityTextView.setOnClickListener(v -> {
-                ItemController.getControllerInstance().getTrackOfCurrentItem(document -> {
-                    Intent intent = new Intent(ItemsDetailActivity.this, TrackDetailActivity.class);
-                    trackController.setCurrentTrack(document);
-                    startActivity(intent);
-                });
-            });
+            availabilityTextView.setOnClickListener(v -> ItemController.getControllerInstance().getTrackOfCurrentItem(document -> {
+                Intent intent = new Intent(ItemsDetailActivity.this, TrackDetailActivity.class);
+                trackController.setCurrentTrack(document);
+                startActivity(intent);
+            }));
         // if item is available
         } else {
             availability = "lend";

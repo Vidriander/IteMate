@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Set;
 
 import iteMate.project.R;
+import iteMate.project.controller.ItemController;
 import iteMate.project.models.Item;
-import iteMate.project.repositories.GenericRepository;
 
 /**
  * Adapter for the RecyclerView in the ManageInnerItemsActivity.
@@ -145,8 +145,9 @@ public class ManageInnerItemsAdapter extends RecyclerView.Adapter<ManageInnerIte
         holder.itemName.setText(item.getTitle());
         // Setting the Description
         holder.itemDescription.setText(String.valueOf(item.getDescription()));
-        // Setting the image:
-        GenericRepository.setImageForView(context, item.getImage(), holder.itemImage);
+        // Setting the image TODO check if this can be replaced to separate adapter and controller
+        ItemController itemController = ItemController.getControllerInstance();
+        itemController.setImageForView(context, item.getImage(), holder.itemImage);
 
         // Handle checkbox state change
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {

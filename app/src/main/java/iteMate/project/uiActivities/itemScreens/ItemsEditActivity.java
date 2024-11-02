@@ -137,7 +137,7 @@ public class ItemsEditActivity extends AppCompatActivity {
         findViewById(R.id.delete_image_card).setOnClickListener(click -> {
             itemToDisplay.resetImageToDefault();
             itemController.setCurrentItem(itemToDisplay);
-            GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
+            itemController.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
         });
 
         // setting on click listener for the update image button
@@ -212,7 +212,7 @@ public class ItemsEditActivity extends AppCompatActivity {
      */
     private void setEditViewContents() {
         // Setting the image
-        GenericRepository.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
+        itemController.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
         // Setting the title and description
         title = findViewById(R.id.itemEditItemname);
         title.setText(itemToDisplay.getTitle());

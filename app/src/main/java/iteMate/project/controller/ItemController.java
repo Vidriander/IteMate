@@ -6,6 +6,8 @@ import android.os.Environment;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import iteMate.project.R;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
 import iteMate.project.repositories.GenericRepository;
@@ -145,6 +148,24 @@ public class ItemController {
         currentItem.setDescription(description);
     }
 
+    public void setImageForView(Context context, String imagePath, ImageView imageView) {
+        GenericRepository<Item> repository = new GenericRepository<>(Item.class);
+        repository.fetchImageUrl(imagePath, imageUrl -> {
+            if (imageUrl != null) {
+                Glide.with(context)
+                        .load(imageUrl)
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .placeholder(R.drawable.placeholder_image)
+                        .error(R.drawable.error_image)
+                        .into(imageView);
+            } else {
+                Glide.with(context)
+                        .load(R.drawable.error_image)
+                        .into(imageView);
+            }
+        });
+    }
+
     /**
      * Handles the image upload of the current item
      * @param imageUri the URI of the image to upload
@@ -161,7 +182,7 @@ public class ItemController {
                         currentItem.setImage(imagePath);
                         setCurrentItem(currentItem);
                         saveChangesToDatabase();
-                        GenericRepository.setImageForView(context, currentItem.getImage(), imageView);
+                        this.setImageForView(context, currentItem.getImage(), imageView);
                     })
                     .addOnFailureListener(e -> Toast.makeText(context, "Image upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }

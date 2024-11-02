@@ -11,7 +11,6 @@ import java.util.Objects;
 import iteMate.project.controller.ItemController;
 import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
-import iteMate.project.repositories.GenericRepository; //TODO remove
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
 /**
@@ -48,8 +47,9 @@ public class TrackItemsAdapter extends ItemAdapter {
         holder.itemName.setText(item.getTitle());
         // setting the item description
         holder.tagNumber.setText(String.valueOf(item.getDescription()));
-        // setting the item image
-        GenericRepository.setImageForView(context, item.getImage(), holder.itemImage);
+        // setting the item image TODO check if this can be replaced to separate adapter and controller
+        ItemController itemController = ItemController.getControllerInstance();
+        itemController.setImageForView(context, item.getImage(), holder.itemImage);
 
         // setting the onClickListener for the cardview
         holder.itemView.setOnClickListener(v -> {

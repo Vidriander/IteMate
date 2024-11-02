@@ -1,11 +1,7 @@
 package iteMate.project.repositories;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -15,11 +11,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import iteMate.project.R;
 import iteMate.project.models.DocumentEquivalent;
 import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
 import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
@@ -167,15 +161,13 @@ public class GenericRepository<T extends DocumentEquivalent> {
         }
     }
 
-    // TODO: remove UI dependency
-    /**
-     * Sets an image for an ImageView from Firebase Storage
-     *
-     * @param context   the context of the activity that calls this method
-     * @param imagePath the path to the image in Firebase Storage
-     * @param imageView the ImageView to set the image for
-     */
-    public static void setImageForView(Context context, String imagePath, ImageView imageView) {
+    public void fetchImageUrl(String imagePath, OnSingleDocumentFetchedListener<String> listener) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference imageRef = storage.getReference().child(imagePath);
+        imageRef.getDownloadUrl().addOnSuccessListener(uri -> listener.onDocumentFetched(uri.toString())).addOnFailureListener(e -> listener.onDocumentFetched(null));
+    }
+
+    /*public static void setImageForView(Context context, String imagePath, ImageView imageView) {
         // Get the StorageReference of the image
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference imageRef = storage.getReference().child(imagePath);
@@ -214,7 +206,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
                 Log.e("ItemsDetailActivity", "Error getting download URL", exception);
             });
         }
-    }
+    }*/
 
     /**
      * Allows to subclass to manipulate the result of the fetch before returning it by overriding this method

@@ -25,7 +25,6 @@ import iteMate.project.controller.TrackController;
 import iteMate.project.controller.ScanController;
 import iteMate.project.models.Item;
 import iteMate.project.models.Track;
-import iteMate.project.repositories.GenericRepository; // TODO remove
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsEditActivity;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
@@ -248,7 +247,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         cardContent.setText(item.getTitle());
         TextView cardSubContent = itemCardView.findViewById(R.id.itemcard_subheader_text_scan);
         cardSubContent.setText(item.getDescription());
-        GenericRepository.setImageForView(this, item.getImage(), itemCardView.findViewById(R.id.itemcard_image_scan));
+        itemController.setImageForView(this, item.getImage(), itemCardView.findViewById(R.id.itemcard_image_scan));
         showButtons();
     }
 
@@ -268,7 +267,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     }
 
     /**
-     * Sets the visability of the buttons to visible
+     * Sets the visibility of the buttons to visible
      */
     private void showButtons() {
         Button lendButton = findViewById(R.id.lend_button);
@@ -282,7 +281,7 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
     }
 
     /**
-     * Sets the visability of the buttons to gone
+     * Sets the visibility of the buttons to gone
      */
     private void greyoutButtons() {
         Button lendButton = findViewById(R.id.lend_button);
