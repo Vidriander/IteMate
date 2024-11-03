@@ -3,6 +3,7 @@ package iteMate.project.controller;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -69,6 +70,7 @@ public class ItemController {
 
     /**
      * Returns the singleton instance of the ItemController
+     *
      * @return the singleton instance of the ItemController
      */
     public static synchronized ItemController getControllerInstance() {
@@ -80,8 +82,10 @@ public class ItemController {
     // endregion
 
     // region Getters and Setters
+
     /**
      * Getter for the current item
+     *
      * @return the current item
      */
     public Item getCurrentItem() {
@@ -90,6 +94,7 @@ public class ItemController {
 
     /**
      * Getter for the current item list
+     *
      * @return the current item list
      */
     public List<Item> getCurrentItemList() {
@@ -98,6 +103,7 @@ public class ItemController {
 
     /**
      * Setter for the current item
+     *
      * @param currentItem the item to set as the current item
      * @throws NullPointerException if the item is null
      */
@@ -120,6 +126,7 @@ public class ItemController {
 
     /**
      * Checks if the current item is ready for upload. Currently, an item is ready for upload if it has a title.
+     *
      * @return true if the item is ready for upload, false otherwise
      */
     public boolean isReadyForUpload() {
@@ -140,7 +147,8 @@ public class ItemController {
 
     /**
      * Saves the changes to the current item to the database
-     * @param title the new title of the item
+     *
+     * @param title       the new title of the item
      * @param description the new description of the item
      */
     public void saveChangesToItem(String title, String description) {
@@ -150,7 +158,8 @@ public class ItemController {
 
     /**
      * Sets the image for the given ImageView
-     * @param context the context of the activity
+     *
+     * @param context   the context of the activity
      * @param imagePath the path of the image
      * @param imageView the ImageView to set the image to
      */
@@ -172,10 +181,25 @@ public class ItemController {
         });
     }
 
+    public void deleteImageFromStorage(String imagePath) {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference imageRef = storageRef.child(imagePath);
+        imageRef.delete()
+                .addOnSuccessListener(aVoid -> {
+                    currentItem.resetImageToDefault();
+                    saveChangesToDatabase();
+                })
+                .addOnFailureListener(e -> {
+                            Log.e("ItemController", "Error deleting image: " + e.getMessage());
+                        }
+                );
+    }
+
     /**
      * Handles the image upload of the current item
-     * @param imageUri the URI of the image to upload
-     * @param context the context of the activity
+     *
+     * @param imageUri  the URI of the image to upload
+     * @param context   the context of the activity
      * @param imageView the ImageView to set the image to
      */
     public void handleImageUpload(Uri imageUri, Context context, ImageView imageView) {
@@ -196,6 +220,7 @@ public class ItemController {
 
     /**
      * Creates a new image file for the current item
+     *
      * @param context the context of the activity
      * @return the new image file
      * @throws IOException if the file creation fails
@@ -216,6 +241,7 @@ public class ItemController {
 
     /**
      * Fetches the tack corresponding to the current item
+     *
      * @param trackListener listener that is notified when the track is ready
      */
     public void getTrackOfCurrentItem(OnSingleDocumentFetchedListener<Track> trackListener) {
@@ -224,6 +250,7 @@ public class ItemController {
 
     /**
      * Fetches all items from the database
+     *
      * @param listener listener that is notified when the items are ready
      */
     public void fetchItemByNfcTagId(String nfcTagId, OnSingleDocumentFetchedListener<Item> listener) {

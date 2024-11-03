@@ -138,13 +138,6 @@ public class ItemsEditActivity extends AppCompatActivity {
             finish();
         });
 
-        // setting on click listener for the delete image button
-        findViewById(R.id.delete_image_card).setOnClickListener(click -> {
-            itemToDisplay.resetImageToDefault();
-            itemController.setCurrentItem(itemToDisplay);
-            itemController.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
-        });
-
         // setting on click listener for the update image button
         findViewById(R.id.upload_image_card).setOnClickListener(click -> showImagePickerDialog());
     }
@@ -162,9 +155,7 @@ public class ItemsEditActivity extends AppCompatActivity {
                     } else if (which == 1) {
                         dispatchPickPictureIntent();
                     } else if (which == 2) {
-                        itemToDisplay.resetImageToDefault();
-                        itemController.setCurrentItem(itemToDisplay);
-                        itemController.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
+                        deleteImage();
                     }
                 })
                 .show();
@@ -196,6 +187,13 @@ public class ItemsEditActivity extends AppCompatActivity {
     private void dispatchPickPictureIntent() {
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickPhotoLauncher.launch(pickPhoto);
+    }
+
+    private void deleteImage() {
+        // TODO default image not shown after deletion
+        itemController.setCurrentItem(itemToDisplay);
+        itemController.deleteImageFromStorage(itemToDisplay.getImage());
+        itemController.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
     }
 
     /**
