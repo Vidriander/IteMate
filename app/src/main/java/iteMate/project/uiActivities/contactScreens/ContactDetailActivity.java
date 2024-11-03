@@ -61,6 +61,13 @@ public class ContactDetailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        contactToDisplay = contactController.getCurrentContact();
+        setDetailViewContents();
+    }
+
     /**
      * Sets the contents of the detail view
      */
