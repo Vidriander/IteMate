@@ -37,7 +37,7 @@
                     android:layout_marginStart="0dp"
                     android:background="#807676"
                     android:scaleType="centerCrop"
-                    tools:srcCompat="@drawable/rose_bike" />
+                    tools:srcCompat="@drawable/default_image" />
             </androidx.cardview.widget.CardView>
 
             <TextView

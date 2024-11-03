@@ -161,7 +161,7 @@ public class ItemController {
                 Glide.with(context)
                         .load(imageUrl)
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
-                        .placeholder(R.drawable.placeholder_image)
+                        .placeholder(R.drawable.default_image)
                         .error(R.drawable.error_image)
                         .into(imageView);
             } else {
