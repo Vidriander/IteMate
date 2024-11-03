@@ -79,16 +79,19 @@ public abstract class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.home) {
                 if (bottomNavID == R.id.home) return true;
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                finish();
                 overridePendingTransition(0, 0);
                 return true;
             } else if (item.getItemId() == R.id.items) {
                 if (bottomNavID == R.id.items) return true;
                 startActivity(new Intent(getApplicationContext(), ItemsActivity.class));
+                finish();
                 overridePendingTransition(0, 0);
                 return true;
             } else if (item.getItemId() == R.id.track) {
                 if (bottomNavID == R.id.track) return true;
                 startActivity(new Intent(getApplicationContext(), TrackActivity.class));
+                finish();
                 overridePendingTransition(0, 0);
                 return true;
             }
