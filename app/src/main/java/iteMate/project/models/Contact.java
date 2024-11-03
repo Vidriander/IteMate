@@ -1,14 +1,11 @@
 package iteMate.project.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.firebase.firestore.Exclude;
 
 /**
  * Contact class to store the details of a contact
  */
-public class Contact implements Parcelable, DocumentEquivalent {
+public class Contact implements DocumentEquivalent {
 
     /**
      * Collection name in database
@@ -122,49 +119,6 @@ public class Contact implements Parcelable, DocumentEquivalent {
 
     public void setZip(String zip) {
         this.zip = zip;
-    }
-
-    // Parcelable implementation for the Intent
-    protected Contact(Parcel in) {
-        id = in.readString();
-        firstName = in.readString();
-        lastName = in.readString();
-        phone = in.readString();
-        email = in.readString();
-        street = in.readString();
-        city = in.readString();
-        zip = in.readString();
-        ownerID = in.readString();
-    }
-
-    public static final Creator<Contact> CREATOR = new Creator<Contact>() {
-        @Override
-        public Contact createFromParcel(Parcel in) {
-            return new Contact(in);
-        }
-
-        @Override
-        public Contact[] newArray(int size) {
-            return new Contact[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(firstName);
-        dest.writeString(lastName);
-        dest.writeString(phone);
-        dest.writeString(email);
-        dest.writeString(street);
-        dest.writeString(city);
-        dest.writeString(zip);
-        dest.writeString(ownerID);
     }
 
     @Override

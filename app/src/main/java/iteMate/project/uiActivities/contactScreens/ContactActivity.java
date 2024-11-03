@@ -72,14 +72,11 @@ public class ContactActivity extends AppCompatActivity implements OnMultipleDocu
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 performSearch(query);
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String query) {
-
                 performSearch(query);
                 return true;
             }
