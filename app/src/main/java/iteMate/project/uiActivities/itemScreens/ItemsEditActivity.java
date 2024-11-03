@@ -122,11 +122,13 @@ public class ItemsEditActivity extends AppCompatActivity {
                 toast.show();
             }
         });
+
         // Setting on click listener for cancel button
         findViewById(R.id.item_edit_cancel).setOnClickListener(click -> {
             itemController.setCurrentItem(legacyItem);
             finish();
         });
+
         // Setting on click listener for delete button
         findViewById(R.id.item_edit_delete_btn).setOnClickListener(click -> {
             itemController.deleteItemFromDatabase();
@@ -151,7 +153,7 @@ public class ItemsEditActivity extends AppCompatActivity {
      * Shows a dialog to choose between taking a photo or selecting one from the gallery
      */
     private void showImagePickerDialog() {
-        String[] options = {"Take Photo", "Choose from Gallery"};
+        String[] options = {"Take Photo", "Choose from Gallery", "Delete Image"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Image")
                 .setItems(options, (dialog, which) -> {
@@ -159,6 +161,10 @@ public class ItemsEditActivity extends AppCompatActivity {
                         dispatchTakePictureIntent();
                     } else if (which == 1) {
                         dispatchPickPictureIntent();
+                    } else if (which == 2) {
+                        itemToDisplay.resetImageToDefault();
+                        itemController.setCurrentItem(itemToDisplay);
+                        itemController.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
                     }
                 })
                 .show();
@@ -194,6 +200,7 @@ public class ItemsEditActivity extends AppCompatActivity {
 
     /**
      * Handles the image upload
+     *
      * @param imageUri the URI of the image to upload
      */
     private void handleImageUpload(Uri imageUri) {
