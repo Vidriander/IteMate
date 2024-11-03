@@ -26,20 +26,38 @@ import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
 public class GenericRepository<T extends DocumentEquivalent> {
 
     protected FirebaseFirestore db;
+    /**
+     * The class of the document to be fetched, added, updated, or deleted (Type DocumentEquivalent)
+     */
     protected Class<T> tClass;
+    /**
+     * A flag to remember if offline persistence has been enabled
+     */
+    private boolean isOfflinePersistenceEnabled = false;
 
     public GenericRepository(Class<T> tClass) {
         // Initialize Firestore as the database
         db = FirebaseFirestore.getInstance();
+
+        // Enable offline persistence once per app lifecycle
+        enableOfflinePersistence();
+
         // remember the class of the document
         this.tClass = tClass;
+    }
 
+    private void enableOfflinePersistence() {
+        if (isOfflinePersistenceEnabled) {
+            return;
+        }
         // Enable offline persistence
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 // Enables persistent disk storage
                 .setLocalCacheSettings(PersistentCacheSettings.newBuilder().build())
                 .build();
         db.setFirestoreSettings(settings);
+        // Remember that offline persistence has been enabled
+        isOfflinePersistenceEnabled = true;
     }
 
     public void forceSync() {
