@@ -113,7 +113,7 @@ public class ItemsDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        itemToDisplay = ItemController.getControllerInstance().getCurrentItem();
+        //itemToDisplay = ItemController.getControllerInstance().getCurrentItem();
         setDetailViewContents();
         setUpRecyclerAdapters();
     }
