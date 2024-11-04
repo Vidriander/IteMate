@@ -1,5 +1,6 @@
 package iteMate.project.uiActivities.appScreens;
 
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 
 import iteMate.project.R;
@@ -14,11 +15,14 @@ public class HomeActivity extends MainActivity {
 
     private final ItemController itemController = ItemController.getControllerInstance();
     private final TrackController trackController = TrackController.getControllerInstance();
+    private NfcAdapter nfcAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        nfcAdapter.disableReaderMode(this);
 
+        //nfcAdapter.disableReaderMode(this);
         // content of main-screen follows here
     }
 
@@ -32,5 +36,8 @@ public class HomeActivity extends MainActivity {
         bottomNavID = R.id.home;
     }
 
-
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
 }

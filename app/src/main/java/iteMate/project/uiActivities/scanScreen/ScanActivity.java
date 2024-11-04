@@ -3,7 +3,6 @@ package iteMate.project.uiActivities.scanScreen;
 import static iteMate.project.controller.ScanController.extractNfcTagId;
 
 import android.content.Intent;
-import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +28,7 @@ import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsEditActivity;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 import iteMate.project.uiActivities.trackScreens.TrackEditActivity;
+import iteMate.project.utils.NfcScanner;
 
 
 /**
@@ -37,9 +37,9 @@ import iteMate.project.uiActivities.trackScreens.TrackEditActivity;
  *
  * @Author: CHRIS
  */
-public class ScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
+public class ScanActivity extends AppCompatActivity implements NfcScanner.NfcScanListener {
 
-    private NfcAdapter nfcAdapter;
+    private NfcScanner nfcScanner;
     private ScanController scanController;
     private TrackController trackController;
     private ItemController itemController;
@@ -49,7 +49,8 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
-        initializeNfcAdapter();
+        // initialize NFC scanner
+        nfcScanner = new NfcScanner(this, this);
 
         // initialize controller
         itemController = ItemController.getControllerInstance();
@@ -104,20 +105,10 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         findViewById(R.id.close_nfcscan).setOnClickListener(v -> finish());
     }
 
-    /**
-     * Initializes the NFC adapter
-     */
-    private void initializeNfcAdapter() {
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter == null) {
-            finish();
-        }
-    }
-
     @Override
     protected void onResume() {
-        super.onResume();
-        enableNfcReaderMode();
+        super.onResume();  //TODO understand this and remove if not needed
+        nfcScanner.enableReaderMode(this);
 
         // hiding all elements
         findViewById(R.id.item_card_view_scan).setVisibility(View.GONE);
@@ -125,32 +116,10 @@ public class ScanActivity extends AppCompatActivity implements NfcAdapter.Reader
         greyoutButtons();
     }
 
-    /**
-     * Enables the NFC reader mode
-     */
-    private void enableNfcReaderMode() {
-        if (nfcAdapter != null) {
-            nfcAdapter.enableReaderMode(this, this,
-                    NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_NFC_B |
-                            NfcAdapter.FLAG_READER_NFC_F | NfcAdapter.FLAG_READER_NFC_V |
-                            NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
-                    null);
-        }
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
-        disableNfcReaderMode();
-    }
-
-    /**
-     * Disables the NFC reader mode
-     */
-    private void disableNfcReaderMode() {
-        if (nfcAdapter != null) {
-            nfcAdapter.disableReaderMode(this);
-        }
+        nfcScanner.disableReaderMode(this);
     }
 
     @Override

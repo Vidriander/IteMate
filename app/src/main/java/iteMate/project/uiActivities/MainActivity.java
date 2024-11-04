@@ -3,12 +3,9 @@ package iteMate.project.uiActivities;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
-import android.nfc.NfcAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,12 +21,12 @@ import iteMate.project.uiActivities.contactScreens.ContactActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsActivity;
 import iteMate.project.uiActivities.scanScreen.ScanActivity;
 import iteMate.project.uiActivities.trackScreens.TrackActivity;
+import iteMate.project.utils.NfcScanner;
 
 public abstract class MainActivity extends AppCompatActivity {
 
     protected int layoutResID;
     protected static int bottomNavID;
-    private NfcAdapter nfcAdapter;
 
     public abstract void setLayoutResID();
 
@@ -44,12 +41,6 @@ public abstract class MainActivity extends AppCompatActivity {
 
         // disable landscape mode
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        // Initialize NFC adapter
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter != null) {
-            disableNfcReader();
-        }
 
         // Set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -121,13 +112,5 @@ public abstract class MainActivity extends AppCompatActivity {
 
         // Show the popup menu
         popupMenu.show();
-    }
-
-    /**
-     * Disable NFC Reader Mode
-     */
-    private void disableNfcReader() {
-        nfcAdapter.disableReaderMode(this);
-        Log.d("MainActivity", "NFC Reader Mode disabled.");
     }
 }
