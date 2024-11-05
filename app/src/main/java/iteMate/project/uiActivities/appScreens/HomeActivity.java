@@ -20,7 +20,7 @@ public class HomeActivity extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        nfcAdapter.disableReaderMode(this);
+        //nfcAdapter.disableReaderMode(this);
 
         //nfcAdapter.disableReaderMode(this);
         // content of main-screen follows here

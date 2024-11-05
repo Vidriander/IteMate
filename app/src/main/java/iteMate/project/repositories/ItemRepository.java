@@ -105,6 +105,7 @@ public class ItemRepository extends GenericRepository<Item> {
      * @param item the item whose contained and associated items are to be set
      */
     public void setContainedAndAssociatedItems(Item item) {
+        // TODO Refactor: make private
         // Fetch contained items
         if (item.getContainedItemIDs() != null && !item.getContainedItemIDs().isEmpty()) {
             item.setContainedItems(getItemslistByListOfIDsFromDatabase(item.getContainedItemIDs()));

@@ -35,6 +35,11 @@ public class GenericRepository<T extends DocumentEquivalent> {
      */
     private boolean isOfflinePersistenceEnabled = false;
 
+    /**
+     * Initializes the Firestore database and remembers the class of the document
+     *
+     * @param tClass the class of the document to be fetched, added, updated, or deleted
+     */
     public GenericRepository(Class<T> tClass) {
         // Initialize Firestore as the database
         db = FirebaseFirestore.getInstance();
@@ -46,6 +51,9 @@ public class GenericRepository<T extends DocumentEquivalent> {
         this.tClass = tClass;
     }
 
+    /**
+     * Enables offline persistence for Firestore
+     */
     private void enableOfflinePersistence() {
         if (isOfflinePersistenceEnabled) {
             return;
@@ -58,10 +66,6 @@ public class GenericRepository<T extends DocumentEquivalent> {
         db.setFirestoreSettings(settings);
         // Remember that offline persistence has been enabled
         isOfflinePersistenceEnabled = true;
-    }
-
-    public void forceSync() {
-        db.disableNetwork().addOnCompleteListener(task -> db.enableNetwork());
     }
 
     /**
@@ -179,6 +183,12 @@ public class GenericRepository<T extends DocumentEquivalent> {
         }
     }
 
+    /**
+     * Fetches the URL of an image from Firebase Storage
+     *
+     * @param imagePath the path of the image in Firebase Storage
+     * @param listener  the listener to be called when the URL is fetched
+     */
     public void fetchImageUrl(String imagePath, OnSingleDocumentFetchedListener<String> listener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference imageRef = storage.getReference().child(imagePath);
