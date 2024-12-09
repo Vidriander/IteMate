@@ -54,15 +54,13 @@ dependencies {
     androidTestImplementation(libs.junit.jupiter)
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.espresso.core)
 
     // Test dependencies for Firestore and Mockito
     testImplementation("com.google.firebase:firebase-firestore:24.0.0")
     testImplementation("org.mockito:mockito-core:3.11.2")
     testImplementation("org.mockito:mockito-inline:3.11.2")
-    testImplementation("junit:junit:4.13.2")
 
     // Test dependencies for Robolectric
     dependencies {
