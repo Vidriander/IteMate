@@ -2,7 +2,6 @@ package iteMate.project.uiActivities.scanScreen;
 
 import static iteMate.project.controller.ScanController.extractNfcTagId;
 
-import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -23,13 +22,14 @@ import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.controller.ScanController;
 import iteMate.project.uiActivities.adapter.ReturnScanAdapter;
+import iteMate.project.utils.NfcScanner;
 
 /**
  * Activity for returning items from a Track by an NFC scan
  */
-public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
+public class ReturnScanActivity extends AppCompatActivity implements NfcScanner.NfcScanListener {
 
-    private NfcAdapter nfcAdapter;
+    private final NfcScanner nfcScanner = new NfcScanner(this, this);
     private List<Item> listOfPendingItems;
     private List<Item> listOfReturnedItems;
     private ReturnScanAdapter returnScanAdapter;
@@ -43,7 +43,8 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_return_scan);
 
-        initializeNfcAdapter();
+        // Initialize NFC adapter
+        nfcScanner.enableReaderMode(this);
 
         // Initialize RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewItems);
@@ -67,16 +68,6 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    }
-
-    /**
-     * Initializes the NFC adapter
-     */
-    private void initializeNfcAdapter() {
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter == null) {
-            finish();
-        }
     }
 
     @Override
@@ -110,34 +101,17 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcAdapter.
     @Override
     protected void onResume() {
         super.onResume();
-        enableNfcReaderMode();
+        nfcScanner.enableReaderMode(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        disableNfcReaderMode();
+        nfcScanner.disableReaderMode(this);
     }
 
-    /**
-     * Enables the NFC reader mode
-     */
-    private void enableNfcReaderMode() {
-        if (nfcAdapter != null) {
-            nfcAdapter.enableReaderMode(this, this,
-                    NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_NFC_B |
-                            NfcAdapter.FLAG_READER_NFC_F | NfcAdapter.FLAG_READER_NFC_V |
-                            NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
-                    null);
-        }
-    }
-
-    /**
-     * Disables the NFC reader mode
-     */
-    private void disableNfcReaderMode() {
-        if (nfcAdapter != null) {
-            nfcAdapter.disableReaderMode(this);
-        }
+    protected void onDestroy() {
+        super.onDestroy();
+        nfcScanner.disableReaderMode(this);
     }
 }

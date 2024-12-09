@@ -31,7 +31,7 @@ public class TrackRepository extends GenericRepository<Track> {
      * Fetches the attributes for a track from database
      * @param track the track for which the attributes are to be fetched
      */
-    public void fetchAttributesForTrack(Track track, Listener listener) {
+    private void fetchAttributesForTrack(Track track, Listener listener) {
         TaskCompletionSource<Void> contactTaskSource = new TaskCompletionSource<>();
         TaskCompletionSource<Void> itemsTaskSource = new TaskCompletionSource<>();
         TaskCompletionSource<Void> pendingItemsTaskSource = new TaskCompletionSource<>();

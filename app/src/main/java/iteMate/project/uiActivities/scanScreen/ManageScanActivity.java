@@ -2,7 +2,6 @@ package iteMate.project.uiActivities.scanScreen;
 
 import static iteMate.project.controller.ScanController.extractNfcTagId;
 
-import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 
@@ -21,13 +20,14 @@ import iteMate.project.controller.TrackController;
 import iteMate.project.models.Item;
 import iteMate.project.controller.ScanController;
 import iteMate.project.uiActivities.adapter.ManageScanAdapter;
+import iteMate.project.utils.NfcScanner;
 
 /**
  * Activity for managing the inner items of a track with a NFC scan
  */
-public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.ReaderCallback {
+public class ManageScanActivity extends AppCompatActivity implements NfcScanner.NfcScanListener {
 
-    private NfcAdapter nfcAdapter;
+    private NfcScanner nfcScanner;
     ManageScanAdapter manageScanAdapter;
     private final TrackController trackController = TrackController.getControllerInstance();
     private final ScanController scanController = ScanController.getControllerInstance();
@@ -38,7 +38,8 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_scan);
 
-        initializeNfcAdapter();
+        // Initialize NFC Scanner
+        nfcScanner = new NfcScanner(this, this);
 
         // Initialize RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerViewItems);
@@ -59,27 +60,16 @@ public class ManageScanActivity extends AppCompatActivity implements NfcAdapter.
         });
     }
 
-    private void initializeNfcAdapter() {
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter == null) {
-            finish();
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        if (nfcAdapter != null) {
-            nfcAdapter.enableReaderMode(this, this, NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK, null);
-        }
+        nfcScanner.enableReaderMode(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (nfcAdapter != null) {
-            nfcAdapter.disableReaderMode(this);
-        }
+        nfcScanner.disableReaderMode(this);
     }
 
     @Override

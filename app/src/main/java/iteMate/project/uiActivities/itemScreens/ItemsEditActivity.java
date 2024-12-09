@@ -122,11 +122,13 @@ public class ItemsEditActivity extends AppCompatActivity {
                 toast.show();
             }
         });
+
         // Setting on click listener for cancel button
         findViewById(R.id.item_edit_cancel).setOnClickListener(click -> {
             itemController.setCurrentItem(legacyItem);
             finish();
         });
+
         // Setting on click listener for delete button
         findViewById(R.id.item_edit_delete_btn).setOnClickListener(click -> {
             itemController.deleteItemFromDatabase();
@@ -134,13 +136,6 @@ public class ItemsEditActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
-        });
-
-        // setting on click listener for the delete image button
-        findViewById(R.id.delete_image_card).setOnClickListener(click -> {
-            itemToDisplay.resetImageToDefault();
-            itemController.setCurrentItem(itemToDisplay);
-            itemController.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
         });
 
         // setting on click listener for the update image button
@@ -151,7 +146,7 @@ public class ItemsEditActivity extends AppCompatActivity {
      * Shows a dialog to choose between taking a photo or selecting one from the gallery
      */
     private void showImagePickerDialog() {
-        String[] options = {"Take Photo", "Choose from Gallery"};
+        String[] options = {"Take Photo", "Choose from Gallery", "Delete Image"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Image")
                 .setItems(options, (dialog, which) -> {
@@ -159,6 +154,8 @@ public class ItemsEditActivity extends AppCompatActivity {
                         dispatchTakePictureIntent();
                     } else if (which == 1) {
                         dispatchPickPictureIntent();
+                    } else if (which == 2) {
+                        deleteImage();
                     }
                 })
                 .show();
@@ -192,8 +189,16 @@ public class ItemsEditActivity extends AppCompatActivity {
         pickPhotoLauncher.launch(pickPhoto);
     }
 
+    private void deleteImage() {
+        // TODO default image not shown after deletion
+        itemController.setCurrentItem(itemToDisplay);
+        itemController.deleteImageFromStorage(itemToDisplay.getImage());
+        itemController.setImageForView(this, itemToDisplay.getImage(), findViewById(R.id.editItemMainImage));
+    }
+
     /**
      * Handles the image upload
+     *
      * @param imageUri the URI of the image to upload
      */
     private void handleImageUpload(Uri imageUri) {
