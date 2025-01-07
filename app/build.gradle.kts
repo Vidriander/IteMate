@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
@@ -6,6 +8,14 @@ plugins {
 android {
     namespace = "iteMate.project"
     compileSdk = 34
+
+    // Doppelte Dateien ignorieren
+    packaging {
+        resources.excludes.add("META-INF/LICENSE.md")
+        resources.excludes.add("META-INF/LICENSE")
+        resources.excludes.add("META-INF/NOTICE")
+        resources.excludes.add("META-INF/LICENSE-notice.md")
+    }
 
     defaultConfig {
         applicationId = "iteMate.project"
