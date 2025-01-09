@@ -461,7 +461,4 @@ public class Track implements DocumentEquivalent {
     }
 
     // endregion
-
-    //region Methods
-    //endregion
 }

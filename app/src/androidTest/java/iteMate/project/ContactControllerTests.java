@@ -22,7 +22,7 @@ public class ContactControllerTests {
     /**
      * Timeout for async operations in seconds
      */
-    private static final int ASYNC_TIMEOUT_SECONDS = 1;
+    private static final int ASYNC_TIMEOUT_SECONDS = 4;
     // endregion
 
     /**

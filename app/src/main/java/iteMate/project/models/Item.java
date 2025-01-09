@@ -337,11 +337,11 @@ public class Item implements DocumentEquivalent {
         }
         this.associatedItemIDs = associatedItemIDs;
     }
-    // endregion
 
     public void setImage(String image) {
         this.image = image;
     }
+    // endregion
 
     /**
      * Reset the image of the item to the default image
