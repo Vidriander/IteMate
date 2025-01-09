@@ -1,5 +1,6 @@
 import com.android.build.api.dsl.Packaging
 
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
@@ -40,6 +41,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    // Exclude LICENSE and NOTICE files from APK - Fixed our build problem
+    packaging {
+        resources {
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/NOTICE.md"
+        }
+    }
 }
 
 dependencies {
@@ -62,6 +72,9 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation(libs.swiperefreshlayout)
     androidTestImplementation(libs.junit.jupiter)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.rules)
+    androidTestImplementation(libs.espresso.contrib)
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
     testImplementation(libs.junit.jupiter)

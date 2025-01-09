@@ -21,7 +21,6 @@ import iteMate.project.uiActivities.contactScreens.ContactActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsActivity;
 import iteMate.project.uiActivities.scanScreen.ScanActivity;
 import iteMate.project.uiActivities.trackScreens.TrackActivity;
-import iteMate.project.utils.NfcScanner;
 
 public abstract class MainActivity extends AppCompatActivity {
 
