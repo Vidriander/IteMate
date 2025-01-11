@@ -1,7 +1,5 @@
 package iteMate.project.models;
 
-import android.util.Log;
-
 import com.google.firebase.firestore.Exclude;
 
 import java.util.ArrayList;
@@ -176,7 +174,6 @@ public class Item implements DocumentEquivalent {
      */
     @Exclude
     public List<Item> getContainedItems() {
-        Log.w("Debugging", "getContainedItems Aufruf: " + containedItems);
         return containedItems;
     }
 
@@ -187,7 +184,6 @@ public class Item implements DocumentEquivalent {
      */
     @Exclude
     public List<Item> getAssociatedItems() {
-        Log.w("Debugging", "getAssociatedItems Aufruf: " + associatedItems);
         return associatedItems;
     }
 
@@ -298,7 +294,6 @@ public class Item implements DocumentEquivalent {
             throw new NullPointerException("Contained items must not be null");
         }
         this.containedItems = containedItems;
-        Log.d("Item", "setContainedItems size: " + containedItems.size());
     }
 
     /**
@@ -323,7 +318,6 @@ public class Item implements DocumentEquivalent {
             throw new NullPointerException("Associated items must not be null");
         }
         this.associatedItems = associatedItems;
-        Log.d("Item", "setAssociatedItems size: " + associatedItems.size());
     }
 
     /**

@@ -100,7 +100,9 @@ public class Track implements DocumentEquivalent {
         ownerID = "TODO";
     }
 
-    public Track(Timestamp giveOutDate, Timestamp returnDate, Contact contact, String contactID, List<Item> lentItemsList, List<String> lentItemIDs, String ownerID, String additionalInfo) throws NullPointerException, IllegalArgumentException {
+    public Track(Timestamp giveOutDate, Timestamp returnDate, Contact contact, String contactID,
+                 List<Item> lentItemsList, List<String> lentItemIDs, String ownerID, String additionalInfo)
+            throws NullPointerException, IllegalArgumentException {
         this.giveOutDate = giveOutDate;
         this.returnDate = returnDate;
         setContact(contact);
@@ -209,7 +211,6 @@ public class Track implements DocumentEquivalent {
     public List<String> getPendingItemIDs() {
         return pendingItemIDs;
     }
-
 
     /**
      * Getter for the list of items that have been returned
@@ -415,6 +416,18 @@ public class Track implements DocumentEquivalent {
     }
 
     /**
+     * Setter for the list of pending Item IDs
+     * @param pendingItemIDs the pendingItemIDs to set
+     * @throws NullPointerException if pendingItemIDs is null
+     */
+    public void setPendingItemIDsList(List<String> pendingItemIDs) throws NullPointerException {
+        if (pendingItemIDs == null) {
+            throw new NullPointerException("PendingItemIDs cannot be null");
+        }
+        this.pendingItemIDs = pendingItemIDs;
+    }
+
+    /**
      * Setter for the list of returned Item
      *
      * @param returnedItemsList the pendingItemIDs to set
@@ -461,4 +474,9 @@ public class Track implements DocumentEquivalent {
     }
 
     // endregion
+
+    @Override
+    public String toString() {
+        return additionalInfo;
+    }
 }
