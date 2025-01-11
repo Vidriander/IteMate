@@ -1,4 +1,4 @@
-package iteMate.project.repositories.listeners;
+package iteMate.project.databaseManager.listeners;
 
 public interface OnSingleDocumentFetchedListener<T> extends Listener{
 

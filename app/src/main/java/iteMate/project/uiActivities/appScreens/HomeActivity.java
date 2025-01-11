@@ -4,8 +4,8 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 
 import iteMate.project.R;
-import iteMate.project.controller.ItemController;
-import iteMate.project.controller.TrackController;
+import iteMate.project.documentController.ItemController;
+import iteMate.project.documentController.TrackController;
 import iteMate.project.uiActivities.MainActivity;
 
 /**

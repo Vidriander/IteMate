@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controller.ContactController;
-import iteMate.project.controller.TrackController;
-import iteMate.project.models.Contact;
-import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
+import iteMate.project.documentController.ContactController;
+import iteMate.project.documentController.TrackController;
+import iteMate.project.model.Contact;
+import iteMate.project.databaseManager.listeners.OnMultipleDocumentsFetchedListener;
 import iteMate.project.uiActivities.adapter.SelectContactAdapter;
 
 /**

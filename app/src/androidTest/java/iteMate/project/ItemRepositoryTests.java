@@ -18,9 +18,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import iteMate.project.models.Item;
-import iteMate.project.repositories.GenericRepository;
-import iteMate.project.repositories.ItemRepository;
+import iteMate.project.model.Item;
+import iteMate.project.databaseManager.GenericRepository;
+import iteMate.project.databaseManager.ItemRepository;
 
 public class ItemRepositoryTests {
 

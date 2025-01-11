@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controller.ContactController;
-import iteMate.project.models.Contact;
+import iteMate.project.documentController.ContactController;
+import iteMate.project.model.Contact;
 import iteMate.project.uiActivities.contactScreens.ContactDetailActivity;
 
 /**

@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import iteMate.project.models.Item;
-import iteMate.project.models.Track;
+import iteMate.project.model.Item;
+import iteMate.project.model.Track;
 
 public class SortUtils {
     //region Sort Items

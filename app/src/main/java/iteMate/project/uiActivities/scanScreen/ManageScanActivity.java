@@ -1,6 +1,6 @@
 package iteMate.project.uiActivities.scanScreen;
 
-import static iteMate.project.controller.ScanController.extractNfcTagId;
+import static iteMate.project.documentController.ScanController.extractNfcTagId;
 
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controller.ItemController;
-import iteMate.project.controller.TrackController;
-import iteMate.project.models.Item;
-import iteMate.project.controller.ScanController;
+import iteMate.project.documentController.ItemController;
+import iteMate.project.documentController.TrackController;
+import iteMate.project.model.Item;
+import iteMate.project.documentController.ScanController;
 import iteMate.project.uiActivities.adapter.ManageScanAdapter;
 import iteMate.project.utils.NfcScanner;
 

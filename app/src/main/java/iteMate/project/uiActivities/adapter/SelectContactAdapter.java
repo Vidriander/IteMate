@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controller.TrackController;
-import iteMate.project.models.Contact;
+import iteMate.project.documentController.TrackController;
+import iteMate.project.model.Contact;
 
 /**
  * Adapter for the RecyclerView in the SelectContactActivity.

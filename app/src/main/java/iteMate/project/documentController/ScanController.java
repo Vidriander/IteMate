@@ -1,12 +1,12 @@
-package iteMate.project.controller;
+package iteMate.project.documentController;
 
 import android.nfc.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import iteMate.project.models.Item;
-import iteMate.project.models.Track;
+import iteMate.project.model.Item;
+import iteMate.project.model.Track;
 
 /**
  * Controller for managing the scanning of NFC tags

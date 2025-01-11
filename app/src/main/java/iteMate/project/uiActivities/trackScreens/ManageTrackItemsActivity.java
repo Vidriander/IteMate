@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controller.TrackController;
-import iteMate.project.models.Item;
-import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
+import iteMate.project.documentController.TrackController;
+import iteMate.project.model.Item;
+import iteMate.project.databaseManager.listeners.OnMultipleDocumentsFetchedListener;
 import iteMate.project.uiActivities.adapter.ManageInnerItemsAdapter;
 import iteMate.project.utils.SearchUtils;
 import iteMate.project.utils.SortUtils;

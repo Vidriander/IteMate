@@ -1,14 +1,14 @@
-package iteMate.project.controller;
+package iteMate.project.documentController;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import iteMate.project.models.Item;
-import iteMate.project.models.Track;
-import iteMate.project.repositories.ItemRepository;
-import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
-import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
-import iteMate.project.repositories.TrackRepository;
+import iteMate.project.model.Item;
+import iteMate.project.model.Track;
+import iteMate.project.databaseManager.ItemRepository;
+import iteMate.project.databaseManager.listeners.OnMultipleDocumentsFetchedListener;
+import iteMate.project.databaseManager.listeners.OnSingleDocumentFetchedListener;
+import iteMate.project.databaseManager.TrackRepository;
 
 public class TrackController {
 

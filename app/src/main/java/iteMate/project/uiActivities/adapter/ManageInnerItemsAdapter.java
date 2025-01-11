@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Set;
 
 import iteMate.project.R;
-import iteMate.project.controller.ItemController;
-import iteMate.project.models.Item;
+import iteMate.project.documentController.ItemController;
+import iteMate.project.model.Item;
 
 /**
  * Adapter for the RecyclerView in the ManageInnerItemsActivity.

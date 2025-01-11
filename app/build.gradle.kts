@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.Packaging
 
 plugins {
     alias(libs.plugins.android.application)
@@ -51,33 +50,37 @@ dependencies {
     implementation(libs.material.v120alpha05)
 
     // Import Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
-
+    implementation(platform(libs.firebase.bom))
     // Firebase-Dependencies for Android
-    implementation("com.google.firebase:firebase-firestore")
-    implementation("com.google.firebase:firebase-storage")
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.analytics)
 
     // Glide dependencies
-    implementation("com.github.bumptech.glide:glide:4.12.0")
+    implementation(libs.glide)
     implementation(libs.swiperefreshlayout)
     androidTestImplementation(libs.junit.jupiter)
-    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+    annotationProcessor(libs.compiler)
 
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.espresso.core)
 
     // Test dependencies for Firestore and Mockito
-    testImplementation("com.google.firebase:firebase-firestore:24.0.0")
-    testImplementation("org.mockito:mockito-core:3.11.2")
-    testImplementation("org.mockito:mockito-inline:3.11.2")
+    testImplementation(libs.google.firebase.firestore)
+
+//    testImplementation(libs.mockito.mockito.core)
+//    testImplementation(libs.mockito.inline)
+//    implementation(libs.mockito.mockito.core)
+//    testImplementation("org.mockito:mockito-core:4.2.0")
+    testImplementation(libs.mockito.android)
+    implementation(libs.mockito.android)
 
     // Test dependencies for Robolectric
     dependencies {
-        testImplementation("org.robolectric:robolectric:4.9")
-        testImplementation("androidx.test:core:1.4.0")
-        testImplementation("androidx.test.ext:junit:1.1.3")
-        testImplementation("androidx.test:runner:1.4.0")
-        testImplementation("androidx.test:rules:1.4.0")
+        testImplementation(libs.robolectric)
+        testImplementation(libs.core)
+        testImplementation(libs.junit.v113)
+        testImplementation(libs.runner)
+        testImplementation(libs.rules)
     }
 }

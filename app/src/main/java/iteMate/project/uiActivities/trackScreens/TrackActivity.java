@@ -11,12 +11,12 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
-import iteMate.project.controller.TrackController;
-import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
-import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
+import iteMate.project.documentController.TrackController;
+import iteMate.project.databaseManager.listeners.OnMultipleDocumentsFetchedListener;
+import iteMate.project.databaseManager.listeners.OnSingleDocumentFetchedListener;
 import iteMate.project.utils.SearchUtils;
 import iteMate.project.R;
-import iteMate.project.models.Track;
+import iteMate.project.model.Track;
 import iteMate.project.utils.SortUtils;
 import iteMate.project.uiActivities.adapter.TrackAdapter;
 import iteMate.project.uiActivities.MainActivity;

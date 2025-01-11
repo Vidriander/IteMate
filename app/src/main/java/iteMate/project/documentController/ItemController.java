@@ -1,4 +1,4 @@
-package iteMate.project.controller;
+package iteMate.project.documentController;
 
 import android.content.Context;
 import android.net.Uri;
@@ -22,12 +22,12 @@ import java.util.Locale;
 import java.util.Objects;
 
 import iteMate.project.R;
-import iteMate.project.models.Item;
-import iteMate.project.models.Track;
-import iteMate.project.repositories.GenericRepository;
-import iteMate.project.repositories.ItemRepository;
-import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
-import iteMate.project.repositories.TrackRepository;
+import iteMate.project.model.Item;
+import iteMate.project.model.Track;
+import iteMate.project.databaseManager.GenericRepository;
+import iteMate.project.databaseManager.ItemRepository;
+import iteMate.project.databaseManager.listeners.OnSingleDocumentFetchedListener;
+import iteMate.project.databaseManager.TrackRepository;
 
 /**
  * Controller for managing an item

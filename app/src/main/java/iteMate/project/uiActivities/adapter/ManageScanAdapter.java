@@ -16,8 +16,8 @@ import java.io.File;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controller.ItemController;
-import iteMate.project.models.Item;
+import iteMate.project.documentController.ItemController;
+import iteMate.project.model.Item;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 
 /**

@@ -1,6 +1,6 @@
-package iteMate.project.repositories;
+package iteMate.project.databaseManager;
 
-import iteMate.project.models.Contact;
+import iteMate.project.model.Contact;
 
 public class ContactRepository extends GenericRepository<Contact> {
 

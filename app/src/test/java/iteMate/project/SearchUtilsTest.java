@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import iteMate.project.models.Contact;
-import iteMate.project.models.Item;
-import iteMate.project.models.Track;
+import iteMate.project.model.Contact;
+import iteMate.project.model.Item;
+import iteMate.project.model.Track;
 import iteMate.project.utils.SearchUtils;
 
 public class SearchUtilsTest {
