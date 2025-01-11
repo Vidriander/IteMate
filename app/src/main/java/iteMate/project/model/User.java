@@ -1,4 +1,4 @@
-package iteMate.project.models;
+package iteMate.project.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

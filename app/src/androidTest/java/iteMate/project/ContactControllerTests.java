@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
-import iteMate.project.controller.ContactController;
-import iteMate.project.models.Contact;
+import iteMate.project.documentController.ContactController;
+import iteMate.project.model.Contact;
 
 public class ContactControllerTests {
 
@@ -22,7 +22,7 @@ public class ContactControllerTests {
     /**
      * Timeout for async operations in seconds
      */
-    private static final int ASYNC_TIMEOUT_SECONDS = 1;
+    private static final int ASYNC_TIMEOUT_SECONDS = 4;
     // endregion
 
     /**

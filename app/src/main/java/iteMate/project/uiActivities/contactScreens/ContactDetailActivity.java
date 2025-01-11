@@ -12,8 +12,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 
 import iteMate.project.R;
-import iteMate.project.controller.ContactController;
-import iteMate.project.models.Contact;
+import iteMate.project.documentController.ContactController;
+import iteMate.project.model.Contact;
 
 /**
  * Activity to display a contact's details

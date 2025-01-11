@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import iteMate.project.R;
-import iteMate.project.controller.ItemController;
-import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
+import iteMate.project.documentController.ItemController;
+import iteMate.project.databaseManager.listeners.OnMultipleDocumentsFetchedListener;
 import iteMate.project.utils.SearchUtils;
-import iteMate.project.models.Item;
-import iteMate.project.repositories.ItemRepository;  // TODO: remove
+import iteMate.project.model.Item;
+import iteMate.project.databaseManager.ItemRepository;  // TODO: remove
 import iteMate.project.uiActivities.adapter.ManageInnerItemsAdapter;
 import iteMate.project.utils.SortUtils;
 

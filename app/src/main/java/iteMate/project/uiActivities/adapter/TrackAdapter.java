@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controller.TrackController;
-import iteMate.project.models.Track;
+import iteMate.project.documentController.TrackController;
+import iteMate.project.model.Track;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 
 /**

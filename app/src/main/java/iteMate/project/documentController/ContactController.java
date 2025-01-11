@@ -1,10 +1,10 @@
-package iteMate.project.controller;
+package iteMate.project.documentController;
 
 import java.util.Objects;
 
-import iteMate.project.models.Contact;
-import iteMate.project.repositories.ContactRepository;
-import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
+import iteMate.project.model.Contact;
+import iteMate.project.databaseManager.ContactRepository;
+import iteMate.project.databaseManager.listeners.OnMultipleDocumentsFetchedListener;
 
 /**
  * Controller for managing contacts

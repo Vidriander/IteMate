@@ -1,6 +1,6 @@
 package iteMate.project.uiActivities.scanScreen;
 
-import static iteMate.project.controller.ScanController.extractNfcTagId;
+import static iteMate.project.documentController.ScanController.extractNfcTagId;
 
 import android.content.Intent;
 import android.nfc.Tag;
@@ -19,11 +19,11 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import iteMate.project.R;
-import iteMate.project.controller.ItemController;
-import iteMate.project.controller.TrackController;
-import iteMate.project.controller.ScanController;
-import iteMate.project.models.Item;
-import iteMate.project.models.Track;
+import iteMate.project.documentController.ItemController;
+import iteMate.project.documentController.TrackController;
+import iteMate.project.documentController.ScanController;
+import iteMate.project.model.Item;
+import iteMate.project.model.Track;
 import iteMate.project.uiActivities.itemScreens.ItemsDetailActivity;
 import iteMate.project.uiActivities.itemScreens.ItemsEditActivity;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;

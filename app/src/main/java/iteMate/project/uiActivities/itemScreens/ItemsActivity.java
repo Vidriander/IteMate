@@ -14,9 +14,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import iteMate.project.controller.ItemController;
+import iteMate.project.documentController.ItemController;
 import iteMate.project.utils.SearchUtils;
-import iteMate.project.models.Item;
+import iteMate.project.model.Item;
 import iteMate.project.uiActivities.adapter.ItemAdapter;
 import iteMate.project.R;
 import iteMate.project.uiActivities.MainActivity;

@@ -1,4 +1,4 @@
-package iteMate.project.models;
+package iteMate.project.model;
 
 public interface DocumentEquivalent {
 

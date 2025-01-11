@@ -12,9 +12,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import iteMate.project.controller.ItemController;
-import iteMate.project.controller.TrackController;
-import iteMate.project.models.Item;
+import iteMate.project.documentController.ItemController;
+import iteMate.project.documentController.TrackController;
+import iteMate.project.model.Item;
 import iteMate.project.R;
 import iteMate.project.uiActivities.trackScreens.TrackDetailActivity;
 import iteMate.project.uiActivities.adapter.InnerItemsAdapter;

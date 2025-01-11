@@ -1,4 +1,4 @@
-package iteMate.project.models;
+package iteMate.project.model;
 
 import com.google.firebase.firestore.Exclude;
 
@@ -34,7 +34,8 @@ public class Contact implements DocumentEquivalent {
     }
 
     // Constructor
-    public Contact(String firstName, String lastName, String phone, String email, String street, String city, String zip, String ownerID) {
+    public Contact(String firstName, String lastName, String phone, String email,
+                   String street, String city, String zip, String ownerID) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;

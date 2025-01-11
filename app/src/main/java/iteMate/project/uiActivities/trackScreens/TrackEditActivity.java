@@ -28,8 +28,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 
 import iteMate.project.R;
-import iteMate.project.controller.TrackController;
-import iteMate.project.models.Track;
+import iteMate.project.documentController.TrackController;
+import iteMate.project.model.Track;
 import iteMate.project.uiActivities.contactScreens.SelectContactActivity;
 import iteMate.project.uiActivities.scanScreen.ManageScanActivity;
 import iteMate.project.uiActivities.adapter.InnerItemsAdapter;

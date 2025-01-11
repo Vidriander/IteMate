@@ -16,11 +16,11 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import iteMate.project.R;
-import iteMate.project.controller.TrackController;
-import iteMate.project.models.Item;
-import iteMate.project.models.Track;
-import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
-import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
+import iteMate.project.documentController.TrackController;
+import iteMate.project.model.Item;
+import iteMate.project.model.Track;
+import iteMate.project.databaseManager.listeners.OnMultipleDocumentsFetchedListener;
+import iteMate.project.databaseManager.listeners.OnSingleDocumentFetchedListener;
 import iteMate.project.uiActivities.adapter.TrackItemsAdapter;
 import iteMate.project.uiActivities.scanScreen.ReturnScanActivity;
 

@@ -1,12 +1,12 @@
-package iteMate.project.repositories;
+package iteMate.project.databaseManager;
 
 import android.util.Log;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
-import iteMate.project.models.Item;
-import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
-import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
+import iteMate.project.model.Item;
+import iteMate.project.databaseManager.listeners.OnMultipleDocumentsFetchedListener;
+import iteMate.project.databaseManager.listeners.OnSingleDocumentFetchedListener;
 
 /**
  * Repository class for items

@@ -1,6 +1,6 @@
-package iteMate.project.repositories;
+package iteMate.project.databaseManager;
 
-import iteMate.project.models.User;
+import iteMate.project.model.User;
 
 /**
  * Repository class for users

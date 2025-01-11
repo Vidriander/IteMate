@@ -1,6 +1,4 @@
-package iteMate.project.models;
-
-import android.util.Log;
+package iteMate.project.model;
 
 import com.google.firebase.firestore.Exclude;
 
@@ -176,7 +174,6 @@ public class Item implements DocumentEquivalent {
      */
     @Exclude
     public List<Item> getContainedItems() {
-        Log.w("Debugging", "getContainedItems Aufruf: " + containedItems);
         return containedItems;
     }
 
@@ -187,7 +184,6 @@ public class Item implements DocumentEquivalent {
      */
     @Exclude
     public List<Item> getAssociatedItems() {
-        Log.w("Debugging", "getAssociatedItems Aufruf: " + associatedItems);
         return associatedItems;
     }
 
@@ -298,7 +294,6 @@ public class Item implements DocumentEquivalent {
             throw new NullPointerException("Contained items must not be null");
         }
         this.containedItems = containedItems;
-        Log.d("Item", "setContainedItems size: " + containedItems.size());
     }
 
     /**
@@ -323,7 +318,6 @@ public class Item implements DocumentEquivalent {
             throw new NullPointerException("Associated items must not be null");
         }
         this.associatedItems = associatedItems;
-        Log.d("Item", "setAssociatedItems size: " + associatedItems.size());
     }
 
     /**
@@ -337,11 +331,11 @@ public class Item implements DocumentEquivalent {
         }
         this.associatedItemIDs = associatedItemIDs;
     }
-    // endregion
 
     public void setImage(String image) {
         this.image = image;
     }
+    // endregion
 
     /**
      * Reset the image of the item to the default image

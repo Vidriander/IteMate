@@ -1,4 +1,4 @@
-package iteMate.project.repositories;
+package iteMate.project.databaseManager;
 
 import android.util.Log;
 
@@ -14,9 +14,9 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import iteMate.project.models.DocumentEquivalent;
-import iteMate.project.repositories.listeners.OnMultipleDocumentsFetchedListener;
-import iteMate.project.repositories.listeners.OnSingleDocumentFetchedListener;
+import iteMate.project.model.DocumentEquivalent;
+import iteMate.project.databaseManager.listeners.OnMultipleDocumentsFetchedListener;
+import iteMate.project.databaseManager.listeners.OnSingleDocumentFetchedListener;
 
 /**
  * A generic repository for Firestore that can be used to fetch, add, update, and delete documents of a certain type
