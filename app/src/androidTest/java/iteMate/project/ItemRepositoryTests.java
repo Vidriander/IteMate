@@ -1,14 +1,22 @@
 package iteMate.project;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import org.mockito.Mockito;
+import org.mockito.Spy;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import iteMate.project.models.Item;
 import iteMate.project.repositories.GenericRepository;
@@ -25,9 +33,13 @@ public class ItemRepositoryTests {
 
     private ItemRepository itemRepository;
 
+    @Spy
+    private ItemRepository itemRepositorySpy;
+
     @Before
     public void setUp() {
         itemRepository = new ItemRepository();
+        itemRepositorySpy = spy(new ItemRepository());
     }
 
     /**
@@ -57,6 +69,21 @@ public class ItemRepositoryTests {
         } catch (Exception e) {
             fail("Exception occurred: " + e.getMessage());
         }
+    }
+
+    /**
+     * Test that the method setContainedAndAssociatedItems is called when fetching all documents from the database
+     * This indicates that the overridden method manipulateResults is called when fetching all documents from the database.
+     * The latter is the correct behavior as the method manipulateResults is overridden in the ItemRepository class.
+     */
+    @Test
+    public void rightManipulateResultsMethodIsCalledTest() throws ExecutionException, InterruptedException, TimeoutException {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        itemRepositorySpy.getAllDocumentsFromDatabase(fetchedItems -> {
+            future.complete(null);
+        });
+        future.get(ASYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        verify(itemRepositorySpy, Mockito.atLeastOnce()).setContainedAndAssociatedItems(any());
     }
 
     /**
