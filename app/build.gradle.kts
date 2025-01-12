@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.swiperefreshlayout)
     androidTestImplementation(libs.junit.jupiter)
+    androidTestImplementation(libs.ext.junit)
     annotationProcessor(libs.compiler)
 
     testImplementation(libs.junit.jupiter)
