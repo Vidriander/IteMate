@@ -14,6 +14,8 @@ public class NfcScanner implements NfcAdapter.ReaderCallback {
     private final NfcAdapter nfcAdapter;
     private final NfcScanListener listener;
 
+    private boolean isReaderEnabled = false;
+
     /**
      * Constructor for NfcScanner
      *
@@ -37,6 +39,7 @@ public class NfcScanner implements NfcAdapter.ReaderCallback {
                             NfcAdapter.FLAG_READER_NFC_F | NfcAdapter.FLAG_READER_NFC_V |
                             NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
                     null);
+            isReaderEnabled = true;
             Log.d("NfcScanner", "NFC Reader Mode enabled.");
         }
     }
@@ -47,8 +50,9 @@ public class NfcScanner implements NfcAdapter.ReaderCallback {
      * @param activity the activity in which the scanner is used
      */
     public void disableReaderMode(Activity activity) {
-        if (nfcAdapter != null) {
+        if (nfcAdapter != null && isReaderEnabled) {
             nfcAdapter.disableReaderMode(activity);
+            isReaderEnabled = false;
             Log.d("NfcScanner", "NFC Reader Mode disabled.");
         }
     }
