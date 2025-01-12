@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.junit.jupiter.api.Order;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 
@@ -29,6 +30,8 @@ public class ItemRepositoryTests {
      * Timeout for async operations in seconds
      */
     private static final int ASYNC_TIMEOUT_SECONDS = 8;
+    private static final int NUMBER_OF_ITEMS = 14;
+    String id = "";
     // endregion
 
     private ItemRepository itemRepository;
@@ -124,5 +127,81 @@ public class ItemRepositoryTests {
         assertEquals("lpB3VZoBgA2J64SwXmjM", fahrradwerkzeug.getContainedItems().get(1).getId());
         assertEquals("kNtJ95ZDMgBGRi5ip8mb", fahrradwerkzeug.getAssociatedItems().get(0).getId());
         assertEquals("pVkV17BSPsyS1W9LxRSl", fahrradwerkzeug.getAssociatedItems().get(1).getId());
+    }
+
+    @Test
+    public void getDocumentFromDatabaseTest() {
+        CompletableFuture<Item> future = new CompletableFuture<>();
+        itemRepository.getOneDocumentFromDatabase("MBQWsdyrOngXibyhMwQ2", item -> {
+            assertNotNull(item);
+            assertEquals("MBQWsdyrOngXibyhMwQ2", item.getId());
+            assertEquals("Holy Grail", item.getTitle());
+            future.complete(item);
+        });
+        try {
+            future.get(ASYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            fail("Exception occurred: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void getAllDocumentsFromDatabaseTest() throws ExecutionException, InterruptedException, TimeoutException {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        itemRepository.getAllDocumentsFromDatabase(items -> {
+            assertNotNull(items);
+            assertEquals(NUMBER_OF_ITEMS, items.size());
+            future.complete(null);
+        });
+        future.get(ASYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    }
+
+    @Order(1)
+    @Test
+    public void addDocumentInDatabaseTest() throws ExecutionException, InterruptedException, TimeoutException {
+        Item item = new Item();
+        item.setTitle("Test Item");
+        itemRepository.addDocumentToDatabase(item);
+        CompletableFuture<Item> future = new CompletableFuture<>();
+        itemRepository.getAllDocumentsFromDatabase(items -> {
+            assertNotNull(items);
+            assertEquals(NUMBER_OF_ITEMS + 1, items.size());
+            future.complete(null);
+            Item itemToDelete = items.stream().filter(i -> i.getTitle().equals("Test Item")).findFirst().orElse(null);
+            assert(items.stream().anyMatch(i -> i.getTitle().equals("Test Item")));
+            id = itemToDelete.getId();
+        });
+        future.get(ASYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    }
+
+    @Order(5)
+    @Test
+    public void deleteDocumentFromDatabaseTest() throws ExecutionException, InterruptedException, TimeoutException {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        Item item = new Item();
+        item.setId(id);
+        itemRepository.deleteDocumentFromDatabase(item);
+        itemRepository.getAllDocumentsFromDatabase(items -> {
+            assertNotNull(items);
+            assertEquals(NUMBER_OF_ITEMS, items.size());
+            future.complete(null);
+            assert(items.stream().noneMatch(i -> i.getId().equals(id)));
+        });
+        future.get(ASYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    }
+
+    @Test
+    public void fetchImageUrlTest() {
+        CompletableFuture<String> future = new CompletableFuture<>();
+        itemRepository.fetchImageUrl("itemImages/karton.png", url -> {
+            assertNotNull(url);
+            assertEquals("https://firebasestorage.googleapis.com/v0/b/itematedb-f0396.appspot.com/o/itemImages%2Fkarton.png?alt=media&token=94c99208-f451-4f97-b944-1dad8f653dd5", url);
+            future.complete(url);
+        });
+        try {
+            future.get(ASYNC_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            fail("Exception occurred: " + e.getMessage());
+        }
     }
 }
