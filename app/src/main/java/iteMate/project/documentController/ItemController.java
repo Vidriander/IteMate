@@ -1,5 +1,6 @@
 package iteMate.project.documentController;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
@@ -167,6 +168,9 @@ public class ItemController {
         GenericRepository<Item> repository = new GenericRepository<>(Item.class);
         repository.fetchImageUrl(imagePath, imageUrl -> {
             if (imageUrl != null) {
+                if (context instanceof Activity && ((Activity) context).isDestroyed()) {
+                    return;
+                }
                 Glide.with(context)
                         .load(imageUrl)
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
