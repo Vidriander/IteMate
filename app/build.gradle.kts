@@ -81,6 +81,6 @@ dependencies {
         testImplementation(libs.core)
         testImplementation(libs.junit.v113)
         testImplementation(libs.runner)
-        testImplementation(libs.rules)
+        //testImplementation(libs.rules)
     }
 }

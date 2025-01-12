@@ -51,12 +51,12 @@ mockito-android = { module = "org.mockito:mockito-android", version.ref = "mocki
 mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoCoreVersion" }
 mockito-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-rules = { module = "androidx.test:rules", version.ref = "core" }
+#rules = { module = "androidx.test:rules", version.ref = "core" }
 runner = { module = "androidx.test:runner", version.ref = "runner" }
 swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
-rules = { group = "androidx.test", name = "rules", version = "1.6.1" }
+#rules = { group = "androidx.test", name = "rules", version = "1.6.1" }
 espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espressoContrib" }
 #firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
