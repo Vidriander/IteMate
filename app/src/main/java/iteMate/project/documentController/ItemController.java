@@ -211,7 +211,7 @@ public class ItemController {
                     .addOnSuccessListener(taskSnapshot -> {
                         currentItem.setImage(imagePath);
                         setCurrentItem(currentItem);
-                        saveChangesToDatabase();
+                        //saveChangesToDatabase();
                         this.setImageForView(context, currentItem.getImage(), imageView);
                     })
                     .addOnFailureListener(e -> Toast.makeText(context, "Image upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
