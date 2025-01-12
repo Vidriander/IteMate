@@ -1,6 +1,8 @@
 package iteMate.project.uiActivities.trackScreens;
 
+import android.app.ActivityManager;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import android.util.Log;
 import android.widget.Toast;
@@ -126,6 +129,13 @@ public class TrackEditActivity extends AppCompatActivity {
             if (trackController.isReadyForUpload()) {
 
                 trackController.saveChangesToDatabase(trackToDisplay);
+
+                ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+                List<ActivityManager.RunningTaskInfo> taskInfo = activityManager.getRunningTasks(2);
+                if (taskInfo.size() > 1 && taskInfo.get(1).topActivity.getClassName().equals(TrackActivity.class.getName())) {
+                    Intent intent = new Intent(this, TrackDetailActivity.class);
+                    startActivity(intent);
+                }
 
                 finish();
             } else {

@@ -70,8 +70,14 @@ public class TrackController {
 
         if (trackId == null || trackId.isEmpty()) {
             trackRepository.addDocumentToDatabase(getCurrentTrack());
+            for (Item item : currentTrack.getLentItemsList()) {
+                itemRepository.updateDocumentInDatabase(item);
+            }
         } else {
             trackRepository.updateDocumentInDatabase(getCurrentTrack());
+            for (Item item : currentTrack.getLentItemsList()) {
+                itemRepository.updateDocumentInDatabase(item);
+            }
         }
     }
 

@@ -87,8 +87,10 @@ public class ScanController {
             List<Item> lendList = trackController.getCurrentTrack().getLentItemsList();
             // Toggle: If the item is in the lent list, remove it else add it
             if (lendList.removeIf(lentItem -> lentItem.getId().equals(item.getId()))) {
+                item.setActiveTrackID(null);
                 // Item was removed
             } else {
+                item.setActiveTrackID(trackController.getCurrentTrack().getId());
                 lendList.add(item);
             }
             trackController.getCurrentTrack().setLentItemsList(lendList);
