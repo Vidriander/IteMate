@@ -1,10 +1,11 @@
 package iteMate.project.uiActivities.appScreens;
 
-
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -30,21 +31,21 @@ import iteMate.project.R;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class openAndCloseScanScreen {
+public class NavigationTest {
 
     @Rule
     public ActivityScenarioRule<HomeActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(HomeActivity.class);
 
     @Test
-    public void openAndCloseScanScreen() {
+    public void openAndCloseScanScreenFromHomeScreen() {
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.scan_button),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         1),
-                                2),
+                                1),
                         isDisplayed()));
         floatingActionButton.perform(click());
 
@@ -58,6 +59,42 @@ public class openAndCloseScanScreen {
                         isDisplayed()));
         materialButton.perform(click());
     }
+
+    @Test
+    public void openAndCloseSettingsFromBurgerMenu() {
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withId(R.id.menu_button), withContentDescription("Menü"),
+                        childAtPosition(
+                                allOf(withId(R.id.toolbar),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        ViewInteraction materialTextView = onView(
+                allOf(withId(android.R.id.title), withText("Settings"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        materialTextView.perform(click());
+
+        ViewInteraction materialButton = onView(
+                allOf(withId(R.id.settings_back_button), withContentDescription("Back"),
+                        childAtPosition(
+                                allOf(withId(R.id.toolbar),
+                                        childAtPosition(
+                                                withId(R.id.main),
+                                                0)),
+                                0),
+                        isDisplayed()));
+        materialButton.perform(click());
+    }
+
 
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
