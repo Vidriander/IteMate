@@ -29,7 +29,7 @@ import iteMate.project.utils.NfcScanner;
  */
 public class ReturnScanActivity extends AppCompatActivity implements NfcScanner.NfcScanListener {
 
-    private final NfcScanner nfcScanner = new NfcScanner(this, this);
+    private NfcScanner nfcScanner;
     private List<Item> listOfPendingItems;
     private List<Item> listOfReturnedItems;
     private ReturnScanAdapter returnScanAdapter;
@@ -43,6 +43,7 @@ public class ReturnScanActivity extends AppCompatActivity implements NfcScanner.
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_return_scan);
 
+        nfcScanner = new NfcScanner(this, this);
         // Initialize NFC adapter
         nfcScanner.enableReaderMode(this);
 
