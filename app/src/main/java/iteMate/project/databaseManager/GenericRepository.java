@@ -23,7 +23,7 @@ import iteMate.project.databaseManager.listeners.OnSingleDocumentFetchedListener
  *
  * @param <T> the type of the document to be fetched, added, updated, or deleted
  */
-public class GenericRepository<T extends DocumentEquivalent> {
+public class GenericRepository<T extends DocumentEquivalent> implements RepositoryInterface<T> {
 
     protected FirebaseFirestore db;
     /**
@@ -74,6 +74,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      * @param documentId the ID of the document to be fetched
      * @param listener   the listener to be called when the document is fetched
      */
+    @Override
     public void getOneDocumentFromDatabase(String documentId, OnSingleDocumentFetchedListener<T> listener) {
         try {
             db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(documentId)
@@ -100,6 +101,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param listener the listener to be called when the documents are fetched
      */
+    @Override
     public void getAllDocumentsFromDatabase(OnMultipleDocumentsFetchedListener<T> listener) {
         try {
             db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath())
@@ -128,6 +130,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param element the document to be added
      */
+    @Override
     public void addDocumentToDatabase(T element) {
         db.collection(element.getCollectionPath())
                 .add(element)
@@ -144,6 +147,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param document the document to be updated
      */
+    @Override
     public void updateDocumentInDatabase(T document) {
         try {
             db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(document.getId())
@@ -166,6 +170,7 @@ public class GenericRepository<T extends DocumentEquivalent> {
      *
      * @param document the document to be deleted
      */
+    @Override
     public void deleteDocumentFromDatabase(T document) {
         try {
             db.collection(tClass.getDeclaredConstructor().newInstance().getCollectionPath()).document(document.getId())
