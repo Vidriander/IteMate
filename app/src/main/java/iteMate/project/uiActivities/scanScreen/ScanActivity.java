@@ -288,7 +288,11 @@ public class ScanActivity extends AppCompatActivity implements NfcScanner.NfcSca
         TextView cardContent = trackCardView.findViewById(R.id.trackcard_contactname_scan);
         cardContent.setText(track.getContact().getName());
         TextView cardSubContent = trackCardView.findViewById(R.id.trackcard_daycounter_scan);
-        cardSubContent.setText(String.valueOf(track.getDaysLeft()));
+        String daysLeft = String.valueOf(track.getDaysLeft()) + "d";
+        if (track.getDaysLeft() > 0) {
+            daysLeft = "+" + daysLeft;
+        }
+        cardSubContent.setText(daysLeft);
         TextView cardSubContent2 = trackCardView.findViewById(R.id.trackcard_scan_return_date);
         cardSubContent2.setText(new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(track.getReturnDate().toDate()));
     }
